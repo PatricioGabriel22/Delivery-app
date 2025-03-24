@@ -17,7 +17,9 @@ export default function LogoutBTN(){
                 sessionStorage.removeItem('auth')
                 window.location.reload()
                 }}
-            >Logout</button>
+            >
+                Cerrar sesion
+            </button>
 
 
 
