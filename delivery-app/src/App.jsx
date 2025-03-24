@@ -1,14 +1,34 @@
 import { Fragment } from 'react'
-import logoDelivery from '../public/vite.png'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+
+import PrivateRoute from './components/PrivateRoute'
+import Home from './pages/Home.jsx'
+import Login from './pages/Login'
+import Register from './pages/Register.jsx'
 
 function App() {
 
   return (
     <Fragment>
-      <h1 className="flex flex-col text-3xl text-red-300">Delivery App</h1>
-      <p className=''>some text</p>
-      <img src={logoDelivery}/>
+      <div className='bg-black min-h-screen text-white'>
+      <BrowserRouter>
+        <Routes>
+          
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/register' element={<Register/>}/>
+
+
+          <Route element={<PrivateRoute/>}>
+          
+            <Route path="/" element={<Home/>}/>
+          
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+
+      </div>
     </Fragment>
   )
 }
