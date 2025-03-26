@@ -21,10 +21,11 @@ function App() {
 
           <Route element={<PrivateRoute/>}>
           
-            <Route path="/" element={<Home/>}/>
           
           </Route>
 
+          <Route path="/" element={<Home/>}/>
+          
         </Routes>
       </BrowserRouter>
 

@@ -12,7 +12,7 @@ export default function LogoutBTN(){
 
 
             <button 
-                className="cursor-pointer rounded bg-black w-fit"
+                className="cursor-pointer rounded bg-black "
                 onClick={()=>{
                 sessionStorage.removeItem('auth')
                 window.location.reload()
