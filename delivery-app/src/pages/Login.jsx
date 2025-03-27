@@ -1,6 +1,7 @@
 import axios from "axios"
 import { Fragment } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useLoginContext } from "../context/LoginContext"
 
 
 
@@ -8,15 +9,16 @@ import { Link, useNavigate } from "react-router-dom"
 export default function Login(){
 
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
+  const {renderORLocalURL} = useLoginContext()
 
-    function handleLogin(e){
+  function handleLogin(e){
         e.preventDefault()
         console.log(e)
 
 
-        axios.post('http://localhost:4000/login', {
+        axios.post(`${renderORLocalURL}/login`, {
         username:e.target[0].value,
         password:e.target[1].value,
 
