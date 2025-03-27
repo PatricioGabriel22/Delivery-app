@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
-import marineras from "../assets/marineras.jpg"; // Asegúrate de importar la imagen correctamente
+
+
+
+import marineras from "../assets/marineras.jpg";
 import { useShoppingContext } from "../context/ShoppingContext";
 
 export default function Card() {
@@ -37,7 +41,14 @@ export default function Card() {
       </div>
 
       <div className="self-center flex flex-row gap-x-10">
-        <MdDelete size={40} className="text-red-600 cursor-pointer" />
+        <MdDelete size={40} className="text-red-600 cursor-pointer"  
+        onClick={() => {
+          
+          carrito === 0 ? setCarrito(0) : setCarrito(carrito - 1)
+          
+        }} />
+
+        
         <FaPlus
           size={40}
           className="text-green-600 cursor-pointer"
