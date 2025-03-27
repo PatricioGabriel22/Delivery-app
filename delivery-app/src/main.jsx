@@ -5,6 +5,7 @@ import App from './App.jsx'
 import { ShoppingProvider } from './context/ShoppingContext.jsx'
 
 createRoot(document.getElementById('root')).render(
+  
   <Fragment>
     <ShoppingProvider>
       <App />

@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 
@@ -8,6 +8,22 @@ import Login from './pages/Login'
 import Register from './pages/Register.jsx'
 
 function App() {
+
+    useEffect(() => {
+      const handleBeforeUnload = (event) => {
+        // Mostrar el mensaje de alerta
+        event.preventDefault()
+        console.log(event)
+        confirm("¡Estás a punto de actualizar o salir de la página!");
+        
+      };
+  
+      window.addEventListener("beforeunload", handleBeforeUnload);
+  
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }, [])
 
   return (
     <Fragment>

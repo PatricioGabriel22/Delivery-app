@@ -22,7 +22,7 @@ export default function Nav() {
       )}
 
 
-      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600">
+      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600 cursor-pointer select-none">
         <CiShoppingCart size={90} onClick={()=>setShowCarritoBTN(!showCarritoBTN)} />
         <p className="text-sm font-bold">{carrito}</p>
       </div>
