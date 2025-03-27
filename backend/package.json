@@ -5,7 +5,9 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "test": "node --watch src/server.js "
+    "test": "node --watch src/server.js ",
+    "db": "node --watch src/server.js "
+
   },
   "keywords": [],
   "author": "",

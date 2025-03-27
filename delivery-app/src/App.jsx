@@ -6,6 +6,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login'
 import Register from './pages/Register.jsx'
+import CarritoConfirm from './pages/CarritoConfirm.jsx'
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
 
   return (
     <Fragment>
-      <div className='bg-black min-h-screen text-white'>
+      <div className='bg-black min-h-screen text-white cursor-pointer select-none'>
       <BrowserRouter>
         <Routes>
           
@@ -41,6 +42,8 @@ function App() {
           </Route>
 
           <Route path="/" element={<Home/>}/>
+          <Route path="/carrito" element={<CarritoConfirm/>}/>
+
           
         </Routes>
       </BrowserRouter>

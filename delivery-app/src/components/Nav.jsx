@@ -13,7 +13,7 @@ export default function Nav() {
 
 
   return (
-    <div className="mt-auto w-full relative" >
+    <div className="mt-auto w-full relative " >
       {/* Contenedor del carrito sobre la barra roja */}
       {showCarritoBTN && carrito !== 0 && (
         <Link to="/carrito" className="flex justify-center items-center w-full ">
@@ -22,7 +22,7 @@ export default function Nav() {
       )}
 
 
-      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600 cursor-pointer select-none">
+      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600 ">
         <CiShoppingCart size={90} onClick={()=>setShowCarritoBTN(!showCarritoBTN)} />
         <p className="text-sm font-bold">{carrito}</p>
       </div>
