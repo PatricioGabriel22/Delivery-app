@@ -1,24 +1,20 @@
 import LogoutBTN from "./LogoutBTN";
 import { CiShoppingCart } from "react-icons/ci";
 
+export default function Nav() {
+  return (
+    <div className="mt-auto w-full relative">
+      {/* Contenedor del carrito sobre la barra roja */}
+      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-lg border-4 border-red-600">
+        <CiShoppingCart size={32} />
+        <p className="text-sm font-bold">10</p>
+      </div>
 
-export default function Nav(){
-    return (
-        <div className="mt-auto min-w-screen ">
-          
-
-            <div className="flex flex-row bg-red-600 justify-evenly items-center md:justify-evenly rounded-t-4xl w-full p-4 relative">
-
-                <h1>Profile</h1>
-
-                <div className="text-black bg-white rounded-3xl  flex flex-col items-center justify-center absolute bottom-6">
-                    <CiShoppingCart size={60} />
-                    <p className="text-black ">10</p>
-                </div> 
-
-                <LogoutBTN />
-            </div>
-
-        </div>
-      );
-    }
+      {/* Barra de navegación */}
+      <div className="flex flex-row bg-red-600 justify-around items-center md:justify-evenly rounded-t-4xl w-full p-5">
+        <h1>Profile</h1>
+        <LogoutBTN />
+      </div>
+    </div>
+  );
+}
