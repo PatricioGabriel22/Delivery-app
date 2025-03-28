@@ -7,33 +7,33 @@ export const userRoutes = Router()
 
 
 
-userRoutes.use((req,res,next)=>{
-    const token = req.cookies?.access_cookie
+// userRoutes.use((req,res,next)=>{
+//     const token = req.cookies?.access_cookie
     
-    let data = null 
+//     let data = null 
     
 
-    req.session = {user:null}
+//     req.session = {user:null}
 
     
-    if(token){
+//     if(token){
 
-        try{
+//         try{
 
 
-            data = jwt.verify(token,SECRET_JWT_TOKEN_KEY)
-            req.session.user = data
-            console.log(data)
+//             data = jwt.verify(token,SECRET_JWT_TOKEN_KEY)
+//             req.session.user = data
+//             console.log(data)
 
-        }catch(error){
-            console.log(error)
+//         }catch(error){
+//             console.log(error)
             
-        }
+//         }
 
-    }
-    next()
+//     }
+//     next()
 
-})
+// })
 
 
 

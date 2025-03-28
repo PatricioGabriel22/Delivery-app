@@ -13,14 +13,14 @@ export default function Login(){
 
   const {renderORLocalURL} = useLoginContext()
 
+
   function handleLogin(e){
         e.preventDefault()
+
         console.log(e)
-
-
-        axios.post(`${renderORLocalURL}/login`, {
-        username:e.target[0].value,
-        password:e.target[1].value,
+        axios.post("https://delivery-app-rfh2.onrender.com/login", {
+          username:e.target[0].value,
+          password:e.target[1].value,
 
         },{withCredentials:true})
         .then(res=>{

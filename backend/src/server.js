@@ -18,9 +18,12 @@ try {
 
 
 
-const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app/"
+const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
+console.log(serverURL)
 server.use(cors({ origin: serverURL , credentials: true })) 
 server.use(express.json())
+
+
 server.use(userRoutes)
 
 

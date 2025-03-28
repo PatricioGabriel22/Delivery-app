@@ -37,12 +37,10 @@ function App() {
 
 
           <Route element={<PrivateRoute/>}>
-          
-          
+            <Route path="/" element={<Home/>}/>
+            <Route path="/carrito" element={<CarritoConfirm/>}/>
           </Route>
 
-          <Route path="/" element={<Home/>}/>
-          <Route path="/carrito" element={<CarritoConfirm/>}/>
 
           
         </Routes>
