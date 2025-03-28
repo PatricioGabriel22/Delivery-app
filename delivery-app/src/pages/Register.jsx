@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 // import { useState } from "react";
 import { useLoginContext } from "../context/LoginContext";
-
+import { useState } from "react";
+import succesLogo from '../assets/succesLogo.png'
 
 
 
@@ -13,6 +14,8 @@ export default function Register(){
 
     const {renderORLocalURL} =  useLoginContext()
 
+    const [succesAnimation, setSuccesAnimation] = useState(false)
+    const [errorAnimation, setErrorAnimation] = useState(false)
 
     function handleRegister(e){
         e.preventDefault()
@@ -39,6 +42,8 @@ export default function Register(){
             return
         }
 
+        setSuccesAnimation(true)
+
         axios.post(`${renderORLocalURL}/register`, registerData,{withCredentials:true})
         .then(res=>{
             if(res.status === 200){
@@ -52,7 +57,13 @@ export default function Register(){
 
 
         .catch(e=>{
-          console.log(e)
+            console.log(e)
+            setSuccesAnimation(false)
+            setErrorAnimation(true)
+            
+            setTimeout(()=>{
+                setErrorAnimation(false)
+            },1000)
         })
     } 
 
@@ -60,7 +71,9 @@ export default function Register(){
     return(    
     <div className="min-h-screen flex flex-col items-center justify-center">
 
-        <img src='/vite.png' className="w-20"/> 
+        <img src={succesAnimation? succesLogo : '/vite.png'} 
+        
+        className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 
         <form className="w-80 h-fit border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center " onSubmit={(e)=>handleRegister(e)}>
             {CAMPOS_REGISTRO.map((campo,index)=>(
