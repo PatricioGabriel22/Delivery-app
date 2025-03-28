@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
     username:String,
     email:String,
     password:String,
+    direccion:String,
+    localidad:String,
+    entreCalles:String,
+    telefono:Number
     
 },{
     timestamps:true

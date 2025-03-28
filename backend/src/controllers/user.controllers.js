@@ -61,8 +61,9 @@ export const loginUser = async(req,res)=>{
 }
 
 
-export const registerUser = async(req,res)=>{
-    const {username,email,password} = req.body
+export const registerUser = async (req,res)=>{
+    const {username,email,password,direccion,telefono} = req.body
+    console.log(req.body)
 
     try {
         
@@ -88,7 +89,10 @@ export const registerUser = async(req,res)=>{
         new userSchema({
             username,
             email,
-            password:hashedPassword
+            password:hashedPassword,
+            direccion,
+            telefono
+
         }).save()
     
         res.json({message:`Usuario creado, ${username}`})
