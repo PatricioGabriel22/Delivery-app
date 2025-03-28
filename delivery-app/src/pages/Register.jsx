@@ -42,10 +42,9 @@ export default function Register(){
             return
         }
 
-        
+        setSuccesAnimation(true)
 
         axios.post(`${renderORLocalURL}/register`, registerData,{withCredentials:true})
-        .then(()=>setSuccesAnimation(true))
         .then(res=>{
             if(res.status === 200){
                 console.log(res.data)
@@ -54,9 +53,6 @@ export default function Register(){
             }
 
         })
-
-
-
         .catch(e=>{
             console.log(e)
             setSuccesAnimation(false)
