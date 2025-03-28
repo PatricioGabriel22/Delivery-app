@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import { useState } from "react";
 import { useLoginContext } from "../context/LoginContext";
-import { useState } from "react";
+import {useState } from "react";
 import succesLogo from '../assets/succesLogo.png'
 
 
@@ -16,6 +16,8 @@ export default function Register(){
 
     const [succesAnimation, setSuccesAnimation] = useState(false)
     const [errorAnimation, setErrorAnimation] = useState(false)
+
+    const navigate = useNavigate()
 
     function handleRegister(e){
         e.preventDefault()
@@ -49,7 +51,10 @@ export default function Register(){
             if(res.status === 200){
                 console.log(res.data)
                 sessionStorage.setItem('auth','true')
-                // navigate('/')
+                
+                setTimeout(()=>{
+                    navigate('/login')
+                },2000)
             }
 
         })
