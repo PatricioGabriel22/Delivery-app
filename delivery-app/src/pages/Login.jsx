@@ -13,6 +13,7 @@ export default function Login(){
 
   const {renderORLocalURL} = useLoginContext()
 
+  const CAMPOS_LOGIN = ['nombre de usuario','contraseña']
 
   function handleLogin(e){
         e.preventDefault()
@@ -50,12 +51,14 @@ export default function Login(){
       <Fragment>
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
           <img src='/vite.png' className={`w-20 ${logginIn?  'animate-bounce' : ""}`}/>
-          <form className=" w-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col" onSubmit={(e)=>handleLogin(e)}>
+          <form className=" w-80 h-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center justify-around " onSubmit={(e)=>handleLogin(e)}>
+            {CAMPOS_LOGIN.map((campo,index)=>(
 
-            <input placeholder="nombre de usuario" type="text" />
-            <input placeholder="contraseña" type="password" />
+              <input kye={index} placeholder={campo} type={campo === 'contraseña' ? 'password' : 'text'}   className="bg-white text-black rounded w-full p-1 text-lg"/>
+            ))}
+            
 
-            <button type="submit" >Login</button>
+            <button type="submit" className="bg-red-500 w-full rounded-full p-2">Login</button>
 
 
           </form>
