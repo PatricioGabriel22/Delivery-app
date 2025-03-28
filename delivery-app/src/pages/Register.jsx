@@ -24,7 +24,7 @@ export default function Register(){
         const confirmPassword = e.target[2].value
 
         const registerData = {
-            username:e.target[0].value.toLowerCase(),
+            username:e.target[0].value,
             password:e.target[1].value,
             email:e.target[3].value.toLowerCase(),
             direccion:e.target[4].value.toLowerCase(),
