@@ -22,7 +22,7 @@ export default function Register(){
 
         const registerData = {
             username:e.target[0].value.toLowerCase(),
-            password:e.target[1].value.toLowerCase(),
+            password:e.target[1].value,
             email:e.target[3].value.toLowerCase(),
             direccion:e.target[4].value.toLowerCase(),
             localidad:e.target[5].value.toLowerCase(),
