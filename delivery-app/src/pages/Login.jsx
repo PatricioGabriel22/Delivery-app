@@ -16,6 +16,7 @@ export default function Login(){
 
   function handleLogin(e){
         e.preventDefault()
+        setLogginIn(true)
 
         console.log(e)
         axios.post(`${renderORLocalURL}/login`, {
@@ -25,7 +26,6 @@ export default function Login(){
         },{withCredentials:true})
         .then(res=>{
             if(res.status === 200){
-                setLogginIn(true)
                 console.log(res.data)
                 sessionStorage.setItem('auth','true')
                 navigate('/')
@@ -35,7 +35,10 @@ export default function Login(){
 
 
 
-        .catch(e=>console.log(e))
+        .catch(e=>{
+          console.log(e)
+          setLogginIn(false)
+        })
     } 
     
 
