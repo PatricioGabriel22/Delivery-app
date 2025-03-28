@@ -11,7 +11,12 @@ const userSchema = new mongoose.Schema({
     direccion:String,
     localidad:String,
     entreCalles:String,
-    telefono:Number
+    telefono:Number,
+    rol:{
+        type:String,
+        default:'user'
+    },
+    hintPassword:String
     
 },{
     timestamps:true

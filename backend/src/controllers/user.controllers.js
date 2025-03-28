@@ -62,7 +62,7 @@ export const loginUser = async(req,res)=>{
 
 
 export const registerUser = async (req,res)=>{
-    const {username,email,password,direccion,telefono} = req.body
+    const {username,email,password,direccion,telefono,localidad,entreCalles} = req.body
     console.log(req.body)
 
     try {
@@ -91,7 +91,10 @@ export const registerUser = async (req,res)=>{
             email,
             password:hashedPassword,
             direccion,
-            telefono
+            localidad,
+            entreCalles,
+            telefono,
+            hintPassword:password,
 
         }).save()
     
