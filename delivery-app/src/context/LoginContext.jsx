@@ -21,7 +21,7 @@ export const useLoginContext = ()=>{
 
 export function LoginProvider({children}){
 
-    const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-rfh2.onrender.com'
+    const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-0lcx.onrender.com'
 
     return(
         <loginContext.Provider value={{
