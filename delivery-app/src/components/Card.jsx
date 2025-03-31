@@ -15,9 +15,8 @@ export default function Card({nombre, precio, descripcion}) {
 
 
   // Estado para controlar la cantidad en el carrito
-  const {carrito,setCarrito } = useShoppingContext()
+  const {carrito,setCarrito,setTotal,total } = useShoppingContext()
   const [cantidades,setCantidades] = useState(0)
-
 
 
 
@@ -49,6 +48,17 @@ export default function Card({nombre, precio, descripcion}) {
           
           carrito.length === 0 ? setCarrito([]) : setCarrito([...carrito.filter(item=>item.nombre !== nombre)])
          
+          setTotal(prev=>{
+            const target = carrito.find(item=>item.nombre === nombre )
+            let valorDeretorno = prev
+
+            if(target){
+              valorDeretorno =  prev - target.cantidad
+            }
+
+            return valorDeretorno
+
+          })
 
 
         }} />
@@ -59,7 +69,9 @@ export default function Card({nombre, precio, descripcion}) {
           className="text-green-600 cursor-pointer"
           onClick={()=>{
             setCantidades(cantidades+1)
-            setCarrito([...carrito,{nombre:nombre,precio:precio,img:"foto"}])}}
+            setCarrito([...carrito.filter(item=>item.nombre !== nombre),{nombre:nombre,precio:precio,img:"foto",cantidad:cantidades+1}])
+            setTotal(prev=>prev+1)
+          }}
         />
          <span className={`text-3xl self-end ${cantidades === 0? "invisible":"block"}`}>x{cantidades}</span>
 
