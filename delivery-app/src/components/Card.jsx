@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 
 import { MdDelete } from "react-icons/md";
@@ -8,52 +9,60 @@ import { FaPlus } from "react-icons/fa";
 import marineras from "../assets/marineras.jpg";
 import { useShoppingContext } from "../context/ShoppingContext";
 
-export default function Card() {
+export default function Card({nombre, precio, descripcion}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Estado para controlar la cantidad en el carrito
-  const {carrito,setCarrito,setTotal } = useShoppingContext()
 
-  useEffect(()=>{
-    setTotal(prev=>prev+(carrito*3200))
-  },[carrito,setTotal])
- 
+  // Estado para controlar la cantidad en el carrito
+  const {carrito,setCarrito } = useShoppingContext()
+  const [cantidades,setCantidades] = useState(0)
+
+
+
 
   return (
-    <div className="w-full sm:w-96 flex flex-col bg-white text-black rounded m-5">
-      <p className="text-center rounded-t-2xl p-2">Marineras clásicas</p>
+    <div className="w-full sm:w-96 flex flex-col bg-white text-black rounded-3xl m-5">
+      <p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>
       <span className="bg-red-600 h-[1px]" />
 
       <div className="flex flex-row p-4 gap-x-3">
         <div className="flex flex-col justify-between">
-          <span>Marineras ideales para untar con variedad de aderezos</span>
-          <p className="self-center font-medium">$3200</p>
+          <span>{descripcion}</span>
+          <p className="self-center font-medium text-xl">${precio}</p>
         </div>
 
         {/* Imagen que abre el modal */}
         <img
           src={marineras}
-          className="w-32 h-32 rounded cursor-pointer select-none"
+          className="w-20 h-32 rounded cursor-pointer select-none object-cover"
           onClick={() => setIsModalOpen(true)}
           alt="Marineras"
         />
       </div>
 
-      <div className="self-center flex flex-row gap-x-10">
+      <div className=" justify-around items-center flex flex-row w-full">
         <MdDelete size={40} className="text-red-600 cursor-pointer"  
         onClick={() => {
+
+          setCantidades(0)
           
-          carrito === 0 ? setCarrito(0) : setCarrito(carrito - 1)
-          
+          carrito.length === 0 ? setCarrito([]) : setCarrito([...carrito.filter(item=>item.nombre !== nombre)])
+         
+
+
         }} />
 
         
         <FaPlus
           size={40}
           className="text-green-600 cursor-pointer"
-          onClick={() => setCarrito(carrito + 1)}
+          onClick={()=>{
+            setCantidades(cantidades+1)
+            setCarrito([...carrito,{nombre:nombre,precio:precio,img:"foto"}])}}
         />
+         <span className={`text-3xl self-end ${cantidades === 0? "invisible":"block"}`}>x{cantidades}</span>
+
       </div>
 
       {/* Modal para la imagen en grande */}
@@ -85,3 +94,4 @@ export default function Card() {
     </div>
   );
 }
+

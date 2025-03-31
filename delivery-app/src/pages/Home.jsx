@@ -4,6 +4,9 @@ import Card from "../components/Card";
 import { useLoginContext } from "../context/LoginContext";
 import { useEffect } from "react";
 
+import { ListaProductos } from "../utils/productos.js";
+
+
 export default function Home() {
 
 
@@ -33,8 +36,15 @@ export default function Home() {
     <div className="flex flex-col min-h-screen items-center">
       <h1 className="p-6">Victorina a domicilio!</h1>
 
-      <Card/>
-
+      {ListaProductos.map((producto, index) =>
+         (<Card key={index} 
+          keyTarget={index}
+          nombre={producto.nombre} 
+          precio={producto.precio} 
+          descripcion={producto.descripcion}/>
+      ))}
+      
+      
       <Nav />
     </div>
   );

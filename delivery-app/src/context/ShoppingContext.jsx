@@ -18,7 +18,7 @@ export const useShoppingContext = () => {
 
 export function ShoppingProvider({ children }) {
 
-    const [carrito, setCarrito] = useState(0)
+    const [carrito, setCarrito] = useState([])
     const [total, setTotal] = useState(0)
 
 
@@ -27,7 +27,8 @@ export function ShoppingProvider({ children }) {
             carrito,
             setCarrito,
             total,
-            setTotal
+            setTotal,
+
         }}>
             {children}
         </shoppingContext.Provider>

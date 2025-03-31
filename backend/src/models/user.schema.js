@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     telefono:Number,
     rol:{
         type:String,
+        enum:["admin","user","GM"],
         default:'user'
     },
     hintPassword:String

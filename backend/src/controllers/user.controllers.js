@@ -38,7 +38,7 @@ export const loginUser = async(req,res)=>{
         .cookie('access_token',token,{
             httpOnly:true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite:'none'
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
         })
         .json({
             message:`Bienvenido, ${loginUserTarget.username}`,

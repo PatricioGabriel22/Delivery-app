@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { loginUser, registerUser } from "../controllers/user.controllers.js"
+import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
+import jwt from "jsonwebtoken"
 
 
 export const userRoutes = Router()
@@ -20,10 +22,9 @@ userRoutes.use((req,res,next)=>{
 
         try{
 
-
             data = jwt.verify(token,SECRET_JWT_TOKEN_KEY)
             req.session.user = data
-            console.log(data)
+
 
         }catch(error){
             console.log(error)
@@ -31,6 +32,7 @@ userRoutes.use((req,res,next)=>{
         }
 
     }
+
     next()
 
 })

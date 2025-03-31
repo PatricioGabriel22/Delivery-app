@@ -4,7 +4,7 @@ import cors from 'cors'
 import { MONGO_CLUSTER_TEST,PORT } from './configs/const.config.js'
 import { connectDB } from './DB.js'
 import { userRoutes } from './routes/user.routes.js'
-
+import {productRoutes} from './routes/products.routes.js'
 
 
 
@@ -25,6 +25,7 @@ server.use(express.json())
 
 
 server.use(userRoutes)
+server.use('/pedidos',productRoutes)
 
 
 
