@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
+// /* eslint-disable no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react"
+
 
 
 const shoppingContext = createContext()
@@ -18,9 +19,12 @@ export const useShoppingContext = () => {
 
 export function ShoppingProvider({ children }) {
 
-    const [carrito, setCarrito] = useState([])
+
+
+    const [carrito, setCarrito] = useState(JSON.parse(sessionStorage.getItem("carrito")) || [])
     const [total, setTotal] = useState(0)
 
+  
 
     return (
         <shoppingContext.Provider value={{

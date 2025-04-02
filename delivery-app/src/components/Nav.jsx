@@ -5,17 +5,18 @@ import { CiShoppingCart } from "react-icons/ci";
 import { useEffect, useState } from "react";
 
 export default function Nav() {
-  const { carrito,total } = useShoppingContext();
+  const { carrito,total,setTotal } = useShoppingContext();
   const [showCarritoBTN, setShowCarritoBTN] = useState(false);
 
 
   useEffect(()=>{
-    console.log(carrito)
+    // console.log(carrito)
+    if(carrito.length >= 0){
+      setTotal(carrito.reduce((acc,curr)=>acc + curr.cantidad,0))
+      sessionStorage.setItem("total", total);
+    }
 
-    
-
-
-  },[carrito])
+  },[carrito,setTotal,total])
  
 
 
