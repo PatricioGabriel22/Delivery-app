@@ -16,14 +16,13 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
 
 
   // Estado para controlar la cantidad en el carrito
-  const {carrito,setCarrito,setTotal,total } = useShoppingContext()
+  const {carrito,setCarrito} = useShoppingContext()
   
   
   function cantidadVisualizer(action){
 
     const target = ListaProductos.find(producto=>producto.nombre === nombre)
 
-    
     
 
     if(action === "add"){
@@ -43,10 +42,7 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
     
     console.log(cantidadAdquirida)
       
-   
-
-
-
+  
 
   }
 
