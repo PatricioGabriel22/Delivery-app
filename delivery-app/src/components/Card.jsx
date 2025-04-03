@@ -10,82 +10,28 @@ import marineras from "../assets/marineras.jpg";
 import { useShoppingContext } from "../context/ShoppingContext";
 import { ListaProductos } from "../utils/productos";
 
+
+
+
+
+
+
+
+
+
+
 export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   // Estado para controlar la cantidad en el carrito
-  const {carrito,setCarrito} = useShoppingContext()
+  const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
   
   
-  function cantidadVisualizer(action){
-
-    const target = ListaProductos.find(producto=>producto.nombre === nombre)
-
-    
-
-    if(action === "add"){
-      
-      target.cantidad += 1
-      console.log(target)
-      
-    }
-
-    
-    
-    if(action === "delete" && target.cantidad > 0){
-      target.cantidad -= 1
-      console.log(target)
-      
-    }
-    
-    console.log(cantidadAdquirida)
-      
-  
-
-  }
-
-  function cartHandler(cart,action,product){
-    const target = cart.find(item=> item.nombre === product)
-
-    // if(!target) return
-
-    let newCart = cart
-
-    console.log(action)
-    cantidadVisualizer(action)
-
-    if(action === "add"){
 
 
-      if(target){
-        newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad+1}]
 
-      }else{
-        newCart = [...cart,{nombre:product,precio:precio,cantidad:1}]
-      }
-      
-      
-    }
-   
-    
-    if(action === "delete"){ 
-        if(target.cantidad > 1 ){
-        newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad-1}]
-        
-      }else{
-        newCart = [...cart.filter(item=>item.nombre !== product)]
-      }
-    }
-
-
-     
-    sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como texto plano
-
-    setCarrito(JSON.parse(sessionStorage.getItem('carrito'))) //recupero y parseo
-
-  }
 
 
 
@@ -115,7 +61,7 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
         <MdDelete 
           size={40} 
           className="text-red-600 cursor-pointer"  
-          onClick={()=>cartHandler(carrito,"delete",nombre)}
+          onClick={()=>cartHandler(carrito,"delete",nombre,precio)}
         />
 
         
@@ -123,7 +69,7 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
           size={40}
           className="text-green-600 cursor-pointer"
           onClick={()=>{
-            cartHandler(carrito,"add",nombre)
+            cartHandler(carrito,"add",nombre,precio)
             // cantidadVisualizer()
           }
 
