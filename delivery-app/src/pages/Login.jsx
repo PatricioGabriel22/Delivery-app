@@ -27,8 +27,10 @@ export default function Login(){
         },{withCredentials:true})
         .then(res=>{
             if(res.status === 200){
-                console.log(res.data)
                 sessionStorage.setItem('auth','true')
+                sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+                
+
                 navigate('/')
             }
 

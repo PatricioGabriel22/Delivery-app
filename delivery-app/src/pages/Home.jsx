@@ -22,7 +22,7 @@ export default function Home() {
 
 
 
-
+  //aca me tengo que traer los productos
 
   return (
     <div className="flex flex-col min-h-screen items-center">
@@ -35,7 +35,7 @@ export default function Home() {
         
 
         return (<Card key={index} 
-          keyTarget={index}
+          id={producto.id}
           nombre={producto.nombre} 
           precio={producto.precio} 
           cantidadAdquirida={target === null ? 0 : target.cantidad}
@@ -44,7 +44,7 @@ export default function Home() {
 
       )}
       
-      
+      <div className="mt-20 w-full h-3"/>
       <Nav />
     </div>
   );

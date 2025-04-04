@@ -21,7 +21,7 @@ export default function Nav() {
 
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-10">
+    <div className="fixed bottom-0 left-0 w-full z-10 ">
       {/* Contenedor del carrito sobre la barra roja */}
       {showCarritoBTN && carrito !== 0 && (
         <Link to="/carrito" className="flex justify-center items-center w-full">

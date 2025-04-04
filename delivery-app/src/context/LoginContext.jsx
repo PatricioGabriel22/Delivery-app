@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
 
 const loginContext = createContext()
 
@@ -23,10 +23,17 @@ export function LoginProvider({children}){
 
     const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-0lcx.onrender.com'
 
+    const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
+
+
+
     return(
         <loginContext.Provider value={{
 
-            renderORLocalURL
+            renderORLocalURL,
+
+            userInfo,
+            setUserInfo
 
 
 

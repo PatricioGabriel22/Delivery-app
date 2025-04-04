@@ -42,7 +42,15 @@ export const loginUser = async(req,res)=>{
         })
         .json({
             message:`Bienvenido, ${loginUserTarget.username}`,
-            username:loginUserTarget.username,
+            userInfo:{
+                id:loginUserTarget._id,
+                username: loginUserTarget.username,
+                direccion: loginUserTarget.direccion,
+                localidad: loginUserTarget.localidad,
+                entreCalles:loginUserTarget.entreCalles,
+                telefono:loginUserTarget.telefono,
+                rol: loginUserTarget.rol
+            },
             token:token
         })
 

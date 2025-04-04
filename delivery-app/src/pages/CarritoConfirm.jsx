@@ -1,23 +1,48 @@
-import { useEffect, useState } from "react"
+import {useEffect, useState } from "react"
 import { useShoppingContext } from "../context/ShoppingContext"
+import { useLoginContext } from "../context/LoginContext";
+
+import axios from 'axios'
 
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { MdArrowBackIosNew } from "react-icons/md";
-
 import {FadeLoader} from 'react-spinners'
-
-
+import { FaCarSide } from "react-icons/fa6";
+import { FaShop } from "react-icons/fa6";
+import { ListaProductos } from "../utils/productos";
 
 export default function CarritoConfirm(){
-
+    const {renderORLocalURL,userInfo} = useLoginContext()
     const {carrito, importeTotal,setImporteTotal,cartHandler} = useShoppingContext()
 
     const [edit,setEdit] = useState(false)
 
     const [loading,setLoading] = useState(JSON.parse(sessionStorage.getItem('loadingPreOrder')) || false)
 
-    const ENVIO = 2500
-    setImporteTotal(carrito.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + ENVIO)
+    const [pasaARetirar,setPasaARetirar] = useState()
+
+ 
+
+    
+    
+    //aca en vez de carrito me tengo que armar otro carrito o lista que contenga lo que esta comprando con el precio
+    //deberia buscar por nombre d eprducto en la lista grande que me viene de la DB para poner el precio
+    const [listaDeCompras, setListaDeCompras] = useState([]);
+    
+    useEffect(() => {
+        setListaDeCompras(
+            carrito.map(producto => {
+                const productoEnLista = ListaProductos.find(productInList => productInList.nombre === producto.nombre);
+                return {
+                    ...producto,
+                    precio: productoEnLista ? productoEnLista.precio : producto.precio,
+                };
+            })
+        );
+    }, [carrito]); // Se ejecuta cada vez que cambia el carrito
+    
+    const ENVIO = pasaARetirar? 0 : 2500
+    setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + ENVIO)
 
 
 
@@ -26,22 +51,28 @@ export default function CarritoConfirm(){
             sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
             return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
         })
-        const preOrden = [...carrito]
-        preOrden.push({confirmado: false})
-        console.log(preOrden)
 
-        //peticion con axios al local
+
+        const payload = {
+            userInfo,
+            preOrderPayload: carrito,
+            enivo:ENVIO,
+            importeTotal:importeTotal
+        }
+
+        axios.post(`${renderORLocalURL}/pedidos/sendPreOrder`,payload,{withCredentials:true})
 
     }
-    
-    useEffect(()=>{console.log(loading)},[loading])
 
 
+
+
+   
 
     return(
         <div className="flex flex-col min-h-screen items-center  text-black p-4 ">
 
-            {carrito.map((item,index)=>(
+            {listaDeCompras?.map((item,index)=>(
                 <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-4 mb-2">
 
                     {/* Cantidad (opcional) */}
@@ -54,7 +85,7 @@ export default function CarritoConfirm(){
                     <p className="font-medium text-lg w-1/3 text-start ">{item.nombre}</p>
 
                     {/* Precio */}
-                    <p className="text-gray-700 font-semibold w-1/3">${item.precio}</p>
+                    <p className="text-gray-700 font-semibold w-1/3">${item.precio * item.cantidad}</p>
 
 
                     <RiDeleteBin6Line  
@@ -68,43 +99,66 @@ export default function CarritoConfirm(){
               
             ))}
             <div className="flex flex-col w-full ">
-                <span className="bg-gray-200 text-end pr-15 font-medium rounded-full shadow-lg">Envio: ${ENVIO}</span>
+              
 
-                <span className=" bg-gray-400 h-[1px] m-2"></span>
-                <p className="bg-white text-black rounded-lg w-full mt-5 text-center">TOTAL: ${importeTotal} </p>
-
-                <div className="flex flex-col justify-center">
-
+                <div className="flex flex-col w-full">
                     {loading ? (
                         <div className="flex flex-col justify-center">
                             <FadeLoader color="#f90b0b" className="self-center mt-10" />
-                            <p className="text-white text-center">El local se encuentra verificando el stock. Podrá seguir comprando cuando su pedido sea confirmado</p>
+                            <p className="text-white text-center">
+                            El local se encuentra verificando el stock. Podrá seguir comprando cuando su pedido sea confirmado
+                            </p>
                         </div>
-                    ):(
-                        <div className="flex flex-row justify-center">
-                            <button 
-                                className="cursor-pointer self-center text-white w-fit p-3 m-3 rounded-full bg-red-500 "
-                                onClick={()=>setEdit(!edit)}
-                            >Editar orden</button>
-    
-                            <button 
-                                className="cursor-pointer self-center text-white w-fit p-3 m-3 rounded-full bg-green-700"
-                                onClick={()=>confirmarOrdenConElLocal()}    
-                            >Pre-ordenar</button>
+                    ) : (
+                        <div className="flex flex-col w-full">
+                        
+                        {/* Opciones de retiro/envío */}
+                        <div className="flex flex-row justify-end items-end p-1 bg-gray-200 w-full gap-x-7 text-end font-medium rounded-full shadow-lg">
+
+                            <div className={`flex flex-row items-center justify-center gap-x-3 w-1/3 ${ pasaARetirar ? "bg-sky-500 rounded-2xl" : ""}`}
+                                onClick={() => setPasaARetirar(true)}>
+                                    <FaShop />
+                                    <p>Retirar en el local</p>
+                            </div>
+                            
+                            <div className={`flex flex-row items-center justify-center gap-x-3 w-1/3 ${pasaARetirar ? "" : "bg-red-500 rounded-2xl"}`}
+                                onClick={() => setPasaARetirar(false)}>
+                                    <FaCarSide />
+                                    <p>Envio: $2500</p>
+                            </div>
                         </div>
 
+                        {/* Botones de acción */}
+                        <div className="flex flex-row justify-center gap-3 mt-3">
+                            <button
+                                className="cursor-pointer text-white w-fit p-3 rounded-full bg-red-500"
+                                onClick={() => setEdit(!edit)}>
+                                    Editar orden
+                            </button>
+
+                            <button
+                                className="cursor-pointer text-white w-fit p-3 rounded-full bg-green-700"
+                                onClick={() => confirmarOrdenConElLocal()}>
+                                    Pre-ordenar
+                            </button>
+                        </div>
+
+                        {/* Separador */}
+                        <span className="bg-gray-400 h-[1px] m-2"></span>
+
+                        {/* Total */}
+                        <p className="bg-white text-black rounded-lg w-full mt-5 text-center">
+                            TOTAL: ${importeTotal}
+                        </p>
+                        </div>
                     )}
+                    </div>
+                    {/* {carrito[carrito.length-1]?.confirmado  && (
 
-
-                     
+                        <button className="cursor-pointer self-center text-white w-fit p-3 m-3 mt-20 rounded-full bg-red-700">Comprar</button>
+                    )} */}
 
                 </div>
-                {/* {carrito[carrito.length-1]?.confirmado  && (
-
-                    <button className="cursor-pointer self-center text-white w-fit p-3 m-3 mt-20 rounded-full bg-red-700">Comprar</button>
-                )} */}
-
-            </div>
 
         </div>
     )

@@ -55,26 +55,26 @@ export function ShoppingProvider({ children }) {
       
 
     function cartHandler(cart,action,product,precioProduct){
-       const target = cart.find(item=> item.nombre === product)
-   
-       // if(!target) return
-   
-       let newCart = cart
-   
-       console.log(action)
+      const target = cart.find(item=> item.nombre === product)
+  
+      // armo el carrito solamente con nombre de productos y cantidades
+  
+      let newCart = cart
+  
+      console.log(action)
        
-       if(action === "add"){
+      if(action === "add"){
            
-           
+          
         if(target){
-           newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad+1}]
-   
-         }else{
-           newCart = [...cart,{nombre:product,precio:precioProduct,cantidad:1}]
-         }
+          newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad+1}]
+  
+        }else{
+          newCart = [...cart,{nombre:product,cantidad:1}]
+        }
          
          
-       }
+      }
       
        
        if(action === "delete"){ 
@@ -88,7 +88,7 @@ export function ShoppingProvider({ children }) {
    
    
         
-       sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como texto plano
+       sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como string
    
        setCarrito(JSON.parse(sessionStorage.getItem('carrito'))) //recupero y parseo
    

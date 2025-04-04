@@ -20,7 +20,7 @@ import { ListaProductos } from "../utils/productos";
 
 
 
-export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
+export default function Card({id,nombre, precio, cantidadAdquirida,descripcion}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,11 +29,6 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
   const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
   
   
-
-
-
-
-
 
 
 
@@ -61,7 +56,7 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
         <MdDelete 
           size={40} 
           className="text-red-600 cursor-pointer"  
-          onClick={()=>cartHandler(carrito,"delete",nombre,precio)}
+          onClick={()=>cartHandler(carrito,"delete",nombre)}
         />
 
         
@@ -69,7 +64,7 @@ export default function Card({nombre, precio, cantidadAdquirida,descripcion}) {
           size={40}
           className="text-green-600 cursor-pointer"
           onClick={()=>{
-            cartHandler(carrito,"add",nombre,precio)
+            cartHandler(carrito,"add",nombre)
             // cantidadVisualizer()
           }
 
