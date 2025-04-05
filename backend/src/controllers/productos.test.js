@@ -1,0 +1,23 @@
+export const ListaProductos = [
+    { id: 1, nombre: 'Flautas', precio: 50, descripcion: 'Deliciosas flautas rellenas de carne o pollo.', disponible: true },
+    { id: 2, nombre: 'Minion', precio: 30, descripcion: 'Galleta con forma de Minion, ideal para niños.', disponible: true },
+    { id: 3, nombre: 'Figasas', precio: 40, descripcion: 'Panecillos suaves y esponjosos con un toque dulce.', disponible: true },
+    { id: 4, nombre: 'Pizza muzza', precio: 120, descripcion: 'Pizza clásica con mozzarella derretida.', disponible: true },
+    // { id: 5, nombre: 'Palmeritas', precio: 45, descripcion: 'Hojaldre en forma de palmera, crujiente y dulce.', disponible: true },
+    // { id: 6, nombre: 'Medialunas manteca', precio: 35, descripcion: 'Medialunas suaves con un toque de manteca.', disponible: true },
+    // { id: 7, nombre: 'Pan negro', precio: 60, descripcion: 'Pan integral oscuro y denso, perfecto para sandwiches.', disponible: true },
+    // { id: 8, nombre: 'Scon naranja', precio: 55, descripcion: 'Scones aromatizados con naranja, ideales para el desayuno.', disponible: true },
+    // { id: 9, nombre: 'Empanadas capresse', precio: 80, descripcion: 'Empanadas rellenas con tomate, mozzarella y albahaca.', disponible: true },
+    // { id: 10, nombre: 'Empanadas arabes', precio: 85, descripcion: 'Empanadas rellenas con carne especiada al estilo árabe.', disponible: true },
+    // { id: 11, nombre: 'Medialunas jamon y queso', precio: 50, descripcion: 'Medialunas saladas rellenas de jamón y queso.', disponible: true },
+    // { id: 12, nombre: 'Chipacitos', precio: 60, descripcion: 'Pequeños panes de queso con un sabor único.', disponible: true },
+    // { id: 13, nombre: 'Pasta frola', precio: 70, descripcion: 'Tarta de membrillo con masa suave y dulce.', disponible: true },
+    // { id: 14, nombre: 'Ricota chica', precio: 55, descripcion: 'Ricota fresca y suave, ideal para postres o tartas.', disponible: true },
+    // { id: 15, nombre: 'Canoncitos', precio: 45, descripcion: 'Deliciosos canutillos rellenos de crema pastelera.', disponible: true },
+    // { id: 16, nombre: 'Criollos', precio: 50, descripcion: 'Panecillos suaves y ligeramente salados.', disponible: true },
+    // { id: 17, nombre: 'Scones jamon y queso', precio: 65, descripcion: 'Scones salados con jamón y queso.', disponible: true },
+    // { id: 18, nombre: 'Ricota chica ddl', precio: 60, descripcion: 'Ricota con dulce de leche, una combinación dulce y cremosa.', disponible: true },
+    // { id: 19, nombre: 'Culitos', precio: 40, descripcion: 'Pequeños panecillos dulces con azúcar glas.', disponible: true },
+    // { id: 20, nombre: 'Sacramentos', precio: 75, descripcion: 'Tartas saladas con un toque de queso y verduras.', disponible: true }
+  ];
+  

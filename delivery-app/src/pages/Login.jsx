@@ -11,7 +11,7 @@ export default function Login(){
   const [logginIn,setLogginIn] = useState(false)
   const navigate = useNavigate()
 
-  const {renderORLocalURL} = useLoginContext()
+  const {renderORLocalURL,setUserInfo} = useLoginContext()
 
   const CAMPOS_LOGIN = ['nombre de usuario','contraseña']
 
@@ -29,6 +29,8 @@ export default function Login(){
             if(res.status === 200){
                 sessionStorage.setItem('auth','true')
                 sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+
+                setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
                 
 
                 navigate('/')

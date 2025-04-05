@@ -10,6 +10,7 @@ const preOrderSchema = new mongoose.Schema({
     preOrder:Array,
     importeTotal:Number,
     confirmed:{type:Boolean,default:false},
+    formaDeEntrega:String,
     createdAt: {
         type: Date,
         default: () => {

@@ -55,8 +55,8 @@ export default function CarritoConfirm(){
 
         const payload = {
             userInfo,
-            preOrderPayload: carrito,
-            enivo:ENVIO,
+            preOrderPayload: listaDeCompras,
+            envio:ENVIO,
             importeTotal:importeTotal
         }
 
@@ -70,7 +70,7 @@ export default function CarritoConfirm(){
    
 
     return(
-        <div className="flex flex-col min-h-screen items-center  text-black p-4 ">
+        <div className="flex flex-col min-h-screen items-center  text-black p-4 md:w-xl m-auto ">
 
             {listaDeCompras?.map((item,index)=>(
                 <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-4 mb-2">
@@ -113,17 +113,17 @@ export default function CarritoConfirm(){
                         <div className="flex flex-col w-full">
                         
                         {/* Opciones de retiro/envío */}
-                        <div className="flex flex-row justify-end items-end p-1 bg-gray-200 w-full gap-x-7 text-end font-medium rounded-full shadow-lg">
+                        <div className="flex flex-row justify-center items-end  bg-gray-200 w-full gap-x-7 text-end font-medium rounded-full shadow-lg">
 
-                            <div className={`flex flex-row items-center justify-center gap-x-3 w-1/3 ${ pasaARetirar ? "bg-sky-500 rounded-2xl" : ""}`}
+                            <div className={`flex flex-row items-center justify-center gap-1 p-1 ${ pasaARetirar ? "bg-sky-500 rounded-2xl" : ""}`}
                                 onClick={() => setPasaARetirar(true)}>
-                                    <FaShop />
+                                    <FaShop size={20} />
                                     <p>Retirar en el local</p>
                             </div>
                             
-                            <div className={`flex flex-row items-center justify-center gap-x-3 w-1/3 ${pasaARetirar ? "" : "bg-red-500 rounded-2xl"}`}
+                            <div className={`flex flex-row items-center justify-center gap-1 p-1 ${pasaARetirar ? "" : "bg-red-500 rounded-2xl"}`}
                                 onClick={() => setPasaARetirar(false)}>
-                                    <FaCarSide />
+                                    <FaCarSide size={20} />
                                     <p>Envio: $2500</p>
                             </div>
                         </div>

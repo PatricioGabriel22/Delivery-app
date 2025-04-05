@@ -2,6 +2,8 @@ import productSchema from "../models/product.schema.js"
 import preOrderSchema from "../models/preOrder.schema.js"
 
 
+import  {ListaProductos} from './productos.test.js'
+
 export const shoppingCart = async (req, res) => {
     const {productList,userInfo} = req.body
 
@@ -18,7 +20,7 @@ export const shoppingCart = async (req, res) => {
 
 export const checkPreOrderWithLocal = async (req,res)=>{
 
-    const {preOrderPayload,userInfo,importeTotal} = req.body
+    const {preOrderPayload,userInfo,importeTotal,envio} = req.body
 
    
 
@@ -31,7 +33,8 @@ export const checkPreOrderWithLocal = async (req,res)=>{
             userID:userInfo.id,
             userInfo,
             preOrder:preOrderPayload,
-            importeTotal:importeTotal
+            importeTotal:importeTotal,
+            formaDeEntrega: envio === 0? "Retiro en el local": "Envio"
         }).save()
 
         res.status(200).json({message:"Pre-Orden creada"})
@@ -47,21 +50,82 @@ export const checkPreOrderWithLocal = async (req,res)=>{
 
 
 export const getAllPreOrders = async (req,res)=>{
-    const allPreOrders = await preOrderSchema.find({}).sort({createdAd:-1})
+    const allPreOrders = await preOrderSchema.find({}).sort({createdAt:-1})
     res.json(allPreOrders)
 }
 
 
-export const handlePreOrder = async (req,res)=>{
-    const {confirmedOrder} = req.body
-
-    const target = await preOrderSchema.find({_id:confirmedOrder._id})
+export const PreOrderManager = async (req,res)=>{
+    const {checkedPreOrder} = req.body
+    let msg
+    let opcionesParaElCliente
     
-    console.log(target.importeTotal)
+
+    //esto en verdad viene del body
+    const stockAgotado = [
+        {
+            "nombre": "Flautas",
+            "cantidad": 2,
+            "precio": 50
+        },{
+            "nombre": "Figasas",
+            "cantidad": 2,
+            "precio": 50
+        },{
+            "nombre": "Minion",
+            "cantidad": 1,
+            "precio": 100
+        }
+    ]
+
+    //aca la idea es buscar en la db y "apagarlos"
+    for (const agotado of stockAgotado){
+        const targetFueraDeStock = ListaProductos.find(item=>item.nombre === agotado.nombre)
+        if (targetFueraDeStock) targetFueraDeStock.disponible = false
+        // console.log(targetFueraDeStock)
+    }
+
+    console.log(ListaProductos)
+
+
+
+    const productosAlternativos = [
+        {
+            "nombre": "Flautas",
+            "cantidad": 1,
+            "precio": 50
+        },
+        {
+            "nombre": "Figasas",
+            "cantidad": 1,
+            "precio": 50
+        }
+    ]
+
+    
+    
+    
+    
+    if(checkedPreOrder.confirmed){
+        await preOrderSchema.updateOne({_id:checkedPreOrder._id},{$set: {confirmed:checkedPreOrder.confirmed}})
+        msg = "Su pedido ha sido confirmado"
+    }else{
+        msg = stockAgotado.length === 1 ? "Hubo un error con el stock de" : "Hubo un problema con el stock de los siguientes productos"
+
+        // await preOrderSchema.deleteOne({_id:checkedPreOrder._id})
+
+        opcionesParaElCliente = {
+            agotado: stockAgotado,
+            alternativas: productosAlternativos
+        }
+    }
+    
+
+
 
     res.json({
-        message:"Su pedido ha sido confirmado",
-        target
+        message: msg,
+        opcionesParaElCliente
 
     })
     

@@ -1,13 +1,12 @@
 import {Router} from "express";
-import {shoppingCart,checkPreOrderWithLocal, getAllPreOrders, handlePreOrder} from "../controllers/products.controllers.js"
+import {shoppingCart,checkPreOrderWithLocal, getAllPreOrders, PreOrderManager} from "../controllers/products.controllers.js"
 
 export const productRoutes = Router()
 
 productRoutes.post('/shoppingCart',shoppingCart)
 
-productRoutes.post('/sendPreOrder',checkPreOrderWithLocal)
+productRoutes.post('/sendPreOrder',checkPreOrderWithLocal) //manda la orden el usuario
 
-productRoutes.post('/getAllPreOrders',getAllPreOrders)
+productRoutes.post('/getAllPreOrders',getAllPreOrders) //me traigo todas las ordenes hechas al perfil pana
 
-
-productRoutes.post('/acceptPreOrder',handlePreOrder)
+productRoutes.post('/PreOrderManagement',PreOrderManager)

@@ -28,7 +28,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen items-center">
       <h1 className="p-6">Victorina a domicilio!</h1>
 
-      {ListaProductos.map((producto, index) =>{
+      {ListaProductos.filter(producto => producto.disponible).map((producto, index) =>{
 
         const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
 

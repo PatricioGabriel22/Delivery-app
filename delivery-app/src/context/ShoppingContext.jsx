@@ -54,7 +54,7 @@ export function ShoppingProvider({ children }) {
     }
       
 
-    function cartHandler(cart,action,product,precioProduct){
+    function cartHandler(cart,action,product){
       const target = cart.find(item=> item.nombre === product)
   
       // armo el carrito solamente con nombre de productos y cantidades
