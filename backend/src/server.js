@@ -1,15 +1,37 @@
 import express from 'express'
 import cors from 'cors'
 
+import http from 'http'
+import {Server as SocketServer} from 'socket.io'
+
+
 import { MONGO_CLUSTER_TEST,PORT } from './configs/const.config.js'
 import { connectDB } from './DB.js'
 import { userRoutes } from './routes/user.routes.js'
 import {productRoutes} from './routes/products.routes.js'
 
 
+const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
 
-const server = express()
+
+
+
+    const server = express()
+    
+    // Este servidor HTTP se necesita para conectar Express + Socket.io
+    const httpServer = http.createServer(server);
+    
+    // Socket.io se engancha al servidor HTTP
+    const io = new SocketServer(httpServer, {
+      cors: {
+        origin: serverURL,
+        credentials: true
+      }
+    })
+
+
 try {
+
     await connectDB(MONGO_CLUSTER_TEST)
     
 } catch (error) {
@@ -18,18 +40,28 @@ try {
 
 
 
-const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
 console.log(serverURL)
+
 server.use(cors({ origin: serverURL , credentials: true })) 
 server.use(express.json())
 
 
 server.use(userRoutes)
-server.use('/pedidos',productRoutes)
+server.use(productRoutes)
 
 
 
-server.listen(PORT,()=>{
+io.on('connection',(socket)=>{
+    console.log("cliente conectado:",socket.id)
+
+    socket.on('disconect',()=>{
+        console.log("Cliente desconectado")
+    })
+})
+
+export {io}
+
+httpServer.listen(PORT,()=>{
     console.log(`Server on port ${PORT}`)
 })
 

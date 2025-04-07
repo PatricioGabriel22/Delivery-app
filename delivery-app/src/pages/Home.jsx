@@ -9,6 +9,7 @@ import { useShoppingContext } from "../context/ShoppingContext.jsx";
 
 
 
+
 ListaProductos.forEach(producto=>producto.cantidad = 0)
 
 
@@ -19,6 +20,14 @@ export default function Home() {
   // const {renderORLocalURL} = useLoginContext()
   // console.log(renderORLocalURL)
 
+
+  // const isAdmin = userInfo?.rol === 'admin';
+
+  // useEffect(() => {
+  //   if (isAdmin) {
+  //     navigate('/PreOrderManagement');
+  //   }
+  // }, [isAdmin, navigate]);
 
 
 

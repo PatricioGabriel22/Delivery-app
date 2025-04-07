@@ -7,6 +7,6 @@ productRoutes.post('/shoppingCart',shoppingCart)
 
 productRoutes.post('/sendPreOrder',checkPreOrderWithLocal) //manda la orden el usuario
 
-productRoutes.post('/getAllPreOrders',getAllPreOrders) //me traigo todas las ordenes hechas al perfil pana
+productRoutes.get('/getAllPreOrders',getAllPreOrders) //me traigo todas las ordenes hechas al perfil pana
 
 productRoutes.post('/PreOrderManagement',PreOrderManager)

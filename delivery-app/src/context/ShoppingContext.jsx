@@ -25,7 +25,8 @@ export function ShoppingProvider({ children }) {
     const [total, setTotal] = useState(0)
 
     const [importeTotal,setImporteTotal] = useState(0)
-  
+
+    const [buyBTN,setBuyBTN] = useState(JSON.parse(sessionStorage.getItem("buyBTN")) || false)
 
 
 
@@ -106,6 +107,9 @@ export function ShoppingProvider({ children }) {
             importeTotal,
             setImporteTotal,
 
+            buyBTN,
+            setBuyBTN,
+            
             cantidadVisualizer,
             cartHandler
 

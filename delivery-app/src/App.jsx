@@ -7,6 +7,9 @@ import Home from './pages/Home.jsx'
 import Login from './pages/Login'
 import Register from './pages/Register.jsx'
 import CarritoConfirm from './pages/CarritoConfirm.jsx'
+import CheckDataAndBuy from './pages/CheckDataAndBuy.jsx'
+import AdminPrivate from './components/AdminPrivate.jsx'
+import PreOrderManagement from './pages/PreOrderManagement.jsx'
 
 function App() {
 
@@ -42,7 +45,14 @@ function App() {
           <Route element={<PrivateRoute/>}>
             <Route path="/" element={<Home/>}/>
             <Route path="/carrito" element={<CarritoConfirm/>}/>
+            <Route path="/confirmar-direccion-y-comprar" element={<CheckDataAndBuy/>}/>
+
+            <Route element={<AdminPrivate/>}>
+              <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
+            </Route>
+            
           </Route>
+
 
 
           

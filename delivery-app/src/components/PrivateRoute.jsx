@@ -4,10 +4,15 @@ import { Navigate, Outlet } from "react-router-dom";
 
 
 
-export default function PrivateRoute(){
-    const isAuth = sessionStorage.getItem('auth') === 'true'
-    console.log(isAuth)
 
-    console.log(isAuth)
+export default function PrivateRoute(){
+
+   
+
+    const isAuth = sessionStorage.getItem('auth') === 'true'
+    
+    
+
+    
     return isAuth ? <Outlet /> : <Navigate to="/login" />
 }

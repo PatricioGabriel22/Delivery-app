@@ -3,6 +3,7 @@ import preOrderSchema from "../models/preOrder.schema.js"
 
 
 import  {ListaProductos} from './productos.test.js'
+import { io } from "../server.js"
 
 export const shoppingCart = async (req, res) => {
     const {productList,userInfo} = req.body
@@ -56,8 +57,11 @@ export const getAllPreOrders = async (req,res)=>{
 
 
 export const PreOrderManager = async (req,res)=>{
+   // const {checkedPreOrder,stockAgotado,productosAlternativos} = req.body
+
     const {checkedPreOrder} = req.body
     let msg
+
     let opcionesParaElCliente
     
 
@@ -88,7 +92,7 @@ export const PreOrderManager = async (req,res)=>{
     console.log(ListaProductos)
 
 
-
+    //lista de productos alternativos
     const productosAlternativos = [
         {
             "nombre": "Flautas",
@@ -120,12 +124,16 @@ export const PreOrderManager = async (req,res)=>{
         }
     }
     
+    io.emit('checkedPreOrder',{
+        id:checkedPreOrder._id,
+        status:checkedPreOrder.confirmed
+    })
 
 
 
     res.json({
         message: msg,
-        opcionesParaElCliente
+        orden: checkedPreOrder || opcionesParaElCliente
 
     })
     
