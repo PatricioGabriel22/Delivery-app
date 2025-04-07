@@ -10,17 +10,14 @@ export default function OrderInfo({title,nombreCliente,formaDeEntrega,importe}){
     return(
         <Fragment>
 
-            <span className="bg-white  h-30  rounded-xl text-black flex flex-col gap-y-2 m-2 cursor-pointer">
+            <span className="bg-white  h-30  rounded-xl text-black flex flex-col gap-y-2 m-2 mb-10 cursor-pointer">
                 <div className="text-lg font-semibold flex flex-row justify-around">
-                   <span className="font-normal">Cliente: {nombreCliente}</span>
-                   <span className="font-normal">importe: ${importe}</span>
+                   <span className="font-normal">{nombreCliente}</span>
+                   <span className="font-normal">${importe}</span>
                 </div>
 
-
-
-
                 <div className="text-center text-sm text-gray- font-semibold">
-                {formaDeEntrega}
+                    {formaDeEntrega}
                 </div>
 
                 <span className="flex flex-row justify-center gap-x-10 items-center bg-gray-700 h-full rounded-b-lg">
