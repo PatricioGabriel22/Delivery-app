@@ -54,7 +54,7 @@ server.use(productRoutes)
 io.on('connection',(socket)=>{
     console.log("cliente conectado:",socket.id)
 
-    socket.on('disconect',()=>{
+    socket.on('disconnect',()=>{
         console.log("Cliente desconectado")
     })
 })
