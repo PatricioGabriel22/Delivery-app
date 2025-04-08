@@ -36,7 +36,10 @@ export default function CarritoConfirm(){
 
     const socket = io(WSSmanager,{
         transports:['websocket'],
-        withCredentials: true
+        withCredentials: true,
+        reconnection: true,
+        reconnectionAttempts: 10,
+        reconnectionDelay: 2000
     })
     
     
