@@ -64,7 +64,7 @@ export default function CarritoConfirm(){
             importeTotal:importeTotal
         }
 
-        axios.post(`${renderORLocalURL}/pedidos/sendPreOrder`,payload,{withCredentials:true})
+        axios.post(`${renderORLocalURL}/sendPreOrder`,payload,{withCredentials:true})
 
     }
 
