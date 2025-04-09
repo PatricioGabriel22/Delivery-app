@@ -73,7 +73,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
                     <dialog ref={dialogRef} className="rounded-xl p-6 shadow-xl w-full md:w-[45%] h-[90%] justify-self-center self-center backdrop:bg-black/50">
                         <div className="flex justify-between items-start">
-                            <img src="public/vite.png" className="h-24"/>
+                            <img src="/vite.png" className="h-24"/>
                             <span onClick={()=>cerrarModal()} className=" bg-red-700 p-3 text-white rounded-lg">X</span>
                         </div>
 
