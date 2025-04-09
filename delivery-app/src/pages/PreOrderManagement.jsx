@@ -111,7 +111,7 @@ export default function PreOrderManagement(){
 
             <div className="min-h-screen flex flex-col w-full md:w-2/3 items-center m-auto">
                 <h1 className="text-4xl p-4 mb-6 ">Ordenes</h1>
-                <div className="flex flex-row justify-around w-full">
+                <div className="flex flex-col md:flex-row justify-around w-full">
                     <div className="flex flex-col w-full p-2">   
                         <h2 className="self-center mb-3 text-3xl">Pre-Ordenes</h2>
                         {allPreOrders.map((preOrder)=>( 
