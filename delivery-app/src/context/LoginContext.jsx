@@ -23,7 +23,6 @@ export function LoginProvider({children}){
 
     const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-0lcx.onrender.com'
 
-    const WSSmanager = import.meta.env.MODE === 'development' ? 'ws://localhost:4000' : 'wss://delivery-app-0lcx.onrender.com'
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
@@ -33,7 +32,7 @@ export function LoginProvider({children}){
         <loginContext.Provider value={{
 
             renderORLocalURL,
-            WSSmanager,
+            
 
             userInfo,
             setUserInfo

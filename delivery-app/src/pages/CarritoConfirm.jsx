@@ -14,12 +14,11 @@ import { GiConfirmed } from "react-icons/gi";
 import { ListaProductos } from "../utils/productos";
 
 
-import {io} from 'socket.io-client'
 
 
 export default function CarritoConfirm(){
-    const {renderORLocalURL,userInfo,WSSmanager} = useLoginContext()
-    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,setBuyBTN} = useShoppingContext()
+    const {renderORLocalURL,userInfo} = useLoginContext()
+    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,setBuyBTN, socket} = useShoppingContext()
 
     const [edit,setEdit] = useState(false)
 
@@ -34,14 +33,7 @@ export default function CarritoConfirm(){
     const ENVIO = pasaARetirar? 0 : 2500
     setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + ENVIO)
 
-    const socket = io(WSSmanager,{
-        transports:['websocket'],
-        withCredentials: true,
-        reconnection: true,
-        reconnectionAttempts: 10,
-        reconnectionDelay: 2000
-    })
-    
+
     
     //aca en vez de carrito me tengo que armar otro carrito o lista que contenga lo que esta comprando con el precio
     //deberia buscar por nombre d eprducto en la lista grande que me viene de la DB para poner el precio

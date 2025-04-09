@@ -19,24 +19,30 @@ export const shoppingCart = async (req, res) => {
 
 
 
-export const checkPreOrderWithLocal = async (req,res)=>{
+export const sendPreOrder = async (req,res)=>{
 
     const {preOrderPayload,userInfo,importeTotal,envio} = req.body
 
    
 
     try {
-        console.log(req.body)
-        
+      
 
-
-        await new preOrderSchema({
+        const nuevaPreOrden = await new preOrderSchema({
             userID:userInfo.id,
             userInfo,
             preOrder:preOrderPayload,
             importeTotal:importeTotal,
             formaDeEntrega: envio === 0? "Retiro en el local": "Envio"
-        }).save()
+        })
+
+        nuevaPreOrden.save()
+
+
+        //aca usar io para avisarle al front quue tiene una nueva preorden
+        io.emit("nuevaPreOrdenRecibida",{
+            nuevaPreOrden
+        })
 
         res.status(200).json({message:"Pre-Orden creada"})
 
@@ -51,7 +57,8 @@ export const checkPreOrderWithLocal = async (req,res)=>{
 
 
 export const getAllPreOrders = async (req,res)=>{
-    const allPreOrders = await preOrderSchema.find({}).sort({createdAt:-1})
+    const allPreOrders = await preOrderSchema.find({})
+    // .sort({createdAt:-1})
     res.json(allPreOrders)
 }
 
@@ -59,11 +66,14 @@ export const getAllPreOrders = async (req,res)=>{
 export const PreOrderManager = async (req,res)=>{
    // const {checkedPreOrder,stockAgotado,productosAlternativos} = req.body
 
-    const {checkedPreOrder} = req.body
-    let msg
+    const {orderInfo,preOrderAcceptedFlag,finishedFlag,deliveredFlag} = req.body
+    const {idOrden} = req.params
 
+
+
+    let msg
     let opcionesParaElCliente
-    
+    let updatedOrder
 
     //esto en verdad viene del body
     const stockAgotado = [
@@ -89,8 +99,6 @@ export const PreOrderManager = async (req,res)=>{
         // console.log(targetFueraDeStock)
     }
 
-    console.log(ListaProductos)
-
 
     //lista de productos alternativos
     const productosAlternativos = [
@@ -107,33 +115,65 @@ export const PreOrderManager = async (req,res)=>{
     ]
 
     
+   
+    
+    try {
+        if(preOrderAcceptedFlag){
+            updatedOrder = await preOrderSchema.findByIdAndUpdate(
+                orderInfo._id,
+                {$set: {confirmed:preOrderAcceptedFlag}},
+                {new:true}
+            )
+            msg = "Su pedido ha sido confirmado"
+    
+            console.log(updatedOrder)
     
     
+            io.emit('checkedPreOrder',{
+                id:updatedOrder._id,
+                status:updatedOrder.confirmed,
+                confirmedOrder:updatedOrder
+            })
     
-    if(checkedPreOrder.confirmed){
-        await preOrderSchema.updateOne({_id:checkedPreOrder._id},{$set: {confirmed:checkedPreOrder.confirmed}})
-        msg = "Su pedido ha sido confirmado"
-    }else{
-        msg = stockAgotado.length === 1 ? "Hubo un error con el stock de" : "Hubo un problema con el stock de los siguientes productos"
-
-        // await preOrderSchema.deleteOne({_id:checkedPreOrder._id})
-
-        opcionesParaElCliente = {
-            agotado: stockAgotado,
-            alternativas: productosAlternativos
+    
+        }else{
+            msg = stockAgotado.length === 1 ? "Hubo un error con el stock de" : "Hubo un problema con el stock de los siguientes productos"
+    
+            // await preOrderSchema.deleteOne({_id:checkedPreOrder._id})
+    
+            opcionesParaElCliente = {
+                agotado: stockAgotado,
+                alternativas: productosAlternativos
+            }
         }
-    }
+        
+        if(finishedFlag){
+            const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:finishedFlag}},{new:true})
     
-    io.emit('checkedPreOrder',{
-        id:checkedPreOrder._id,
-        status:checkedPreOrder.confirmed
-    })
+            io.emit("finishedOrder",{
+                finishedOrder
+            })
+        }
+        
+        if(deliveredFlag){
+            const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:deliveredFlag}},{new:true})
+    
+            io.emit("deliveredOrder",{
+                deliveredOrder
+            })
+        }
+        
+
+
+    } catch (error) {
+        console.log(error)
+    }
 
 
 
     res.json({
         message: msg,
-        orden: checkedPreOrder || opcionesParaElCliente
+        orden: updatedOrder || opcionesParaElCliente
 
     })
     
