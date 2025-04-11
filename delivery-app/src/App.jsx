@@ -10,6 +10,7 @@ import CarritoConfirm from './pages/CarritoConfirm.jsx'
 import CheckDataAndBuy from './pages/CheckDataAndBuy.jsx'
 import AdminPrivate from './components/AdminPrivate.jsx'
 import PreOrderManagement from './pages/PreOrderManagement.jsx'
+import Profile from './pages/Profile.jsx'
 
 function App() {
 
@@ -43,7 +44,9 @@ function App() {
 
 
           <Route element={<PrivateRoute/>}>
+
             <Route path="/" element={<Home/>}/>
+            <Route path="/profile" element={<Profile/>}/>
             <Route path="/carrito" element={<CarritoConfirm/>}/>
             <Route path="/confirmar-direccion-y-comprar" element={<CheckDataAndBuy/>}/>
 

@@ -2,18 +2,18 @@
 import { Fragment, useEffect, useState } from "react"
 import OrderInfo from "../components/OrderInfo"
 
-import axios from 'axios'
+
 import { useLoginContext } from "../context/LoginContext"
 import { useShoppingContext } from "../context/ShoppingContext"
 
-import Dialog from '../components/Dialog.jsx'
+
 
 export default function PreOrderManagement(){
     const {socket} = useShoppingContext()
-    const {renderORLocalURL} = useLoginContext()
+    const {allOrdersFromUser} = useLoginContext()
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
-    const [mainArrayFromDB,setMainArrayFromDB] = useState()
+    // const [mainArrayFromDB,setMainArrayFromDB] = useState()
     
 
     
@@ -28,22 +28,25 @@ export default function PreOrderManagement(){
 
 
 
-    useEffect(()=>{
-        axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>setMainArrayFromDB(res.data))
+    // useEffect(()=>{
+    //     axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
+    //         setMainArrayFromDB(res.data)
+    //         setAllOrdersFromUser(res.data.filter(data=> data.userInfo.id === userInfo.id))
+    //     })
 
-    },[renderORLocalURL])
+    // },[renderORLocalURL])
 
     useEffect(() => {
 
-        if (mainArrayFromDB) {
-            setAllPreOrders(mainArrayFromDB.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
-            setAcceptedOrders(mainArrayFromDB.filter(data => data.confirmed && esDeHoy(data.createdAt)))
+        if (allOrdersFromUser) {
+            setAllPreOrders(allOrdersFromUser.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
+            setAcceptedOrders(allOrdersFromUser.filter(data => data.confirmed && esDeHoy(data.createdAt)))
             
               
         }
 
 
-    }, [mainArrayFromDB]);
+    }, [allOrdersFromUser]);
 
 
 

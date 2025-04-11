@@ -5,18 +5,6 @@ import preOrderSchema from "../models/preOrder.schema.js"
 import  {ListaProductos} from './productos.test.js'
 import { io } from "../server.js"
 
-export const shoppingCart = async (req, res) => {
-    const {productList,userInfo} = req.body
-
-    try {
-        console.log(productList)
-        console.log(userInfo)
-        
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 
 
 export const sendPreOrder = async (req,res)=>{

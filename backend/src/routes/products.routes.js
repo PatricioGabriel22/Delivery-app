@@ -1,9 +1,8 @@
 import {Router} from "express";
-import {shoppingCart,sendPreOrder, getAllPreOrders, PreOrderManager} from "../controllers/products.controllers.js"
+import {sendPreOrder, getAllPreOrders, PreOrderManager} from "../controllers/products.controllers.js"
 
 export const productRoutes = Router()
 
-productRoutes.post('/shoppingCart',shoppingCart)
 
 productRoutes.post('/sendPreOrder',sendPreOrder) //manda la orden el usuario
 

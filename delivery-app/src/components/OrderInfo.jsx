@@ -97,6 +97,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                             ))}
                             
                             
+                            
                             <div 
                                 className={`flex flex-row justify-end gap-x-14 w-full text-xl text-end rounded
                                     ${formaDeEntrega === 'Envio' ? "bg-red-500" : "bg-sky-500"} } `}>

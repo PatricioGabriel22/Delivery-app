@@ -38,7 +38,9 @@ export default function Nav() {
 
       {/* Barra de navegación */}
       <div className="flex flex-row bg-red-600 justify-between items-center md:justify-evenly rounded-t-4xl w-full p-5">
-        <h1>Profile</h1>
+        <Link to={"/profile"} >
+          <h1>Profile</h1>
+        </Link>
         <LogoutBTN />
       </div>
     </div>

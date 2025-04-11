@@ -1,6 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react"
 
+import axios from 'axios'
+
 const loginContext = createContext()
 
 
@@ -26,7 +28,12 @@ export function LoginProvider({children}){
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
+    const [allOrdersFromUser,setAllOrdersFromUser] = useState([])
 
+    axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
+
+        setAllOrdersFromUser(res.data.filter(data=> data.userInfo.id === userInfo.id))
+    })
 
     return(
         <loginContext.Provider value={{
@@ -35,7 +42,10 @@ export function LoginProvider({children}){
             
 
             userInfo,
-            setUserInfo
+            setUserInfo,
+
+            allOrdersFromUser,
+            setAllOrdersFromUser
 
 
 

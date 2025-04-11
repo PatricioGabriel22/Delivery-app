@@ -167,7 +167,7 @@ export default function CarritoConfirm(){
                         </button>
 
                         <button
-                            className="cursor-pointer text-white w-fit p-3 rounded-full bg-green-700"
+                            className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
                             onClick={() => confirmarOrdenConElLocal()}>
                                 Pre-ordenar
                         </button>

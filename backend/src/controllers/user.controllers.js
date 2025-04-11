@@ -3,6 +3,12 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
+import { io } from '../server.js';
+
+
+
+
+
 
 
 export const loginUser = async(req,res)=>{
@@ -116,3 +122,34 @@ export const registerUser = async (req,res)=>{
 
 
 }
+
+
+
+export const editProfileInfo = async(req,res)=>{
+    const {userID,editableInfo} =  req.body
+
+   
+    try {
+        
+        const newUserInfo = await userSchema.findByIdAndUpdate(userID,editableInfo,{new:true})
+
+
+        io.emit('newUserInfo',
+            {
+            username: newUserInfo.username,
+            direccion: newUserInfo.direccion,
+            localidad: newUserInfo.localidad,
+            entreCalles: newUserInfo.entreCalles,
+            telefono: newUserInfo.telefono,
+            rol:newUserInfo.rol
+        })
+
+
+        res.status(200).json({message:"Usuario actualizado"});
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
