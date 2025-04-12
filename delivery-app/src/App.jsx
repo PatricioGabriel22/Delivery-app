@@ -11,6 +11,7 @@ import CheckDataAndBuy from './pages/CheckDataAndBuy.jsx'
 import AdminPrivate from './components/AdminPrivate.jsx'
 import PreOrderManagement from './pages/PreOrderManagement.jsx'
 import Profile from './pages/Profile.jsx'
+import ProductForm from './components/ProductForm.jsx'
 
 function App() {
 
@@ -52,6 +53,8 @@ function App() {
 
             <Route element={<AdminPrivate/>}>
               <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
+              <Route path="/CreateAndEditProduct" element={<ProductForm/>}/>
+
             </Route>
             
           </Route>

@@ -166,3 +166,38 @@ export const PreOrderManager = async (req,res)=>{
     })
     
 }
+
+
+export const dataFormWithImage = async(req,res)=>{
+    const imagen = req.file.buffer
+
+    
+    const {nombre,descripcion,categoria,precio,disponible} = req.body
+
+    try {
+        
+        const nuevoPoducto = new productSchema({
+            productName: nombre,
+            description: descripcion,
+            category: categoria,
+            price:precio,
+            available:disponible,
+            img: {
+                data: imagen,
+                contentType: req.file.mimetype,
+              }
+    
+        })
+    
+        nuevoPoducto.save()
+
+
+        res.json({message:"Producto agregado"})
+
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
