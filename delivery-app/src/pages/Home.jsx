@@ -6,9 +6,11 @@ import Card from "../components/Card";
 import { ListaProductos } from "../utils/productos.js";
 
 import { useShoppingContext } from "../context/ShoppingContext.jsx";
+import { Fragment, useState } from "react";
 
 
-
+import victorinaLogo from '../assets/victorina-logo.jpg'
+import SearchingBar from "../components/SearchingBar.jsx";
 
 ListaProductos.forEach(producto=>producto.cantidad = 0)
 
@@ -17,41 +19,122 @@ export default function Home() {
 
 
   const {carrito} = useShoppingContext()
-  // const {renderORLocalURL} = useLoginContext()
-  // console.log(renderORLocalURL)
 
+  const [productoBuscado,setProductoBuscado] = useState('')
 
-  // const isAdmin = userInfo?.rol === 'admin';
+  
+  
+  const CategoriasProductos = [...new Set(ListaProductos.map(p => p.categoria))];
+  
+  const [showItems,setShowItems] = useState({
+    salados:false,
+    dulces:false,
+    panificados:false
+  })
 
-  // useEffect(() => {
-  //   if (isAdmin) {
-  //     navigate('/PreOrderManagement');
-  //   }
-  // }, [isAdmin, navigate]);
+  //aca me tengo que traer los productos, y cipiarlos para evitar volver a llamar a la db
 
+  //const usuariosLocal = structuredClone(usuariosDesdeDB);
 
+  //   const response = await axios.get('/api/usuarios');
+  // const usuariosDesdeDB = response.data;
 
-  //aca me tengo que traer los productos
+  // // Copia profunda (independiente)
+  // const usuariosLocal = JSON.parse(JSON.stringify(usuariosDesdeDB));
 
   return (
     <div className="flex flex-col min-h-screen items-center">
-      <h1 className="p-6">Victorina a domicilio!</h1>
+      <div className=" mt-3">
+        <img src={victorinaLogo} className="w-96 "/>  
+      </div>
+      
 
-      {ListaProductos.filter(producto => producto.disponible).map((producto, index) =>{
+      <SearchingBar searchSetter={setProductoBuscado}/>
+
+
+
+      {CategoriasProductos.map(categoria=>{
+        
+        return(
+          <Fragment>
+
+            <h2 
+              className="bg-white text-black m-4 flex flex-col  w-full md:w-[90%] rounded-xl font-extrabold text-4xl text-center"
+              onClick={()=>setShowItems(prev=>({...prev,[categoria]:!prev[categoria]}))}>
+                {/* //manejo el cambio de categoria de forma dinamica con [categoria]
+                // sino tendria que poner panaderia:!prev.panaderya...y asi para todo */}
+              {categoria}
+            </h2>
+
+            
+
+            {(showItems[categoria] || productoBuscado) && (
+
+              <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center p-4">
+
+                {ListaProductos
+                  .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
+                  .filter(producto => producto.disponible)
+                  .map((producto,index)=>{
+      
+                  const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
+      
+                  if(producto.categoria === categoria){
+                    
+                    return (
+                      <Fragment>
+      
+                        <Card key={index} 
+                        id={producto.id}
+                        nombre={producto.nombre} 
+                        precio={producto.precio} 
+                        cantidadAdquirida={target === null ? 0 : target.cantidad}
+                        descripcion={producto.descripcion}
+                        />
+      
+                      </Fragment>
+                    )
+                  }
+        
+                  
+                })}
+              </div>
+            )}
+
+          </Fragment>
+          
+        )
+        
+
+      })}
+
+
+      {/* {ListaProductos
+      .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
+      .filter(producto => producto.disponible)
+      .map((producto, index) =>{
 
         const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
 
+        if(CategoriasProductos.find(categoria=>categoria === producto.categoria)){
+
+          
+          return (
+            <Fragment>
+
+              <Card key={index} 
+              id={producto.id}
+              nombre={producto.nombre} 
+              precio={producto.precio} 
+              cantidadAdquirida={target === null ? 0 : target.cantidad}
+              descripcion={producto.descripcion}
+              />
+            </Fragment>
+          )} 
+        }
         
 
-        return (<Card key={index} 
-          id={producto.id}
-          nombre={producto.nombre} 
-          precio={producto.precio} 
-          cantidadAdquirida={target === null ? 0 : target.cantidad}
-          descripcion={producto.descripcion}/>
-        )} 
-
-      )}
+      )} */}
       
       <div className="mt-20 w-full h-3"/>
       <Nav />

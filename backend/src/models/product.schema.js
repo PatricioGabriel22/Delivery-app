@@ -5,7 +5,9 @@ const productSchema = new mongoose.Schema({
     productName: String,
     description: String,
     category: String,
-    price: Number
+    price: Number,
+    available:{type:Boolean,default:true},
+    img:{type:String,default:""}
 })
 
 const collectionTarget = "products-test"
