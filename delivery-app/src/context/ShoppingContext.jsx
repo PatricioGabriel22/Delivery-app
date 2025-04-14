@@ -116,11 +116,13 @@ export function ShoppingProvider({ children }) {
       await axios.post(`${url}/PreOrderManagement`,{orderInfo,preOrderAcceptedFlag},{withCredentials:true})
     }
 
-    async function cancelPreOrder(url,orderInfo){
+    async function cancelPreOrder(url,orderInfo,msgDeSugerencia){
+
+      
 
       const preOrderAcceptedFlag = false
-      console.log(orderInfo)
-      await axios.post(`${url}/PreOrderManagement`,{orderInfo,preOrderAcceptedFlag},{withCredentials:true})
+      const idOrden = orderInfo?._id
+      await axios.post(`${url}/PreOrderManagement/${idOrden}`,{orderInfo,preOrderAcceptedFlag,msgDeSugerencia},{withCredentials:true})
     }
 
     
@@ -128,7 +130,7 @@ export function ShoppingProvider({ children }) {
 
       const finishedFlag = true
       const idOrden = orderInfo?._id
-      console.log(idOrden)
+
       await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
     }
 

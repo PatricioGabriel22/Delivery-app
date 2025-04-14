@@ -28,10 +28,10 @@ export default function Profile(){
 
     return(
         <Fragment>
-            <div className="flex flex-col p-5">
+            <div className="flex flex-col">
 
-                <Link to={'/'} >
-                    <MdArrowBackIosNew size={30} className="mb-5"/>
+                <Link to={'/'} className="p-5 w-full text-start">
+                    <MdArrowBackIosNew size={30} />
                 </Link>
 
                 <ProfileCard userInfo={userInfo} />
@@ -68,29 +68,29 @@ export default function Profile(){
                                         <button >{button}</button>
                                     </Link>
                                 ) : (
-                                    <div className="relative w-fit">
-                                    <button
-                                      onClick={() => setOpen(!open)}
-                                      className="bg-red-600 text-white px-4  rounded-lg shadow-md hover:bg-red-700 transition"
-                                    >
-                                      Agregar categoría/producto
-                                    </button>
-                              
-                                    {open && (
-                                      <div className="absolute z-10 mt-2 w-full bg-white border border-red-500 rounded-lg ">
-                                        <Link to={"/CreateAndEditProduct"} >
-                                            <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
-                                            Producto
-                                            </button>
-                                        </Link>
+                                    <div className="relative w-fit m-auto">
+                                        <button
+                                        onClick={() => setOpen(!open)}
+                                        className="bg-red-600 text-white px-4  rounded-lg shadow-md hover:bg-red-700 transition "
+                                        >
+                                        Agregar categoría/producto
+                                        </button>
+                                
+                                        {open && (
+                                        <div className="absolute z-10 mt-2 w-full bg-white border border-red-500 rounded-lg ">
+                                            <Link to={"/addProduct"} >
+                                                <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
+                                                Producto
+                                                </button>
+                                            </Link>
 
-                                        <Link to={"/CreateAndEditProduct"} >
-                                            <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
-                                            Categoria
-                                            </button>
-                                        </Link>
-                                      </div>
-                                    )}
+                                            <Link to={"/addCategory"} >
+                                                <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
+                                                Categoria
+                                                </button>
+                                            </Link>
+                                        </div>
+                                        )}
                                   </div>
 
                                 )}

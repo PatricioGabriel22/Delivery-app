@@ -54,9 +54,10 @@ export const getAllPreOrders = async (req,res)=>{
 export const PreOrderManager = async (req,res)=>{
    // const {checkedPreOrder,stockAgotado,productosAlternativos} = req.body
 
-    const {orderInfo,preOrderAcceptedFlag,finishedFlag,deliveredFlag} = req.body
+    const {orderInfo,preOrderAcceptedFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
     const {idOrden} = req.params
 
+    console.log(msgDeSugerencia)
 
 
     let msg
@@ -126,13 +127,13 @@ export const PreOrderManager = async (req,res)=>{
     
         }else{
             msg = stockAgotado.length === 1 ? "Hubo un error con el stock de" : "Hubo un problema con el stock de los siguientes productos"
+            
+            // console.log(msgDeSugerencia)
+            await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
     
-            // await preOrderSchema.deleteOne({_id:checkedPreOrder._id})
-    
-            opcionesParaElCliente = {
-                agotado: stockAgotado,
-                alternativas: productosAlternativos
-            }
+            if(!msg){} //cancelo definitivamente y elimino 
+            
+
         }
         
         if(finishedFlag){
@@ -158,12 +159,6 @@ export const PreOrderManager = async (req,res)=>{
     }
 
 
-
-    res.json({
-        message: msg,
-        orden: updatedOrder || opcionesParaElCliente
-
-    })
     
 }
 
@@ -177,11 +172,11 @@ export const dataFormWithImage = async(req,res)=>{
     try {
         
         const nuevoPoducto = new productSchema({
-            productName: nombre,
-            description: descripcion,
-            category: categoria,
-            price:precio,
-            available:disponible,
+            nombre,
+            descripcion,
+            categoria,
+            precio,
+            disponible,
             img: {
                 data: imagen,
                 contentType: req.file.mimetype,

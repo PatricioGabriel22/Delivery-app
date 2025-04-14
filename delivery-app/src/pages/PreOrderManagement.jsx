@@ -8,6 +8,7 @@ import { useShoppingContext } from "../context/ShoppingContext"
 
 
 
+
 export default function PreOrderManagement(){
     const {socket} = useShoppingContext()
     const {allOrdersFromUser} = useLoginContext()
@@ -17,13 +18,14 @@ export default function PreOrderManagement(){
     
 
     
+    const hoy = new Date();
+    const inicioDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    const finDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 1);
+
     const esDeHoy = (fechaStr) => {
         const fecha = new Date(fechaStr);
         return fecha >= inicioDelDia && fecha < finDelDia;
     };
-    const hoy = new Date();
-    const inicioDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    const finDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 1);
 
 
 
@@ -37,7 +39,7 @@ export default function PreOrderManagement(){
     // },[renderORLocalURL])
 
     useEffect(() => {
-
+    
         if (allOrdersFromUser) {
             setAllPreOrders(allOrdersFromUser.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
             setAcceptedOrders(allOrdersFromUser.filter(data => data.confirmed && esDeHoy(data.createdAt)))
@@ -105,7 +107,6 @@ export default function PreOrderManagement(){
         };
     }, []);
 
-    console.log(acceptedOrders)
 
 
     return(

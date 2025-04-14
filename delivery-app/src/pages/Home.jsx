@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import {useState } from 'react';
 import Nav from "../components/Nav";
 import Card from "../components/Card";
@@ -6,11 +7,12 @@ import Card from "../components/Card";
 import { ListaProductos } from "../utils/productos.js";
 
 import { useShoppingContext } from "../context/ShoppingContext.jsx";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 
 import victorinaLogo from '../assets/victorina-logo.jpg'
 import SearchingBar from "../components/SearchingBar.jsx";
+import { useLoginContext } from "../context/LoginContext.jsx";
 
 ListaProductos.forEach(producto=>producto.cantidad = 0)
 
@@ -18,7 +20,9 @@ ListaProductos.forEach(producto=>producto.cantidad = 0)
 export default function Home() {
 
 
-  const {carrito} = useShoppingContext()
+  const {carrito,socket} = useShoppingContext()
+  const {userInfo} = useLoginContext()
+
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
@@ -41,6 +45,30 @@ export default function Home() {
 
   // // Copia profunda (independiente)
   // const usuariosLocal = JSON.parse(JSON.stringify(usuariosDesdeDB));
+
+
+  useEffect(()=>{
+
+    socket.on('AlterProductStatus',(data)=>{
+      ListaProductos.map(item => {
+        
+        
+        if(item.id  === data.target.id){
+          return {...item,...data.target} //fusion de objetos con spred operatos con prioridad en el segundo objeto que llega a sobreescribir
+        } else{
+          return {...item} //sino retorno el item normal
+        } 
+      
+      })
+    })
+
+    return ()=>{
+      socket.off('AlterProductStatus')
+    }
+
+  },[])
+
+
 
   return (
     <div className="flex flex-col min-h-screen items-center">
@@ -74,7 +102,7 @@ export default function Home() {
 
                 {ListaProductos
                   .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
-                  .filter(producto => producto.disponible)
+                  .filter(producto => userInfo.rol === "cliente"  ? producto.disponible : producto)
                   .map((producto,index)=>{
       
                   const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
@@ -90,6 +118,8 @@ export default function Home() {
                         precio={producto.precio} 
                         cantidadAdquirida={target === null ? 0 : target.cantidad}
                         descripcion={producto.descripcion}
+                        disponible={producto.disponible}
+
                         />
       
                       </Fragment>

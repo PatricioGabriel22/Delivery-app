@@ -8,7 +8,8 @@ import {Server as SocketServer} from 'socket.io'
 import { MONGO_CLUSTER_TEST,PORT } from './configs/const.config.js'
 import { connectDB } from './DB.js'
 import { userRoutes } from './routes/user.routes.js'
-import {productRoutes} from './routes/products.routes.js'
+import {preOrderRoutes} from './routes/preOrder.routes.js'
+import { productRoutes } from './routes/product.routes.js'
 
 
 const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
@@ -47,7 +48,9 @@ server.use(express.json())
 
 
 server.use(userRoutes)
+server.use(preOrderRoutes)
 server.use(productRoutes)
+
 
 
 

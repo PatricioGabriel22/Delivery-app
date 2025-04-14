@@ -1,4 +1,4 @@
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
 import { CiRead } from "react-icons/ci";
@@ -13,7 +13,10 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
     const {renderORLocalURL} = useLoginContext()
 
-   const { acceptPreOrder, cancelPreOrder, ordenPreparada, ordenEntregada} = useShoppingContext()
+    const { acceptPreOrder, cancelPreOrder, ordenPreparada, ordenEntregada} = useShoppingContext()
+
+    const [flagMsgSugerencias,setFlagMsgSugerencias] = useState(false)
+    const [msgDeSugerencia,setMsgDeSugerencia] = useState()
 
     const dialogRef = useRef(null);
 
@@ -25,6 +28,16 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
     dialogRef.current.close(); // Cierra el modal
     };
     
+
+    function handleSugerencias(e){
+        e.preventDefault()
+        setMsgDeSugerencia(e.target[0].value)
+
+        cancelPreOrder(renderORLocalURL,preOrderInfo,msgDeSugerencia)
+
+    }
+
+
 
 
     return(
@@ -88,14 +101,19 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                             
 
                             {preOrderInfo.preOrder.map(item=>(
+
                                 <div className={`flex flex-row w-full p-2 items-center text-xl   `}>
-                                        <p className="w-1/3">{item.cantidad}x{item.nombre}</p>
+                                        {/* <input 
+                                            type="checkbox" 
+                                            className={`${flagMsgSugerencias ? "block":"hidden"} mr-2`}/> */}
+                                        <p className="w-1/3">{item.cantidad}x {item.nombre}</p>
                                         <p className="w-2/3 text-end">${item.precio}</p>
                                 </div>
 
                             
                             ))}
                             
+
                             
                             
                             <div 
@@ -112,19 +130,52 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                                 <Fragment>
                                     <MdOutlineCancel 
                                         size={80} 
-                                        className={`text-red-700 hover:text-red-500  `}
-                                        onClick={()=>cancelPreOrder(renderORLocalURL,preOrderInfo)}
+                                        className={`text-red-700 hover:text-red-500 ${flagMsgSugerencias ? "text-center":""} `}
+                                        onClick={()=>{
+                                            
+                                            setFlagMsgSugerencias(!flagMsgSugerencias)
+                                        }}
                                     />
                                     <GiConfirmed 
                                         size={80} 
-                                        className={`text-green-700 hover:text-green-500 ${confirmado ? "invisible":""} `}
+                                        className={`text-green-700 hover:text-green-500 ${confirmado || flagMsgSugerencias? "hidden":""} `}
                                         onClick={()=>acceptPreOrder(renderORLocalURL,preOrderInfo)}
-                                        />
+                                    />
+
+
                                 </Fragment>
                             ): ("")}
 
 
-                        </div>    
+                        </div> 
+
+                        {flagMsgSugerencias && (
+                            <Fragment>
+
+                                <form onSubmit={handleSugerencias} >
+                                    <textarea 
+                                        className="border-1 w-full h-24 bg-white  mt-3 rounded"
+                                        placeholder="Sugerir productos al cliente"    
+                                    />
+                                    <button 
+                                        type="submit" 
+                                        className=" rounded-full bg-red-500 w-full p-2 font-bold text-xl border-2 border-black hover:cursor-pointer"
+                                        
+                                    >Enviar sugerencias</button>
+                                    
+                                </form>
+                                
+                                <div className="flex flex-row w-full justify-center items-center mt-5 ">
+                                    <span className="w-full h-[1px] bg-black"/>
+                                    <button 
+                                        onClick={()=>cancelPreOrder(renderORLocalURL,preOrderInfo)} 
+                                        className={`text-black hover:text-red-700  w-full text-center cursor-pointer`}> Cancelar definitivamente</button>
+                                    <span className="w-full h-[1px] bg-black"/>
+                                </div>
+
+                            </Fragment>
+                        )} 
+
                     </dialog>
 
 

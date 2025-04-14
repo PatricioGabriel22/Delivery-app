@@ -19,7 +19,7 @@ export default function ProductForm() {
     formData.append('descripcion', e.target.descripcion.value);
     formData.append('categoria', e.target.categoria.value);
     formData.append('precio', e.target.precio.value);
-    formData.append('disponible', e.target.disponible.value === 'Disponible');
+    formData.append('disponible', e.target.disponible.value);
 
     try {
       const res = await axios.post(`${renderORLocalURL}/uploadProduct`, formData, {
@@ -51,7 +51,7 @@ export default function ProductForm() {
     
     <form
     onSubmit={handleUpload}
-    className="max-w-xl min-h-screen bg-white border-2 border-red-700 shadow-md rounded-2xl p-8 flex flex-col m-auto gap-6 text-black "
+    className="w-[90%] md:w-[40%] min-h-screen bg-white border-2 border-red-700 shadow-md rounded-2xl p-8 flex flex-col m-auto gap-6 text-black "
     >
         <h2 className="text-2xl font-bold text-center text-red-700">Agregar nuevo producto</h2>
             
@@ -63,7 +63,7 @@ export default function ProductForm() {
                     name="imagen"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="border p-2 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100"
+                    className=" border p-2 rounded-md   file:text-red-700 hover:file:bg-red-100"
                 />
 
                 <button onClick={()=>setPreview(!preview)} className={`text-bold text-2xl ${preview ? "block":"invisible"} `}>X</button>

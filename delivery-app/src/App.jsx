@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 
@@ -12,25 +12,27 @@ import AdminPrivate from './components/AdminPrivate.jsx'
 import PreOrderManagement from './pages/PreOrderManagement.jsx'
 import Profile from './pages/Profile.jsx'
 import ProductForm from './components/ProductForm.jsx'
+import CategoryFrom from './components/CategoryFrom.jsx'
+
 
 function App() {
 
 
-    useEffect(() => {
-      const handleBeforeUnload = (event) => {
-        // Mostrar el mensaje de alerta
-        event.preventDefault()
-        console.log(event)
-        confirm("¡Estás a punto de actualizar o salir de la página!");
+    // useEffect(() => {
+    //   const handleBeforeUnload = (event) => {
+    //     // Mostrar el mensaje de alerta
+    //     event.preventDefault()
+    //     console.log(event)
+    //     confirm("¡Estás a punto de actualizar o salir de la página!");
         
-      };
+    //   };
   
-      window.addEventListener("beforeunload", handleBeforeUnload);
+    //   window.addEventListener("beforeunload", handleBeforeUnload);
   
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    }, [])
+    //   return () => {
+    //     window.removeEventListener("beforeunload", handleBeforeUnload);
+    //   };
+    // }, [])
   
 
 
@@ -53,7 +55,9 @@ function App() {
 
             <Route element={<AdminPrivate/>}>
               <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
-              <Route path="/CreateAndEditProduct" element={<ProductForm/>}/>
+              <Route path="/addProduct" element={<ProductForm/>}/>
+              <Route path="/addCategory" element={<CategoryFrom/>}/>
+
 
             </Route>
             

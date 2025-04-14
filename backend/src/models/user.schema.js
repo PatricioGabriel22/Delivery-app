@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
         enum:["admin","cliente","GM"],
         default:'cliente'
     },
-    hintPassword:String
+    hintPassword:String,
+    categorias:{type: [String],default:[]}
     
 },{
     timestamps:true

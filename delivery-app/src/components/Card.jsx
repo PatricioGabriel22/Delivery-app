@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
@@ -8,9 +8,11 @@ import { FaPlus } from "react-icons/fa";
 
 import marineras from "../assets/marineras.jpg";
 import { useShoppingContext } from "../context/ShoppingContext";
+import { useLoginContext } from "../context/LoginContext";
 import { ListaProductos } from "../utils/productos";
 
 
+import axios from "axios";
 
 
 
@@ -20,7 +22,9 @@ import { ListaProductos } from "../utils/productos";
 
 
 
-export default function Card({id,nombre, precio, cantidadAdquirida,descripcion}) {
+
+
+export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,disponible}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,12 +32,35 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion})
   // Estado para controlar la cantidad en el carrito
   const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
   
+  const {userInfo,renderORLocalURL} = useLoginContext()
+
   
+
+  async function handleChangeStatus(){
+
+    const statusInfo = {
+      id:id,
+      disponible:disponible
+    }
+
+    try {
+
+      await axios.put(`${renderORLocalURL}/disponibilidad`, statusInfo, {withCredentials:true})
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
 
 
 
   return (
-    <div className="w-full sm:w-96 flex flex-col bg-white text-black rounded-3xl m-5">
+    <div 
+      className={`w-full sm:w-96 flex flex-col  text-black rounded-3xl m-5 
+        ${userInfo.rol === "cliente" ? 'bg-white': ""}
+        ${disponible ? 'bg-green-200' : 'bg-red-200 '  } `}>
       <p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>
       <span className="bg-red-600 h-[1px]" />
 
@@ -52,29 +79,57 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion})
         />
       </div>
 
-      <div className=" justify-around items-center flex flex-row w-full">
-        <MdDelete 
-          size={40} 
-          className="text-red-600 cursor-pointer"  
-          onClick={()=>cartHandler(carrito,"delete",nombre)}
-        />
 
-        
-        <FaPlus
-          size={40}
-          className="text-green-600 cursor-pointer"
-          onClick={()=>{
-            cartHandler(carrito,"add",nombre)
-            // cantidadVisualizer()
-          }
+     
 
+      <div className="justify-around items-center flex flex-row w-full">
 
-          }
-        />
+        {userInfo.rol === "cliente" ? (
+          <Fragment>
+
+            <MdDelete 
+              size={40} 
+              className="text-red-600 cursor-pointer"  
+              onClick={()=>cartHandler(carrito,"delete",nombre)}
+            />
+    
+            
+            <FaPlus
+              size={40}
+              className="text-green-600 cursor-pointer"
+              onClick={()=>{
+                cartHandler(carrito,"add",nombre)
+                // cantidadVisualizer()
+              }
+    
+    
+              }
+            />
+              
+            <span className={`text-3xl self-end ${cantidadAdquirida === 0? "invisible":"block"}`}>x{cantidadAdquirida}</span> 
+          </Fragment>
           
-        <span className={`text-3xl self-end ${cantidadAdquirida === 0? "invisible":"block"}`}>x{cantidadAdquirida}</span> 
+        ):(
+          
+          <Fragment>
+            
+            <span 
+              className={`rounded-full w-9 h-9 m-2 ${disponible ? 'bg-green-600' : 'bg-red-600 '  } `}
+              onClick={handleChangeStatus}
+              /> {disponible ? 'Producto disponible' : 'Producto no disponible '  }
+            
+          </Fragment>
+
+
+
+
+        )}
+
+
 
       </div>
+
+
 
       {/* Modal para la imagen en grande */}
       {isModalOpen && (

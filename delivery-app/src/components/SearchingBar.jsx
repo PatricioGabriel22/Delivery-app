@@ -16,7 +16,7 @@ export default function SearchingBar({searchSetter}){
                 <input 
                     className='w-full p-2 bg-white text-black rounded-l-full' 
                     type='text' 
-                    onChange={(e)=>{searchSetter(e.target.value)}}
+                    onChange={(e)=>{searchSetter(e.target.value.toLocaleLowerCase())}}
                     placeholder="Buscar"
                 />
                 <MdContentPasteSearch size={40} color='black' 

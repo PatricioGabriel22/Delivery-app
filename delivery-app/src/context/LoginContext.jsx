@@ -28,11 +28,15 @@ export function LoginProvider({children}){
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
-    const [allOrdersFromUser,setAllOrdersFromUser] = useState([])
+    const [allOrdersFromUser,setAllOrdersFromUser] = useState()
 
     axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
 
-        setAllOrdersFromUser(res.data.filter(data=> data.userInfo.id === userInfo.id))
+        // const userOrdes = res.data.filter(data=> data.userInfo.id === userInfo.id)
+
+        setAllOrdersFromUser(res.data)
+
+        
     })
 
     return(

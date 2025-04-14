@@ -1,5 +1,5 @@
 export const ListaProductos = [
-  { id: 1, nombre: 'Flautas', precio: 50, descripcion: 'Deliciosas flautas rellenas de carne o pollo.', disponible: true, categoria: 'Salados' },
+  { id: '67fd0164a3acd48012c86fb6', nombre: 'Flautas', precio: 50, descripcion: 'Deliciosas flautas rellenas de carne o pollo.', disponible: true, categoria: 'Salados' },
   { id: 2, nombre: 'Minion', precio: 30, descripcion: 'Galleta con forma de Minion, ideal para niños.', disponible: true, categoria: 'Dulces' },
   { id: 3, nombre: 'Figasas', precio: 40, descripcion: 'Panecillos suaves y esponjosos con un toque dulce.', disponible: true, categoria: 'Panificados' },
   { id: 4, nombre: 'Pizza muzza', precio: 120, descripcion: 'Pizza clásica con mozzarella derretida.', disponible: true, categoria: 'Salados' },
