@@ -1,33 +1,73 @@
-import { Fragment, useState } from "react";
-
-
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Fragment, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from 'axios'
-import { useLoginContext } from "../context/LoginContext";
 
+import { useLoginContext } from "../context/LoginContext.jsx";
+import { useShoppingContext } from "../context/ShoppingContext.jsx";
 
 
 import { MdArrowBackIosNew } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { GiConfirmed } from "react-icons/gi";
+
+
 
 
 
 export default function CategoryFrom(){
 
-    const {renderORlocalURL} = useLoginContext()
+    const {socket} = useShoppingContext()
+    const {userInfo,renderORLocalURL} = useLoginContext()
 
     const [loading,setLoading] = useState(false)
-
+    const [infoTxt,setInfoTxt] = useState('')
+    const [status,setStatus] = useState()
 
     function handleUploadCategoria(e){
         e.preventDefault()
         setLoading(!loading)
         
-        const nuevaCategoria = e.target[0].value.toLowerCase()
+        const payloadNuevaCategoria = {
+            id:userInfo.id,
+            categoria:e.target[0].value.toLowerCase()
+        }
         
-        console.log(nuevaCategoria)
-        axios.post(`${renderORlocalURL}/addCategoriaAlPerfil`,{nuevaCategoria},{withCredentials:true})
+        console.log(payloadNuevaCategoria)
+
+        try {
+            
+            axios.post(`${renderORLocalURL}/addCategoriaAlPerfil`,payloadNuevaCategoria,{withCredentials:true})
+                .then(res=>{
+                    console.log(res)
+                    setStatus(res.status) 
+                    setInfoTxt(res.data.message)
+                    setLoading(false)
+                })
+
+        } catch (error) {
+            console.log(error)
+        }
 
     }
+
+    setTimeout(()=>{
+        setInfoTxt('')
+        setStatus('')
+    },10000)
+
+    useEffect(()=>{
+
+        socket.on('categoriaAgregada',(data)=>{
+            userInfo.categorias = [...new Set([...userInfo.categorias,...data.listaCategorias])]
+            sessionStorage.setItem('userInfo',JSON.stringify(userInfo))
+        })
+
+        return ()=>{
+            socket.off('categoriaAgregada')
+        }
+    },[])
+
+
 
     return(
         <Fragment>
@@ -69,6 +109,15 @@ export default function CategoryFrom(){
                             {loading ? 'Guardando...' : 'Guardar categoria'}
                         </button>
                 </form>
+
+                {status === 200 && (
+
+                    <div className="w-full  p-10 flex flex-col items-center">
+                        <GiConfirmed  size={120} className="text-green-700"/>
+                        <span className="p-2 text-xl"/>{infoTxt}
+                    </div>
+                )}
+
             </div>
 
 

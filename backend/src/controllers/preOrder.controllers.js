@@ -164,7 +164,7 @@ export const PreOrderManager = async (req,res)=>{
 
 
 export const dataFormWithImage = async(req,res)=>{
-    const imagen = req.file.buffer
+    
 
     
     const {nombre,descripcion,categoria,precio,disponible} = req.body
@@ -177,13 +177,19 @@ export const dataFormWithImage = async(req,res)=>{
             categoria,
             precio,
             disponible,
-            img: {
-                data: imagen,
-                contentType: req.file.mimetype,
-              }
-    
         })
     
+        if(req.file){
+            const imagen = req.file.buffer
+            
+            nuevoPoducto.img = {
+                data: imagen,
+                contentType: req.file.mimetype,
+            } 
+    
+        }
+
+
         nuevoPoducto.save()
 
 

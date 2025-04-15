@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useLoginContext } from '../context/LoginContext';
+import { capitalize } from '../utils/capitalize';
 
 export default function ProductForm() {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
 
 
-  const {renderORLocalURL}=useLoginContext()
+  const {userInfo,renderORLocalURL}=useLoginContext()
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -48,86 +49,96 @@ export default function ProductForm() {
   };
 
   return (
-    
-    <form
-    onSubmit={handleUpload}
-    className="w-[90%] md:w-[40%] min-h-screen bg-white border-2 border-red-700 shadow-md rounded-2xl p-8 flex flex-col m-auto gap-6 text-black "
-    >
-        <h2 className="text-2xl font-bold text-center text-red-700">Agregar nuevo producto</h2>
-            
-            <span className='w-full h-[1px] bg-black' />
-            <div className='flex flex-row justify-between'>
+    <div className='flex justify-center min-h-screen'>
 
-                <input
-                    type="file"
-                    name="imagen"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className=" border p-2 rounded-md   file:text-red-700 hover:file:bg-red-100"
-                />
+      <form
+      onSubmit={handleUpload}
+      className="w-[90%] md:w-[40%]  bg-white border-2 border-red-700 shadow-md rounded-2xl p-8 flex flex-col  gap-6 text-black "
+      >
+          <h2 className="text-2xl font-bold text-center text-red-700">Agregar nuevo producto</h2>
+              
+              <span className='w-full h-[1px] bg-black' />
+              <div className='flex flex-row justify-between'>
 
-                <button onClick={()=>setPreview(!preview)} className={`text-bold text-2xl ${preview ? "block":"invisible"} `}>X</button>
-            </div>
+                  <input
+                      type="file"
+                      name="imagen"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className=" border p-2 rounded-md   file:text-red-700 hover:file:bg-red-100"
+                  />
+
+                  <button onClick={()=>setPreview(!preview)} className={`text-bold text-2xl ${preview ? "block":"invisible"} `}>X</button>
+              </div>
 
 
-        {preview && (
-            <img
-            src={preview}
-            alt="Previsualización"
-            className="w-60 h-auto rounded-xl mx-auto border-2 border-red-700 shadow"
-            />
-        )}
+          {preview && (
+              <img
+              src={preview}
+              alt="Previsualización"
+              className="w-60 h-auto rounded-xl mx-auto border-2 border-red-700 shadow"
+              />
+          )}
 
-        <input
-            type="text"
-            name="nombreProducto"
-            placeholder="Nombre del producto"
-            className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
-            required
-        />
+          <input
+              type="text"
+              name="nombreProducto"
+              placeholder="Nombre del producto"
+              className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              required
+          />
 
-        <textarea
-            name="descripcion"
-            placeholder="Descripción del producto"
-            rows={4}
-            className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
-            required
-        />
+          <textarea
+              name="descripcion"
+              placeholder="Descripción del producto"
+              rows={4}
+              className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              required
+          />
 
-        <input
-            type="text"
+          <select
+            defaultValue=" "
             name="categoria"
             placeholder="Categoría"
             className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
             required
-        />
+          >
+            <option value={""} disabled hidden>Seleccionar categoria</option>
+            {userInfo.categorias?.map(categoria=>{
+              return(
+                <option value={categoria}>{capitalize(categoria)}</option>
+              )
+            })}
 
-        <input
-            type="number"
-            name="precio"
-            placeholder="Precio"
-            step="1"
-            className="border border-red-300 p-2 w-[35%] self-center rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
-            required
-        />
+          </select>
 
-        <select
-            name="disponible"
-            className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
-            required
-        >
-            <option value={true}>Disponible</option>
-            <option value={false}>No disponible</option>
-        </select>
+          <input
+              type="number"
+              name="precio"
+              placeholder="Precio"
+              step="1"
+              className="border border-red-300 p-2 w-[35%] self-center rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              required
+          />
 
-        <button
-            type="submit"
-            disabled={loading}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-all"
-        >
-            {loading ? 'Guardando...' : 'Guardar producto'}
-        </button>
-    </form>
+          <select
+              name="disponible"
+              className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"
+              required
+          >
+              <option value={true}>Disponible</option>
+              <option value={false}>No disponible</option>
+          </select>
+
+          <button
+              type="submit"
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-all"
+          >
+              {loading ? 'Guardando...' : 'Guardar producto'}
+          </button>
+      </form>
+    </div>
 
   );
 }

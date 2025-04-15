@@ -11,6 +11,6 @@
 // const year = fechaDeHoy.getFullYear()
 // const month = new Date(fechaDeHoy.getMonth())
 
-const msg = ''
+const msg = 'texto'
 
-console.log( msg? "cuenta":"no cuenta")
+console.log( msg.charAt(0).toUpperCase()+msg.slice(1,msg.length))

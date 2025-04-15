@@ -43,6 +43,8 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
       disponible:disponible
     }
 
+    
+
     try {
 
       await axios.put(`${renderORLocalURL}/disponibilidad`, statusInfo, {withCredentials:true})
@@ -58,9 +60,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   return (
     <div 
-      className={`w-full sm:w-96 flex flex-col  text-black rounded-3xl m-5 
-        ${userInfo.rol === "cliente" ? 'bg-white': ""}
-        ${disponible ? 'bg-green-200' : 'bg-red-200 '  } `}>
+      className={`w-full sm:w-96 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
       <p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>
       <span className="bg-red-600 h-[1px]" />
 
@@ -113,10 +113,19 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           
           <Fragment>
             
-            <span 
-              className={`rounded-full w-9 h-9 m-2 ${disponible ? 'bg-green-600' : 'bg-red-600 '  } `}
-              onClick={handleChangeStatus}
-              /> {disponible ? 'Producto disponible' : 'Producto no disponible '  }
+            <div className={`w-full rounded-b-xl b p-4 flex items-center gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
+                <button
+                  className={`rounded-full w-9 h-9 transition-colors duration-300 cursor-pointer ${
+                    disponible ? 'bg-green-600' : 'bg-red-600'
+                  }`}
+                  onClick={handleChangeStatus}
+                  aria-label="Cambiar disponibilidad del producto"
+                />
+
+                <span className="font-semibold text-gray-800">
+                  {disponible ? 'Producto disponible' : 'Producto no disponible'}
+                </span>
+            </div>
             
           </Fragment>
 

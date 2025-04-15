@@ -55,7 +55,8 @@ export const loginUser = async(req,res)=>{
                 localidad: loginUserTarget.localidad,
                 entreCalles:loginUserTarget.entreCalles,
                 telefono:loginUserTarget.telefono,
-                rol: loginUserTarget.rol
+                rol: loginUserTarget.rol,
+                categorias: loginUserTarget.rol === 'admin' ? loginUserTarget.categorias: null
             },
             token:token
         })
@@ -153,3 +154,33 @@ export const editProfileInfo = async(req,res)=>{
 
 }
 
+
+export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
+    const {id,categoria} = req.body
+
+    try {
+
+        const nuevaCategoriaAgregada = await userSchema.findByIdAndUpdate(id,{$addToSet : {categorias: categoria}},{new:true})
+
+       
+
+        if(nuevaCategoriaAgregada){
+
+            io.emit('categoriaAgregada',{
+                status:true,
+                listaCategorias:nuevaCategoriaAgregada.categorias
+            })
+
+            res.json({"message":`La categoria: ${categoria.toUpperCase()} fue agregada`})
+        }
+
+
+
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+
+}

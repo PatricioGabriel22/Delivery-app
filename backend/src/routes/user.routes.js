@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, registerUser, editProfileInfo } from "../controllers/user.controllers.js"
+import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal } from "../controllers/user.controllers.js"
 import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
 import jwt from "jsonwebtoken"
 
@@ -45,3 +45,6 @@ userRoutes.post('/login',loginUser)
 userRoutes.post('/register',registerUser)
 
 userRoutes.post('/editProfileInfo',editProfileInfo)
+
+userRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
+
