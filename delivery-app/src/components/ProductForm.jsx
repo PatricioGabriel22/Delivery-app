@@ -16,7 +16,7 @@ export default function ProductForm() {
 
     const formData = new FormData();
     formData.append('imagen', e.target.imagen.files[0]);
-    formData.append('nombre', e.target.nombreProducto.value);
+    formData.append('nombre', e.target.nombreProducto.value.toLowerCase());
     formData.append('descripcion', e.target.descripcion.value);
     formData.append('categoria', e.target.categoria.value);
     formData.append('precio', e.target.precio.value);
