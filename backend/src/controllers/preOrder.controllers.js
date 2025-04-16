@@ -67,7 +67,7 @@ export const PreOrderManager = async (req,res)=>{
                 {$set: {confirmed:preOrderAcceptedFlag}},
                 {new:true}
             )
-            msg = "Su pedido ha sido confirmado"
+            
     
             console.log(updatedOrder)
     

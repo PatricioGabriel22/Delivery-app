@@ -13,6 +13,7 @@ import { io } from '../server.js';
 
 export const loginUser = async(req,res)=>{
     const {username,password} = req.body
+    let userInfo
     try {
         
         const loginUserTarget = await userSchema.findOne({username})
@@ -39,6 +40,32 @@ export const loginUser = async(req,res)=>{
         )
 
 
+        if(loginUserTarget.rol === 'admin'){
+
+            userInfo = {
+                id:loginUserTarget._id,
+                username: loginUserTarget.username,
+                direccion: loginUserTarget.direccion,
+                localidad: loginUserTarget.localidad,
+                entreCalles:loginUserTarget.entreCalles,
+                telefono:loginUserTarget.telefono,
+                rol: loginUserTarget.rol,
+                categorias: loginUserTarget.categorias
+            }
+        }else{
+            userInfo = {
+                id:loginUserTarget._id,
+                username: loginUserTarget.username,
+                direccion: loginUserTarget.direccion,
+                localidad: loginUserTarget.localidad,
+                entreCalles:loginUserTarget.entreCalles,
+                telefono:loginUserTarget.telefono
+            }
+        }
+
+        
+
+
 
         res.status(200)
         .cookie('access_token',token,{
@@ -48,16 +75,7 @@ export const loginUser = async(req,res)=>{
         })
         .json({
             message:`Bienvenido, ${loginUserTarget.username}`,
-            userInfo:{
-                id:loginUserTarget._id,
-                username: loginUserTarget.username,
-                direccion: loginUserTarget.direccion,
-                localidad: loginUserTarget.localidad,
-                entreCalles:loginUserTarget.entreCalles,
-                telefono:loginUserTarget.telefono,
-                rol: loginUserTarget.rol,
-                categorias: loginUserTarget.rol === 'admin' ? loginUserTarget.categorias: null
-            },
+            userInfo,
             token:token
         })
 

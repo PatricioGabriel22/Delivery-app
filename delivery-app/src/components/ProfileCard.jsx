@@ -172,11 +172,11 @@ export default function ProfileCard({ userInfo }) {
             {userInfo.rol}
           </span>
 
-          <MdEditNote 
-                onClick={() => setIsEditing(true)}
-                className={`justify-end ml-auto text-s text-black cursor-pointer hover:underline ${isEditing ? "invisible": "block" } `}
-                size={30}
-            />
+          <p 
+            onClick={() => setIsEditing(true)}
+            className={`justify-end ml-auto text-s text-black cursor-pointer hover:underline ${isEditing ? "invisible": "block" } `}
+            size={30}
+          >Modificar informacion</p>
 
         </div>
       </div>

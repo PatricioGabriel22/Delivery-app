@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import {Fragment, useEffect, useState } from "react"
 import {Link} from 'react-router-dom'
 import { useShoppingContext } from "../context/ShoppingContext"
@@ -202,7 +200,10 @@ export default function CarritoConfirm(){
 
                         <button
                             className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
-                            onClick={() => confirmarOrdenConElLocal()}>
+                            onClick={() => {
+                                confirmarOrdenConElLocal()
+                                setResponseFromServer(null)
+                                }}>
                                 Pre-ordenar
                         </button>
                     </div>
@@ -250,7 +251,7 @@ export default function CarritoConfirm(){
                             <FaFaceSadCry  size={90}/>
                             Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas
 
-                            {responseFromServer?.canceledFlag && (
+                            {responseFromServer?.msgDeSugerencia && (
                                 <div className="w-full text-justify bg-white text-black  rounded p-2">
                                     <span className="flex justify-between items-center gap-2 text-lg font-semibold"> 
                                         El local sugiere: <GiCook  size={35}/> </span>

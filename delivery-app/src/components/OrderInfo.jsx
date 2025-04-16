@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { MdOutlineCancel } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
-import { CiRead } from "react-icons/ci";
+
 
 import { useLoginContext } from "../context/LoginContext";
 import { useShoppingContext } from "../context/ShoppingContext";
@@ -111,9 +111,9 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                             <div className="flex flex-col">
                                 {preOrderInfo.preOrder.map(item=>(
 
-                                    <div className={`flex flex-row w-full p-2 items-center text-xl   `}>
-                                        <p className="w-1/3">{item.cantidad}x {item.nombre}</p>
-                                        <p className="w-2/3 text-end">${item.precio}</p>
+                                    <div className={`flex flex-row justify-between w-full p-2 items-center text-xl   `}>
+                                        <p>{item.cantidad}x {item.nombre}</p>
+                                        <p>${item.precio}</p>
 
                                     </div>
                                             
@@ -131,9 +131,9 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                             
                             
                             <div 
-                                className={`flex flex-row justify-between  w-full text-xl text-end rounded
+                                className={`flex flex-row justify-between  w-full text-xl text-end rounded p-2
                                     ${formaDeEntrega === 'Envio' ? "bg-red-500" : "bg-sky-500"} } `}>
-                                <p className="font-bold"> {formaDeEntrega}</p>
+                                <p className="font-bold">{formaDeEntrega}</p>
                                 <p className="font-bold ">Total: ${importe}</p>
                             </div>
 
@@ -168,7 +168,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
                                 <form onSubmit={handleSugerencias} >
                                     <textarea 
-                                        className="border-1 w-full h-24 bg-white  mt-3 rounded"
+                                        className="border-1 w-full h-24 bg-white  mt-3 rounded p-1"
                                         placeholder="Sugerir productos al cliente"    
                                     />
                                     <button 
