@@ -7,21 +7,23 @@ import { io } from "../server.js"
 
 
 
-export const sendPreOrder = async (req,res)=>{
+export const sendPreOrder =  (req,res)=>{
 
-    const {preOrderPayload,userInfo,importeTotal,envio} = req.body
+    const {preOrderPayload,userInfo,importeTotal,costoEnvio,deliveryMethod} = req.body
 
    
+
 
     try {
       
 
-        const nuevaPreOrden = await new preOrderSchema({
+        const nuevaPreOrden =  new preOrderSchema({
             userID:userInfo.id,
             userInfo,
             preOrder:preOrderPayload,
             importeTotal:importeTotal,
-            formaDeEntrega: envio === 0? "Retiro en el local": "Envio"
+            costoEnvio,
+            formaDeEntrega: deliveryMethod
         })
 
         nuevaPreOrden.save()
@@ -52,63 +54,15 @@ export const getAllPreOrders = async (req,res)=>{
 
 
 export const PreOrderManager = async (req,res)=>{
-   // const {checkedPreOrder,stockAgotado,productosAlternativos} = req.body
 
-    const {orderInfo,preOrderAcceptedFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
+
+    const {orderInfo,preOrderAcceptedFlag,canceledFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
     const {idOrden} = req.params
 
-    console.log(msgDeSugerencia)
 
-
-    let msg
-    let opcionesParaElCliente
-    let updatedOrder
-
-    //esto en verdad viene del body
-    const stockAgotado = [
-        {
-            "nombre": "Flautas",
-            "cantidad": 2,
-            "precio": 50
-        },{
-            "nombre": "Figasas",
-            "cantidad": 2,
-            "precio": 50
-        },{
-            "nombre": "Minion",
-            "cantidad": 1,
-            "precio": 100
-        }
-    ]
-
-    //aca la idea es buscar en la db y "apagarlos"
-    for (const agotado of stockAgotado){
-        const targetFueraDeStock = ListaProductos.find(item=>item.nombre === agotado.nombre)
-        if (targetFueraDeStock) targetFueraDeStock.disponible = false
-        // console.log(targetFueraDeStock)
-    }
-
-
-    //lista de productos alternativos
-    const productosAlternativos = [
-        {
-            "nombre": "Flautas",
-            "cantidad": 1,
-            "precio": 50
-        },
-        {
-            "nombre": "Figasas",
-            "cantidad": 1,
-            "precio": 50
-        }
-    ]
-
-    
-   
-    
     try {
         if(preOrderAcceptedFlag){
-            updatedOrder = await preOrderSchema.findByIdAndUpdate(
+            const updatedOrder = await preOrderSchema.findByIdAndUpdate(
                 orderInfo._id,
                 {$set: {confirmed:preOrderAcceptedFlag}},
                 {new:true}
@@ -125,20 +79,27 @@ export const PreOrderManager = async (req,res)=>{
             })
     
     
-        }else{
-            msg = stockAgotado.length === 1 ? "Hubo un error con el stock de" : "Hubo un problema con el stock de los siguientes productos"
+        }
+
+        if(canceledFlag){
+
             
-            // console.log(msgDeSugerencia)
+
             await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
-    
-            if(!msg){} //cancelo definitivamente y elimino 
+
             
+            io.emit('sugerenciaDelLocal',{
+                canceledFlag,
+                msgDeSugerencia
+            })
 
         }
         
         if(finishedFlag){
             const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:finishedFlag}},{new:true})
-    
+            
+
+
             io.emit("finishedOrder",{
                 finishedOrder
             })

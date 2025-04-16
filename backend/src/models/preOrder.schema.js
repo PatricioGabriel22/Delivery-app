@@ -8,6 +8,7 @@ const preOrderSchema = new mongoose.Schema({
     },
     userInfo:Object,
     preOrder:Array,
+    costoEnvio:Number,
     importeTotal:Number,
     confirmed:{type:Boolean,default:false},
     finished:{type:Boolean,default:false},

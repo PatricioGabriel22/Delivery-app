@@ -42,70 +42,70 @@ export function ShoppingProvider({ children }) {
   })
 
 
-    function cantidadVisualizer(action,arrayPrudctos,nombreProducto){
+  function cantidadVisualizer(action,arrayPrudctos,nombreProducto){
 
-        const target = arrayPrudctos.find(producto=>producto.nombre === nombreProducto)
+      const target = arrayPrudctos.find(producto=>producto.nombre === nombreProducto)
+    
       
-        
-      
-        if(action === "add"){
-          
-          target.cantidad += 1
-          console.log(target)
-          
-        }
-      
-        
-        
-        if(action === "delete" && target.cantidad > 0){
-          target.cantidad -= 1
-          console.log(target)
-          
-        }
-        
-      
-    }
-      
-
-    function cartHandler(cart,action,product){
-      const target = cart.find(item=> item.nombre === product)
-  
-      // armo el carrito solamente con nombre de productos y cantidades
-  
-      let newCart = cart
-  
-      console.log(action)
-       
+    
       if(action === "add"){
-           
-          
-        if(target){
-          newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad+1}]
-  
-        }else{
-          newCart = [...cart,{nombre:product,cantidad:1}]
-        }
-         
-         
-      }
-      
-       
-       if(action === "delete"){ 
-           if(target.cantidad > 1 ){
-           newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad-1}]
-           
-         }else{
-           newCart = [...cart.filter(item=>item.nombre !== product)]
-         }
-       }
-   
-   
         
-       sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como string
-   
-       setCarrito(JSON.parse(sessionStorage.getItem('carrito'))) //recupero y parseo
-   
-    } 
+        target.cantidad += 1
+        console.log(target)
+        
+      }
+    
+      
+      
+      if(action === "delete" && target.cantidad > 0){
+        target.cantidad -= 1
+        console.log(target)
+        
+      }
+        
+      
+  }
+      
+
+  function cartHandler(cart,action,product){
+    const target = cart.find(item=> item.nombre === product)
+
+    // armo el carrito solamente con nombre de productos y cantidades
+
+    let newCart = cart
+
+    console.log(action)
+      
+    if(action === "add"){
+          
+        
+      if(target){
+        newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad+1}]
+
+      }else{
+        newCart = [...cart,{nombre:product,cantidad:1}]
+      }
+        
+        
+    }
+    
+      
+      if(action === "delete"){ 
+          if(target.cantidad > 1 ){
+          newCart = [...cart.filter(item=>item.nombre !== product),{...target,cantidad: target.cantidad-1}]
+          
+        }else{
+          newCart = [...cart.filter(item=>item.nombre !== product)]
+        }
+      }
+  
+  
+      
+      sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como string
+  
+      setCarrito(JSON.parse(sessionStorage.getItem('carrito'))) //recupero y parseo
+  
+  } 
 
 
 
@@ -118,18 +118,20 @@ export function ShoppingProvider({ children }) {
 
     async function cancelPreOrder(url,orderInfo,msgDeSugerencia){
 
-      
 
-      const preOrderAcceptedFlag = false
-      const idOrden = orderInfo?._id
-      await axios.post(`${url}/PreOrderManagement/${idOrden}`,{orderInfo,preOrderAcceptedFlag,msgDeSugerencia},{withCredentials:true})
+      const canceledFlag = true
+    
+      await axios.post(`${url}/PreOrderManagement`,{orderInfo,canceledFlag,msgDeSugerencia},{withCredentials:true})
     }
 
     
     async function ordenPreparada(url,orderInfo){
 
+     console.log(orderInfo)
       const finishedFlag = true
       const idOrden = orderInfo?._id
+
+      console.log(idOrden)
 
       await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
     }

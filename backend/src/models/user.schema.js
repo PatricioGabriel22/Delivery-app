@@ -4,6 +4,10 @@ import mongoose from "mongoose"
 
 // const collectionTarget = TEST ? "users-test"
 
+
+// Sí, el valor de ref debe coincidir exactamente con el nombre del modelo que definiste con mongoose.model(), incluyendo las mayúsculas y minúsculas.
+
+
 const userSchema = new mongoose.Schema({
     username:String,
     email:String,

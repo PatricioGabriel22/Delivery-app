@@ -5,6 +5,7 @@ import { CiRead } from "react-icons/ci";
 
 import { useLoginContext } from "../context/LoginContext";
 import { useShoppingContext } from "../context/ShoppingContext";
+import { decidirCostoEnvio } from "../utils/envioFunctions";
 
 
 
@@ -16,7 +17,9 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
     const { acceptPreOrder, cancelPreOrder, ordenPreparada, ordenEntregada} = useShoppingContext()
 
     const [flagMsgSugerencias,setFlagMsgSugerencias] = useState(false)
-    const [msgDeSugerencia,setMsgDeSugerencia] = useState()
+
+
+ 
 
     const dialogRef = useRef(null);
 
@@ -31,11 +34,16 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
     function handleSugerencias(e){
         e.preventDefault()
-        setMsgDeSugerencia(e.target[0].value)
+        
+        const msgDeSugerencia = e.target[0].value
+        console.log(msgDeSugerencia)
 
         cancelPreOrder(renderORLocalURL,preOrderInfo,msgDeSugerencia)
 
     }
+
+
+
 
 
 
@@ -67,14 +75,14 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
                         {title === "Aceptadas" ? 
                             (   
-                            <div className="flex flex-row justify-around w-full cursor-pointer">                           
+                            <div className="flex flex-row justify-around w-full ">                           
                                 <button 
-                                    className={` hover:bg-sky-500 rounded-lg p-2 ${preparado? "bg-green-500":"bg-sky-100"} `}
+                                    className={`cursor-pointer hover:bg-sky-500 rounded-lg p-2 ${preparado? "bg-green-500":"bg-sky-100"} `}
                                     onClick={()=>ordenPreparada(renderORLocalURL,preOrderInfo)}
                                     >Preparada</button>
 
                                 <button 
-                                    className={`bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${entregado? "bg-green-500":""} `}
+                                    className={`cursor-pointer bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${entregado? "bg-green-500":""} `}
                                     onClick={()=>ordenEntregada(renderORLocalURL,preOrderInfo)}
                                     >Entregada</button>
 
@@ -100,27 +108,33 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
                             
 
-                            {preOrderInfo.preOrder.map(item=>(
+                            <div className="flex flex-col">
+                                {preOrderInfo.preOrder.map(item=>(
 
-                                <div className={`flex flex-row w-full p-2 items-center text-xl   `}>
-                                        {/* <input 
-                                            type="checkbox" 
-                                            className={`${flagMsgSugerencias ? "block":"hidden"} mr-2`}/> */}
+                                    <div className={`flex flex-row w-full p-2 items-center text-xl   `}>
                                         <p className="w-1/3">{item.cantidad}x {item.nombre}</p>
                                         <p className="w-2/3 text-end">${item.precio}</p>
-                                </div>
 
-                            
-                            ))}
+                                    </div>
+                                            
+                                            
+                                ))}
+
+                                    <span className="flex flex-row self-end p-2">
+                                    {preOrderInfo.formaDeEntrega === "Envio"
+                                        ? `Envio: $${decidirCostoEnvio(preOrderInfo.formaDeEntrega, preOrderInfo.userInfo.localidad)}`
+                                        : ""}
+                                    </span>
+                            </div>
                             
 
                             
                             
                             <div 
-                                className={`flex flex-row justify-end gap-x-14 w-full text-xl text-end rounded
+                                className={`flex flex-row justify-between  w-full text-xl text-end rounded
                                     ${formaDeEntrega === 'Envio' ? "bg-red-500" : "bg-sky-500"} } `}>
-                                <p className="font-bold">{formaDeEntrega}</p>
-                                <p className="font-bold ">${importe}</p>
+                                <p className="font-bold"> {formaDeEntrega}</p>
+                                <p className="font-bold ">Total: ${importe}</p>
                             </div>
 
                         </div>

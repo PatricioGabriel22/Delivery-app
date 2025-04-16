@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import {Fragment, useEffect, useState } from "react"
 import {Link} from 'react-router-dom'
 import { useShoppingContext } from "../context/ShoppingContext"
@@ -12,6 +14,10 @@ import { FaCarSide } from "react-icons/fa6";
 import { FaShop } from "react-icons/fa6";
 import { GiConfirmed } from "react-icons/gi";
 import { ListaProductos } from "../utils/productos";
+import { FaFaceSadCry } from "react-icons/fa6";
+import { GiCook } from "react-icons/gi";
+
+import { decidirCostoEnvio } from "../utils/envioFunctions";
 
 
 
@@ -24,14 +30,16 @@ export default function CarritoConfirm(){
 
     const [loading,setLoading] = useState(JSON.parse(sessionStorage.getItem('loadingPreOrder')) || false)
 
-    const [pasaARetirar,setPasaARetirar] = useState()
+    const [changeDeliveryColor,setChangeDeliveryColor] = useState()
+
+    const [deliveryMethod,setDeliveryMethod] = useState("Envio")
 
     const [listaDeCompras, setListaDeCompras] = useState([]);
     
-    
+    const [responseFromServer,setResponseFromServer] = useState(null)
 
-    const ENVIO = pasaARetirar? 0 : 2500
-    setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + ENVIO)
+    
+    setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + decidirCostoEnvio(deliveryMethod,userInfo.localidad))
 
 
     
@@ -52,13 +60,16 @@ export default function CarritoConfirm(){
         const payload = {
             userInfo,
             preOrderPayload: listaDeCompras,
-            envio:ENVIO,
+            costoEnvio:decidirCostoEnvio(userInfo.localidad,deliveryMethod),
+            deliveryMethod,
             importeTotal:importeTotal
         }
 
         axios.post(`${renderORLocalURL}/sendPreOrder`,payload,{withCredentials:true})
 
     }
+
+
 
 
         
@@ -95,8 +106,25 @@ export default function CarritoConfirm(){
             console.log("order actualizada ", data)
         })
 
+
+
+        socket.on('sugerenciaDelLocal',(data)=>{
+
+            setLoading(prev =>{ 
+                sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+            })
+
+            setResponseFromServer(data)
+            
+        })
+
+
+
+
         return ()=>{
             socket.off('checkedPreOrder')
+            socket.off('sugerenciaDelLocal')
         }
 
     },[socket,setBuyBTN])
@@ -145,16 +173,22 @@ export default function CarritoConfirm(){
                     {/* Opciones de retiro/envío */}
                     <div className="flex flex-row justify-center items-end  bg-gray-200 w-full gap-x-7 text-end font-medium rounded-full shadow-lg">
 
-                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${ pasaARetirar ? "bg-sky-500 rounded-2xl" : ""} `}
-                            onClick={() => setPasaARetirar(true)}>
+                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${ changeDeliveryColor ? "bg-sky-500 rounded-2xl" : ""} `}
+                            onClick={() => {
+                                setChangeDeliveryColor(true)
+                                setDeliveryMethod('Retiro en el local')
+                                }}>
                                 <FaShop size={20} />
                                 <p>Retirar en el local</p>
                         </div>
                         
-                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${pasaARetirar ? "" : "bg-red-500 rounded-2xl"}`}
-                            onClick={() => setPasaARetirar(false)}>
+                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${changeDeliveryColor ? "" : "bg-red-500 rounded-2xl"}`}
+                            onClick={() => {
+                                setChangeDeliveryColor(false)
+                                setDeliveryMethod("Envio")}}>
+
                                 <FaCarSide size={20} />
-                                <p>Envio: $2500</p>
+                                <p>Envio: ${decidirCostoEnvio("Envio",userInfo.localidad)}</p>
                         </div>
                     </div>
 
@@ -201,16 +235,33 @@ export default function CarritoConfirm(){
                             <p className="text-white text-center">
                                 Su pedido ha sido confirmado.<br />Puede continuar
                             </p>
+
+                            <Link to="/confirmar-direccion-y-comprar" className="cursor-pointer self-center text-white w-fit p-3 m-3 mt-20 rounded-full bg-red-700">
+                                Confirmar direccion y comprar
+                            </Link>
                         </Fragment>
 
                     ):("")}
 
-                    {buyBTN  && (
-                        
-                        <Link to="/confirmar-direccion-y-comprar" className="cursor-pointer self-center text-white w-fit p-3 m-3 mt-20 rounded-full bg-red-700">
-                            Confirmar direccion y comprar
-                        </Link>
-                    )}
+
+
+                    {responseFromServer?.canceledFlag && (
+                        <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
+                            <FaFaceSadCry  size={90}/>
+                            Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas
+
+                            {responseFromServer?.canceledFlag && (
+                                <div className="w-full text-justify bg-white text-black  rounded p-2">
+                                    <span className="flex justify-between items-center gap-2 text-lg font-semibold"> 
+                                        El local sugiere: <GiCook  size={35}/> </span>
+                                    <p className="mt-3">{responseFromServer.msgDeSugerencia}</p>
+                                </div>
+                            )}
+
+                            <span className="text-center ">Esta pre-orden se cancela automaticamente por falta de producto sin costo alguno</span>
+
+                        </div>
+                    )} 
 
             </div>
 

@@ -1,0 +1,27 @@
+
+
+
+export function decidirCostoEnvio(formaEntrega,localidad){
+
+    let costoEnvio = 0
+
+    
+    if(formaEntrega === "Envio"){
+        if(localidad === "monte grande"){
+           costoEnvio = 3500
+          
+        }
+
+        if(localidad === "luis guillon"){
+            costoEnvio = 2500
+            
+        }
+
+        if(localidad === "otro"){
+            return costoEnvio        
+        }
+
+    } 
+
+    return costoEnvio
+}
