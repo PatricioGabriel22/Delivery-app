@@ -169,7 +169,7 @@ export default function ProfileCard({ userInfo }) {
                 : "bg-blue-200 text-blue-800"
             }`}
           >
-            {userInfo.rol}
+            { userInfo.rol !== "admin" ? "cliente" : "admin"}
           </span>
 
           <p 
