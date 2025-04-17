@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from "react";
 
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa";
-
+import { MdModeEdit } from "react-icons/md";
 
 
 import marineras from "../assets/marineras.jpg";
@@ -27,14 +27,28 @@ import axios from "axios";
 export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,disponible}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [toEdit,setTodit] = useState(false)
+  const [editableData,setEditableData] = useState()
 
   // Estado para controlar la cantidad en el carrito
   const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
   
   const {userInfo,renderORLocalURL} = useLoginContext()
 
-  
+
+  let precioInput = editableData?.precio
+
+  if(precioInput !== 0 && precioInput !== ""){
+    precioInput = precioInput || precio
+  }
+
+
+
+
+  function handleChangesDataCard(e){
+    setEditableData({...editableData,[e.target.name]: e.target.value})
+    
+  }
 
   async function handleChangeStatus(){
 
@@ -55,28 +69,91 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   }
 
+  async function sendEditedProduct(){}
 
+
+
+  useEffect(()=>{console.log(editableData)},[editableData])
 
 
   return (
     <div 
-      className={`w-full sm:w-96 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
-      <p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>
+      className={`w-full sm:w-90 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
+        <div className={`flex flex-row items-center justify-center w-full relative `}>
+          {toEdit ? 
+            (<input 
+              className="text-center bourder-2 rounded p-2 text-xl" 
+              name="nombre"
+              value={editableData?.nombre || nombre}
+              onChange={(e)=>handleChangesDataCard(e)}
+              />) 
+            :
+            (<p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>)
+          }
+          {userInfo.rol && 
+            <MdModeEdit 
+              size={30} 
+              className="absolute top-3 right-3 text-black cursor-pointer hover:bg-red-400 rounded"
+              onClick={()=>{setTodit(!toEdit)}}
+              />}
+        </div>
       <span className="bg-red-600 h-[1px]" />
 
-      <div className="flex flex-row p-4 gap-x-3">
-        <div className="flex flex-col justify-between">
-          <span>{descripcion}</span>
-          <p className="self-center font-medium text-xl">${precio}</p>
-        </div>
+      <div className="flex flex-row p-4 gap-x-3 justify-around">
 
-        {/* Imagen que abre el modal */}
-        <img
-          src={marineras}
-          className="w-20 h-32 rounded cursor-pointer select-none object-cover"
-          onClick={() => setIsModalOpen(true)}
-          alt="Marineras"
-        />
+        {toEdit ? (
+          <Fragment>
+            <div className="flex flex-col justify-between gap-y-8">
+
+              <textarea
+              className="border-2 rounded "
+              value={editableData?.descripcion || descripcion}
+              name="descripcion"
+              onChange={(e)=>handleChangesDataCard(e)}
+              />
+
+              <input
+              type="number"
+              className="self-center font-medium text-xl border-2 rounded text-center "
+              value={precioInput}
+              name="precio"
+              onChange={(e)=>handleChangesDataCard(e)}
+              />  
+
+            </div>
+
+
+            <label className="cursor-pinter hover:bg-red-400 rounded  text-center h-fit">
+              Cambiar imagen
+              <input
+                type="file"
+                className="hidden"
+                onChange={(e)=>handleChangesDataCard(e)}
+              />
+            </label>
+
+
+          
+
+          </Fragment>
+        ): 
+          (
+          <Fragment>
+
+            <div className="flex flex-col justify-between">
+              <span>{descripcion}</span>
+              <p className="self-center font-medium text-xl">${precio}</p>
+            </div>
+
+            {/* Imagen que abre el modal */}
+            <img
+              src={marineras}
+              className="w-20 h-32 rounded cursor-pointer select-none object-cover"
+              onClick={() => setIsModalOpen(true)}
+              alt="Marineras"/>
+          </Fragment>
+          )
+        }
       </div>
 
 
@@ -84,7 +161,26 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
       <div className="justify-around items-center flex flex-row w-full">
 
-        {userInfo.rol === "cliente" ? (
+        {userInfo.rol ? (
+          <Fragment>
+  
+            <div className={`w-full rounded-b-xl b p-4 flex items-center gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
+              <button
+                className={`rounded-full w-9 h-9 transition-colors duration-300 cursor-pointer ${
+                  disponible ? 'bg-green-600' : 'bg-red-600'
+                }`}
+                onClick={handleChangeStatus}
+                aria-label="Cambiar disponibilidad del producto"
+              />
+
+              <span className="font-semibold text-gray-800">
+                {disponible ? 'Producto disponible' : 'Producto no disponible'}
+              </span>
+            </div>
+          
+          </Fragment>
+          
+        ):(
           <Fragment>
 
             <MdDelete 
@@ -109,25 +205,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             <span className={`text-3xl self-end ${cantidadAdquirida === 0? "invisible":"block"}`}>x{cantidadAdquirida}</span> 
           </Fragment>
           
-        ):(
-          
-          <Fragment>
-            
-            <div className={`w-full rounded-b-xl b p-4 flex items-center gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
-                <button
-                  className={`rounded-full w-9 h-9 transition-colors duration-300 cursor-pointer ${
-                    disponible ? 'bg-green-600' : 'bg-red-600'
-                  }`}
-                  onClick={handleChangeStatus}
-                  aria-label="Cambiar disponibilidad del producto"
-                />
 
-                <span className="font-semibold text-gray-800">
-                  {disponible ? 'Producto disponible' : 'Producto no disponible'}
-                </span>
-            </div>
-            
-          </Fragment>
 
 
 

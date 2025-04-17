@@ -38,7 +38,7 @@ function App() {
 
   return (
     <Fragment>
-      <div className='bg-black min-h-screen text-white cursor-pointer select-none'>
+      <div className='bg-black min-h-screen  text-white cursor-pointer select-none'>
       <BrowserRouter>
         <Routes>
           
