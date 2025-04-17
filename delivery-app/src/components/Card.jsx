@@ -78,11 +78,11 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   return (
     <div 
-      className={`w-full sm:w-90 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
+      className={`sm:w-90 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
         <div className={`flex flex-row items-center justify-center w-full relative `}>
           {toEdit ? 
             (<input 
-              className="text-center bourder-2 rounded p-2 text-xl" 
+              className="text-center bourder-2 p-2 text-xl" 
               name="nombre"
               value={editableData?.nombre || nombre}
               onChange={(e)=>handleChangesDataCard(e)}
