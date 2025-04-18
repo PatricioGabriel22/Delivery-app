@@ -1,7 +1,7 @@
 import {Router} from "express";
-import {sendPreOrder, getAllPreOrders, PreOrderManager, dataFormWithImage} from "../controllers/preOrder.controllers.js"
+import {sendPreOrder, getAllPreOrders, PreOrderManager} from "../controllers/preOrder.controllers.js"
 
-import multer from 'multer'
+
 
 
 export const preOrderRoutes = Router()
@@ -14,11 +14,3 @@ preOrderRoutes.get('/getAllPreOrders',getAllPreOrders) //me traigo todas las ord
 preOrderRoutes.post('/PreOrderManagement/:idOrden?',PreOrderManager)
 
 
-function multerMiddleware(){
-    const storage = multer.memoryStorage() //guardo en ram del servidor la imagen
-    const upload = multer({storage}) //crea el middleware
-    return upload
-}
-
-
-preOrderRoutes.post('/uploadProduct',multerMiddleware().single('imagen'),dataFormWithImage)

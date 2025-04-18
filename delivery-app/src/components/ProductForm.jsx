@@ -65,7 +65,7 @@ export default function ProductForm() {
                       name="imagen"
                       accept="image/*"
                       onChange={handleImageChange}
-                      className=" border p-2 rounded-md   file:text-red-700 hover:file:bg-red-100"
+                      className=" border p-2 rounded-md   file:text-red-700 hover:file:bg-red-100 w-full"
                   />
 
                   <button onClick={()=>setPreview(!preview)} className={`text-bold text-2xl ${preview ? "block":"invisible"} `}>X</button>

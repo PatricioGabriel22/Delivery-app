@@ -36,13 +36,18 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const {userInfo,renderORLocalURL} = useLoginContext()
 
 
-  let precioInput = editableData?.precio
+  
+  
+  function clearInputs(inputValue,defaultValue){
 
-  if(precioInput !== 0 && precioInput !== ""){
-    precioInput = precioInput || precio
+
+  
+    if(inputValue !== 0 && inputValue !== ""){
+      inputValue = inputValue || defaultValue
+    }
+
+    return inputValue
   }
-
-
 
 
   function handleChangesDataCard(e){
@@ -69,45 +74,87 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   }
 
-  async function sendEditedProduct(){}
+  async function sendEditedProduct(){
+    console.log(editableData)
+    if(editableData){
+      
+      const formDataNewInfo = new FormData()
+       
+      for (let key in editableData){
+        formDataNewInfo.append(key,editableData[key])
+      }
+      
+      formDataNewInfo.append('id',id)
+
+      axios.put(`${renderORLocalURL}/editProductInfo`,formDataNewInfo,
+        {
+          withCredentials:true,
+          headers:{'Content-Type': 'multipart/form-data'}
+        })
+        .then(res=>console.log(res))
+        .catch(e=>console.log(e))
+    }
 
 
 
-  useEffect(()=>{console.log(editableData)},[editableData])
+  }
+
+
+
+  useEffect(()=>{
+
+
+
+
+
+  },[editableData])
 
 
   return (
     <div 
-      className={`sm:w-90 flex flex-col  text-black rounded-3xl m-5 bg-white `}>
+      className={`w-90 flex flex-col  text-black rounded-3xl mt-3 md:m-5 bg-white `}>
         <div className={`flex flex-row items-center justify-center w-full relative `}>
           {toEdit ? 
             (<input 
-              className="text-center bourder-2 p-2 text-xl" 
+              className="text-center border-2 p-2 text-xl w-[45%]" 
               name="nombre"
-              value={editableData?.nombre || nombre}
+              value={clearInputs(editableData?.nombre,nombre)}
               onChange={(e)=>handleChangesDataCard(e)}
               />) 
             :
             (<p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>)
           }
-          {userInfo.rol && 
-            <MdModeEdit 
-              size={30} 
-              className="absolute top-3 right-3 text-black cursor-pointer hover:bg-red-400 rounded"
-              onClick={()=>{setTodit(!toEdit)}}
-              />}
+
+          {
+          userInfo.rol && 
+          <MdModeEdit 
+            size={30} 
+            className={`absolute top-3 right-3 text-black cursor-pointer hover:bg-red-400 rounded $ `}
+            onClick={()=>{setTodit(!toEdit)}}
+            />
+          }
+
+          {
+            toEdit && (
+              <buttton 
+                onClick={()=>{sendEditedProduct()}}
+                className="hover:bg-sky-400 rounded p-2 ">Guardar</buttton>
+            )
+          }
+
+
         </div>
       <span className="bg-red-600 h-[1px]" />
 
-      <div className="flex flex-row p-4 gap-x-3 justify-around">
+      <div className="flex flex-row md:p-4 md:gap-x-3 justify-around">
 
         {toEdit ? (
           <Fragment>
-            <div className="flex flex-col justify-between gap-y-8">
+            <div className="flex flex-col justify-between p-2 gap-y-8">
 
               <textarea
               className="border-2 rounded "
-              value={editableData?.descripcion || descripcion}
+              value={clearInputs(editableData?.descripcion,descripcion)}
               name="descripcion"
               onChange={(e)=>handleChangesDataCard(e)}
               />
@@ -115,7 +162,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               <input
               type="number"
               className="self-center font-medium text-xl border-2 rounded text-center "
-              value={precioInput}
+              value={clearInputs(editableData?.precio,precio)}
               name="precio"
               onChange={(e)=>handleChangesDataCard(e)}
               />  
@@ -140,7 +187,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           (
           <Fragment>
 
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col justify-between p-2">
               <span>{descripcion}</span>
               <p className="self-center font-medium text-xl">${precio}</p>
             </div>
@@ -148,7 +195,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             {/* Imagen que abre el modal */}
             <img
               src={marineras}
-              className="w-20 h-32 rounded cursor-pointer select-none object-cover"
+              className="w-28 h-38 m-1 rounded cursor-pointer select-none object-cover"
               onClick={() => setIsModalOpen(true)}
               alt="Marineras"/>
           </Fragment>
