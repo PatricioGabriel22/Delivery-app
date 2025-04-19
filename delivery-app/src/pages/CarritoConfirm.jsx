@@ -90,8 +90,11 @@ export default function CarritoConfirm(){
         socket.on('checkedPreOrder',(data)=>{
             
             if(data.status){
-                sessionStorage.setItem('buyBTN',JSON.stringify(data.status))
-                setBuyBTN(JSON.parse(sessionStorage.getItem("buyBTN")))
+                
+                setBuyBTN(prev=>{
+                    sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
+                    return JSON.parse(sessionStorage.getItem("buyBTN"))
+                })
 
                 setLoading(prev =>{ 
                     sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))

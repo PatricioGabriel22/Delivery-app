@@ -11,7 +11,7 @@ import { useShoppingContext } from "../context/ShoppingContext"
 
 export default function PreOrderManagement(){
     const {socket} = useShoppingContext()
-    const {allOrdersFromUser} = useLoginContext()
+    const {allOrdersFromAdmin} = useLoginContext()
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()
@@ -33,22 +33,22 @@ export default function PreOrderManagement(){
     // useEffect(()=>{
     //     axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
     //         setMainArrayFromDB(res.data)
-    //         setAllOrdersFromUser(res.data.filter(data=> data.userInfo.id === userInfo.id))
+    //         setallOrdersFromAdmin(res.data.filter(data=> data.userInfo.id === userInfo.id))
     //     })
 
     // },[renderORLocalURL])
 
     useEffect(() => {
     
-        if (allOrdersFromUser) {
-            setAllPreOrders(allOrdersFromUser.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
-            setAcceptedOrders(allOrdersFromUser.filter(data => data.confirmed && esDeHoy(data.createdAt)))
+        if (allOrdersFromAdmin) {
+            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
+            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)))
             
               
         }
 
 
-    }, [allOrdersFromUser]);
+    }, [allOrdersFromAdmin]);
 
 
 

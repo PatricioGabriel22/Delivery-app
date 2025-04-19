@@ -1,3 +1,4 @@
+
 import { Fragment } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -11,34 +12,37 @@ import CheckDataAndBuy from './pages/CheckDataAndBuy.jsx'
 import AdminPrivate from './components/AdminPrivate.jsx'
 import PreOrderManagement from './pages/PreOrderManagement.jsx'
 import Profile from './pages/Profile.jsx'
-import ProductForm from './components/ProductForm.jsx'
-import CategoryFrom from './components/CategoryFrom.jsx'
+import ProductForm from './pages/ProductForm.jsx'
+import CategoryFrom from './pages/CategoryFrom.jsx'
+import OrdersHistory from './pages/OrdersHistory.jsx'
+
 
 
 function App() {
 
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     // Mostrar el mensaje de alerta
+  //     event.preventDefault()
+  //     console.log(event)
+  //     confirm("¡Estás a punto de actualizar o salir de la página!");
+      
+  //   };
 
-    // useEffect(() => {
-    //   const handleBeforeUnload = (event) => {
-    //     // Mostrar el mensaje de alerta
-    //     event.preventDefault()
-    //     console.log(event)
-    //     confirm("¡Estás a punto de actualizar o salir de la página!");
-        
-    //   };
-  
-    //   window.addEventListener("beforeunload", handleBeforeUnload);
-  
-    //   return () => {
-    //     window.removeEventListener("beforeunload", handleBeforeUnload);
-    //   };
-    // }, [])
-  
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [])
+
+
+
 
 
   return (
     <Fragment>
-      <div className='bg-black min-h-screen  text-white cursor-pointer select-none'>
+      <div className='bg-black min-h-screen  text-white  select-none'>
       <BrowserRouter>
         <Routes>
           
@@ -54,6 +58,9 @@ function App() {
             <Route path="/confirmar-direccion-y-comprar" element={<CheckDataAndBuy/>}/>
 
             <Route element={<AdminPrivate/>}>
+              
+              <Route path="/OrdersHistory" element={<OrdersHistory/>}/>
+
               <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
               <Route path="/addProduct" element={<ProductForm/>}/>
               <Route path="/addCategory" element={<CategoryFrom/>}/>

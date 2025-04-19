@@ -50,13 +50,13 @@ export default function Profile(){
                 
                 {userInfo.rol === 'admin' && (
 
-                <div className="flex flex-col md:flex-row w-full justify-around pt-10 gap-x-20 gap-y-10 flex-wrap">
+                <div className="flex flex-col md:flex-row w-full justify-around pt-10 gap-x-20 gap-y-10 flex-wrap c">
 
                     {adminButtons.map(button=>{
 
                         let dirToGo
 
-                        if(button === "Todos los pedidos") dirToGo = "/TodosLosPedidos"
+                        if(button === "Todos los pedidos") dirToGo = "/OrdersHistory"
                         if(button === "Pre-ordenes") dirToGo = "/PreOrderManagement"
                        
 
@@ -64,14 +64,14 @@ export default function Profile(){
                         return(
                             <Link to={button !== "Agregar categoria/producto" && dirToGo} className="p-2 rounded-lg bg-red-600 cursor-pointer text-center" >
                                 {button !== "Agregar categoria/producto" ? (
-                                    <Link to={dirToGo} className="p-2 rounded-lg bg-red-600 cursor-pointer text-center" >
-                                        <button >{button}</button>
+                                    <Link to={dirToGo} className="p-2 rounded-lg bg-red-600  text-center " >
+                                        <button className="cursor-pointer">{button}</button>
                                     </Link>
                                 ) : (
                                     <div className="relative w-fit m-auto">
                                         <button
                                         onClick={() => setOpen(!open)}
-                                        className="bg-red-600 text-white px-4  rounded-lg shadow-md hover:bg-red-700 transition "
+                                        className="bg-red-600 text-white px-4  rounded-lg shadow-md hover:bg-red-700 transition cursor-pointer"
                                         >
                                         Agregar categoría/producto
                                         </button>

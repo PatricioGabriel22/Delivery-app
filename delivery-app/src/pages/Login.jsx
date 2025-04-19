@@ -3,12 +3,15 @@ import { Fragment, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useLoginContext } from "../context/LoginContext"
 
+import ShowPassword from "../components/showPassword";
 
 
 
 export default function Login(){
 
   const [logginIn,setLogginIn] = useState(false)
+  const [showPassword,setShowPassword] = useState(false)
+
   const navigate = useNavigate()
 
   const {renderORLocalURL,setUserInfo} = useLoginContext()
@@ -27,13 +30,16 @@ export default function Login(){
         },{withCredentials:true})
         .then(res=>{
             if(res.status === 200){
-                sessionStorage.setItem('auth','true')
-                sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
 
-                setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
-                
+              
+            
+              sessionStorage.setItem('auth','true')
+              sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
 
-                navigate('/')
+              setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
+              
+
+              navigate('/')
             }
 
         })
@@ -44,28 +50,46 @@ export default function Login(){
           console.log(e)
           setLogginIn(false)
         })
-    } 
+  } 
+    
+  function mostrarContraseñaInput(campo,flagPassword){
+
     
 
+    if(campo !== 'contraseña' || flagPassword && campo === 'contraseña') return 'text'
+
+    return 'password'
+
+
+  }
 
 
 
 
-    return (
+
+  return (
       <Fragment>
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
           <img src='/vite.png' className={`w-20 ${logginIn?  'animate-bounce' : ""}`}/>
-          <form className=" w-80 h-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center justify-around " onSubmit={(e)=>handleLogin(e)}>
+          <form className=" w-80 h-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center justify-around " 
+            onSubmit={(e)=>handleLogin(e)}>
             {CAMPOS_LOGIN.map((campo,index)=>(
 
-              <input kye={index} placeholder={campo} type={campo === 'contraseña' ? 'password' : 'text'}   className="bg-white text-black rounded w-full p-1 text-lg"/>
+              <input kye={index} 
+                placeholder={campo} 
+                type={mostrarContraseñaInput(campo,showPassword)}   
+                className={` bg-white text-black rounded w-full p-1 text-lg`}/>
             ))}
             
+            <ShowPassword setFalg={setShowPassword} flagPassword={showPassword} />
+
 
             <button type="submit" className="bg-red-500 w-full rounded-full p-2">Login</button>
 
 
           </form>
+
+
           <Link to="/register" className="pt-4">Register</Link>
 
 

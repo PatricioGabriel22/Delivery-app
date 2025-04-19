@@ -47,9 +47,37 @@ export const sendPreOrder =  (req,res)=>{
 
 
 export const getAllPreOrders = async (req,res)=>{
-    const allPreOrders = await preOrderSchema.find({})
-    // .sort({createdAt:-1})
-    res.json(allPreOrders)
+
+    const {rol} = req.body 
+    const {idTarget} = req.params
+   
+    let allOrders
+
+    if(!idTarget || !rol) return res.status(400)
+
+    try {
+        
+        switch (rol) {
+            case 'admin':
+                
+                allOrders = await preOrderSchema.find({})
+                //ca tendria que buscar las ordenes que tengan como dueño al local tal para gestionarlas
+                break
+        
+            default:
+                allOrders = await preOrderSchema.find({userID:idTarget})
+                //ca tendria que buscar las ordenes que tengan como dueño al USUARIO tal para gestionarlas independiemtemente de donde compren
+                break
+        }
+
+        res.json(allOrders)
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    
+
 }
 
 

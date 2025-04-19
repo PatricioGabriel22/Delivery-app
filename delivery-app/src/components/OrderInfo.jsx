@@ -153,7 +153,10 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                                     <GiConfirmed 
                                         size={80} 
                                         className={`text-green-700 hover:text-green-500 ${confirmado || flagMsgSugerencias? "hidden":""} `}
-                                        onClick={()=>acceptPreOrder(renderORLocalURL,preOrderInfo)}
+                                        onClick={()=>{
+                                            acceptPreOrder(renderORLocalURL,preOrderInfo)
+                                            cerrarModal()
+                                        }}
                                     />
 
 
@@ -182,7 +185,10 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                                 <div className="flex flex-row w-full justify-center items-center mt-5 ">
                                     <span className="w-full h-[1px] bg-black"/>
                                     <button 
-                                        onClick={()=>cancelPreOrder(renderORLocalURL,preOrderInfo)} 
+                                        onClick={()=>{
+                                            cancelPreOrder(renderORLocalURL,preOrderInfo)
+                                            cerrarModal()
+                                        }} 
                                         className={`text-black hover:text-red-700  w-full text-center cursor-pointer`}> Cancelar definitivamente</button>
                                     <span className="w-full h-[1px] bg-black"/>
                                 </div>

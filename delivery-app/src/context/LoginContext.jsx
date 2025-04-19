@@ -1,3 +1,4 @@
+
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState } from "react"
 
@@ -28,16 +29,37 @@ export function LoginProvider({children}){
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
-    const [allOrdersFromUser,setAllOrdersFromUser] = useState()
+    const [allOrdersFromAdmin,setAllOrdersFromAdmin] = useState()
 
-    axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
+    //modificar el endpoint para tener todas las ordenes del local o  todas las del usuario
 
-        // const userOrdes = res.data.filter(data=> data.userInfo.id === userInfo.id)
 
-        setAllOrdersFromUser(res.data)
+
+    function getOrdersAllOrdersData(){
+
+        try {
+            
+            axios.post(`${renderORLocalURL}/getAllPreOrders/${userInfo.id}`,{rol:userInfo.rol},{withCredentials:true}).then((res)=>{
+                
+                console.log(res.data)
+                setAllOrdersFromAdmin(res.data)
+        
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+
+
+
+ 
+
 
         
-    })
 
     return(
         <loginContext.Provider value={{
@@ -48,8 +70,11 @@ export function LoginProvider({children}){
             userInfo,
             setUserInfo,
 
-            allOrdersFromUser,
-            setAllOrdersFromUser
+            allOrdersFromAdmin,
+            setAllOrdersFromAdmin,
+            getOrdersAllOrdersData
+            
+            
 
 
 

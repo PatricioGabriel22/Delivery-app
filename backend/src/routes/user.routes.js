@@ -41,8 +41,8 @@ userRoutes.use((req,res,next)=>{
 
 userRoutes.post('/login',loginUser)
 
-
 userRoutes.post('/register',registerUser)
+
 
 userRoutes.post('/editProfileInfo',editProfileInfo)
 
