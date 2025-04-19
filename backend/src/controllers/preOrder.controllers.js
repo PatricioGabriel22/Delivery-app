@@ -4,7 +4,7 @@ import preOrderSchema from "../models/preOrder.schema.js"
 
 import  {ListaProductos} from './productos.test.js'
 import { io } from "../server.js"
-
+import {connectedUsers} from '../server.js'
 
 
 export const sendPreOrder =  (req,res)=>{
@@ -87,6 +87,8 @@ export const PreOrderManager = async (req,res)=>{
     const {orderInfo,preOrderAcceptedFlag,canceledFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
     const {idOrden} = req.params
 
+    const comprador = orderInfo.userInfo.id
+    const userSocketID = connectedUsers[comprador]
 
     try {
         if(preOrderAcceptedFlag){
@@ -100,13 +102,14 @@ export const PreOrderManager = async (req,res)=>{
             console.log(updatedOrder)
     
     
-            io.emit('checkedPreOrder',{
+            io.to(userSocketID).emit('checkedPreOrder',{
                 id:updatedOrder._id,
                 status:updatedOrder.confirmed,
                 confirmedOrder:updatedOrder
             })
     
-    
+             
+            return
         }
 
         if(canceledFlag){
@@ -116,11 +119,12 @@ export const PreOrderManager = async (req,res)=>{
             await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
 
             
-            io.emit('sugerenciaDelLocal',{
+            io.to(userSocketID).emit('sugerenciaDelLocal',{
                 canceledFlag,
                 msgDeSugerencia
             })
 
+            return
         }
         
         if(finishedFlag){
@@ -128,17 +132,19 @@ export const PreOrderManager = async (req,res)=>{
             
 
 
-            io.emit("finishedOrder",{
+            io.to(userSocketID).emit("finishedOrder",{
                 finishedOrder
             })
+            return
         }
         
         if(deliveredFlag){
             const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:deliveredFlag}},{new:true})
     
-            io.emit("deliveredOrder",{
+            io.to(userSocketID).emit("deliveredOrder",{
                 deliveredOrder
             })
+            return
         }
         
 

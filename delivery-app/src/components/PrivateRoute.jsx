@@ -9,11 +9,18 @@ import { useLoginContext } from "../context/LoginContext";
 
 export default function PrivateRoute(){
 
-     const {getOrdersAllOrdersData} = useLoginContext()
+    const {socket} = useLoginContext()
+    const {userInfo,getOrdersAllOrdersData} = useLoginContext()
 
     const isAuth = sessionStorage.getItem('auth') === 'true'
     
     useEffect(()=>{
+
+
+        if (socket && userInfo?._id) {
+            socket.emit("registerUser", userInfo._id)
+        }
+
         if(isAuth){
 
             getOrdersAllOrdersData()

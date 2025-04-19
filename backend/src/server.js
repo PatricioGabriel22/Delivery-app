@@ -52,16 +52,26 @@ server.use(preOrderRoutes)
 server.use(productRoutes)
 
 
+export const connectedUsers = {}
 
+io.on('connection', (socket) => {
+    console.log("cliente conectado:", socket.id)
 
-io.on('connection',(socket)=>{
-    console.log("cliente conectado:",socket.id)
+    socket.on('registerUser', (userID) => {
+        connectedUsers[userID] = socket.id
+        console.log(`Registrado ${userID} con socket ${socket.id}`)
+    })
 
-    socket.on('disconnect',()=>{
-        console.log("Cliente desconectado")
+    socket.on('disconnect', () => {
+        for (let user in connectedUsers) {
+            if (connectedUsers[user] === socket.id) {
+                delete connectedUsers[user]
+                break
+            }
+        }
+        console.log(`Socket desconectado: ${socket.id}`)
     })
 })
-
 export {io}
 
 httpServer.listen(PORT,()=>{
