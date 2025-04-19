@@ -3,7 +3,7 @@ import { Fragment, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useLoginContext } from "../context/LoginContext"
 
-import ShowPassword from "../components/showPassword";
+import ShowPassword from "../components/ShowPassword.jsx";
 
 
 
