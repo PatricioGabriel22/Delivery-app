@@ -19,37 +19,36 @@ export default function Login(){
   const CAMPOS_LOGIN = ['nombre de usuario','contraseña']
 
   function handleLogin(e){
-        e.preventDefault()
-        setLogginIn(true)
+    e.preventDefault()
+    setLogginIn(true)
 
-        console.log(e)
-        axios.post(`${renderORLocalURL}/login`, {
-          username:e.target[0].value,
-          password:e.target[1].value,
+    axios.post(`${renderORLocalURL}/login`, {
+      username:e.target[0].value,
+      password:e.target[1].value,
 
-        },{withCredentials:true})
-        .then(res=>{
-            if(res.status === 200){
+    },{withCredentials:true})
+    .then(res=>{
+        if(res.status === 200){
 
-              
-            
-              sessionStorage.setItem('auth','true')
-              sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+          
+        
+          sessionStorage.setItem('auth','true')
+          sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
 
-              setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
-              
+          setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
+          
 
-              navigate('/')
-            }
+          navigate('/')
+        }
 
-        })
-
+    })
 
 
-        .catch(e=>{
-          console.log(e)
-          setLogginIn(false)
-        })
+
+    .catch(e=>{
+      console.log(e)
+      setLogginIn(false)
+    })
   } 
     
   function mostrarContraseñaInput(campo,flagPassword){
