@@ -3,47 +3,13 @@ import preOrderSchema from "../models/preOrder.schema.js"
 
 
 import  {ListaProductos} from './productos.test.js'
-import { io } from "../server.js"
-import {connectedUsers} from '../server.js'
+import { io } from "../webSocket.js" 
+import { connectedAdmins, connectedUsers } from "../webSocket.js"
 
 
-export const sendPreOrder =  (req,res)=>{
 
-    const {preOrderPayload,userInfo,importeTotal,costoEnvio,deliveryMethod} = req.body
-
-   
-
-
-    try {
-      
-
-        const nuevaPreOrden =  new preOrderSchema({
-            userID:userInfo.id,
-            userInfo,
-            preOrder:preOrderPayload,
-            importeTotal:importeTotal,
-            costoEnvio,
-            formaDeEntrega: deliveryMethod
-        })
-
-        nuevaPreOrden.save()
-
-
-        //aca usar io para avisarle al front quue tiene una nueva preorden
-        io.emit("nuevaPreOrdenRecibida",{
-            nuevaPreOrden
-        })
-
-        res.status(200).json({message:"Pre-Orden creada"})
-
-
-        
-    } catch (error) {
-        console.log(error)
-    }
-
-}
-
+//lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo
+const restauranteAdmin = '6803d6dab9abef939db4e4f6' //serian los admins
 
 
 export const getAllPreOrders = async (req,res)=>{
@@ -81,14 +47,65 @@ export const getAllPreOrders = async (req,res)=>{
 }
 
 
+export const sendPreOrder =  async (req,res)=>{
+
+    const {preOrderPayload,userInfo,importeTotal,costoEnvio,deliveryMethod} = req.body
+
+
+    try {
+        
+        if(!connectedAdmins[restauranteAdmin]) return res.status(501).json({messaage:"El local no esta conectado a la app en este momento"})
+
+
+        if(connectedAdmins[restauranteAdmin]){
+
+            const nuevaPreOrden = new preOrderSchema({
+                userID:userInfo.id,
+                userInfo,
+                preOrder:preOrderPayload,
+                importeTotal:importeTotal,
+                costoEnvio,
+                formaDeEntrega: deliveryMethod
+            })
+
+            await nuevaPreOrden.save()
+
+
+            
+            //aca usar io para avisarle al front quue tiene una nueva preorden
+            io.to(connectedAdmins[restauranteAdmin]).emit("nuevaPreOrdenRecibida",{
+                nuevaPreOrden
+            })
+
+            res.status(200).json({message:"Pre-Orden creada"})
+        }
+
+
+
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+
+
+
 export const PreOrderManager = async (req,res)=>{
 
 
     const {orderInfo,preOrderAcceptedFlag,canceledFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
     const {idOrden} = req.params
 
-    const comprador = orderInfo.userInfo.id
+    const comprador = orderInfo?.userInfo?.id
     const userSocketID = connectedUsers[comprador]
+
+    const restaurante = restauranteAdmin
+    const adminSocketID = connectedAdmins[restaurante]
+
+    const socketsToNotify = [userSocketID,adminSocketID]
+
 
     try {
         if(preOrderAcceptedFlag){
@@ -101,12 +118,17 @@ export const PreOrderManager = async (req,res)=>{
     
             console.log(updatedOrder)
     
-    
-            io.to(userSocketID).emit('checkedPreOrder',{
+            const nuevaDataEmitida = {
                 id:updatedOrder._id,
-                status:updatedOrder.confirmed,
+                accepted:updatedOrder.confirmed,
                 confirmedOrder:updatedOrder
+            }
+
+            
+            socketsToNotify.forEach((socket)=>{
+                io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
             })
+
     
              
             return
@@ -119,11 +141,19 @@ export const PreOrderManager = async (req,res)=>{
             await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
 
             
-            io.to(userSocketID).emit('sugerenciaDelLocal',{
-                canceledFlag,
-                msgDeSugerencia
+            const nuevaDataEmitida = {
+                id:orderInfo._id,
+                canceled:true,
+                msgDeSugerencia:msgDeSugerencia
+            }
+
+            socketsToNotify.forEach((socket)=>{
+                io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
             })
 
+            
+            canceledFlag,
+            msgDeSugerencia
             return
         }
         
@@ -132,8 +162,12 @@ export const PreOrderManager = async (req,res)=>{
             
 
 
-            io.to(userSocketID).emit("finishedOrder",{
+            io.to(adminSocketID).emit("finishedOrder",{
                 finishedOrder
+            })
+
+            io.to(userSocketID).emit("avisoDeOrdenListaCliente",{
+                msg:`${orderInfo?.userInfo?.username}, su pedido se encuentra listo!`
             })
             return
         }
@@ -141,7 +175,7 @@ export const PreOrderManager = async (req,res)=>{
         if(deliveredFlag){
             const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:deliveredFlag}},{new:true})
     
-            io.to(userSocketID).emit("deliveredOrder",{
+            io.to(adminSocketID).emit("deliveredOrder",{
                 deliveredOrder
             })
             return

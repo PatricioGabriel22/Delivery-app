@@ -16,13 +16,15 @@ import { FaFaceSadCry } from "react-icons/fa6";
 import { GiCook } from "react-icons/gi";
 
 import { decidirCostoEnvio } from "../utils/envioFunctions";
+import { useSocketContext } from "../context/SocketContext";
 
 
 
 
 export default function CarritoConfirm(){
     const {renderORLocalURL,userInfo} = useLoginContext()
-    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,setBuyBTN, socket} = useShoppingContext()
+    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,setBuyBTN} = useShoppingContext()
+    const {socket} = useSocketContext()
 
     const [edit,setEdit] = useState(false)
 
@@ -87,45 +89,35 @@ export default function CarritoConfirm(){
    
     useEffect(()=>{
 
-        socket.on('checkedPreOrder',(data)=>{
-            
-            if(data.status){
-                
-                setBuyBTN(prev=>{
-                    sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
-                    return JSON.parse(sessionStorage.getItem("buyBTN"))
-                })
-
-                setLoading(prev =>{ 
-                    sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                    return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
-                })
-            }
-
-
-
-            console.log("order actualizada ", data)
-        })
-
-
-
-        socket.on('sugerenciaDelLocal',(data)=>{
+        socket.on('preOrderStatus',(data)=>{
+            console.log(data)
 
             setLoading(prev =>{ 
                 sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
                 return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
             })
 
-            setResponseFromServer(data)
-            
+            if(data.accepted){
+                
+                setBuyBTN(prev=>{
+                    sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
+                    return JSON.parse(sessionStorage.getItem("buyBTN"))
+                })
+
+            }
+
+            if(!data.status){
+                setResponseFromServer(data)
+            }
+
+            console.log("order actualizada ", data)
         })
 
 
 
 
         return ()=>{
-            socket.off('checkedPreOrder')
-            socket.off('sugerenciaDelLocal')
+            socket.off('preOrderStatus')
         }
 
     },[socket,setBuyBTN])
@@ -249,7 +241,7 @@ export default function CarritoConfirm(){
 
 
 
-                    {responseFromServer?.canceledFlag && (
+                    {responseFromServer?.canceled && (
                         <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
                             <FaFaceSadCry  size={90}/>
                             Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas

@@ -1,15 +1,19 @@
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import ProfileCard from "../components/ProfileCard"
 import { useLoginContext } from "../context/LoginContext"
 import { useShoppingContext } from "../context/ShoppingContext"
 
-
+import {useNavigate} from 'react-router-dom'
 
 
 import { RiCashLine } from "react-icons/ri";
 import { SiMercadopago } from "react-icons/si";
 
 export default function CheckDataAndBuy(){
+
+
+    const navigate = useNavigate()
+
 
     const {userInfo} = useLoginContext()
     const {importeTotal} = useShoppingContext()
@@ -27,6 +31,11 @@ export default function CheckDataAndBuy(){
         hoverBG:"hover:bg-sky-900 ",
         selected:false
     }]
+
+    useEffect(()=>{
+        if(importeTotal === 0) navigate('/carrito')
+    },[importeTotal,navigate])
+
 
 
     return(

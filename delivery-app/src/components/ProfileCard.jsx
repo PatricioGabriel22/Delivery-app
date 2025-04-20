@@ -5,7 +5,7 @@ import { MdEditNote } from "react-icons/md";
 
 import axios from 'axios'
 import { useLoginContext } from "../context/LoginContext";
-import { useShoppingContext } from "../context/ShoppingContext";
+import { useSocketContext } from "../context/SocketContext";
 
 
 export default function ProfileCard({ userInfo }) {
@@ -13,7 +13,7 @@ export default function ProfileCard({ userInfo }) {
   const [editableInfo, setEditableInfo] = useState({ ...userInfo });
 
     const {renderORLocalURL,setUserInfo} = useLoginContext()
-    const {socket} = useShoppingContext()
+    const {socket} = useSocketContext()
 
 
   const handleChange = (e) => {

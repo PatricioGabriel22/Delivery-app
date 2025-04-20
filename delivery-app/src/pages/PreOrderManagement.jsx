@@ -4,28 +4,22 @@ import OrderInfo from "../components/OrderInfo"
 
 
 import { useLoginContext } from "../context/LoginContext"
-import { useShoppingContext } from "../context/ShoppingContext"
+
+import { esDeHoy } from "../utils/dateFunctions"
+import { useSocketContext } from "../context/SocketContext"
 
 
 
 
 export default function PreOrderManagement(){
-    const {socket} = useShoppingContext()
+
     const {allOrdersFromAdmin} = useLoginContext()
-    const [allPreOrders, setAllPreOrders] = useState([])
-    const [acceptedOrders,setAcceptedOrders] = useState([])
+    const {allPreOrders,setAllPreOrders,acceptedOrders,setAcceptedOrders}  = useSocketContext()
+ 
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()
     
 
     
-    const hoy = new Date();
-    const inicioDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    const finDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 1);
-
-    const esDeHoy = (fechaStr) => {
-        const fecha = new Date(fechaStr);
-        return fecha >= inicioDelDia && fecha < finDelDia;
-    };
 
 
 
@@ -50,62 +44,6 @@ export default function PreOrderManagement(){
 
     }, [allOrdersFromAdmin]);
 
-
-
-    useEffect(() => {
-        socket.on('checkedPreOrder', (data) => {
-          console.log(data);
-      
-          if (data.status) {
-
-            //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
-            setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
-
-            setAcceptedOrders(prev => {
-                //me aseguro que no me repita la orden por si acaso
-                const targetSinDuplicar = prev.filter(item=>item._id !== data.id)
-
-                if(esDeHoy(data.confirmedOrder.createdAt)){
-
-                    return [...targetSinDuplicar,data.confirmedOrder]
-                }
-
-            })
-
-          }
-        });
-
-
-        socket.on('nuevaPreOrdenRecibida',(data)=>{
-            setAllPreOrders(prev=>[...prev,data.nuevaPreOrden])
-        })
-
-        socket.on('finishedOrder',(data)=>{
-            console.log(data)
-            setAcceptedOrders(prev=>prev.map(item=>{
-
-                if(item._id === data.finishedOrder._id){
-                    return {...item, finished: data.finishedOrder.finished}
-                }else{
-                    return item
-                }
-            }))
-        })
-
-        socket.on('deliveredOrder',(data)=>{
-            console.log(data)
-            setAcceptedOrders(prev=>prev.filter(item=> item._id !== data.deliveredOrder._id))
-        })
-
-      
-        return () => {
-          socket.off('checkedPreOrder')
-          socket.off('nuevaPreOrdenRecibida')
-          socket.off('finishedOrder')
-          socket.off('deliveredOrder')
-
-        };
-    }, []);
 
 
 

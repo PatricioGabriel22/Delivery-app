@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 
-import PrivateRoute from './components/PrivateRoute'
+import LoginProtected from './components/LoginProtected.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login'
 import Register from './pages/Register.jsx'
@@ -50,7 +50,7 @@ function App() {
           <Route path='/register' element={<Register/>}/>
 
 
-          <Route element={<PrivateRoute/>}>
+          <Route element={<LoginProtected/>}>
 
             <Route path="/" element={<Home/>}/>
             <Route path="/profile" element={<Profile/>}/>

@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
-import { io } from '../server.js';
+import { io } from '../webSocket.js'; 
 
 
 

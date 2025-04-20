@@ -3,7 +3,7 @@
 import { createContext, useContext, useState } from "react"
 
 import axios from 'axios'
-import {io} from 'socket.io-client'
+
 
 
 const shoppingContext = createContext()
@@ -22,7 +22,6 @@ export const useShoppingContext = () => {
 export function ShoppingProvider({ children }) {
 
 
-  const WSSmanager = import.meta.env.MODE === 'development' ? 'ws://localhost:4000' : 'wss://delivery-app-0lcx.onrender.com'
 
   const [carrito, setCarrito] = useState(JSON.parse(sessionStorage.getItem("carrito")) || [])
   const [total, setTotal] = useState(0)
@@ -33,13 +32,6 @@ export function ShoppingProvider({ children }) {
 
 
 
-  const socket = io(WSSmanager,{
-    transports:['websocket'],
-    withCredentials: true,
-    reconnection: true,
-    reconnectionAttempts: 10,
-    reconnectionDelay: 2000
-  })
 
 
   function cantidadVisualizer(action,arrayPrudctos,nombreProducto){
@@ -109,41 +101,41 @@ export function ShoppingProvider({ children }) {
 
 
 
-    async function acceptPreOrder(url,orderInfo){
+  async function acceptPreOrder(url,orderInfo){
 
-      const preOrderAcceptedFlag = true
-      console.log(orderInfo)
-      await axios.post(`${url}/PreOrderManagement`,{orderInfo,preOrderAcceptedFlag},{withCredentials:true})
-    }
+    const preOrderAcceptedFlag = true
+    console.log(orderInfo)
+    await axios.post(`${url}/PreOrderManagement`,{orderInfo,preOrderAcceptedFlag},{withCredentials:true})
+  }
 
-    async function cancelPreOrder(url,orderInfo,msgDeSugerencia){
-
-
-      const canceledFlag = true
-    
-      await axios.post(`${url}/PreOrderManagement`,{orderInfo,canceledFlag,msgDeSugerencia},{withCredentials:true})
-    }
-
-    
-    async function ordenPreparada(url,orderInfo){
-
-     console.log(orderInfo)
-      const finishedFlag = true
-      const idOrden = orderInfo?._id
-
-      console.log(idOrden)
-
-      await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
-    }
+  async function cancelPreOrder(url,orderInfo,msgDeSugerencia){
 
 
-    async function ordenEntregada(url,orderInfo){
+    const canceledFlag = true
+  
+    await axios.post(`${url}/PreOrderManagement`,{orderInfo,canceledFlag,msgDeSugerencia},{withCredentials:true})
+  }
 
-      const deliveredFlag = true
-      const idOrden = orderInfo?._id
-      console.log(idOrden)
-      await axios.post(`${url}/PreOrderManagement/${idOrden}`,{deliveredFlag},{withCredentials:true})
-    }
+  
+  async function ordenPreparada(url,orderInfo){
+
+    console.log(orderInfo)
+    const finishedFlag = true
+    const idOrden = orderInfo?._id
+
+    console.log(idOrden)
+
+    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
+  }
+
+
+  async function ordenEntregada(url,orderInfo){
+
+    const deliveredFlag = true
+    const idOrden = orderInfo?._id
+    console.log(idOrden)
+    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{deliveredFlag},{withCredentials:true})
+  }
 
 
 
@@ -154,27 +146,24 @@ export function ShoppingProvider({ children }) {
 
     return (
         <shoppingContext.Provider value={{
-            carrito,
-            setCarrito,
-            total,
-            setTotal,
+          carrito,
+          setCarrito,
+          total,
+          setTotal,
 
-            importeTotal,
-            setImporteTotal,
+          importeTotal,
+          setImporteTotal,
 
-            buyBTN,
-            setBuyBTN,
-            
-            cantidadVisualizer,
-            cartHandler,
+          buyBTN,
+          setBuyBTN,
+          
+          cantidadVisualizer,
+          cartHandler,
 
-            socket,
-            WSSmanager, 
-
-            acceptPreOrder,
-            cancelPreOrder,
-            ordenPreparada,
-            ordenEntregada
+          acceptPreOrder,
+          cancelPreOrder,
+          ordenPreparada,
+          ordenEntregada
 
 
         }}>

@@ -13,14 +13,15 @@ import { Fragment, useEffect, useState } from "react";
 import victorinaLogo from '../assets/victorina-logo.jpg'
 import SearchingBar from "../components/SearchingBar.jsx";
 import { useLoginContext } from "../context/LoginContext.jsx";
+import { useSocketContext } from "../context/SocketContext.jsx";
 
 ListaProductos.forEach(producto=>producto.cantidad = 0)
 
 
 export default function Home() {
 
-
-  const {carrito,socket} = useShoppingContext()
+  const {socket} = useSocketContext()
+  const {carrito} = useShoppingContext()
   const {userInfo} = useLoginContext()
 
 

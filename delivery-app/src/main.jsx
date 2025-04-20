@@ -4,21 +4,31 @@ import './index.css'
 import App from './App.jsx'
 import { ShoppingProvider } from './context/ShoppingContext.jsx'
 import { LoginProvider } from './context/LoginContext.jsx'
-
+import { SocketProvider } from './context/SocketContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   
   <Fragment>
-    <LoginProvider>
-    <ShoppingProvider>
+        
+      <LoginProvider>
+        
+      <ShoppingProvider>
+        
+        <SocketProvider>
+            
 
- 
-      <App />
-
-   
       
+            <App />
 
-    </ShoppingProvider>
-    </LoginProvider>
+        
+            
+
+        </SocketProvider>
+        
+      </ShoppingProvider>
+      
+      </LoginProvider>
+
+
   </Fragment>,
 )

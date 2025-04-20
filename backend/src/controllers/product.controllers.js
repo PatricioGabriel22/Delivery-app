@@ -1,6 +1,5 @@
 import productSchema from "../models/product.schema.js"
-import { io } from "../server.js"
-
+import { io } from "../webSocket.js" 
 
 
 export const dataFormNewProduct = async(req,res)=>{
