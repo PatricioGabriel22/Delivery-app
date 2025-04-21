@@ -37,7 +37,7 @@ export default function Register(){
 
 
 
-        console.log(registerData)
+  
 
         if(confirmPassword !== password){
             alert('Las contraseñas no coinciden')

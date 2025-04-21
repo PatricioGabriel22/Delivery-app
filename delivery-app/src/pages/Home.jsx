@@ -64,8 +64,12 @@ export default function Home() {
       })
     })
 
+
+
     return ()=>{
       socket.off('AlterProductStatus')
+
+
     }
 
   },[])

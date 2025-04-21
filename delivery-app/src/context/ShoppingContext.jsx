@@ -3,6 +3,8 @@
 import { createContext, useContext, useState } from "react"
 
 import axios from 'axios'
+import toast from "react-hot-toast"
+
 
 
 
@@ -22,14 +24,16 @@ export const useShoppingContext = () => {
 export function ShoppingProvider({ children }) {
 
 
-
   const [carrito, setCarrito] = useState(JSON.parse(sessionStorage.getItem("carrito")) || [])
   const [total, setTotal] = useState(0)
 
   const [importeTotal,setImporteTotal] = useState(0)
 
+  const [loading,setLoading] = useState(JSON.parse(sessionStorage.getItem('loadingPreOrder')) || false)
   const [buyBTN,setBuyBTN] = useState(JSON.parse(sessionStorage.getItem("buyBTN")) || false)
+  const [responseFromServer,setResponseFromServer] = useState(null)
 
+  
 
 
 
@@ -114,6 +118,12 @@ export function ShoppingProvider({ children }) {
     const canceledFlag = true
   
     await axios.post(`${url}/PreOrderManagement`,{orderInfo,canceledFlag,msgDeSugerencia},{withCredentials:true})
+    .then(res=>{
+      console.log(res)
+      toast.success(res.data.infoToUser)
+    })
+    .catch(error=>console.log(error))
+    
   }
 
   
@@ -126,6 +136,8 @@ export function ShoppingProvider({ children }) {
     console.log(idOrden)
 
     await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
+
+    
   }
 
 
@@ -144,7 +156,13 @@ export function ShoppingProvider({ children }) {
 
 
 
-    return (
+
+
+
+
+
+
+  return (
         <shoppingContext.Provider value={{
           carrito,
           setCarrito,
@@ -154,8 +172,12 @@ export function ShoppingProvider({ children }) {
           importeTotal,
           setImporteTotal,
 
+          loading,
+          setLoading,
           buyBTN,
           setBuyBTN,
+          responseFromServer,
+          setResponseFromServer,
           
           cantidadVisualizer,
           cartHandler,

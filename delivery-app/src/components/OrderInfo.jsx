@@ -39,7 +39,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
         console.log(msgDeSugerencia)
 
         cancelPreOrder(renderORLocalURL,preOrderInfo,msgDeSugerencia)
-
+        cerrarModal()
     }
 
 

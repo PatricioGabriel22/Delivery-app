@@ -1,21 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Fragment, useEffect, useState } from "react"
+
+import { Fragment} from "react"
 import OrderInfo from "../components/OrderInfo"
 
 
-import { useLoginContext } from "../context/LoginContext"
 
-import { esDeHoy } from "../utils/dateFunctions"
 import { useSocketContext } from "../context/SocketContext"
 
 
 
 
 export default function PreOrderManagement(){
+    const {allPreOrders,acceptedOrders,}  = useSocketContext()
 
-    const {allOrdersFromAdmin} = useLoginContext()
-    const {allPreOrders,setAllPreOrders,acceptedOrders,setAcceptedOrders}  = useSocketContext()
- 
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()
     
 
@@ -32,17 +28,7 @@ export default function PreOrderManagement(){
 
     // },[renderORLocalURL])
 
-    useEffect(() => {
-    
-        if (allOrdersFromAdmin) {
-            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
-            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)))
-            
-              
-        }
 
-
-    }, [allOrdersFromAdmin]);
 
 
 
@@ -56,7 +42,7 @@ export default function PreOrderManagement(){
                 <div className="flex flex-col md:flex-row justify-around w-full">
                     <div className="flex flex-col w-full p-2">   
                         <h2 className="self-center mb-3 text-3xl">Pre-Ordenes</h2>
-                        {allPreOrders.map((preOrder)=>( 
+                        {allPreOrders?.map((preOrder)=>( 
                             <OrderInfo 
                             title={"Pre-Ordenes"} 
                             preOrderInfo={preOrder}
@@ -70,7 +56,7 @@ export default function PreOrderManagement(){
                     
                     <div className="flex flex-col w-full p-2">   
                         <h2 className="self-center mb-3 text-3xl">Aceptadas</h2>
-                        {acceptedOrders.filter(item=> !item.delivered).map((acceptedOrder)=>( 
+                        {acceptedOrders?.filter(item=> !item.delivered).map((acceptedOrder)=>( 
                             <OrderInfo 
                                 title={"Aceptadas"} 
                                 preOrderInfo={acceptedOrder}

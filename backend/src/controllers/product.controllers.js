@@ -8,6 +8,7 @@ export const dataFormNewProduct = async(req,res)=>{
     
     const {nombre,descripcion,categoria,precio,disponible} = req.body
 
+
     try {
         
         const nuevoPoducto = new productSchema({
@@ -60,6 +61,7 @@ export const changeStatus = async (req,res)=>{
             io.emit('AlterProductStatus',{
                 target
             })
+            
             res.json({info:'Estado actualizado'})
         }
 

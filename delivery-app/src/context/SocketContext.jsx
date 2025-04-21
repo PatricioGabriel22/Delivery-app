@@ -7,6 +7,8 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { useLoginContext } from "./LoginContext"
 import { esDeHoy } from "../utils/dateFunctions"
 import { io } from "socket.io-client"
+import { useShoppingContext } from "./ShoppingContext"
+import toast from "react-hot-toast"
 
 
 
@@ -39,7 +41,8 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
 
- 
+    const {allOrdersFromAdmin,getOrdersAllOrdersData} = useLoginContext()
+    const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {userInfo} = useLoginContext()
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
@@ -51,6 +54,7 @@ export function SocketProvider({children}){
         if(userInfo){
             //en la primera vez y cada vez que se actualiza la pagina s evuelve a montar este evento nativo de conexion para garantizar que siempre este conectado el usuario
             socket.on('connect',()=>{
+                getOrdersAllOrdersData()
                 console.log(socket)
                 socket.emit('sesionIniciada', userInfo)
             })
@@ -64,36 +68,88 @@ export function SocketProvider({children}){
     },[userInfo,socket.connected])
 
 
+    //me traigo las ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
 
+    useEffect(()=>{
+        getOrdersAllOrdersData()
+    },[])
 
     useEffect(() => {
-        socket.on('preOrderStatus', (data) => {
-          console.log(data);
-      
-          if (data.status) {
+        
 
-            //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
-            setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+        if (allOrdersFromAdmin) {
+            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
+            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)))
+            
+                
+        }
 
-            setAcceptedOrders(prev => {
-                //me aseguro que no me repita la orden por si acaso
-                const targetSinDuplicar = prev.filter(item=>item._id !== data.id)
 
-                if(esDeHoy(data.confirmedOrder.createdAt)){
+    }, [allOrdersFromAdmin]);
 
-                    return [...targetSinDuplicar,data.confirmedOrder]
-                }
 
-            })
-
-          }
-        });
-
+    //Gestion de respuestas del servidor
+    useEffect(() => {
 
         socket.on('nuevaPreOrdenRecibida',(data)=>{
-            console.log(data)
+
             setAllPreOrders(prev=>[...prev,data.nuevaPreOrden])
         })
+
+
+        //preOrderStatus en el admin
+        socket.on('preOrderStatus',(data) => {
+        
+            if(userInfo.rol === 'admin'){
+
+                if(data.accepted){
+
+                //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
+                setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+
+                setAcceptedOrders(prev => {
+                    //me aseguro que no me repita la orden por si acaso
+                    const targetSinDuplicar = prev.filter(item=>item._id !== data.id)
+
+                    if(esDeHoy(data.confirmedOrder.createdAt)){
+
+                        return [...targetSinDuplicar,data.confirmedOrder]
+                    }
+
+                })
+                return
+                }
+
+                if(data.canceled){
+
+                //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
+                setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+                return
+                }
+            }else if(userInfo.rol === 'cliente'){
+                setLoading(prev =>{ 
+                sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+                })
+            
+                if(data.accepted){
+                    
+                    setBuyBTN(prev=>{
+                        sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
+                        return JSON.parse(sessionStorage.getItem("buyBTN"))
+                    })
+        
+                }
+        
+                if(data.canceled){
+                    setResponseFromServer(data)
+                }
+            }   
+
+
+        });
+
+       
 
         socket.on('finishedOrder',(data)=>{
             console.log(data)
@@ -107,6 +163,11 @@ export function SocketProvider({children}){
             }))
         })
 
+        socket.on('ordenPreparada',(data)=>{
+            console.log(data)
+            toast.success("Entramos por ordenPreparada")
+        })
+
         socket.on('deliveredOrder',(data)=>{
             console.log(data)
             setAcceptedOrders(prev=>prev.filter(item=> item._id !== data.deliveredOrder._id))
@@ -117,6 +178,7 @@ export function SocketProvider({children}){
           socket.off('preOrderStatus')
           socket.off('nuevaPreOrdenRecibida')
           socket.off('finishedOrder')
+          socket.off('avisoDeOrdenListaCliente')
           socket.off('deliveredOrder')
 
         };

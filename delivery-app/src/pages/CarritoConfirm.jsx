@@ -16,19 +16,20 @@ import { FaFaceSadCry } from "react-icons/fa6";
 import { GiCook } from "react-icons/gi";
 
 import { decidirCostoEnvio } from "../utils/envioFunctions";
-import { useSocketContext } from "../context/SocketContext";
+import toast from "react-hot-toast";
+
 
 
 
 
 export default function CarritoConfirm(){
     const {renderORLocalURL,userInfo} = useLoginContext()
-    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,setBuyBTN} = useShoppingContext()
-    const {socket} = useSocketContext()
+    
+    const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,
+    loading,setLoading,responseFromServer,setResponseFromServer} = useShoppingContext()
+
 
     const [edit,setEdit] = useState(false)
-
-    const [loading,setLoading] = useState(JSON.parse(sessionStorage.getItem('loadingPreOrder')) || false)
 
     const [changeDeliveryColor,setChangeDeliveryColor] = useState()
 
@@ -36,7 +37,6 @@ export default function CarritoConfirm(){
 
     const [listaDeCompras, setListaDeCompras] = useState([]);
     
-    const [responseFromServer,setResponseFromServer] = useState(null)
 
     
     setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + decidirCostoEnvio(deliveryMethod,userInfo.localidad))
@@ -65,7 +65,49 @@ export default function CarritoConfirm(){
             importeTotal:importeTotal
         }
 
-        axios.post(`${renderORLocalURL}/sendPreOrder`,payload,{withCredentials:true})
+
+        toast.promise(axios.post(`${renderORLocalURL}/sendPreOrder`,payload,{withCredentials:true}),
+            {
+               loading: 'Realizando pre-orden',
+               success: (res) => res.data?.message || 'Pre-orden enviada con éxito!',
+               error: (err) => {
+                
+                setTimeout(()=>{
+                    setLoading(prev =>{ 
+                        sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                        return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+                        })
+                },3000)
+
+
+                return err.response?.data?.message || 'Error al enviar la pre-orden.'},
+             },
+             {
+                // OPCIONES GLOBALES
+                success: {
+                  icon: '✅',
+                  position: 'bottom-center',
+                  duration: 4000,
+                },
+                error: {
+                  icon: '📢',
+                  position: 'bottom-center',
+                  duration: 7000,
+                  style: {
+                    border: '1px solid red',
+                    padding: '16px',
+                    color: 'black',
+                  }
+                },
+                loading: {
+                  icon: '🕓',
+                  position: 'bottom-center',
+                }
+              }
+           );
+
+
+
 
     }
 
@@ -87,41 +129,6 @@ export default function CarritoConfirm(){
 
 
    
-    useEffect(()=>{
-
-        socket.on('preOrderStatus',(data)=>{
-            console.log(data)
-
-            setLoading(prev =>{ 
-                sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
-            })
-
-            if(data.accepted){
-                
-                setBuyBTN(prev=>{
-                    sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
-                    return JSON.parse(sessionStorage.getItem("buyBTN"))
-                })
-
-            }
-
-            if(!data.status){
-                setResponseFromServer(data)
-            }
-
-            console.log("order actualizada ", data)
-        })
-
-
-
-
-        return ()=>{
-            socket.off('preOrderStatus')
-        }
-
-    },[socket,setBuyBTN])
-
 
 
     return(

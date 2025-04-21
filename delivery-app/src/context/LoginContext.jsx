@@ -41,8 +41,8 @@ export function LoginProvider({children}){
             
             axios.post(`${renderORLocalURL}/getAllPreOrders/${userInfo.id}`,{rol:userInfo.rol},{withCredentials:true}).then((res)=>{
                 
-                console.log(res.data)
-                setAllOrdersFromAdmin(res.data)
+               
+                setAllOrdersFromAdmin(JSON.parse(JSON.stringify(res.data)))
         
             })
 
