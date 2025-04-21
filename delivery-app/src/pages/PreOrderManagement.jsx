@@ -1,18 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 
-import { Fragment, useEffect} from "react"
+import { Fragment} from "react"
 import OrderInfo from "../components/OrderInfo"
 
 
 
 import { useSocketContext } from "../context/SocketContext"
-import { useLoginContext } from "../context/LoginContext"
+
 
 
 
 
 export default function PreOrderManagement(){
-    const {allOrdersFromAdmin} = useLoginContext()
     const {allPreOrders,acceptedOrders}  = useSocketContext()
 
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()

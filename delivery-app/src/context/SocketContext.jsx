@@ -47,18 +47,25 @@ export function SocketProvider({children}){
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
 
-    //para mantener viva la conexion al socket
+    //para mantener viva la conexion al socket, y "rehidrato" la informacion que traigo de la db
     useEffect(()=>{
         if(!socket || !userInfo) return 
 
+
+        const infoDeConexion = ()=>{
+            socket.emit('sesionIniciada', userInfo)
+            getOrdersAllOrdersData()
+        }
+
+
         if(userInfo){
             //en la primera vez y cada vez que se actualiza la pagina s evuelve a montar este evento nativo de conexion para garantizar que siempre este conectado el usuario
-            socket.on('connect',()=>{
-                getOrdersAllOrdersData()
-                console.log(socket)
-                socket.emit('sesionIniciada', userInfo)
-            })
+            socket.on('connect',infoDeConexion)
 
+            //aca si ya esta conectado lo vuelvo a lanzar porque puede conectarse incluso antes de que se active el useEeffect
+            if(socket.connected){
+                infoDeConexion()
+            }
 
         }
 
@@ -71,15 +78,13 @@ export function SocketProvider({children}){
     //me traigo las ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
 
 
-            
-    useEffect(()=>{
-        if(allOrdersFromAdmin){
+    useEffect(() => {
+        if (allOrdersFromAdmin) {
 
-            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed))
-            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed))
+          setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
+          setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)));
         }
-    },[])
-
+      }, [allOrdersFromAdmin]);       
 
 
 
@@ -88,6 +93,8 @@ export function SocketProvider({children}){
     
     //Gestion de respuestas del servidor
     useEffect(() => {
+
+        if(!userInfo) return
 
         socket.on('nuevaPreOrdenRecibida',(data)=>{
 
@@ -107,15 +114,17 @@ export function SocketProvider({children}){
 
                 setAcceptedOrders(prev => {
                     //me aseguro que no me repita la orden por si acaso
-                    const targetSinDuplicar = prev.filter(item=>item._id !== data.id)
+                    const ordenesPreviasConfirmadas = prev.filter(item=>item._id !== data.id)
 
+                    
                     if(esDeHoy(data.confirmedOrder.createdAt)){
 
-                        return [...targetSinDuplicar,data.confirmedOrder]
+                        return [...ordenesPreviasConfirmadas,data.confirmedOrder]
                     }
+                    
 
                 })
-                return
+                
                 }
 
                 if(data.canceled){
@@ -180,7 +189,7 @@ export function SocketProvider({children}){
           socket.off('deliveredOrder')
 
         };
-    }, []);
+    }, [userInfo]);
 
 
 
