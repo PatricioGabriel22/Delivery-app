@@ -1,16 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import { Fragment} from "react"
+import { Fragment, useEffect} from "react"
 import OrderInfo from "../components/OrderInfo"
 
 
 
 import { useSocketContext } from "../context/SocketContext"
+import { useLoginContext } from "../context/LoginContext"
 
 
 
 
 export default function PreOrderManagement(){
-    const {allPreOrders,acceptedOrders,}  = useSocketContext()
+    const {allOrdersFromAdmin} = useLoginContext()
+    const {allPreOrders,acceptedOrders}  = useSocketContext()
 
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()
     
@@ -29,6 +32,14 @@ export default function PreOrderManagement(){
     // },[renderORLocalURL])
 
 
+
+    
+    
+    
+
+            
+    
+    
 
 
 

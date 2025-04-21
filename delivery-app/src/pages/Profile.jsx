@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 
 
 import ProfileCard from "../components/ProfileCard";
@@ -11,19 +11,13 @@ import { Link } from "react-router-dom";
 
 export default function Profile(){
 
-    const {userInfo,allOrdersFromUser} = useLoginContext()
+    const {userInfo} = useLoginContext()
    
     const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
 
     const [open, setOpen] = useState(false);
 
   
-
-
-    useEffect(()=>{
-        console.log(allOrdersFromUser)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
 
 
     return(

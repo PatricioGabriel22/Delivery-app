@@ -9,7 +9,7 @@ import { connectedAdmins, connectedUsers } from "../webSocket.js"
 
 
 //lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo
-const restauranteAdmin = '6806b243b7dbd643024a518d' //serian los admins
+const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
 
 
 export const getAllPreOrders = async (req,res)=>{

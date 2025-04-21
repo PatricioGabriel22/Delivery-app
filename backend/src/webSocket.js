@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
         socket.userId = sessionPayload.id
         socket.rol = sessionPayload.rol
 
-
+        console.log("entro")
         if(socket.rol === 'admin'){
 
             connectedAdmins[socket.userId] = socket.id

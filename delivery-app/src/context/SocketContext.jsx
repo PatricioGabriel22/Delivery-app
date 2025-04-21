@@ -49,7 +49,7 @@ export function SocketProvider({children}){
 
     //para mantener viva la conexion al socket
     useEffect(()=>{
-        if(!socket) return 
+        if(!socket || !userInfo) return 
 
         if(userInfo){
             //en la primera vez y cada vez que se actualiza la pagina s evuelve a montar este evento nativo de conexion para garantizar que siempre este conectado el usuario
@@ -70,24 +70,22 @@ export function SocketProvider({children}){
 
     //me traigo las ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
 
+
+            
     useEffect(()=>{
-        getOrdersAllOrdersData()
+        if(allOrdersFromAdmin){
+
+            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed))
+            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed))
+        }
     },[])
 
-    useEffect(() => {
-        
-
-        if (allOrdersFromAdmin) {
-            setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
-            setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)))
-            
-                
-        }
 
 
-    }, [allOrdersFromAdmin]);
 
 
+    
+    
     //Gestion de respuestas del servidor
     useEffect(() => {
 
@@ -126,7 +124,7 @@ export function SocketProvider({children}){
                 setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
                 return
                 }
-            }else if(userInfo.rol === 'cliente'){
+            }else if(!userInfo.rol){
                 setLoading(prev =>{ 
                 sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
                 return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
@@ -158,7 +156,7 @@ export function SocketProvider({children}){
                 if(item._id === data.finishedOrder._id){
                     return {...item, finished: data.finishedOrder.finished}
                 }else{
-                    return item
+                    return {...item}
                 }
             }))
         })
@@ -182,7 +180,7 @@ export function SocketProvider({children}){
           socket.off('deliveredOrder')
 
         };
-    }, [allPreOrders,acceptedOrders]);
+    }, []);
 
 
 
