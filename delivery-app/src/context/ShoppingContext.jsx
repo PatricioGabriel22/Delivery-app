@@ -135,7 +135,7 @@ export function ShoppingProvider({ children }) {
 
     console.log(idOrden)
 
-    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{finishedFlag},{withCredentials:true})
+    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{orderInfo,finishedFlag},{withCredentials:true})
 
     
   }

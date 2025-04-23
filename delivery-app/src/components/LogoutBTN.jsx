@@ -14,8 +14,9 @@ export default function LogoutBTN(){
             <button 
                 className="cursor-pointer rounded bg-black "
                 onClick={()=>{
-                sessionStorage.clear()
-                window.location.reload()
+                    sessionStorage.clear()
+                    sessionStorage.clear()
+                    window.location.reload()
                 }}
             >
                 Cerrar sesion

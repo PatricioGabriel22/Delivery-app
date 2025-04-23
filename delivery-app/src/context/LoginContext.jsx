@@ -29,20 +29,54 @@ export function LoginProvider({children}){
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
+    const [allPreOrdersFromAdmin,setAllPreOrdersFromAdmin] = useState()
     const [allOrdersFromAdmin,setAllOrdersFromAdmin] = useState()
+
+
+    const [userOrders,setUserOrders] = useState()
+
+
+
 
     //modificar el endpoint para tener todas las ordenes del local o  todas las del usuario
 
 
 
-    function getOrdersAllOrdersData(){
+    function getAllPreOrdersData(){
+
+        if(!userInfo.rol) return
 
         try {
             
-            axios.post(`${renderORLocalURL}/getAllPreOrders/${userInfo.id}`,{rol:userInfo.rol},{withCredentials:true}).then((res)=>{
+            axios.get(`${renderORLocalURL}/getAllPreOrders/${userInfo.id}?rol=${userInfo.rol}`,{withCredentials:true})
+            .then((res)=>{
                 
-               
-                setAllOrdersFromAdmin(JSON.parse(JSON.stringify(res.data)))
+  
+
+                setAllPreOrdersFromAdmin(res.data)
+                
+        
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    function getAllOrdersData(){
+
+        try {
+            
+            axios.get(`${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${userInfo.rol}`,{withCredentials:true})
+            .then((res)=>{
+                
+                if(!userInfo.rol){
+                    setUserOrders(res.data)
+                }else if(userInfo.rol === 'admin'){
+
+                    setAllOrdersFromAdmin(res.data)
+                }
         
             })
 
@@ -54,6 +88,8 @@ export function LoginProvider({children}){
 
 
 
+
+    
 
 
  
@@ -69,10 +105,16 @@ export function LoginProvider({children}){
 
             userInfo,
             setUserInfo,
+            userOrders,
 
+            allPreOrdersFromAdmin,
             allOrdersFromAdmin,
-            setAllOrdersFromAdmin,
-            getOrdersAllOrdersData
+
+            setAllPreOrdersFromAdmin,
+
+            getAllPreOrdersData,
+            getAllOrdersData
+
             
             
 

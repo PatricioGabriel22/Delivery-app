@@ -15,6 +15,9 @@ function multerMiddleware(){
 }
 
 
+
+
+
 productRoutes.post('/uploadProduct',multerMiddleware().single('imagen'),dataFormNewProduct)
 
 

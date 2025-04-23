@@ -41,7 +41,7 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
 
-    const {allOrdersFromAdmin,getOrdersAllOrdersData} = useLoginContext()
+    const {allPreOrdersFromAdmin,getAllPreOrdersData} = useLoginContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {userInfo} = useLoginContext()
     const [allPreOrders, setAllPreOrders] = useState([])
@@ -54,7 +54,7 @@ export function SocketProvider({children}){
 
         const infoDeConexion = ()=>{
             socket.emit('sesionIniciada', userInfo)
-            getOrdersAllOrdersData()
+            getAllPreOrdersData()
         }
 
 
@@ -79,12 +79,12 @@ export function SocketProvider({children}){
 
 
     useEffect(() => {
-        if (allOrdersFromAdmin) {
+        if (allPreOrdersFromAdmin) {
 
-          setAllPreOrders(allOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
-          setAcceptedOrders(allOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)));
+          setAllPreOrders(allPreOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
+          setAcceptedOrders(allPreOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)));
         }
-      }, [allOrdersFromAdmin]);       
+      }, [allPreOrdersFromAdmin]);       
 
 
 
@@ -172,7 +172,7 @@ export function SocketProvider({children}){
 
         socket.on('ordenPreparada',(data)=>{
             console.log(data)
-            toast.success("Entramos por ordenPreparada")
+            toast.success(data.infoToUser)
         })
 
         socket.on('deliveredOrder',(data)=>{

@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Fragment, useEffect, useState } from "react";
 
 
 import ProfileCard from "../components/ProfileCard";
@@ -9,15 +10,23 @@ import { Link } from "react-router-dom";
 
 
 
+import { IoIosArrowDown } from "react-icons/io";
+
+
 export default function Profile(){
 
-    const {userInfo} = useLoginContext()
+    const {userInfo,userOrders} = useLoginContext()
    
     const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
 
     const [open, setOpen] = useState(false);
 
-  
+    useEffect(()=>{
+
+        console.log("Pedidos", userOrders)
+
+
+    },[])
 
 
     return(
@@ -30,11 +39,19 @@ export default function Profile(){
 
                 <ProfileCard userInfo={userInfo} />
 
-                {userInfo.rol === 'cliente' && (
+                {!userInfo.rol  && (
 
-                <div className="flex flex-col p-5 pt-9">
-                    <span className="pt-8 pb-8" >PRE-ORDENES EN REVISION</span>
-                    <span className="pt-8 pb-8" >Pedidos de {userInfo.username}</span>
+                <div className="flex flex-col  p-1 pt-9 w-full md:w-[60%] self-center items-center  ">
+
+                    <h3 className="pt-8 pb-8" >Pedidos de {userInfo.username}</h3>
+                    
+
+                    <span className="bg-red-500 w-full h-28 rounded text-black flex  items-center justify-around px-4 shadow-sm">
+                        <IoIosArrowDown size={30} className=""/>
+                        <p className="text-lg p-1">Fecha: 22/04/99</p>
+                        <p className="text-lg p-1">Entrega: Retiro en el local</p>
+                        <p className="text-lg p-1 font-semibold">$1999</p>
+                    </span>
 
                 </div>
                 )}

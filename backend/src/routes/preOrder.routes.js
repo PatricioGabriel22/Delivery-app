@@ -1,16 +1,19 @@
 import {Router} from "express";
-import {sendPreOrder, getAllPreOrders, PreOrderManager} from "../controllers/preOrder.controllers.js"
+import {getALLorders,sendPreOrder, pivoteDePreOrdenes, PreOrderManager} from "../controllers/preOrder.controllers.js"
 
 
 
 
 export const preOrderRoutes = Router()
 
+preOrderRoutes.get('/getAllOrders/:idTarget?',getALLorders) //me traigo todas las ordenes hechas al perfil 
 
-preOrderRoutes.post('/sendPreOrder',sendPreOrder) //manda la orden el usuario
 
-preOrderRoutes.post('/getAllPreOrders/:idTarget?',getAllPreOrders) //me traigo todas las ordenes hechas al perfil pana
+preOrderRoutes.get('/getAllPreOrders/:idTarget?',pivoteDePreOrdenes) //pivote de preordenes para verlas en el front
 
-preOrderRoutes.post('/PreOrderManagement/:idOrden?',PreOrderManager)
+preOrderRoutes.post('/sendPreOrder',sendPreOrder) //manda la orden del usuario
+
+
+preOrderRoutes.post('/PreOrderManagement/:idOrden?',PreOrderManager) //manejador de estados de la preorden
 
 

@@ -10,7 +10,7 @@ import { useLoginContext } from "../context/LoginContext";
 
 export default function LoginProtected(){
 
-  const {getOrdersAllOrdersData} = useLoginContext()
+  const {getAllPreOrdersData,getAllOrdersData} = useLoginContext()
   
 
   const isAuth = sessionStorage.getItem('auth') === 'true'
@@ -19,7 +19,8 @@ export default function LoginProtected(){
 
 
     if(isAuth){
-      getOrdersAllOrdersData()
+      getAllPreOrdersData()
+      getAllOrdersData()
     }
 
     

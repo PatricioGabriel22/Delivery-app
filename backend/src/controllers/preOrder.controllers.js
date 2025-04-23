@@ -5,6 +5,8 @@ import preOrderSchema from "../models/preOrder.schema.js"
 import  {ListaProductos} from './productos.test.js'
 import { io } from "../webSocket.js" 
 import { connectedAdmins, connectedUsers } from "../webSocket.js"
+import pedidosSchema from "../models/pedidosSchema.js"
+import userSchema from "../models/user.schema.js"
 
 
 
@@ -12,11 +14,14 @@ import { connectedAdmins, connectedUsers } from "../webSocket.js"
 const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
 
 
-export const getAllPreOrders = async (req,res)=>{
 
-    const {rol} = req.body 
+export const getALLorders = async (req,res)=>{
+
+    const {rol} = req.query 
     const {idTarget} = req.params
    
+  
+
     let allOrders
 
     if(!idTarget || !rol) return res.status(400)
@@ -26,17 +31,47 @@ export const getAllPreOrders = async (req,res)=>{
         switch (rol) {
             case 'admin':
                 
-                allOrders = await preOrderSchema.find({})
+
+                allOrders = await pedidosSchema.find({})
+
                 //ca tendria que buscar las ordenes que tengan como dueño al local tal para gestionarlas
                 break
         
             default:
-                allOrders = await preOrderSchema.find({userID:idTarget})
+
+                let userConPedidos = await userSchema.findById(idTarget).populate('pedidos')
+
+                allOrders = userConPedidos.pedidos
                 //ca tendria que buscar las ordenes que tengan como dueño al USUARIO tal para gestionarlas independiemtemente de donde compren
                 break
         }
 
         res.json(allOrders)
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
+
+export const pivoteDePreOrdenes = async (req,res)=>{
+
+    const {rol} = req.query 
+    const {idTarget} = req.params
+   
+    
+
+    if(!idTarget || !rol) return res.status(400)
+
+    //dejemos cuestiones de preORdenes SOLO para los admins
+
+    try {
+        
+        const allPreOrders = await preOrderSchema.find({})
+
+
+        res.json(allPreOrders)
 
     } catch (error) {
         console.log(error)
@@ -118,6 +153,23 @@ export const PreOrderManager = async (req,res)=>{
                 {new:true}
             )
             
+            const nuevoPedido =  new pedidosSchema({
+                
+                userID:orderInfo.userInfo.id,
+                productos:orderInfo.preOrder,
+                costoEnvio:orderInfo.costoEnvio,
+                importeTotal:orderInfo.importeTotal,
+                confirmed:true,
+                formaDeEntrega:updatedOrder.formaDeEntrega,
+
+            })
+
+            await nuevoPedido.save()
+
+            await userSchema.findByIdAndUpdate(
+                orderInfo.userInfo.id,
+                { $push: { pedidos: nuevoPedido._id } }
+            )
     
             console.log(updatedOrder)
     
@@ -161,14 +213,14 @@ export const PreOrderManager = async (req,res)=>{
         if(finishedFlag){
             const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:finishedFlag}},{new:true})
             
-
+            console.log(userSocketID,adminSocketID)
 
             io.to(adminSocketID).emit("finishedOrder",{
                 finishedOrder
             })
 
             io.to(userSocketID).emit("ordenPreparada",{
-                infoToUser:`${finishedOrder?.userInfo?.username}, su pedido se encuentra listo!`
+                infoToUser:`${orderInfo.userInfo.username} su pedido se encuentra listo!`
             })
             
             return

@@ -22,7 +22,11 @@ const userSchema = new mongoose.Schema({
         default:'cliente'
     },
     hintPassword:String,
-    categorias:{type: [String],default:[]}
+    categorias:{type: [String],default:[]}, //SOLO ADMINS    
+    pedidos:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Pedidos'
+    }]
     
 },{
     timestamps:true

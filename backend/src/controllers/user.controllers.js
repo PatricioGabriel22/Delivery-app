@@ -173,6 +173,7 @@ export const editProfileInfo = async(req,res)=>{
 }
 
 
+
 export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
     const {id,categoria} = req.body
 

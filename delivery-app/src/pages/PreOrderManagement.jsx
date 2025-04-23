@@ -16,15 +16,12 @@ export default function PreOrderManagement(){
     // const [mainArrayFromDB,setMainArrayFromDB] = useState()
     
 
-    
-
-
 
 
     // useEffect(()=>{
     //     axios.get(`${renderORLocalURL}/getAllPreOrders`,{withCredentials:true}).then((res)=>{
     //         setMainArrayFromDB(res.data)
-    //         setallOrdersFromAdmin(res.data.filter(data=> data.userInfo.id === userInfo.id))
+    //         setAllPreOrdersFromAdmin(res.data.filter(data=> data.userInfo.id === userInfo.id))
     //     })
 
     // },[renderORLocalURL])

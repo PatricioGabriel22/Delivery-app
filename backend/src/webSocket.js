@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
             console.log("Usuario conectado",sessionPayload.username)
         }
 
-
+        console.log("Usuarios coenctados:",connectedUsers)
 
     })
 
