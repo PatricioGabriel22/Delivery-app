@@ -2,18 +2,19 @@
 
 import { Fragment, useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
 
 import ProfileCard from "../components/ProfileCard";
 import { useLoginContext } from "../context/LoginContext";
+import { useOrdersContext } from "../context/OrdersContext";
+import { useConfirmedOrders } from "../context/SWR";
 
 import { MdArrowBackIosNew } from "react-icons/md";
-import { Link } from "react-router-dom";
+import {FadeLoader} from 'react-spinners'
 
 
 
 import { IoIosArrowDown } from "react-icons/io";
-import { useOrdersContext } from "../context/OrdersContext";
-import { useConfirmedOrders } from "../context/SWR";
 
 
 export default function Profile(){
@@ -33,10 +34,15 @@ export default function Profile(){
 
     useEffect(()=>{
 
-        console.log("Pedidos", confirmedOrders)
+        if(isLoading){
+            console.log("cargando...")
+        }else{
+
+            console.log("Pedidos", confirmedOrders)
+        }
 
 
-    },[confirmedOrders])
+    },[confirmedOrders,isLoading])
 
 
     return(
@@ -49,27 +55,43 @@ export default function Profile(){
 
                 <ProfileCard userInfo={userInfo} />
 
-                {!userInfo.rol  && (
+                {isLoading && (
+                    <span className="flex flex-col w-full h-full items-center justify-center">
 
-                <div className="flex flex-col  p-1 pt-9 w-full md:w-[60%] self-center items-center  ">
+                        <FadeLoader color="#f90b0b" className="self-center mt-10" />
 
-                    <h3 className="pt-8 pb-8" >Pedidos de {userInfo.username}</h3>
-                    
+                        <p>Cargando pedidos...</p>
 
-                    <span className="bg-red-500 w-full h-28 rounded text-black flex  items-center justify-around px-4 shadow-sm">
-                        <IoIosArrowDown size={30} className=""/>
-                        <p className="text-lg p-1">Fecha: 22/04/99</p>
-                        <p className="text-lg p-1">Entrega: Retiro en el local</p>
-                        <p className="text-lg p-1 font-semibold">$1999</p>
                     </span>
+                )}
 
-                </div>
+                {!userInfo.rol  && !isLoading &&  (
+
+                    <Fragment>
+
+                        <h3 className="pt-12 self-center font-bold text-3xl">Pedidos de {userInfo.username}</h3>
+                        <div className="flex flex-col p-1 py-6 w-full  md:w-[60%] self-center items-center ">
+
+                            
+                            {confirmedOrders.map((confirmedOrder)=>( 
+
+                                <span 
+                                className={`${confirmedOrder.formaDeEntrega === 'Envio'? "bg-red-500":"bg-sky-500"} sm:w-full w-[90%] h-20  rounded-2xl text-black flex  items-center justify-around px-4 shadow-sm m-2 cursor-pointer`}>
+                                    <IoIosArrowDown size={30} className=""/>
+                                    <p className="text-lg p-1 w-1/2 text-center ">Fecha: 22/04/99</p>
+                                    <p className="text-lg p-1 w-1/2 text-center ">{confirmedOrder.formaDeEntrega}</p>
+                                    <p className="text-lg p-1 w-1/2  text-end font-semibold">$1999</p>
+                                </span>
+                            ))}
+
+                        </div>
+                    </Fragment>
                 )}
 
 
 
                 
-                {userInfo.rol === 'admin' && (
+                {userInfo.rol === 'admin'&& !isLoading  && (
 
                 <div className="flex flex-col md:flex-row w-full justify-around pt-10 gap-x-20 gap-y-10 flex-wrap c">
 

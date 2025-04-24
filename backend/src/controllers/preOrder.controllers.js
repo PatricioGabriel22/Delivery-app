@@ -19,12 +19,13 @@ export const getALLorders = async (req,res)=>{
 
     const {rol} = req.query 
     const {idTarget} = req.params
-   
+    
   
+    console.log(rol,idTarget)
 
     let allOrders
 
-    if(!idTarget || !rol) return res.status(400)
+    // if(!idTarget || !rol) return res.status(400).json({ error: 'Faltan datos: idTarget o rol' })
 
     try {
         
@@ -37,7 +38,7 @@ export const getALLorders = async (req,res)=>{
                 //ca tendria que buscar las ordenes que tengan como dueño al local tal para gestionarlas
                 break
         
-            default:
+            case 'cliente':
 
                 let userConPedidos = await userSchema.findById(idTarget).populate('pedidos')
 
@@ -57,12 +58,12 @@ export const getALLorders = async (req,res)=>{
 
 export const pivoteDePreOrdenes = async (req,res)=>{
 
-    const {rol} = req.query 
-    const {idTarget} = req.params
+    
+    const {idAdmin} = req.params
    
     
 
-    if(!idTarget || !rol) return res.status(400)
+    if(!idAdmin) return res.status(400)
 
     //dejemos cuestiones de preORdenes SOLO para los admins
 

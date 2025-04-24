@@ -42,9 +42,9 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
 
-    const {allPreOrdersFromAdmin,getAllPreOrdersData} = useOrdersContext()
-    const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {userInfo} = useLoginContext()
+    const {allPreOrdersFromAdmin,AdminPreOrdersData} = useOrdersContext()
+    const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
 
@@ -55,7 +55,10 @@ export function SocketProvider({children}){
 
         const infoDeConexion = ()=>{
             socket.emit('sesionIniciada', userInfo)
-            getAllPreOrdersData()
+
+            if(userInfo?.rol === "admin"){
+                AdminPreOrdersData()
+              }
         }
 
 
@@ -80,12 +83,13 @@ export function SocketProvider({children}){
 
 
     useEffect(() => {
+
         if (allPreOrdersFromAdmin) {
 
           setAllPreOrders(allPreOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
           setAcceptedOrders(allPreOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)));
         }
-      }, [allPreOrdersFromAdmin]);       
+    }, [allPreOrdersFromAdmin]);       
 
 
 

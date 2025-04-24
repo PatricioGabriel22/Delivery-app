@@ -36,49 +36,46 @@ export function OrderProvider({children}){
     const [urlConfirmedOrders,setUrlConfirmedOrders] = useState()
 
 
-    const { confirmedOrders, isLoading, isError, refresh } = useConfirmedOrders(userInfo,urlConfirmedOrders);
     
     useEffect(()=>{
         if(userInfo){
-            const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${userInfo.rol}`
+            const rol = userInfo.rol === 'admin' ? userInfo.rol: "cliente"
+            const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
             setUrlConfirmedOrders(aux)
 
         }
     },[userInfo])
 
-    async function getAllPreOrdersData(){
+
+    async function AdminPreOrdersData(){
 
         if(!userInfo.rol) return
             
-        const res = await axios.get(urlConfirmedOrders,{withCredentials:true})
-
-        if(!res) return
-
-        if(res.data){
-            setAllPreOrdersFromAdmin(res.data)
+        try {
+            
+            const res = await axios.get(`${renderORLocalURL}/AdminPreOrders/${userInfo.id}`,{withCredentials:true})
+    
+            if(!res) return
+    
+            if(res.data){
+    
+                setAllPreOrdersFromAdmin(res.data)
+            }
+        } catch (error) {
+        console.log(error)   
         }
         
 
     }
 
 
+    const { confirmedOrders, isLoading, isError, refresh } = useConfirmedOrders(userInfo,urlConfirmedOrders);
 
 
-
-
-
-
-    
-
-
- 
-
-
-        
 
     return(
         <ordersContext.Provider value={{
-            getAllPreOrdersData,
+            AdminPreOrdersData,
            
             
             allPreOrdersFromAdmin,
