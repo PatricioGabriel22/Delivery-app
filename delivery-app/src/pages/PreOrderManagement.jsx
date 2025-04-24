@@ -52,10 +52,6 @@ export default function PreOrderManagement(){
                             <OrderInfo 
                             title={"Pre-Ordenes"} 
                             preOrderInfo={preOrder}
-                            nombreCliente={preOrder.userInfo.username} 
-                            formaDeEntrega={preOrder.formaDeEntrega}
-                            importe={preOrder.importeTotal}
-                            confirmado={preOrder.confirmed}
                             />
                         ))}
                     </div>
@@ -66,13 +62,6 @@ export default function PreOrderManagement(){
                             <OrderInfo 
                                 title={"Aceptadas"} 
                                 preOrderInfo={acceptedOrder}
-                                nombreCliente={acceptedOrder.userInfo.username} 
-                                formaDeEntrega={acceptedOrder.formaDeEntrega}
-                                importe={acceptedOrder.importeTotal}
-                                preparado={acceptedOrder.finished}
-                                entregado={acceptedOrder.delivered}
-
-
                                 />
                         ))}
                     </div>

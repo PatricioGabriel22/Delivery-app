@@ -1,4 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+
 import { Fragment, useEffect, useState } from "react";
 
 
@@ -11,22 +12,31 @@ import { Link } from "react-router-dom";
 
 
 import { IoIosArrowDown } from "react-icons/io";
+import { useOrdersContext } from "../context/OrdersContext";
+import { useConfirmedOrders } from "../context/SWR";
 
 
 export default function Profile(){
 
-    const {userInfo,userOrders} = useLoginContext()
-   
+    const {userInfo} = useLoginContext()
+    const {confirmedOrders, isLoading, isError, refresh } = useOrdersContext()
+
+
+
+
+    const [open, setOpen] = useState(false)
+
+
+
     const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
 
-    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
 
-        console.log("Pedidos", userOrders)
+        console.log("Pedidos", confirmedOrders)
 
 
-    },[])
+    },[confirmedOrders])
 
 
     return(

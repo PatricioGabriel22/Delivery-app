@@ -10,7 +10,9 @@ import { decidirCostoEnvio } from "../utils/envioFunctions";
 
 
 
-export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntrega,importe,confirmado,preparado,entregado}){
+export default function OrderInfo({title,preOrderInfo}){
+
+    const {nombreCliente,formaDeEntrega,importe,confirmado,preparado,entregado} = preOrderInfo
 
     const {renderORLocalURL} = useLoginContext()
 

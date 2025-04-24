@@ -9,6 +9,7 @@ import { esDeHoy } from "../utils/dateFunctions"
 import { io } from "socket.io-client"
 import { useShoppingContext } from "./ShoppingContext"
 import toast from "react-hot-toast"
+import { useOrdersContext } from "./OrdersContext"
 
 
 
@@ -41,7 +42,7 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
 
-    const {allPreOrdersFromAdmin,getAllPreOrdersData} = useLoginContext()
+    const {allPreOrdersFromAdmin,getAllPreOrdersData} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {userInfo} = useLoginContext()
     const [allPreOrders, setAllPreOrders] = useState([])
