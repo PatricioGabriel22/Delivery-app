@@ -133,8 +133,9 @@ export const sendPreOrder =  async (req,res)=>{
 export const PreOrderManager = async (req,res)=>{
 
 
-    const {orderInfo,preOrderAcceptedFlag,canceledFlag,finishedFlag,deliveredFlag,msgDeSugerencia} = req.body
+    const {orderInfo,status,notification} = req.body
     const {idOrden} = req.params
+    console.log(req.body)
 
     const comprador = orderInfo?.userInfo?.id
     const userSocketID = connectedUsers[comprador]
@@ -145,96 +146,102 @@ export const PreOrderManager = async (req,res)=>{
     const socketsToNotify = [userSocketID,adminSocketID]
 
 
+    let nuevaDataEmitida
+
+
+
     try {
-        if(preOrderAcceptedFlag){
-            const updatedOrder = await preOrderSchema.findByIdAndUpdate(
-                orderInfo._id,
-                {$set: {confirmed:preOrderAcceptedFlag}},
-                {new:true}
-            )
-            
-            const nuevoPedido =  new pedidosSchema({
+
+        switch (status) {
+            case 'aceptada':
                 
-                userID:orderInfo.userInfo.id,
-                productos:orderInfo.preOrder,
-                costoEnvio:orderInfo.costoEnvio,
-                importeTotal:orderInfo.importeTotal,
-                confirmed:true,
-                formaDeEntrega:updatedOrder.formaDeEntrega,
+                const updatedOrder = await preOrderSchema.findByIdAndUpdate(
+                    orderInfo._id,
+                    {$set: {confirmed:true}},
+                    {new:true}
+                )
+                
+                const nuevoPedido =  new pedidosSchema({
+                    
+                    userID:orderInfo.userInfo.id,
+                    productos:orderInfo.preOrder,
+                    costoEnvio:orderInfo.costoEnvio,
+                    importeTotal:orderInfo.importeTotal,
+                    confirmed:true,
+                    formaDeEntrega:updatedOrder.formaDeEntrega,
 
-            })
+                })
 
-            await nuevoPedido.save()
+                await nuevoPedido.save()
 
-            await userSchema.findByIdAndUpdate(
-                orderInfo.userInfo.id,
-                { $push: { pedidos: nuevoPedido._id } }
-            )
-    
-            console.log(updatedOrder)
-    
-            const nuevaDataEmitida = {
-                id:updatedOrder._id,
-                accepted:updatedOrder.confirmed,
-                confirmedOrder:updatedOrder
-            }
-
-            
-            socketsToNotify.forEach((socket)=>{
-                io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
-            })
-
-    
-             
-            return
-        }
-
-        if(canceledFlag){
-
-            
-
-            await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
-
-            
-            const nuevaDataEmitida = {
-                id:orderInfo._id,
-                canceled:true,
-                msgDeSugerencia:msgDeSugerencia
-            }
-
-            socketsToNotify.forEach((socket)=>{
-                io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
-            })
-
-
-            return res.json({infoToUser:`El cliente:${orderInfo.userInfo.username}, fue notificado`})
-        }
+                await userSchema.findByIdAndUpdate(
+                    orderInfo.userInfo.id,
+                    { $push: { pedidos: nuevoPedido._id } }
+                )
         
-        if(finishedFlag){
-            const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:finishedFlag}},{new:true})
-            
-            console.log(userSocketID,adminSocketID)
-
-            io.to(adminSocketID).emit("finishedOrder",{
-                finishedOrder
-            })
-
-            io.to(userSocketID).emit("ordenPreparada",{
-                infoToUser:`${orderInfo.userInfo.username} su pedido se encuentra listo!`
-            })
-            
-            return
-        }
+                console.log(updatedOrder)
         
-        if(deliveredFlag){
-            const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:deliveredFlag}},{new:true})
+                nuevaDataEmitida = {
+                    id:updatedOrder._id,
+                    accepted:updatedOrder.confirmed,
+                    confirmedOrder:updatedOrder
+                }
+
+                
+                socketsToNotify.forEach((socket)=>{
+                    io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
+                })
+
+
+
+            break;
+                
+            case 'cancelada':
+                await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
+
+            
+                nuevaDataEmitida = {
+                    id:orderInfo._id,
+                    canceled:true,
+                    msgDeSugerencia:msgDeSugerencia
+                }
     
-            io.to(adminSocketID).emit("deliveredOrder",{
-                deliveredOrder
-            })
-            return
+                socketsToNotify.forEach((socket)=>{
+                    io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
+                })
+    
+    
+                res.json({infoToUser:`El cliente:${orderInfo.userInfo.username}, fue notificado`})
+
+            break
+
+            case 'preparada':
+
+                const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:true}},{new:true})
+            
+                console.log(userSocketID,adminSocketID)
+    
+                io.to(adminSocketID).emit("finishedOrder",{
+                    finishedOrder
+                })
+    
+                io.to(userSocketID).emit("ordenPreparada",{
+                    infoToUser:`${orderInfo.userInfo.username} su pedido se encuentra listo!`
+                })
+                
+            break   
+            
+            case 'entregada':
+                const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:true}},{new:true})
+    
+                io.to(adminSocketID).emit("deliveredOrder",{
+                    deliveredOrder
+                })
+            break
+
         }
-        
+
+    
 
 
     } catch (error) {

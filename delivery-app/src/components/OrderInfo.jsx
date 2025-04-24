@@ -14,7 +14,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
 
     const {renderORLocalURL} = useLoginContext()
 
-    const { acceptPreOrder, cancelPreOrder, ordenPreparada, ordenEntregada} = useShoppingContext()
+    const {orderStatusHandler} = useShoppingContext()
 
     const [flagMsgSugerencias,setFlagMsgSugerencias] = useState(false)
 
@@ -38,7 +38,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
         const msgDeSugerencia = e.target[0].value
         console.log(msgDeSugerencia)
 
-        cancelPreOrder(renderORLocalURL,preOrderInfo,msgDeSugerencia)
+        orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada",msgDeSugerencia)
         cerrarModal()
     }
 
@@ -78,12 +78,12 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                             <div className="flex flex-row justify-around w-full ">                           
                                 <button 
                                     className={`cursor-pointer hover:bg-sky-500 rounded-lg p-2 ${preparado? "bg-green-500":"bg-sky-100"} `}
-                                    onClick={()=>ordenPreparada(renderORLocalURL,preOrderInfo)}
+                                    onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"preparada")}
                                     >Preparada</button>
 
                                 <button 
                                     className={`cursor-pointer bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${entregado? "bg-green-500":""} `}
-                                    onClick={()=>ordenEntregada(renderORLocalURL,preOrderInfo)}
+                                    onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"entregada")}
                                     >Entregada</button>
 
                             </div>
@@ -154,7 +154,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                                         size={80} 
                                         className={`text-green-700 hover:text-green-500 ${confirmado || flagMsgSugerencias? "hidden":""} `}
                                         onClick={()=>{
-                                            acceptPreOrder(renderORLocalURL,preOrderInfo)
+                                            orderStatusHandler(renderORLocalURL,preOrderInfo,"aceptada")
                                             cerrarModal()
                                         }}
                                     />
@@ -186,7 +186,7 @@ export default function OrderInfo({title,preOrderInfo,nombreCliente,formaDeEntre
                                     <span className="w-full h-[1px] bg-black"/>
                                     <button 
                                         onClick={()=>{
-                                            cancelPreOrder(renderORLocalURL,preOrderInfo)
+                                            orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada")
                                             cerrarModal()
                                         }} 
                                         className={`text-black hover:text-red-700  w-full text-center cursor-pointer`}> Cancelar definitivamente</button>

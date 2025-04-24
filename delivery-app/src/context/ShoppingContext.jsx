@@ -105,54 +105,26 @@ export function ShoppingProvider({ children }) {
 
 
 
-  async function acceptPreOrder(url,orderInfo){
-
-    const preOrderAcceptedFlag = true
-    console.log(orderInfo)
-    await axios.post(`${url}/PreOrderManagement`,{orderInfo,preOrderAcceptedFlag},{withCredentials:true})
-  }
-
-  async function cancelPreOrder(url,orderInfo,msgDeSugerencia){
+  async function orderStatusHandler(url,orderInfo,status,notification){
 
 
-    const canceledFlag = true
-  
-    await axios.post(`${url}/PreOrderManagement`,{orderInfo,canceledFlag,msgDeSugerencia},{withCredentials:true})
+    const payload = {
+      orderInfo,
+      status,
+      notification
+    }
+
+    console.log(payload)
+
+    await axios.post(`${url}/PreOrderManagement/${orderInfo?._id}`,payload,{withCredentials:true})
     .then(res=>{
       console.log(res)
       toast.success(res.data.infoToUser)
     })
     .catch(error=>console.log(error))
-    
+
+
   }
-
-  
-  async function ordenPreparada(url,orderInfo){
-
-    console.log(orderInfo)
-    const finishedFlag = true
-    const idOrden = orderInfo?._id
-
-    console.log(idOrden)
-
-    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{orderInfo,finishedFlag},{withCredentials:true})
-
-    
-  }
-
-
-  async function ordenEntregada(url,orderInfo){
-
-    const deliveredFlag = true
-    const idOrden = orderInfo?._id
-    console.log(idOrden)
-    await axios.post(`${url}/PreOrderManagement/${idOrden}`,{deliveredFlag},{withCredentials:true})
-  }
-
-
-
-
-
 
 
 
@@ -182,10 +154,7 @@ export function ShoppingProvider({ children }) {
           cantidadVisualizer,
           cartHandler,
 
-          acceptPreOrder,
-          cancelPreOrder,
-          ordenPreparada,
-          ordenEntregada
+          orderStatusHandler
 
 
         }}>
