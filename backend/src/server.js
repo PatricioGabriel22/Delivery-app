@@ -33,13 +33,7 @@ server.use(userRoutes)
 server.use(preOrderRoutes)
 server.use(productRoutes)
 
-// Iniciar el servidor HTTP
-server.listen(PORT, () => {
-    console.log(`Server on port ${PORT}`);
+// Iniciar el servidor HTTP + WebSocket en el mismo puerto
+httpServer.listen(PORT, () => {
+    console.log(`HTTP + WebSocket server running on port ${PORT}`)
 })
-
-// El servidor WebSocket
-httpServer.listen(PORT+99, () => {
-    console.log(`WebSocket server on port ${PORT}`);
-})
-
