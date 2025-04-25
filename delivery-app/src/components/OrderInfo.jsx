@@ -6,13 +6,17 @@ import { GiConfirmed } from "react-icons/gi";
 import { useLoginContext } from "../context/LoginContext";
 import { useShoppingContext } from "../context/ShoppingContext";
 import { decidirCostoEnvio } from "../utils/envioFunctions";
+import BannerCloseLogo from "./BannerCloseLogo";
 
 
 
 
 export default function OrderInfo({title,preOrderInfo}){
 
-    const {nombreCliente,formaDeEntrega,importe,confirmado,preparado,entregado} = preOrderInfo
+    const {formaDeEntrega,importeTotal,confirmed,finished,delivered} = preOrderInfo
+    const {username} = preOrderInfo.userInfo
+
+
 
     const {renderORLocalURL} = useLoginContext()
 
@@ -55,8 +59,8 @@ export default function OrderInfo({title,preOrderInfo}){
 
             <span className="bg-white  h-38 rounded-xl text-black flex flex-col gap-y-2 m-2  mb-10 cursor-pointer">
                 <div className="text-xl  flex flex-row justify-around">
-                   <span className="font-bold">{nombreCliente}</span>
-                   <span className="font-bold">${importe}</span>
+                   <span className="font-bold">{username}</span>
+                   <span className="font-bold">${importeTotal}</span>
                 </div>
 
                 <div className="text-center text-xl text-gray- font-bold">
@@ -79,12 +83,12 @@ export default function OrderInfo({title,preOrderInfo}){
                             (   
                             <div className="flex flex-row justify-around w-full ">                           
                                 <button 
-                                    className={`cursor-pointer hover:bg-sky-500 rounded-lg p-2 ${preparado? "bg-green-500":"bg-sky-100"} `}
+                                    className={`cursor-pointer hover:bg-sky-500 rounded-lg p-2 ${finished? "bg-green-500":"bg-sky-100"} `}
                                     onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"preparada")}
                                     >Preparada</button>
 
                                 <button 
-                                    className={`cursor-pointer bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${entregado? "bg-green-500":""} `}
+                                    className={`cursor-pointer bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${delivered? "bg-green-500":""} `}
                                     onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"entregada")}
                                     >Entregada</button>
 
@@ -95,13 +99,10 @@ export default function OrderInfo({title,preOrderInfo}){
                     </div>      
 
                     <dialog ref={dialogRef} className="rounded-xl p-6 shadow-xl w-full md:w-[45%] h-[90%] justify-self-center self-center backdrop:bg-black/50">
-                        <div className="flex justify-between items-start">
-                            <img src="/vite.png" className="h-24"/>
-                            <span onClick={()=>cerrarModal()} className=" bg-red-700 p-3 text-white rounded-lg">X</span>
-                        </div>
+                            <BannerCloseLogo close={cerrarModal} />
 
                         <div className="flex flex-col text-lg ">
-                            <p className="font-bold">Nombre: {nombreCliente}</p>
+                            <p className="font-bold">Nombre: {username}</p>
                             <p className="font-bold">Telefono: {preOrderInfo.userInfo.telefono}</p>
                             <p className="font-bold">Direccion: {preOrderInfo.userInfo.direccion}</p>
                             <p className="font-bold">Entrecalles/Esquina: {preOrderInfo.userInfo.entreCalles}</p>
@@ -136,7 +137,7 @@ export default function OrderInfo({title,preOrderInfo}){
                                 className={`flex flex-row justify-between  w-full text-xl text-end rounded p-2
                                     ${formaDeEntrega === 'Envio' ? "bg-red-500" : "bg-sky-500"} } `}>
                                 <p className="font-bold">{formaDeEntrega}</p>
-                                <p className="font-bold ">Total: ${importe}</p>
+                                <p className="font-bold ">Total: ${importeTotal}</p>
                             </div>
 
                         </div>
@@ -154,7 +155,7 @@ export default function OrderInfo({title,preOrderInfo}){
                                     />
                                     <GiConfirmed 
                                         size={80} 
-                                        className={`text-green-700 hover:text-green-500 ${confirmado || flagMsgSugerencias? "hidden":""} `}
+                                        className={`text-green-700 hover:text-green-500 ${confirmed || flagMsgSugerencias? "hidden":""} `}
                                         onClick={()=>{
                                             orderStatusHandler(renderORLocalURL,preOrderInfo,"aceptada")
                                             cerrarModal()

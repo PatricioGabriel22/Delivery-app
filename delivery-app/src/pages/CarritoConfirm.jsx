@@ -60,7 +60,7 @@ export default function CarritoConfirm(){
         const payload = {
             userInfo,
             preOrderPayload: listaDeCompras,
-            costoEnvio:decidirCostoEnvio(userInfo.localidad,deliveryMethod),
+            costoEnvio:decidirCostoEnvio(deliveryMethod,userInfo.localidad),
             deliveryMethod,
             importeTotal:importeTotal
         }

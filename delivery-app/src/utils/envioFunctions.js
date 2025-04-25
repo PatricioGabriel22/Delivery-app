@@ -4,9 +4,10 @@
 export function decidirCostoEnvio(formaEntrega,localidad){
 
     let costoEnvio = 0
-
+    localidad.toLowerCase()
     
     if(formaEntrega === "Envio"){
+
         if(localidad === "monte grande"){
            costoEnvio = 3500
           

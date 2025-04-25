@@ -40,9 +40,10 @@ export const getALLorders = async (req,res)=>{
         
             case 'cliente':
 
-                let userConPedidos = await userSchema.findById(idTarget).populate('pedidos')
+                let userConPedidos = await userSchema.findById(idTarget).populate({path:'pedidos',options: {sort:{createdAt: -1}}})
 
                 allOrders = userConPedidos.pedidos
+                console.log(allOrders)
                 //ca tendria que buscar las ordenes que tengan como dueño al USUARIO tal para gestionarlas independiemtemente de donde compren
                 break
         }
