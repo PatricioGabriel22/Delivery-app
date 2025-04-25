@@ -25,7 +25,7 @@ const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/produ
 export default function Profile(){
 
     const {userInfo} = useLoginContext()
-    const {confirmedOrders, isLoading, isError, refresh } = useOrdersContext()
+    const {confirmedOrders, isLoading, isError, refresh, actionVerMasOrdenes, setPages } = useOrdersContext()
 
     const [open, setOpen] = useState(false)
     
@@ -47,13 +47,13 @@ export default function Profile(){
 
 
 
-
     useEffect(()=>{
 
 
         if(isLoading){
             console.log("cargando...")
         }else{
+            console.log(confirmedOrders)
             console.log("Pedidos cargados!")
 
             setSelectedOrder(confirmedOrders[0])
@@ -92,7 +92,7 @@ export default function Profile(){
                     </span>
                 )}
 
-                {!userInfo.rol  && !isLoading &&  (
+                {!userInfo.rol  && !isLoading &&  !isError && (
 
                     <Fragment>
 
@@ -102,14 +102,32 @@ export default function Profile(){
 
                         <span className="bg-red-700 w-[90%] h-[1px] self-center m-1 my-3"/>
 
-                        <div className="w-[90%] flex justify-end ">
-                          
-                            <SlRefresh 
-                                size={25} 
-                                className="cursor-pointer"
-                                onClick={refresh}
-                            
-                            />
+                        <div className="w-full flex justify-around ">
+ 
+
+                            {confirmedOrders.length === 5 ? (
+                                    <button 
+                                        onClick={()=>actionVerMasOrdenes()}
+                                        className="rounded p-2 hover:bg-green-700 cursor-pointer">
+                                        Ver mas ordenes
+                                    </button>
+                            ) : (
+                                    <button
+                                        onClick={()=>setPages(1)}
+                                        className="rounded p-2 hover:bg-gray-700 cursor-pointer">
+                                        Vovler al principio
+                                    </button>
+                            )}
+
+                            <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer">
+                                <p>Actualizar</p>
+                                <SlRefresh 
+                                    size={25} 
+                                    className="cursor-pointer"
+                                    onClick={refresh}
+                                
+                                />
+                            </div>
                         </div>
 
                       
@@ -117,7 +135,7 @@ export default function Profile(){
                         <div className="flex flex-col p-1 py-6 w-full  md:w-[60%] self-center items-center ">
 
                             
-                            {confirmedOrders.length >0 && confirmedOrders?.map((confirmedOrder)=>( 
+                            {confirmedOrders.length >0 && confirmedOrders.map((confirmedOrder)=>( 
                                 <Fragment>
 
                                     <span

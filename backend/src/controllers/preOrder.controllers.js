@@ -17,38 +17,71 @@ const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
 
 export const getALLorders = async (req,res)=>{
 
-    const {rol} = req.query 
+    const {rol,page,limit} = req.query 
     const {idTarget} = req.params
     
   
-    console.log(rol,idTarget)
-
     let allOrders
+    let totalPages
+    let totalOrders
 
     // if(!idTarget || !rol) return res.status(400).json({ error: 'Faltan datos: idTarget o rol' })
 
     try {
-        
+        const hasPagination = page && limit
+        const skippedData = (page-1)*limit
+        const parseLimit = parseInt(limit)
+
+
         switch (rol) {
             case 'admin':
                 
 
-                allOrders = await pedidosSchema.find({})
+                const query = pedidosSchema.find({})
+                
+                if(hasPagination){
 
-                //ca tendria que buscar las ordenes que tengan como dueño al local tal para gestionarlas
-                break
+                    query.skip(skippedData).limit(parseLimit)
+                }
+                
+                allOrders = await query.exec()
+
+                
+                const totalOrders = await pedidosSchema.countDocuments()
+                totalPages = hasPagination ? Math.ceil(totalOrders / parseLimit) : 1
+                    
+
+
+            break
         
             case 'cliente':
 
-                let userConPedidos = await userSchema.findById(idTarget).populate({path:'pedidos',options: {sort:{createdAt: -1}}})
+                let userConPedidos = await userSchema.findById(idTarget)
+                    .populate({path:'pedidos',
+                        options: {
+                            sort:{ createdAt: -1 },
+                            skip:skippedData,
+                            limit:parseLimit
+                        }})
 
                 allOrders = userConPedidos.pedidos
-                console.log(allOrders)
-                //ca tendria que buscar las ordenes que tengan como dueño al USUARIO tal para gestionarlas independiemtemente de donde compren
-                break
-        }
+                
+                const totalOrdersFromUser = userConPedidos.pedidos.length
+                    console.log(totalOrdersFromUser)
+                
+                totalPages = Math.ceil(totalOrdersFromUser / parseLimit)
 
-        res.json(allOrders)
+       
+                
+                
+            break
+            
+        } 
+
+        res.json({
+            allOrders:allOrders,
+            totalPages:totalPages
+        })
 
     } catch (error) {
         console.log(error)

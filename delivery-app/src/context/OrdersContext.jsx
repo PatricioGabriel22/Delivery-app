@@ -35,6 +35,7 @@ export function OrderProvider({children}){
     const [allPreOrdersFromAdmin,setAllPreOrdersFromAdmin] = useState()
     const [urlConfirmedOrders,setUrlConfirmedOrders] = useState()
 
+    const [pages,setPages] = useState(1)
 
     
     useEffect(()=>{
@@ -46,6 +47,7 @@ export function OrderProvider({children}){
         }
     },[userInfo])
 
+    console.log(pages)
 
     async function AdminPreOrdersData(){
 
@@ -69,9 +71,18 @@ export function OrderProvider({children}){
     }
 
 
-    const { confirmedOrders, isLoading, isError, refresh } = useConfirmedOrders(userInfo,urlConfirmedOrders);
+    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,true,pages);
 
+    
+    function actionVerMasOrdenes(){
 
+        const paginaFinal = totalPages+1
+
+        if(pages > paginaFinal) return
+
+        setPages(prev=>prev+1)
+    }
+    
 
     return(
         <ordersContext.Provider value={{
@@ -82,7 +93,9 @@ export function OrderProvider({children}){
             setAllPreOrdersFromAdmin,
 
 
-            confirmedOrders, isLoading, isError, refresh
+            confirmedOrders, isLoading, isError, refresh,
+            actionVerMasOrdenes,
+            setPages
 
         }}>
 

@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { SWRConfig } from 'swr'
 import axios from 'axios'
 
 
@@ -13,15 +13,30 @@ async function getAllConfirmedOrdersData(url){
 }
 
 
-export function useConfirmedOrders(userInfo,url){
-    const fetchFlag = userInfo?.id 
+export function useConfirmedOrders(userInfo,url,withPagination = true,page = 1, limit = 5){
 
-    const { data, error, isLoading, mutate } = useSWR(`${fetchFlag ? url: null}`,getAllConfirmedOrdersData)
+    let targetURL
+    const fetchFlag = userInfo ? userInfo?.id : null 
+
+    if(withPagination){
+        const paginatedURL = `${fetchFlag ? url : ''}&page=${page}&limit=${limit}`;
+        targetURL = paginatedURL
+    }else{
+        targetURL = url
+    }
+
+    const SWRoptions =   {
+        refreshInterval: 1000 * 30, // Actualiza cada 30 segundos
+        revalidateOnFocus: true, // Refresca si volvés a la pestaña
+    }
+
+    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllConfirmedOrdersData,SWRoptions)
 
     return {
-        confirmedOrders: data || [],
+        confirmedOrders: data?.allOrders || [],
         isLoading,
         isError: error,
         refresh: mutate,
+        totalPages: data?.totalPages || 0
       };
 }
