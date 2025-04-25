@@ -225,3 +225,57 @@ export default function Profile(){
         </Fragment>
     )
 }
+
+
+
+// socket.on("nuevaOrdenConfirmada", (orden) => {
+//     mutate((oldData) => {
+//       return {
+//         ...oldData,
+//         allOrders: [orden, ...oldData.allOrders],
+//       };
+//     }, false); // false para no revalidar con el servidor
+//   });
+
+
+
+
+
+
+
+
+
+
+
+
+// 📦 mutate() en SWR
+// La función mutate() permite actualizar manualmente el caché de SWR, sin necesidad de hacer una nueva petición al servidor.
+
+// ⚡ Tu ejemplo explicado:
+// js
+// Copiar
+// Editar
+// socket.on("nuevaOrdenConfirmada", (orden) => {
+//   mutate((oldData) => {
+//     return {
+//       ...oldData,
+//       allOrders: [orden, ...oldData.allOrders],
+//     };
+//   }, false); // false para no revalidar con el servidor
+// });
+// 🔔 Escucha el evento nuevaOrdenConfirmada desde el servidor vía WebSocket.
+
+// 🧠 Actualiza el caché de SWR con la nueva orden usando una función que recibe el oldData (el valor cacheado anterior).
+
+// 🧩 Agrega la nueva orden al principio del array allOrders.
+
+// 🚫 El segundo argumento en mutate es false, lo cual evita hacer un fetch al backend después de modificar el cache. Así se actualiza instantáneamente sin revalidar.
+
+// ✅ Resultado
+// La nueva orden aparece al instante en pantalla.
+
+// No hay peticiones innecesarias al servidor.
+
+// El usuario ve datos actualizados en tiempo real sin sentir demora.
+
+// Es ideal para apps en tiempo real como la tuya. ¿Querés que te ayude a encapsular eso dentro de un SocketProvider o ordersContext para que sea más mantenible?

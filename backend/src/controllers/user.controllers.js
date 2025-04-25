@@ -35,7 +35,7 @@ export const loginUser = async(req,res)=>{
             {id:loginUserTarget._id,username:loginUserTarget.username},
             SECRET_JWT_TOKEN_KEY,
             {
-                expiresIn:'1h'
+                expiresIn:'7d'
             }
         )
 
