@@ -39,7 +39,7 @@ server.listen(PORT, () => {
 })
 
 // El servidor WebSocket
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT+99, () => {
     console.log(`WebSocket server on port ${PORT}`);
 })
 
