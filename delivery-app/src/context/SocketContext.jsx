@@ -134,9 +134,9 @@ export function SocketProvider({children}){
 
                 if(data.canceled){
 
-                //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
-                setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
-                return
+                    //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
+                    setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+                    return
                 }
             }else if(!userInfo.rol){
                 setLoading(prev =>{ 

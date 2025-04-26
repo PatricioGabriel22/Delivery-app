@@ -238,7 +238,7 @@ export const PreOrderManager = async (req,res)=>{
                 nuevaDataEmitida = {
                     id:orderInfo._id,
                     canceled:true,
-                    msgDeSugerencia:msgDeSugerencia
+                    msgDeSugerencia:notification
                 }
     
                 socketsToNotify.forEach((socket)=>{
