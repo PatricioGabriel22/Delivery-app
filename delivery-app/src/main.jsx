@@ -9,41 +9,44 @@ import { SocketProvider } from './context/SocketContext.jsx'
 import { OrderProvider } from './context/OrdersContext.jsx'
 
 import {Toaster} from 'react-hot-toast'
+import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
   
   <Fragment>
-        
+
+    <BrowserRouter>
       <LoginProvider>
         
-      <ShoppingProvider>
-        <OrderProvider>
-          <SocketProvider>
-              
+        <ShoppingProvider>
+          <OrderProvider>
+            <SocketProvider>
+                
 
-        
-            <App />
-            <Toaster
-              position="top-right"
-              reverseOrder={false}
-              toastOptions={{
-                duration: 7000,
-                style: {
-                  background: '#fff',
-                  color: '#333',
-                  borderRadius: '8px',
-                  padding: '12px 16px',
-                },
-              }}
-            />
-              
+          
+              <App />
+              <Toaster
+                position="top-right"
+                reverseOrder={false}
+                toastOptions={{
+                  duration: 7000,
+                  style: {
+                    background: '#fff',
+                    color: '#333',
+                    borderRadius: '8px',
+                    padding: '12px 16px',
+                  },
+                }}
+              />
+                
 
-          </SocketProvider>
-        </OrderProvider>
-        
-      </ShoppingProvider>
+            </SocketProvider>
+          </OrderProvider>
+          
+        </ShoppingProvider>
       
       </LoginProvider>
+    </BrowserRouter>     
 
 
   </Fragment>

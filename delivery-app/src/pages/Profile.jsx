@@ -104,20 +104,20 @@ export default function Profile(){
 
                         <div className="w-full flex justify-around ">
  
+                            <button
+                                onClick={()=>setPages(prev=> prev-1 !== 0 ? prev-1 : 1)}
+                                className="rounded p-2 bg-gray-700 cursor-pointer">
+                                Volver atras
+                            </button>
 
-                            {confirmedOrders.length === 5 ? (
-                                    <button 
-                                        onClick={()=>actionVerMasOrdenes()}
-                                        className="rounded p-2 hover:bg-green-700 cursor-pointer">
-                                        Ver mas ordenes
-                                    </button>
-                            ) : (
-                                    <button
-                                        onClick={()=>setPages(1)}
-                                        className="rounded p-2 hover:bg-gray-700 cursor-pointer">
-                                        Vovler al principio
-                                    </button>
-                            )}
+                            <button 
+                                onClick={()=>actionVerMasOrdenes()}
+                                className="rounded p-2 bg-green-700 cursor-pointer">
+                                Ver mas ordenes
+                            </button>
+                    
+                        
+                          
 
                             <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer">
                                 <p>Actualizar</p>
@@ -231,7 +231,7 @@ export default function Profile(){
 // socket.on("nuevaOrdenConfirmada", (orden) => {
 //     mutate((oldData) => {
 //       return {
-//         ...oldData,
+//         ...oldData, data anterior que me respondio el useSWR
 //         allOrders: [orden, ...oldData.allOrders],
 //       };
 //     }, false); // false para no revalidar con el servidor

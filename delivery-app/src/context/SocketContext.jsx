@@ -10,6 +10,8 @@ import { io } from "socket.io-client"
 import { useShoppingContext } from "./ShoppingContext"
 import toast from "react-hot-toast"
 import { useOrdersContext } from "./OrdersContext"
+import { Link } from "react-router-dom"
+import BannerCloseLogo from "../components/BannerCloseLogo"
 
 
 
@@ -44,7 +46,7 @@ export function SocketProvider({children}){
 
     const {userInfo} = useLoginContext()
     const {allPreOrdersFromAdmin,AdminPreOrdersData} = useOrdersContext()
-    const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
+    const {setBuyBTN,setLoading,setResponseFromServer,refresh} = useShoppingContext()
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
 
@@ -93,6 +95,10 @@ export function SocketProvider({children}){
 
 
 
+    useEffect(()=>{
+
+
+    },[])
 
     
     
@@ -100,10 +106,25 @@ export function SocketProvider({children}){
     useEffect(() => {
 
         if(!userInfo) return
-
+        
         socket.on('nuevaPreOrdenRecibida',(data)=>{
-
+            const {username} = data.nuevaPreOrden.userInfo
+            const {costoEnvio} = data.nuevaPreOrden
             setAllPreOrders(prev=>[...prev,data.nuevaPreOrden])
+
+            toast.custom((t) => (
+
+                <div className={`${costoEnvio === 0 ? 'bg-sky-300' : 'bg-red-300'} px-5 p-2 rounded shadow-lg   ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
+                    
+                    <Link to="/PreOrderManagement" className="text-black font-bold flex flex-row items-center gap-x-2 ">
+                        <img src="/vite.png" className="h-12 w-12"/>
+                        <p className="font-medium">Nueva pre-orden de {username}</p>
+                    
+                    </Link>
+                </div>
+            ),{duration:1000 * 6})
+            
+
         })
 
 
@@ -114,21 +135,29 @@ export function SocketProvider({children}){
 
                 if(data.accepted){
 
-                //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
-                setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+                    //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
+                    setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
 
-                setAcceptedOrders(prev => {
-                    //me aseguro que no me repita la orden por si acaso
-                    const ordenesPreviasConfirmadas = prev.filter(item=>item._id !== data.id)
+                    setAcceptedOrders(prev => {
+                        //me aseguro que no me repita la orden por si acaso
+                        const ordenesPreviasConfirmadas = prev.filter(item=>item._id !== data.id)
 
-                    
-                    if(esDeHoy(data.confirmedOrder.createdAt)){
+                        
+                        if(esDeHoy(data.confirmedOrder.createdAt)){
 
-                        return [...ordenesPreviasConfirmadas,data.confirmedOrder]
-                    }
-                    
+                            return [...ordenesPreviasConfirmadas,data.confirmedOrder]
+                        }
+                        
 
-                })
+                    })
+
+
+                    refresh((oldData) => {
+                    return {
+                        ...oldData,
+                        allOrders: [data.nuevoPedido, ...oldData.allOrders],
+                    };
+                    }, false)
                 
                 }
 
@@ -139,9 +168,9 @@ export function SocketProvider({children}){
                     return
                 }
             }else if(!userInfo.rol){
-                setLoading(prev =>{ 
-                sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+                    setLoading(prev =>{ 
+                    sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                    return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
                 })
             
                 if(data.accepted){
@@ -150,7 +179,16 @@ export function SocketProvider({children}){
                         sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
                         return JSON.parse(sessionStorage.getItem("buyBTN"))
                     })
-        
+
+                    //refresco la lista de pedidos del usuario/admin
+                    refresh((oldData) => {
+                        return {
+                            ...oldData,
+                            allOrders: [data.nuevoPedido, ...oldData.allOrders],
+                        };
+                        }, false)
+
+            
                 }
         
                 if(data.canceled){

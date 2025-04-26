@@ -77,7 +77,7 @@ export default function CarritoConfirm(){
                         sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
                         return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
                         })
-                },3000)
+                },2000)
 
 
                 return err.response?.data?.message || 'Error al enviar la pre-orden.'},
@@ -104,7 +104,7 @@ export default function CarritoConfirm(){
                   position: 'bottom-center',
                 }
               }
-           );
+        )
 
 
 

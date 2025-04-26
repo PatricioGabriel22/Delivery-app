@@ -219,7 +219,8 @@ export const PreOrderManager = async (req,res)=>{
                 nuevaDataEmitida = {
                     id:updatedOrder._id,
                     accepted:updatedOrder.confirmed,
-                    confirmedOrder:updatedOrder
+                    confirmedOrder:updatedOrder,
+                    nuevoPedido
                 }
 
                 

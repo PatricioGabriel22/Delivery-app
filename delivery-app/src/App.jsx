@@ -1,6 +1,6 @@
 
 import { Fragment } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import {Route, Routes } from 'react-router-dom'
 
 
 import LoginProtected from './components/LoginProtected.jsx'
@@ -43,7 +43,7 @@ function App() {
   return (
     <Fragment>
       <div className='bg-black min-h-screen  text-white  select-none'>
-      <BrowserRouter>
+      
         <Routes>
           
           <Route path='/login' element={<Login/>}/>
@@ -74,7 +74,7 @@ function App() {
 
           
         </Routes>
-      </BrowserRouter>
+      
 
       </div>
     </Fragment>
