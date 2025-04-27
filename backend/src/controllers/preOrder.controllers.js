@@ -10,12 +10,12 @@ import userSchema from "../models/user.schema.js"
 
 
 
-//lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo
+//lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo, cambiar tambien para websocket para ver los conectados
 const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
 
 
 
-export const getALLorders = async (req,res)=>{
+export const getAllPedidos = async (req,res)=>{
 
     const {rol,page,limit} = req.query 
     const {idTarget} = req.params
@@ -23,12 +23,12 @@ export const getALLorders = async (req,res)=>{
   
     let allOrders
     let totalPages
-    let totalOrders
+  
 
     // if(!idTarget || !rol) return res.status(400).json({ error: 'Faltan datos: idTarget o rol' })
 
     try {
-        const hasPagination = page && limit
+        const hasPagination = rol === 'admin' ? false: true
         const skippedData = (page-1)*limit
         const parseLimit = parseInt(limit)
 
@@ -173,7 +173,7 @@ export const PreOrderManager = async (req,res)=>{
     console.log(req.body)
 
     const comprador = orderInfo?.userInfo?.id
-    const userSocketID = connectedUsers[comprador]
+    const userSocketID = connectedUsers[comprador].socketId
 
     const restaurante = restauranteAdmin
     const adminSocketID = connectedAdmins[restaurante]

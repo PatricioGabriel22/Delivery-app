@@ -15,6 +15,6 @@
 
 // console.log( msg.charAt(0).toUpperCase()+msg.slice(1,msg.length))
 
-const veterinaria = {gata1:"Aurora"}
+const veterinaria = {gata1:{nombre:"Aurora",color:"negro"}}
 
-console.log(veterinaria)
+console.log(veterinaria["gata1"].nombre)

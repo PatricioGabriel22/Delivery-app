@@ -47,7 +47,7 @@ export function OrderProvider({children}){
         }
     },[userInfo])
 
-    console.log(pages)
+
 
     async function AdminPreOrdersData(){
 
@@ -71,7 +71,7 @@ export function OrderProvider({children}){
     }
 
 
-    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,true,pages);
+    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,pages);
 
     
     function actionVerMasOrdenes(){

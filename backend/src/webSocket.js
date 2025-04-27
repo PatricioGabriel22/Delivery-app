@@ -30,19 +30,39 @@ io.on('connection', (socket) => {
 
     socket.on('sesionIniciada', (sessionPayload) => {
         
+        socket.username = sessionPayload.username
+        socket.localidad = sessionPayload.localidad
         socket.userId = sessionPayload.id
         socket.rol = sessionPayload.rol
+        
 
-        console.log("entro")
         if(socket.rol === 'admin'){
-
+            
             connectedAdmins[socket.userId] = socket.id
             console.log("Usuario admin",sessionPayload.username)
 
         }else if(!socket.rol){
 
-            connectedUsers[socket.userId] = socket.id
+
+
+            const dataUserOnSession = {
+                username:socket.username,
+                localidad:socket.localidad,
+                socketId:socket.id,
+                rol:sessionPayload.rol
+            }
+
+
+            connectedUsers[socket.userId] = dataUserOnSession
             console.log("Usuario conectado",sessionPayload.username)
+
+            //cambiar a futuro con los distintos restaurantID
+            if(connectedAdmins['6806b8fe2b72a9697aa59e5f']){
+
+                io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
+            }
+
+
         }
 
         console.log("Usuarios coenctados:",connectedUsers)
@@ -55,6 +75,9 @@ io.on('connection', (socket) => {
         }else if(!socket.rol){
             delete connectedUsers[socket.userId]
         }
+
+        // Emitir la nueva lista de usuarios conectados en el restaurante
+        io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados', Object.values(connectedUsers))
 
         console.log("usuario desconectado")
     })

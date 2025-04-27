@@ -13,10 +13,12 @@ async function getAllConfirmedOrdersData(url){
 }
 
 
-export function useConfirmedOrders(userInfo,url,withPagination = true,page = 1, limit = 5){
+export function useConfirmedOrders(userInfo,url,page = 1, limit = 5){
 
     let targetURL
     const fetchFlag = userInfo ? userInfo?.id : null 
+
+    const withPagination = userInfo.rol === 'admin' ? true : false
 
     if(withPagination){
         const paginatedURL = `${fetchFlag ? url : ''}&page=${page}&limit=${limit}`;

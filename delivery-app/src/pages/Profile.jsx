@@ -178,7 +178,7 @@ export default function Profile(){
 
 
                         return(
-                            <Link to={button !== "Agregar categoria/producto" && dirToGo} className="p-2 rounded-lg bg-red-600 cursor-pointer text-center" >
+                            <span  className="p-2 rounded-lg bg-red-600 cursor-pointer text-center" >
                                 {button !== "Agregar categoria/producto" ? (
                                     <Link to={dirToGo} className="p-2 rounded-lg bg-red-600  text-center " >
                                         <button className="cursor-pointer">{button}</button>
@@ -211,7 +211,7 @@ export default function Profile(){
 
                                 )}
                                 
-                            </Link>
+                            </span>
                         )})
                     }
 

@@ -83,7 +83,6 @@ export function SocketProvider({children}){
 
     //me traigo las ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
 
-
     useEffect(() => {
 
         if (allPreOrdersFromAdmin) {
@@ -94,9 +93,9 @@ export function SocketProvider({children}){
     }, [allPreOrdersFromAdmin]);       
 
 
-
+    //evento del socket con usuarios conectaodos (usuariosConectados)
     useEffect(()=>{
-
+        socket.on('usuariosConectados',(data)=>console.log(data))
 
     },[])
 
