@@ -18,6 +18,7 @@ import { VscError } from "react-icons/vsc";
 
 import { verFecha, verHoraYMinutos } from "../utils/dateFunctions";
 import ConfirmedOrderModal from "../components/ConfirmedOrderModal";
+import LoggedUsers from "../components/LoggedUsers";
 
 
 const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
@@ -38,11 +39,11 @@ export default function Profile(){
         
         setSelectedOrder(order)
         dialogRef.current.showModal(); // Abre el modal
-    };
+    }
 
     const cerrarModal = () => {
         dialogRef.current.close(); // Cierra el modal
-    };
+    }
 
 
 
@@ -65,7 +66,7 @@ export default function Profile(){
 
     return(
         <Fragment>
-            <div className="flex flex-col">
+            <div className="flex flex-col relative min-h-screen">
 
                 <Link to={'/'} className="p-5 w-full text-start">
                     <MdArrowBackIosNew size={30} />
@@ -166,7 +167,8 @@ export default function Profile(){
                 
                 {userInfo.rol === 'admin'&& !isLoading  && (
 
-                <div className="flex flex-col md:flex-row w-full justify-around pt-10 gap-x-20 gap-y-10 flex-wrap c">
+                <div className="flex flex-col justify-center pt-10 gap-x-20 gap-y-10 flex-wrap w-full  p-2
+                    md:w-full md:flex-row md:justify-around">
 
                     {adminButtons.map(button=>{
 
@@ -215,11 +217,14 @@ export default function Profile(){
                         )})
                     }
 
-
                     
 
                 </div>
                 )}
+                <span className="md:absolute md:top-0 md:left-20 md:py-20  mt-3 w-[70%] pb-2 self-center ">
+
+                    <LoggedUsers/>
+                </span>
 
             </div>
         </Fragment>

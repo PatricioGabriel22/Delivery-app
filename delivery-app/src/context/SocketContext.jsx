@@ -50,6 +50,8 @@ export function SocketProvider({children}){
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
 
+    const [loggedUsers,setLoggedUsers] = useState([])
+
     //para mantener viva la conexion al socket, y "rehidrato" la informacion que traigo de la db
     useEffect(()=>{
         if(!socket || !userInfo) return 
@@ -95,7 +97,7 @@ export function SocketProvider({children}){
 
     //evento del socket con usuarios conectaodos (usuariosConectados)
     useEffect(()=>{
-        socket.on('usuariosConectados',(data)=>console.log(data))
+        socket.on('usuariosConectados',(data)=>setLoggedUsers(data))
 
     },[])
 
@@ -241,7 +243,10 @@ export function SocketProvider({children}){
             allPreOrders,
             setAllPreOrders,
             acceptedOrders,
-            setAcceptedOrders
+            setAcceptedOrders,
+
+            loggedUsers,
+            
             
         }}>
             {children}
