@@ -29,7 +29,7 @@ export default function LoggedUsers(){
                 <h3 className="text-center font-extrabold text-xl p-1 mb-2">Usuarios en la tienda</h3>
 
 
-                <div  className="flex flex-col  items-center ">
+                <div  className="flex flex-col  items-center p-1 ">
                     {loggedUsers.length >0 && loggedUsers?.map((user,index)=>(
                         <div className=" bg-green-200 flex flex-row w-full items-center rounded h-9 md:h-12 border-1 my-1 hover:bg-white cursor-pointer" key={index}>
                             <span className="bg-green-600 rounded-full w-4 h-4 p-2 mx-1 border-2"/>
