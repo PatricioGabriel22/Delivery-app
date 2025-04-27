@@ -28,7 +28,7 @@ export const getAllPedidos = async (req,res)=>{
     // if(!idTarget || !rol) return res.status(400).json({ error: 'Faltan datos: idTarget o rol' })
 
     try {
-        const hasPagination = rol === 'admin' ? false: true
+        const hasPagination = rol === 'cliente' ? true : false
         const skippedData = (page-1)*limit
         const parseLimit = parseInt(limit)
 

@@ -18,7 +18,7 @@ export function useConfirmedOrders(userInfo,url,page = 1, limit = 5){
     let targetURL
     const fetchFlag = userInfo ? userInfo?.id : null 
 
-    const withPagination = userInfo.rol === 'admin' ? true : false
+    const withPagination = userInfo.rol === 'admin' ? false : true
 
     if(withPagination){
         const paginatedURL = `${fetchFlag ? url : ''}&page=${page}&limit=${limit}`;
