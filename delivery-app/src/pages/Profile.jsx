@@ -221,7 +221,7 @@ export default function Profile(){
 
                 </div>
                 )}
-                <span className="md:absolute md:top-0 md:left-20 md:py-20  mt-3 w-[70%] pb-2 self-center ">
+                <span className="md:absolute md:bottom-0 md:left-5 md:pt-90 md:w-[90%] mt-3 w-[70%] pb-2 self-center ">
 
                     <LoggedUsers/>
                 </span>
