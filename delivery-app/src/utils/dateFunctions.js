@@ -20,7 +20,7 @@ export const verFecha = (date) => {
     const anio = fecha.getFullYear();
   
     return `${dia}/${mes}/${anio}`;
-  };
+};
 
 export const verHoraYMinutos = (date) => {
     const fecha = new Date(date);

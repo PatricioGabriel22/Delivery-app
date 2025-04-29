@@ -35,17 +35,34 @@ export function OrderProvider({children}){
     const [allPreOrdersFromAdmin,setAllPreOrdersFromAdmin] = useState()
     const [urlConfirmedOrders,setUrlConfirmedOrders] = useState()
 
+    const [flagPagination,setFlagPagination] = useState(true)
     const [pages,setPages] = useState(1)
+    const [limite,setLimite] = useState(1)
 
+   
     
     useEffect(()=>{
-        if(userInfo){
-            const rol = userInfo.rol === 'admin' ? userInfo.rol: "cliente"
+        if(!userInfo.rol){
+            const rol = "cliente"
             const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
             setUrlConfirmedOrders(aux)
-
+            setLimite(5)
+            
         }
     },[userInfo])
+
+
+
+    useEffect(()=>{
+
+        if(userInfo.rol === "admin"){
+            const rol = "admin"
+            const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
+            setUrlConfirmedOrders(aux)
+            setLimite(20)
+            
+        }
+    },[ userInfo])
 
 
 
@@ -71,7 +88,10 @@ export function OrderProvider({children}){
     }
 
 
-    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,pages);
+
+
+    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
+
 
     
     function actionVerMasOrdenes(){
@@ -95,7 +115,7 @@ export function OrderProvider({children}){
 
             confirmedOrders, isLoading, isError, refresh,
             actionVerMasOrdenes,
-            setPages
+            setPages,setLimite,setFlagPagination
 
         }}>
 

@@ -13,19 +13,38 @@ async function getAllConfirmedOrdersData(url){
 }
 
 
-export function useConfirmedOrders(userInfo,url,page = 1, limit = 5){
+export function useConfirmedOrders(userInfo,url,flagPagination,page, limit){
+
 
     let targetURL
-    const fetchFlag = userInfo ? userInfo?.id : null 
+    let paginatedURL
 
-    const withPagination = userInfo.rol === 'admin' ? false : true
+    const fetchFlag = userInfo ? true : null 
 
-    if(withPagination){
-        const paginatedURL = `${fetchFlag ? url : ''}&page=${page}&limit=${limit}`;
-        targetURL = paginatedURL
-    }else{
-        targetURL = url
+
+    if(!flagPagination) targetURL = url
+
+    if(flagPagination){
+
+
+        if(!userInfo.rol){
+            
+            paginatedURL = `${fetchFlag ? url : ''}&pagination=${true}&page=${page}&limit=${limit}`;
+            targetURL = paginatedURL
+                
+            
+        } else if(userInfo.rol === "admin"){
+
+            paginatedURL = `${fetchFlag ? url : ''}&pagination=${true}&page=${page}&limit=${limit}`;
+            targetURL = paginatedURL
+            
+        }
+        
+
+
+
     }
+
 
     const SWRoptions =   {
         // refreshInterval: 1000 * 30, // Actualiza cada 30 segundos

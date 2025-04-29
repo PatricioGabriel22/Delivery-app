@@ -5,7 +5,7 @@ const pedidosSchema = new mongoose.Schema({
 
     userID:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "user-test", 
+        ref: "users-test", 
     },
     productos:Array,
     costoEnvio:Number,

@@ -17,7 +17,7 @@ const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
 
 export const getAllPedidos = async (req,res)=>{
 
-    const {rol,page,limit} = req.query 
+    const {rol,pagination,page,limit} = req.query 
     const {idTarget} = req.params
     
   
@@ -28,7 +28,7 @@ export const getAllPedidos = async (req,res)=>{
     // if(!idTarget || !rol) return res.status(400).json({ error: 'Faltan datos: idTarget o rol' })
 
     try {
-        const hasPagination = rol === 'cliente' ? true : false
+        const hasPagination = pagination
         const skippedData = (page-1)*limit
         const parseLimit = parseInt(limit)
 
@@ -37,13 +37,15 @@ export const getAllPedidos = async (req,res)=>{
             case 'admin':
                 
 
-                const query = pedidosSchema.find({})
+                const query = pedidosSchema.find({}).sort({ createdAt: -1 })
                 
                 if(hasPagination){
 
                     query.skip(skippedData).limit(parseLimit)
                 }
-                
+
+                query.populate('userID')
+
                 allOrders = await query.exec()
 
                 
