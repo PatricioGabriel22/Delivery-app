@@ -13,6 +13,7 @@ import { ListaProductos } from "../utils/productos";
 
 
 import axios from "axios";
+import { ccapitalizer_3000 } from "../utils/capitalize";
 
 
 
@@ -101,35 +102,26 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
 
 
-  useEffect(()=>{
-
-
-
-
-
-  },[editableData])
-
-
   return (
     <div 
       className={`w-90 flex flex-col  text-black rounded-3xl mt-3 md:m-5 bg-white `}>
         <div className={`flex flex-row items-center justify-center w-full relative `}>
           {toEdit ? 
             (<input 
-              className="text-center border-2 p-2 text-xl w-[45%]" 
+              className="text-center border-2 p-5 text-xl w-[45%]" 
               name="nombre"
               value={clearInputs(editableData?.nombre,nombre)}
               onChange={(e)=>handleChangesDataCard(e)}
               />) 
             :
-            (<p className="text-center rounded-t-2xl p-2 text-xl">{nombre}</p>)
+            (<p className="text-center rounded-t-2xl p-5 text-xl">{ccapitalizer_3000(nombre)}</p>)
           }
 
           {
           userInfo.rol && 
           <MdModeEdit 
             size={30} 
-            className={`absolute top-3 right-3 text-black cursor-pointer hover:bg-red-400 rounded $ `}
+            className={`absolute top-6 right-3 text-black cursor-pointer hover:bg-red-400 rounded`}
             onClick={()=>{setTodit(!toEdit)}}
             />
           }

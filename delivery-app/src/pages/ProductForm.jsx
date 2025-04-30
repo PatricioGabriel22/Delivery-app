@@ -16,22 +16,22 @@ export default function ProductForm() {
 
     const formData = new FormData();
     formData.append('imagen', e.target.imagen.files[0]);
-    formData.append('nombre', e.target.nombreProducto.value.toLowerCase());
-    formData.append('descripcion', e.target.descripcion.value);
+    formData.append('nombre', e.target.nombreProducto.value.toLowerCase().trim());
+    formData.append('descripcion', e.target.descripcion.value.trim());
     formData.append('categoria', e.target.categoria.value);
-    formData.append('precio', e.target.precio.value);
+    formData.append('precio', e.target.precio.value.trim());
     formData.append('disponible', e.target.disponible.value);
 
     try {
-      const res = await axios.post(`${renderORLocalURL}/uploadProduct`, formData, {
+      const res = await axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Producto subido:', res.data);
-      e.target.reset();
-      setPreview(null);
+        console.log('Producto subido:', res.data);
+        e.target.reset();
+        setPreview(null);
     } catch (err) {
       console.error('Error al subir producto:', err);
     } finally {

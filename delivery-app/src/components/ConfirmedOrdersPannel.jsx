@@ -13,10 +13,13 @@ import { VscError } from "react-icons/vsc";
 
 import { verFecha, verHoraYMinutos } from "../utils/dateFunctions";
 import ConfirmedOrderModal from "../components/ConfirmedOrderModal";
+import Loading from "./Loading.jsx";
+import Error from "./Error.jsx";
 
 
 
-export default function ConfirmedOrdersPannel({targetDate,targetName,totalPedidos,totalVentas}){
+
+export default function ConfirmedOrdersPannel({targetDate,targetName,totalPedidos}){
 
 
     const {userInfo} = useLoginContext()
@@ -61,95 +64,84 @@ export default function ConfirmedOrdersPannel({targetDate,targetName,totalPedido
 
 
             {isLoading && (
-                    <span className="flex flex-col w-full h-full items-center justify-center">
+                <Loading msg={"Cargando pedidos..."} />
+            )}
 
-                        <FadeLoader color="#f90b0b" className="self-center mt-10" />
+            {isError && (
+                <Error msg={"Hubo un error al cargar sus pedidos."} />
+            )}
 
-                        <p className="text-lg">Cargando pedidos...</p>
+            {!isLoading &&  !isError && (
 
-                    </span>
-                )}
+                <Fragment>
 
-                {isError && (
-                    <span className="flex flex-col w-full h-full items-center justify-center">
+                
+                    <h3 className="pt-12  self-center font-bold text-3xl">Pedidos de {userInfo.username}</h3>
 
-                        <VscError color="#f90b0b"  className="self-center mt-10 text-9xl"/>
-                        <p className="text-lg">Hubo un error al cargar sus pedidos.</p>
 
-                    </span>
-                )}
+                    <span className="bg-red-700 w-[90%] h-[1px] self-center m-1 my-3"/>
 
-                {!isLoading &&  !isError && (
+                    <div className="w-full flex justify-around ">
 
-                    <Fragment>
+                        <button
+                            onClick={()=>setPages(prev=> prev-1 !== 0 ? prev-1 : 1)}
+                            className="rounded p-2 bg-gray-700 cursor-pointer">
+                            Volver atras
+                        </button>
+
+                        <button 
+                            onClick={()=>actionVerMasOrdenes()}
+                            className="rounded p-2 bg-green-700 cursor-pointer">
+                            Ver mas ordenes
+                        </button>
+
 
                     
-                        <h3 className="pt-12  self-center font-bold text-3xl">Pedidos de {userInfo.username}</h3>
+                        
 
+                        <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer">
+                            <p>Actualizar</p>
+                            <SlRefresh 
+                                size={25} 
+                                className="cursor-pointer"
+                                onClick={refresh}
+                            
+                            />
+                        </div>
+                    </div>
 
-                        <span className="bg-red-700 w-[90%] h-[1px] self-center m-1 my-3"/>
+                    
 
-                        <div className="w-full flex justify-around ">
- 
-                            <button
-                                onClick={()=>setPages(prev=> prev-1 !== 0 ? prev-1 : 1)}
-                                className="rounded p-2 bg-gray-700 cursor-pointer">
-                                Volver atras
-                            </button>
-
-                            <button 
-                                onClick={()=>actionVerMasOrdenes()}
-                                className="rounded p-2 bg-green-700 cursor-pointer">
-                                Ver mas ordenes
-                            </button>
-
+                    <div className="flex flex-col p-1 py-6 w-full  md:w-[60%] self-center items-center overflow-x-hidden">
 
                         
-                          
-
-                            <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer">
-                                <p>Actualizar</p>
-                                <SlRefresh 
-                                    size={25} 
-                                    className="cursor-pointer"
-                                    onClick={refresh}
-                                
-                                />
-                            </div>
-                        </div>
-
-                      
-
-                        <div className="flex flex-col p-1 py-6 w-full  md:w-[60%] self-center items-center overflow-x-hidden">
-
+                        {confirmedOrders.length >0 && filteredOrders
+                            .map((confirmedOrder)=>( 
                             
-                            {confirmedOrders.length >0 && filteredOrders
-                                .map((confirmedOrder)=>( 
+                            <Fragment>
                                 
-                                <Fragment>
-                                   
-                                    <span
-                                        onClick={()=>abrirModal(confirmedOrder)} 
-                                        className={`${confirmedOrder.formaDeEntrega === 'Envio'? "bg-red-500":"bg-sky-500"} sm:w-full w-[90%] h-20  rounded-2xl text-black flex  items-center justify-between px-4 shadow-sm m-2 cursor-pointer`}>
-                                        <IoIosArrowDown size={30} className=""/>
-                                        <p className="text-lg p-1 w-1/2 text-center ">{verFecha(confirmedOrder.createdAt)} | {verHoraYMinutos(confirmedOrder.createdAt)}</p>
-                                        {userInfo.rol === 'admin'&& (<p className="text-lg p-1 w-1/2 text-center overflow-hidden text-ellipsis whitespace-nowrap">{confirmedOrder.userID?.username}</p>)}
-                                        <p className="text-lg p-1 w-1/2 text-center ">{confirmedOrder.formaDeEntrega}</p>
-                                        <p className="text-lg p-1 w-1/2  text-end font-semibold">${confirmedOrder.importeTotal}</p>
-                                    </span>
+                                <span
+                                    onClick={()=>abrirModal(confirmedOrder)} 
+                                    className={`${confirmedOrder.formaDeEntrega === 'Envio'? "bg-red-500":"bg-sky-500"} sm:w-full w-[90%] h-20  rounded-2xl text-black flex  items-center justify-between px-4 shadow-sm m-2 cursor-pointer`}>
+                                    <IoIosArrowDown size={30} className=""/>
+                                    <p className="text-lg p-1 w-1/2 text-center ">{verFecha(confirmedOrder.createdAt)} | {verHoraYMinutos(confirmedOrder.createdAt)}</p>
+                                    {userInfo.rol === 'admin'&& (<p className="text-lg p-1 w-1/2 text-center overflow-hidden text-ellipsis whitespace-nowrap">{confirmedOrder.userID?.username}</p>)}
+                                    <p className="text-lg p-1 w-1/2 text-center ">{confirmedOrder.formaDeEntrega}</p>
+                                    <p className="text-lg p-1 w-1/2  text-end font-semibold">${confirmedOrder.importeTotal}</p>
+                                </span>
 
-                                    <ConfirmedOrderModal 
-                                        ref={dialogRef}
-                                        close={cerrarModal}
-                                        confirmedOrder={selectedOrder}
-                                        
-                                    />
-                                </Fragment>
-                            ))}
+                                <ConfirmedOrderModal 
+                                    ref={dialogRef}
+                                    close={cerrarModal}
+                                    confirmedOrder={selectedOrder}
+                                    
+                                />
+                            </Fragment>
+                        ))}
 
-                        </div>
-                    </Fragment>
-                    )}
+                    </div>
+                </Fragment>
+                )}
 
         </Fragment>
     )

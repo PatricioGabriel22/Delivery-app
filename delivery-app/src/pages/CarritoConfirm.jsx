@@ -17,6 +17,8 @@ import { GiCook } from "react-icons/gi";
 
 import { decidirCostoEnvio } from "../utils/envioFunctions";
 import toast from "react-hot-toast";
+import { useCatalogContext } from "../context/CatalogContext";
+import { ccapitalizer_3000 } from "../utils/capitalize";
 
 
 
@@ -26,8 +28,10 @@ export default function CarritoConfirm(){
     const {renderORLocalURL,userInfo} = useLoginContext()
     
     const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,
-    loading,setLoading,responseFromServer,setResponseFromServer} = useShoppingContext()
+        loading,setLoading,responseFromServer,setResponseFromServer
+    } = useShoppingContext()
 
+    const {catalogoDelAdmin} = useCatalogContext()
 
     const [edit,setEdit] = useState(false)
 
@@ -118,17 +122,23 @@ export default function CarritoConfirm(){
     useEffect(() => {
         setListaDeCompras(
             carrito.map(producto => {
-                const productoEnLista = ListaProductos.find(productInList => productInList.nombre === producto.nombre);
+                const productoEnLista = catalogoDelAdmin.find(productInList => productInList.nombre === producto.nombre)
+                console.log(productoEnLista)
                 return {
                     ...producto,
                     precio: productoEnLista ? productoEnLista.precio : producto.precio,
                 };
             })
         );
-    }, [carrito]); // Se ejecuta cada vez que cambia el carrito
+
+    }, [carrito,catalogoDelAdmin]); // Se ejecuta cada vez que cambia el carrito
 
 
    
+    useEffect(()=>{
+        console.log(listaDeCompras)
+    },[listaDeCompras])
+
 
 
     return(
@@ -145,7 +155,7 @@ export default function CarritoConfirm(){
                     
                     {/* Nombre del Producto */}
 
-                    <p className="font-medium text-lg w-1/3 text-start ">{item.nombre}</p>
+                    <p className="font-medium text-lg w-1/3 text-start ">{ccapitalizer_3000(item.nombre)}</p>
 
                     {/* Precio */}
                     <p className="text-gray-700 font-semibold w-1/3">${item.precio * item.cantidad}</p>

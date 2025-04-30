@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal } from "../controllers/user.controllers.js"
-import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
+
 import jwt from "jsonwebtoken"
 
 
@@ -22,7 +22,7 @@ userRoutes.use((req,res,next)=>{
 
         try{
 
-            data = jwt.verify(token,SECRET_JWT_TOKEN_KEY)
+            data = jwt.verify(token,process.env.SECRET_JWT_TOKEN_KEY)
             req.session.user = data
 
 

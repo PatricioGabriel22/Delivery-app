@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {dataFormNewProduct, changeStatus,editProductInfo } from "../controllers/product.controllers.js";
+import {catalogMaker, dataFormNewProduct, changeStatus,editProductInfo } from "../controllers/product.controllers.js";
 
 import multer from 'multer'
 
@@ -15,10 +15,10 @@ function multerMiddleware(){
 }
 
 
+productRoutes.post('/uploadProduct/:idAdmin',multerMiddleware().single('imagen'),dataFormNewProduct)
 
+productRoutes.get('/bringAllCatalog/:idAdmin', catalogMaker)
 
-
-productRoutes.post('/uploadProduct',multerMiddleware().single('imagen'),dataFormNewProduct)
 
 
 productRoutes.put('/disponibilidad',changeStatus)

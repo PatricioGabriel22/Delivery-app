@@ -1,12 +1,14 @@
 import {Server as SocketServer} from 'socket.io'
 import http from 'http'
 import express from 'express'
-import {PORT} from './configs/const.config.js'
 
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 
 export const server = express()
-export const serverURL = PORT === 4000? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
+export const serverURL = process.env.PORT === '4000' ? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
 
 // Este servidor HTTP se necesita para conectar Express + Socket.io
 export const httpServer = http.createServer(server);
@@ -65,7 +67,7 @@ io.on('connection', (socket) => {
 
         }
 
-        console.log("Usuarios coenctados:",connectedUsers)
+        console.log("Usuarios conectados:",connectedUsers)
 
     })
 

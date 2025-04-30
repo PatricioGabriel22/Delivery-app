@@ -2,7 +2,6 @@ import userSchema from '../models/user.schema.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { SECRET_JWT_TOKEN_KEY } from "../configs/const.config.js";
 import { io } from '../webSocket.js'; 
 
 
@@ -33,7 +32,7 @@ export const loginUser = async(req,res)=>{
         
         const token = jwt.sign(
             {id:loginUserTarget._id,username:loginUserTarget.username},
-            SECRET_JWT_TOKEN_KEY,
+            process.env.SECRET_JWT_TOKEN_KEY,
             {
                 expiresIn:'7d'
             }

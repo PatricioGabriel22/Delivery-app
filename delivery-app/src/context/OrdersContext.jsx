@@ -88,12 +88,6 @@ export function OrderProvider({children}){
     }
 
 
-
-
-    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
-
-
-    
     function actionVerMasOrdenes(){
 
         const paginaFinal = totalPages+1
@@ -102,6 +96,12 @@ export function OrderProvider({children}){
 
         setPages(prev=>prev+1)
     }
+
+
+    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
+
+    
+    
     
 
     return(

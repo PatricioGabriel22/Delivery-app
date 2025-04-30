@@ -1,6 +1,6 @@
 backend/node_modules/
+backend/.env
+
 
 
 delivery-app/node_modules/
-
-backend/src/sessionsFolder

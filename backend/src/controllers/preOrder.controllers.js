@@ -69,7 +69,7 @@ export const getAllPedidos = async (req,res)=>{
                 allOrders = userConPedidos.pedidos
                 
                 const totalOrdersFromUser = userConPedidos.pedidos.length
-                    console.log(totalOrdersFromUser)
+                   
                 
                 totalPages = Math.ceil(totalOrdersFromUser / parseLimit)
 
@@ -216,7 +216,7 @@ export const PreOrderManager = async (req,res)=>{
                     { $push: { pedidos: nuevoPedido._id } }
                 )
         
-                console.log(updatedOrder)
+               
         
                 nuevaDataEmitida = {
                     id:updatedOrder._id,
@@ -257,7 +257,7 @@ export const PreOrderManager = async (req,res)=>{
 
                 const finishedOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{finished:true}},{new:true})
             
-                console.log(userSocketID,adminSocketID)
+                
     
                 io.to(adminSocketID).emit("finishedOrder",{
                     finishedOrder

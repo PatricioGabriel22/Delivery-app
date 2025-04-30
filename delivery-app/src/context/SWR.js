@@ -62,3 +62,47 @@ export function useConfirmedOrders(userInfo,url,flagPagination,page, limit){
         totalPages: data?.totalPages || 0
       };
 }
+
+
+
+
+
+async function getAllCatalogFromAdmin(url){
+
+    try {
+        
+        const res = await axios.get(url, { withCredentials: true })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+
+
+export function useCatalogMaker(urlAPI){
+
+    
+    let targetURL = `${urlAPI}/bringAllCatalog/6806b8fe2b72a9697aa59e5f`
+
+
+    const SWRoptions =   {
+        revalidateOnFocus: true
+    }
+
+    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromAdmin,SWRoptions)
+
+
+    return {
+        catalogoDelAdmin: data?.catalogoDelAdmin || [],
+        isLoading,
+        isError: error,
+        refresh: mutate
+      };
+
+
+}
+
+
+
+

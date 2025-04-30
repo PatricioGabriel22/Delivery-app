@@ -29,7 +29,7 @@ export default function CategoryFrom(){
         
         const payloadNuevaCategoria = {
             id:userInfo.id,
-            categoria:e.target[0].value.toLowerCase()
+            categoria:e.target[0].value.toLowerCase().trim()
         }
         
         console.log(payloadNuevaCategoria)

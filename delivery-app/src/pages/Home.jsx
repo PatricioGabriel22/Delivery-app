@@ -4,7 +4,7 @@ import Nav from "../components/Nav";
 import Card from "../components/Card";
 // import { useLoginContext } from "../context/LoginContext";
 
-import { ListaProductos } from "../utils/productos.js";
+
 
 import { useShoppingContext } from "../context/ShoppingContext.jsx";
 import { Fragment, useEffect, useState } from "react";
@@ -15,53 +15,50 @@ import SearchingBar from "../components/SearchingBar.jsx";
 import { useLoginContext } from "../context/LoginContext.jsx";
 import { useSocketContext } from "../context/SocketContext.jsx";
 
-ListaProductos.forEach(producto=>producto.cantidad = 0)
+import {ccapitalizer_3000} from '../utils/capitalize.js'
+
+import Loading from "../components/Loading.jsx";
+import Error from "../components/Error.jsx";
+import { useCatalogContext } from "../context/CatalogContext.jsx";
+
 
 
 export default function Home() {
-
+  
   const {socket} = useSocketContext()
   const {carrito} = useShoppingContext()
   const {userInfo} = useLoginContext()
-
+  
+  const {catalogoDelAdmin,refresh,isLoading,isError} = useCatalogContext()
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
+
+
+  const CategoriasProductos = [...new Set(catalogoDelAdmin.map(p => p.categoria))]
   
-  
-  const CategoriasProductos = [...new Set(ListaProductos.map(p => p.categoria))];
-  
-  const [showItems,setShowItems] = useState({
-    salados:false,
-    dulces:false,
-    panificados:false
-  })
+  const [showItems,setShowItems] = useState({})
 
-  //aca me tengo que traer los productos, y cipiarlos para evitar volver a llamar a la db
-
-  //const usuariosLocal = structuredClone(usuariosDesdeDB);
-
-  //   const response = await axios.get('/api/usuarios');
-  // const usuariosDesdeDB = response.data;
-
-  // // Copia profunda (independiente)
-  // const usuariosLocal = JSON.parse(JSON.stringify(usuariosDesdeDB));
-
-  
 
   useEffect(()=>{
 
-    socket.on('AlterProductStatus',(data)=>{
-      ListaProductos.map(item => {
-        
-        
-        if(item.id  === data.target.id){
-          return {...item,...data.target} //fusion de objetos con spred operatos con prioridad en el segundo objeto que llega a sobreescribir
-        } else{
-          return {...item} //sino retorno el item normal
-        } 
-      
-      })
+    socket.on('AlterProductStatus', (data) => {
+    
+      refresh(prevData => {
+        if (!prevData) return prevData
+    
+        const updatedCatalog = prevData.catalogoDelAdmin.map(item => {
+          if (item._id === data.target._id) {
+            return { ...item, disponible: data.target.disponible }
+          }
+          return item
+        })
+  
+        return {
+          ...prevData,
+          catalogoDelAdmin: updatedCatalog
+        }
+      }, false) // false para evitar revalidar desde el servidor
     })
 
 
@@ -88,6 +85,15 @@ export default function Home() {
       <SearchingBar searchSetter={setProductoBuscado}/>
 
 
+      {isLoading && (
+        <Loading msg={"Cargando catalogo..."} />
+        
+      )}
+
+      {isError && (
+        <Error msg={"Hubo un error al cargar el catalogo."} />
+        
+      )}
 
       {CategoriasProductos.map(categoria=>{
         
@@ -95,11 +101,11 @@ export default function Home() {
           <Fragment>
 
             <h2 
-              className="bg-white text-black m-4 flex flex-col  w-full md:w-[90%] rounded-xl font-extrabold text-4xl text-center"
+              className="bg-white text-black m-4 flex flex-col  w-full md:w-[90%] rounded-xl font-extrabold text-4xl text-center cursor-pointer"
               onClick={()=>setShowItems(prev=>({...prev,[categoria]:!prev[categoria]}))}>
                 {/* //manejo el cambio de categoria de forma dinamica con [categoria]
                 // sino tendria que poner panaderia:!prev.panaderya...y asi para todo */}
-              {categoria}
+              {ccapitalizer_3000(categoria)}
             </h2>
 
             
@@ -108,30 +114,31 @@ export default function Home() {
 
               <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center p-4">
 
-                {ListaProductos
+                {catalogoDelAdmin
                   .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
-                  .filter(producto => userInfo.rol === "cliente"  ? producto.disponible : producto)
+                  .filter(producto => !userInfo.rol ? producto.disponible : producto)
                   .map((producto,index)=>{
       
-                  const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
-      
-                  if(producto.categoria === categoria){
-                    
-                    return (
-                      <Fragment>
-      
-                        <Card key={index} 
-                        id={producto.id}
-                        nombre={producto.nombre} 
-                        precio={producto.precio} 
-                        cantidadAdquirida={target === null ? 0 : target.cantidad}
-                        descripcion={producto.descripcion}
-                        disponible={producto.disponible}
+                    const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre.trim()) || null
 
-                        />
-      
-                      </Fragment>
-                    )
+                 
+                    if(producto.categoria === categoria){
+                      
+                      return (
+                        <Fragment>
+        
+                          <Card key={index} 
+                          id={producto._id}
+                          nombre={producto.nombre} 
+                          precio={producto.precio} 
+                          cantidadAdquirida={target === null ? 0 : target.cantidad}
+                          descripcion={producto.descripcion}
+                          disponible={producto.disponible}
+
+                          />
+        
+                        </Fragment>
+                      )
                   }
         
                   
@@ -147,35 +154,11 @@ export default function Home() {
       })}
 
 
-      {/* {ListaProductos
-      .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
-      .filter(producto => producto.disponible)
-      .map((producto, index) =>{
 
-        const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre) || null
 
-        if(CategoriasProductos.find(categoria=>categoria === producto.categoria)){
-
-          
-          return (
-            <Fragment>
-
-              <Card key={index} 
-              id={producto.id}
-              nombre={producto.nombre} 
-              precio={producto.precio} 
-              cantidadAdquirida={target === null ? 0 : target.cantidad}
-              descripcion={producto.descripcion}
-              />
-            </Fragment>
-          )} 
-        }
-        
-
-      )} */}
-      
       <div className="mt-20 w-full h-3"/>
       <Nav />
+
     </div>
   );
 }

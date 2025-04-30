@@ -2,6 +2,10 @@ import mongoose from "mongoose"
 
 
 const productSchema = new mongoose.Schema({
+    adminOwner:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'users-test'
+    },
     nombre: String,
     descripcion: String,
     categoria: String,

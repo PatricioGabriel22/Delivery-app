@@ -22,6 +22,8 @@ export const useLoginContext = ()=>{
 
 export function LoginProvider({children}){
 
+    //para aceder a las variables de entorno de VITE import.meta.env
+    
     const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-0lcx.onrender.com'
 
 
