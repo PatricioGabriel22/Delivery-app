@@ -78,12 +78,23 @@ export default function Register(){
         className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 
         <form className="w-80 h-fit border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center " onSubmit={(e)=>handleRegister(e)}>
-            {CAMPOS_REGISTRO.map((campo,index)=>(
-
-                <input kye={index} placeholder={campo} type={campo.includes('Contraseña')? 'password' : 'text'}  
-                 className="bg-white text-black rounded w-full m-1 p-1 text-lg"/>
+            {CAMPOS_REGISTRO.map((campo, index) => (
+                campo === 'Localidad' ? (
+                    <select key={index} className="bg-white text-black rounded w-full m-1 p-1 text-lg" required={true}>
+                    <option value="">Seleccione una localidad</option>
+                    <option value="monte grande">Monte Grande</option>
+                    <option value="luis guillon">Luis Guillón</option>
+                    </select>
+                ) : (
+                    <input
+                    key={index}
+                    required={true}
+                    placeholder={campo}
+                    type={campo.includes('Contraseña') ? 'password' : 'text'}
+                    className="bg-white text-black rounded w-full m-1 p-1 text-lg"
+                    />
+                )
             ))}
-
             <button 
                 type="submit" 
                 className="bg-red-500 w-full m-5 p-2 rounded-full"

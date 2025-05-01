@@ -53,7 +53,7 @@ export default function Profile(){
                 <ProfileCard userInfo={userInfo} />
 
                 {
-                    userInfo.rol === 'cliente' && (
+                    !userInfo.rol  && (
 
                         <ConfirmedOrdersPannel/>
                     )

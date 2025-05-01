@@ -95,7 +95,7 @@ export const loginUser = async(req,res)=>{
 
 export const registerUser = async (req,res)=>{
     const {username,email,password,direccion,telefono,localidad,entreCalles} = req.body
-    console.log(req.body)
+    
 
     try {
         

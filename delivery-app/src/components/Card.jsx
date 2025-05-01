@@ -105,32 +105,23 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   return (
     <div 
       className={`w-90 flex flex-col  text-black rounded-3xl mt-3 md:m-5 bg-white `}>
-        <div className={`flex flex-row items-center justify-center w-full relative `}>
+        <div className={`flex flex-row items-center justify-center w-full `}>
           {toEdit ? 
             (<input 
-              className="text-center border-2 p-5 text-xl w-[45%]" 
+              className="text-center border-2 p-5 text-xl w-[70%] rounded-t-3xl mr-auto" 
               name="nombre"
               value={clearInputs(editableData?.nombre,nombre)}
               onChange={(e)=>handleChangesDataCard(e)}
               />) 
             :
-            (<p className="text-center rounded-t-2xl p-5 text-xl">{ccapitalizer_3000(nombre)}</p>)
-          }
-
-          {
-          userInfo.rol && 
-          <MdModeEdit 
-            size={30} 
-            className={`absolute top-6 right-3 text-black cursor-pointer hover:bg-red-400 rounded`}
-            onClick={()=>{setTodit(!toEdit)}}
-            />
+            (<p className="text-center rounded-t-2xl py-4 text-xl text-wrap">{ccapitalizer_3000(nombre)}</p>)
           }
 
           {
             toEdit && (
               <buttton 
                 onClick={()=>{sendEditedProduct()}}
-                className="hover:bg-sky-400 rounded p-2 ">Guardar</buttton>
+                className="hover:bg-sky-400 rounded p-2 m-auto">Guardar</buttton>
             )
           }
 
@@ -200,21 +191,42 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
       <div className="justify-around items-center flex flex-row w-full">
 
-        {userInfo.rol ? (
+        {userInfo.rol === 'admin' ? (
           <Fragment>
   
-            <div className={`w-full rounded-b-xl b p-4 flex items-center gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
-              <button
-                className={`rounded-full w-9 h-9 transition-colors duration-300 cursor-pointer ${
-                  disponible ? 'bg-green-600' : 'bg-red-600'
-                }`}
-                onClick={handleChangeStatus}
-                aria-label="Cambiar disponibilidad del producto"
-              />
+            <div className={`w-full rounded-b-xl  p-4 flex justify-between gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
 
-              <span className="font-semibold text-gray-800">
-                {disponible ? 'Producto disponible' : 'Producto no disponible'}
-              </span>
+              <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={handleChangeStatus}>
+
+                <button
+                  className={`rounded-full w-9 h-9 transition-colors duration-300 cursor-pointer ${
+                    disponible ? 'bg-green-600' : 'bg-red-600'
+                  }`}
+
+                  aria-label="Cambiar disponibilidad del producto"
+                />
+
+                <span className="font-semibold text-gray-800">
+                  {disponible ? 'Disponible' : 'No disponible'}
+                </span>
+              </div>
+  
+              <div className="flex flex-row items-center gap-2">
+
+                <MdModeEdit 
+                  size={30} 
+                  className={`text-black cursor-pointer hover:bg-yellow-400 rounded`}
+                  onClick={()=>{setTodit(!toEdit)}}
+                />
+
+                <MdDelete
+                  size={30}
+                  className={`text-black cursor-pointer hover:bg-red-400 rounded`}
+
+                />
+              </div>
+          
+              
             </div>
           
           </Fragment>

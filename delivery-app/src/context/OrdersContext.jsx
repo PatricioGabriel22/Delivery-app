@@ -42,6 +42,9 @@ export function OrderProvider({children}){
    
     
     useEffect(()=>{
+
+        if(!userInfo) return
+        
         if(!userInfo.rol){
             const rol = "cliente"
             const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
@@ -49,11 +52,6 @@ export function OrderProvider({children}){
             setLimite(5)
             
         }
-    },[userInfo])
-
-
-
-    useEffect(()=>{
 
         if(userInfo.rol === "admin"){
             const rol = "admin"
@@ -62,7 +60,10 @@ export function OrderProvider({children}){
             setLimite(20)
             
         }
-    },[ userInfo])
+    },[userInfo])
+
+
+
 
 
 

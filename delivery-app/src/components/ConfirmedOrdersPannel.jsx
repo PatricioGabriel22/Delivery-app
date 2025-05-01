@@ -19,7 +19,7 @@ import Error from "./Error.jsx";
 
 
 
-export default function ConfirmedOrdersPannel({targetDate,targetName,totalPedidos}){
+export default function ConfirmedOrdersPannel({targetDate,targetName}){
 
 
     const {userInfo} = useLoginContext()
@@ -53,9 +53,9 @@ export default function ConfirmedOrdersPannel({targetDate,targetName,totalPedido
     .filter(orderDate=> targetDate ? verFecha(orderDate.createdAt) === targetDate : true)
     .filter(userNameOrder=> targetName ? userNameOrder.userID?.username.includes(targetName)  : true)
 
-    useMemo(()=>{
-        totalPedidos(filteredOrders.length)
-    },[totalPedidos,filteredOrders.length])
+    // useMemo(()=>{
+    //     totalPedidos(filteredOrders.length)
+    // },[totalPedidos,filteredOrders.length])
 
 
 

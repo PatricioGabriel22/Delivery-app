@@ -82,18 +82,18 @@ export default function Home() {
       </div>
       
 
-      <SearchingBar searchSetter={setProductoBuscado}/>
 
+      <SearchingBar searchSetter={setProductoBuscado}/>
 
       {isLoading && (
         <Loading msg={"Cargando catalogo..."} />
-        
       )}
 
       {isError && (
         <Error msg={"Hubo un error al cargar el catalogo."} />
         
       )}
+
 
       {CategoriasProductos.map(categoria=>{
         
