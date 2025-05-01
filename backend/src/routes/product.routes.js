@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {catalogMaker, dataFormNewProduct, changeStatus,editProductInfo } from "../controllers/product.controllers.js";
+import {catalogMaker, dataFormNewProduct, changeStatus,editProductInfo,eliminarProductoDB } from "../controllers/product.controllers.js";
 
 import multer from 'multer'
 
@@ -28,3 +28,6 @@ productRoutes.put('/disponibilidad',changeStatus)
 //siempre que use 'Content-Type': 'multipart/form-data' tengo que passarle el middleware de multer para ver la informacion de la req o upload.none() se usa cuando solo estás enviando texto, no archivos.
 
 productRoutes.put('/editProductInfo',multerMiddleware().single('imagen'),editProductInfo)
+
+
+productRoutes.delete('/eliminarProducto/:id',eliminarProductoDB)

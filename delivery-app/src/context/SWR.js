@@ -69,13 +69,9 @@ export function useConfirmedOrders(userInfo,url,flagPagination,page, limit){
 
 async function getAllCatalogFromAdmin(url){
 
-    try {
-        
-        const res = await axios.get(url, { withCredentials: true })
-        return res.data
-    } catch (error) {
-        console.log(error)
-    }
+    const res = await axios.get(url, { withCredentials: true })
+    return res.data
+
     
 }
 

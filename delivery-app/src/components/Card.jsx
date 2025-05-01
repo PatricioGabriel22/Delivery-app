@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import { MdDelete } from "react-icons/md";
-import { FaPlus } from "react-icons/fa";
+import { FaExclamationTriangle, FaPlus } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 
 
@@ -14,6 +14,9 @@ import { ListaProductos } from "../utils/productos";
 
 import axios from "axios";
 import { ccapitalizer_3000 } from "../utils/capitalize";
+import toast from "react-hot-toast";
+import { useCatalogMaker } from "../context/SWR";
+import { useCatalogContext } from "../context/CatalogContext";
 
 
 
@@ -35,6 +38,8 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
   
   const {userInfo,renderORLocalURL} = useLoginContext()
+
+  const {catalogoDelAdmin,refresh} = useCatalogContext()
 
 
   
@@ -100,6 +105,70 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   }
 
+  async function borrarProducto(){
+    
+    //hago u nbackup de la data para tener en caso de emergencia
+    const rollback = ""
+
+    //elimino el ide  lo que quiero eliminar con un refresco de SWR (Esto es solo visual)
+    refresh(prevData=>{
+      const nuevaData = prevData.catalogoDelAdmin.filter(data=> data._id !== id)
+      console.log(prevData)
+
+      return({
+        ...prevData,
+        catalogoDelAdmin: nuevaData
+      })
+
+    },{revalidate:false})
+
+    try {
+      //aca si ejecuto por detras la eliminacion definitiva en la DB
+      
+      await toast.promise(
+          axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
+         {
+           loading: 'Eliminando...',
+           success:(res) =>  res.data.message || "Producto eliminado!" ,
+           error: (res) => res.data.error || "No se pudo eliminar el producto",
+         }
+      )
+    } catch (error) {
+      //y si ago sale mal uso el rollback para volver a incorporarlo al catalogo
+      refresh(prevData=>{
+        return{
+          ...prevData,
+          catalogoDelAdmin: rollback
+        }
+      },{revalidate:false})
+    }
+
+
+  }
+
+  const alertDelete = ()=>{
+    toast((t) => (
+      <span className="flex flex-col ">
+        <p className="justify-self-end text-end w-full m-auto cursor-pointer " onClick={()=>toast.dismiss(t.id)}>X</p>
+        <FaExclamationTriangle className="text-red-500 text-5xl self-center" />
+        <p className="font-semibold">¿Seguro que desea eliminar {ccapitalizer_3000(nombre)}?</p>
+
+        <div className="flex flex-row justify-around p-3">
+
+          <button onClick={()=>{toast.dismiss(t.id); borrarProducto()}} className="bg-red-400 hover:bg-red-500 p-2 font-bold rounded border-1 cursor-pointer">
+            Eliminar
+          </button>
+
+          <button onClick={()=>toast.dismiss(t.id)} className="rounded border-1 p-2 cursor-pointer">
+            No
+          </button>
+        </div>
+
+      </span>
+    ));
+  }
+
+
 
 
   return (
@@ -108,10 +177,11 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
         <div className={`flex flex-row items-center justify-center w-full `}>
           {toEdit ? 
             (<input 
-              className="text-center border-2 p-5 text-xl w-[70%] rounded-t-3xl mr-auto" 
+              className="text-center border-2 p-5 text-xl w-[70%] rounded-t-2xl mr-auto" 
               name="nombre"
               value={clearInputs(editableData?.nombre,nombre)}
               onChange={(e)=>handleChangesDataCard(e)}
+              //pero mejor hacer un cartel de estaas "seguro?" IMPORTANTE
               />) 
             :
             (<p className="text-center rounded-t-2xl py-4 text-xl text-wrap">{ccapitalizer_3000(nombre)}</p>)
@@ -222,7 +292,8 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
                 <MdDelete
                   size={30}
                   className={`text-black cursor-pointer hover:bg-red-400 rounded`}
-
+                  onClick={()=>{alertDelete()}}
+                  
                 />
               </div>
           

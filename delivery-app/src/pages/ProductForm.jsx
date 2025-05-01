@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useLoginContext } from '../context/LoginContext';
 import { capitalize } from '../utils/capitalize';
+import toast from 'react-hot-toast';
 
 export default function ProductForm() {
   const [loading, setLoading] = useState(false);
@@ -23,20 +24,22 @@ export default function ProductForm() {
     formData.append('disponible', e.target.disponible.value);
 
     try {
-      const res = await axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, {
-        withCredentials: true,
+      axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, 
+        {withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      });
-        console.log('Producto subido:', res.data);
-        e.target.reset();
-        setPreview(null);
-    } catch (err) {
-      console.error('Error al subir producto:', err);
-    } finally {
-      setLoading(false);
-    }
+        }).then(res => {
+          toast.success(`${res.data.message}`)
+          e.target.reset();
+          setPreview(null);
+        }).catch(error=>toast.error(`${error.data.errorMessage}`))
+        
+      } catch (err) {
+        console.error('Error al subir producto:', err);
+      } finally {
+        setLoading(false);
+      }
   };
 
   const handleImageChange = (e) => {

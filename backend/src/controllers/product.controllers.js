@@ -1,3 +1,4 @@
+import { error } from "console"
 import productSchema from "../models/product.schema.js"
 import { io } from "../webSocket.js" 
 
@@ -61,6 +62,8 @@ export const dataFormNewProduct = async(req,res)=>{
 
     } catch (error) {
         console.log(error)
+        res.json({errorMessage:"Hubo un problema al crear el nuevo producto"})
+
     }
 
 
@@ -106,5 +109,22 @@ export const editProductInfo = async (req,res)=>{
         const target = await productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio})
     } catch (error) {
         
+    }
+}
+
+
+
+export async function eliminarProductoDB(req,res) {
+    const {id} = req.params
+
+    try {
+        const target = await productSchema.findByIdAndDelete(id)
+
+        if(!target) res.status(400).json({error:"Error al eliminar el producto"})
+        
+        res.status(200).json({message:`${target.nombre} fue eliminado`})
+
+    } catch (error) {
+        console.log(error)
     }
 }
