@@ -81,7 +81,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   }
 
   async function sendEditedProduct(){
-    console.log(editableData)
+    setTodit(!toEdit)
     if(editableData){
       
       const formDataNewInfo = new FormData()
@@ -108,12 +108,12 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   async function borrarProducto(){
     
     //hago u nbackup de la data para tener en caso de emergencia
-    const rollback = ""
+    const rollback = catalogoDelAdmin
 
     //elimino el ide  lo que quiero eliminar con un refresco de SWR (Esto es solo visual)
     refresh(prevData=>{
       const nuevaData = prevData.catalogoDelAdmin.filter(data=> data._id !== id)
-      console.log(prevData)
+
 
       return({
         ...prevData,
@@ -129,8 +129,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
          {
            loading: 'Eliminando...',
-           success:(res) =>  res.data.message || "Producto eliminado!" ,
+           success:(res) =>  res.data.message || "Producto eliminado!",
            error: (res) => res.data.error || "No se pudo eliminar el producto",
+           duration: 1000 * 2
          }
       )
     } catch (error) {
@@ -177,21 +178,21 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
         <div className={`flex flex-row items-center justify-center w-full `}>
           {toEdit ? 
             (<input 
-              className="text-center border-2 p-5 text-xl w-[70%] rounded-t-2xl mr-auto" 
+              className="text-center border-2 p-5 text-xl w-[70%] rounded-t-3xl mr-auto" 
               name="nombre"
               value={clearInputs(editableData?.nombre,nombre)}
               onChange={(e)=>handleChangesDataCard(e)}
               //pero mejor hacer un cartel de estaas "seguro?" IMPORTANTE
               />) 
             :
-            (<p className="text-center rounded-t-2xl py-4 text-xl text-wrap">{ccapitalizer_3000(nombre)}</p>)
+            (<p className="text-center rounded-t-3xl py-5 text-xl text-wrap">{ccapitalizer_3000(nombre)}</p>)
           }
 
           {
             toEdit && (
               <buttton 
                 onClick={()=>{sendEditedProduct()}}
-                className="hover:bg-sky-400 rounded p-2 m-auto">Guardar</buttton>
+                className="hover:bg-sky-400 rounded p-2 m-auto cursor-pointer">Guardar</buttton>
             )
           }
 
@@ -203,10 +204,10 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
         {toEdit ? (
           <Fragment>
-            <div className="flex flex-col justify-between p-2 gap-y-8">
+            <div className="flex flex-col justify-between p-2 gap-y-8 ">
 
               <textarea
-              className="border-2 rounded "
+              className="border-2 rounded my-4  "
               value={clearInputs(editableData?.descripcion,descripcion)}
               name="descripcion"
               onChange={(e)=>handleChangesDataCard(e)}
@@ -223,7 +224,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             </div>
 
 
-            <label className="cursor-pinter hover:bg-red-400 rounded  text-center h-fit">
+            <label className="cursor-pointer hover:bg-red-400 rounded  text-center h-fit m-2 ">
               Cambiar imagen
               <input
                 type="file"

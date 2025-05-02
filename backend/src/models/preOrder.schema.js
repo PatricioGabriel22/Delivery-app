@@ -15,6 +15,11 @@ const preOrderSchema = new mongoose.Schema({
     finished:{type:Boolean,default:false},
     delivered:{type:Boolean,default:false},
     formaDeEntrega:String,
+    paymentMethod:{
+        type:String,
+        enum:['efectivo','mercado pago'],
+        default:null
+    },
     createdAt: {
         type: Date,
         default: () => {
