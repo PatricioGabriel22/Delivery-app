@@ -130,8 +130,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
          {
            loading: 'Eliminando...',
            success:(res) =>  res.data.message || "Producto eliminado!",
-           error: (res) => res.data.error || "No se pudo eliminar el producto",
-           duration: 1000 * 2
+           error: (res) => res.data.error || "No se pudo eliminar el producto"
          }
       )
     } catch (error) {
