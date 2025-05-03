@@ -58,6 +58,7 @@ export default function CategoryFrom(){
     useEffect(()=>{
 
         socket.on('categoriaAgregada',(data)=>{
+            console.log(data)
             userInfo.categorias = [...new Set([...userInfo.categorias,...data.listaCategorias])]
             sessionStorage.setItem('userInfo',JSON.stringify(userInfo))
         })

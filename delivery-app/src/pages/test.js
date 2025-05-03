@@ -1,20 +1,19 @@
-// const hoy = new Date();
-// const inicioDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(),0,0,0)
-// const finDelDia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() + 1);
+const productos = [{nombre:"pepas"},{nombre:"budines"}]
 
-// const esDeHoy = (fechaStr) => {
-//     const fecha = new Date(fechaStr);
-//     return fecha >= inicioDelDia && fecha < finDelDia;
-// };
+const nuevo = {nombre:"torta",stock:20}
 
-// const fechaDeHoy = new Date()
-// const year = fechaDeHoy.getFullYear()
-// const month = new Date(fechaDeHoy.getMonth())
 
-// const msg = 'texto'
 
-// console.log( msg.charAt(0).toUpperCase()+msg.slice(1,msg.length))
+function add(target,lista){
+    const isInLista = lista.find(item => item.nombre === target.nombre)
 
-const veterinaria = {gata1:{nombre:"Aurora",color:"negro"}}
 
-console.log(veterinaria["gata1"].nombre)
+    if(!isInLista){
+        lista.push(target)
+    }
+
+}
+
+add(nuevo,productos)
+
+console.log(productos)

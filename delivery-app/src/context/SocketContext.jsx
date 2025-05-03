@@ -103,7 +103,7 @@ export function SocketProvider({children}){
 
     
     
-    //Gestion de respuestas del servidor
+    //Gestion de respuestas del servidor (las ubico aca para que toda la app`se entere cuand oentra un pedido)
     useEffect(() => {
 
         if(!userInfo) return
@@ -205,12 +205,11 @@ export function SocketProvider({children}){
         socket.on('finishedOrder',(data)=>{
             console.log(data)
             setAcceptedOrders(prev=>prev.map(item=>{
-
+                let aux = {...item}
                 if(item._id === data.finishedOrder._id){
-                    return {...item, finished: data.finishedOrder.finished}
-                }else{
-                    return {...item}
+                    aux = {...item, finished: data.finishedOrder.finished}
                 }
+                return aux
             }))
         })
 

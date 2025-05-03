@@ -1,4 +1,3 @@
-import { error } from "console"
 import productSchema from "../models/product.schema.js"
 import { io } from "../webSocket.js" 
 
@@ -34,7 +33,7 @@ export const dataFormNewProduct = async(req,res)=>{
 
     try {
         
-        const nuevoPoducto = new productSchema({
+        const nuevoProducto = new productSchema({
             adminOwner:idAdmin,
             nombre,
             descripcion,
@@ -46,7 +45,7 @@ export const dataFormNewProduct = async(req,res)=>{
         if(req.file){
             const imagen = req.file.buffer
             
-            nuevoPoducto.img = {
+            nuevoProducto.img = {
                 data: imagen,
                 contentType: req.file.mimetype,
             } 
@@ -54,7 +53,9 @@ export const dataFormNewProduct = async(req,res)=>{
         }
 
 
-        nuevoPoducto.save()
+        nuevoProducto.save()
+
+        io.emit('productoAgregado',{nuevoProducto: nuevoProducto})
 
 
         res.json({message:"Producto agregado"})
@@ -122,6 +123,8 @@ export async function eliminarProductoDB(req,res) {
 
         if(!target) res.status(400).json({error:"Error al eliminar el producto"})
         
+        io.emit('productoEliminado',{deletedId:target._id})
+
         res.status(200).json({message:`${target.nombre} fue eliminado`})
 
     } catch (error) {

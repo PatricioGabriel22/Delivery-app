@@ -47,7 +47,7 @@ export default function Home() {
       refresh(prevData => {
         if (!prevData) return prevData
     
-        const updatedCatalog = prevData.catalogoDelAdmin.map(item => {
+        const updatedStatuses = prevData.catalogoDelAdmin.map(item => {
           if (item._id === data.target._id) {
             return { ...item, disponible: data.target.disponible }
           }
@@ -56,15 +56,45 @@ export default function Home() {
   
         return {
           ...prevData,
-          catalogoDelAdmin: updatedCatalog
+          catalogoDelAdmin: updatedStatuses
         }
       }, false) // false para evitar revalidar desde el servidor
     })
 
 
+    socket.on('productoAgregado',(data)=>{
+      refresh(prevData=>{
+        //prevData es la data cruda del hook useSWR
+        if(!prevData) return
+
+        const newCatalogo = [...prevData.catalogoDelAdmin, data.nuevoProducto]
+
+        return {
+          ...prevData,
+          catalogoDelAdmin: newCatalogo
+        }
+      },false)
+    })
+
+    socket.on('productoEliminado',(data)=>{
+
+      refresh(prevData=>{
+        if(!prevData) return
+        const newCatalogo = prevData.catalogoDelAdmin.filter(producto => producto._id !== data.deletedId)
+
+        return {
+          ...prevData,
+          catalogoDelAdmin: newCatalogo
+        }
+      },false)
+
+    })
+
 
     return ()=>{
       socket.off('AlterProductStatus')
+      socket.off('productoAgregado')
+      socket.off('productoEliminado')
 
 
     }
@@ -85,7 +115,7 @@ export default function Home() {
 
       <SearchingBar searchSetter={setProductoBuscado}/>
 
-      {isLoading && (
+      {isLoading &&  (
         <Loading msg={"Cargando catalogo..."} />
       )}
 
