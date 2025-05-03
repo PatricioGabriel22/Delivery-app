@@ -12,6 +12,7 @@ import toast from "react-hot-toast"
 import { useOrdersContext } from "./OrdersContext"
 import { Link } from "react-router-dom"
 import BannerCloseLogo from "../components/BannerCloseLogo"
+import { useCatalogContext } from "./CatalogContext"
 
 
 
@@ -46,7 +47,10 @@ export function SocketProvider({children}){
 
     const {userInfo} = useLoginContext()
     const {allPreOrdersFromAdmin,AdminPreOrdersData} = useOrdersContext()
-    const {setBuyBTN,setLoading,setResponseFromServer,refresh} = useShoppingContext()
+    const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
+    const {refresh} = useCatalogContext() 
+    
+
     const [allPreOrders, setAllPreOrders] = useState([])
     const [acceptedOrders,setAcceptedOrders] = useState([])
 
@@ -103,7 +107,7 @@ export function SocketProvider({children}){
 
     
     
-    //Gestion de respuestas del servidor (las ubico aca para que toda la app`se entere cuand oentra un pedido)
+    //Gestion de respuestas de pre-ordenes (las ubico aca para que toda la app`se entere cuand oentra un pedido)
     useEffect(() => {
 
         if(!userInfo) return
@@ -234,6 +238,29 @@ export function SocketProvider({children}){
         };
     }, [userInfo]);
 
+
+    //detectar nueco producto agregado para toda la app
+    useEffect(()=>{
+        socket.on('productoAgregado',(data)=>{
+            refresh(prevData=>{
+              //prevData es la data cruda del hook useSWR
+              if(!prevData) return
+      
+              const newCatalogo = [...prevData.catalogoDelAdmin, data.nuevoProducto]
+      
+              return {
+                ...prevData,
+                catalogoDelAdmin: newCatalogo
+              }
+            },false)
+        })
+
+        return ()=>{
+            socket.off('productoAgregado')
+
+        }
+      
+    },[refresh,socket])
 
 
     return(

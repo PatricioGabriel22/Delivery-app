@@ -62,41 +62,10 @@ export default function Home() {
     })
 
 
-    socket.on('productoAgregado',(data)=>{
-      refresh(prevData=>{
-        //prevData es la data cruda del hook useSWR
-        if(!prevData) return
-
-        const newCatalogo = [...prevData.catalogoDelAdmin, data.nuevoProducto]
-
-        return {
-          ...prevData,
-          catalogoDelAdmin: newCatalogo
-        }
-      },false)
-    })
-
-    socket.on('productoEliminado',(data)=>{
-
-      refresh(prevData=>{
-        if(!prevData) return
-        const newCatalogo = prevData.catalogoDelAdmin.filter(producto => producto._id !== data.deletedId)
-
-        return {
-          ...prevData,
-          catalogoDelAdmin: newCatalogo
-        }
-      },false)
-
-    })
 
 
     return ()=>{
       socket.off('AlterProductStatus')
-      socket.off('productoAgregado')
-      socket.off('productoEliminado')
-
-
     }
 
   },[])

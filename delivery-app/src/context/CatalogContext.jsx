@@ -4,6 +4,7 @@ import { createContext, useContext} from "react"
 import { useCatalogMaker } from "./SWR"
 import { useLoginContext } from "./LoginContext"
 
+
 const catalogoContext = createContext()
 
 
@@ -25,12 +26,13 @@ export const useCatalogContext = ()=>{
 export function CatalogoProvider({children}){
 
     const {renderORLocalURL} = useLoginContext()
-    
+
     
     const {catalogoDelAdmin,refresh,isLoading,isError} = useCatalogMaker(renderORLocalURL)
     
 
-  
+    
+
 
     return(
         <catalogoContext.Provider value={{
