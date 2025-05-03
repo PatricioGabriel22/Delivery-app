@@ -255,8 +255,21 @@ export function SocketProvider({children}){
             },false)
         })
 
+        socket.on('productoEliminado',(data)=>{
+            refresh(prevData=>{
+                const newCatalogo = prevData.catalogoDelAdmin.filter(producto => producto._id !== data.deletedId)
+
+                return {
+                    ...prevData,
+                    catalogoDelAdmin: newCatalogo
+                }
+            })
+        })
+
+
         return ()=>{
             socket.off('productoAgregado')
+            socket.off('productoEliminado')
 
         }
       

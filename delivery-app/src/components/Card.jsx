@@ -106,41 +106,19 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   }
 
   async function borrarProducto(){
-    
-    //hago u nbackup de la data para tener en caso de emergencia
-    const rollback = catalogoDelAdmin
-
-    //elimino el ide  lo que quiero eliminar con un refresco de SWR (Esto es solo visual)
-    refresh(prevData=>{
-      const nuevaData = prevData.catalogoDelAdmin.filter(data=> data._id !== id)
-
-
-      return({
-        ...prevData,
-        catalogoDelAdmin: nuevaData
-      })
-
-    },{revalidate:false})
 
     try {
       //aca si ejecuto por detras la eliminacion definitiva en la DB
-      
       await toast.promise(
-          axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
-         {
-           loading: 'Eliminando...',
-           success:(res) =>  res.data.message || "Producto eliminado!",
-           error: (res) => res.data.error || "No se pudo eliminar el producto",
-         }
-      )
+        axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
+        {
+          loading: 'Eliminando...',
+          success:(res) =>  res.data.message || "Producto eliminado!",
+          error: (res) => res.data.error || "No se pudo eliminar el producto",
+        })
     } catch (error) {
       //y si ago sale mal uso el rollback para volver a incorporarlo al catalogo
-      refresh(prevData=>{
-        return{
-          ...prevData,
-          catalogoDelAdmin: rollback
-        }
-      },{revalidate:false})
+      refresh()
     }
 
 

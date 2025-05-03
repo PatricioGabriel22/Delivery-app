@@ -123,6 +123,7 @@ export async function eliminarProductoDB(req,res) {
 
         if(!target) res.status(400).json({error:"Error al eliminar el producto"})
         
+        io.emit('productoEliminado',{deletedId:target._id})
 
         res.status(200).json({message:`${target.nombre} fue eliminado`})
 
