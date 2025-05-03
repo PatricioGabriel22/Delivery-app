@@ -131,7 +131,6 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
            loading: 'Eliminando...',
            success:(res) =>  res.data.message || "Producto eliminado!",
            error: (res) => res.data.error || "No se pudo eliminar el producto",
-           duration: 1000 * 2
          }
       )
     } catch (error) {
@@ -224,7 +223,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             </div>
 
 
-            <label className="cursor-pointer hover:bg-red-400 rounded  text-center h-fit m-2 ">
+            <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto ">
               Cambiar imagen
               <input
                 type="file"
