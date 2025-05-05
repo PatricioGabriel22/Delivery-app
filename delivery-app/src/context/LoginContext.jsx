@@ -24,12 +24,17 @@ export function LoginProvider({children}){
 
     //para aceder a las variables de entorno de VITE import.meta.env
     
-    const renderORLocalURL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://delivery-app-0lcx.onrender.com'
-
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
 
+    const MODE_URLS = {
+        development: 'http://localhost:4000',
+        production: 'https://delivery-app-0lcx.onrender.com',
+        staging: 'https://delivery-app-stagingapi.onrender.com',
+    }
+    
+    const renderORLocalURL = MODE_URLS[import.meta.env.MODE] || MODE_URLS.production  // default to production if mode is not recognized
 
 
 

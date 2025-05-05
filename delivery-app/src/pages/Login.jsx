@@ -1,5 +1,5 @@
 import axios from "axios"
-import { Fragment, useState } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useLoginContext } from "../context/LoginContext"
 
@@ -60,7 +60,9 @@ export default function Login(){
   }
 
 
-
+  useEffect(()=>{
+    console.log(import.meta.env)
+  },[])
 
 
   return (
