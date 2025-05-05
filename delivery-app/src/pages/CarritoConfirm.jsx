@@ -19,6 +19,8 @@ import { decidirCostoEnvio } from "../utils/envioFunctions";
 import toast from "react-hot-toast";
 import { useCatalogContext } from "../context/CatalogContext";
 import { ccapitalizer_3000 } from "../utils/capitalize";
+import ProfileCard from "../components/ProfileCard";
+import BannerCloseLogo from "../components/BannerCloseLogo";
 
 
 
@@ -41,6 +43,7 @@ export default function CarritoConfirm(){
 
     const [listaDeCompras, setListaDeCompras] = useState([]);
     
+    const [chekcInfoBTN,setChekcInfoBTN] = useState(false)
 
     
     setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + decidirCostoEnvio(deliveryMethod,userInfo.localidad))
@@ -142,37 +145,58 @@ export default function CarritoConfirm(){
 
 
     return(
-        <div className={`flex flex-col min-h-screen items-center  text-black p-4 md:w-xl m-auto  
-            ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
+        <div className={`flex flex-col justify-center items-center  text-black p-4 md:w-xl m-auto  ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
 
-            {listaDeCompras?.map((item,index)=>(
-                <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-4 mb-2">
-
-                    {/* Cantidad (opcional) */}
-                    {item.cantidad && (
-                        <p className="text-red-600 font-bold w-1/3">{item.cantidad}x</p>
-                    )}
+            <button 
+                className={`bg-red-600 text-white p-4 mb-9 rounded-full  cursor-pointer hover:border-1 hover:border-white ${chekcInfoBTN? "hidden" :"text-lg" }`}
+                onClick={()=>{setChekcInfoBTN(prev=>!prev)}}
+            >{`${chekcInfoBTN? "" :"Modificar informacion de entrega" }`}</button>
+            
+            {chekcInfoBTN && (
+                <Fragment>
                     
-                    {/* Nombre del Producto */}
+                    <div className="w-full">
 
-                    <p className="font-medium text-lg w-1/3 text-start ">{ccapitalizer_3000(item.nombre)}</p>
+                        <BannerCloseLogo close={()=>{setChekcInfoBTN(prev=>!prev)}} />
+                        <ProfileCard userInfo={userInfo}/>
+                    </div>
+                   
+                </Fragment>
+                )}
+         
 
-                    {/* Precio */}
-                    <p className="text-gray-700 font-semibold w-1/3">${item.precio * item.cantidad}</p>
+
+            <div className={`flex flex-col ${listaDeCompras.length>0? "h-[300px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
+
+                {listaDeCompras?.map((item,index)=>(
+                    <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-4 mb-2">
+
+                        {/* Cantidad (opcional) */}
+                        {item.cantidad && (
+                            <p className="text-red-600 font-bold w-1/3">{item.cantidad}x</p>
+                        )}
+                        
+                        {/* Nombre del Producto */}
+
+                        <p className="font-medium text-lg w-1/3 text-start ">{ccapitalizer_3000(item.nombre)}</p>
+
+                        {/* Precio */}
+                        <p className="text-gray-700 font-semibold w-1/3">${item.precio * item.cantidad}</p>
 
 
-                    <RiDeleteBin6Line  
-                        size={20} 
-                        className={`${edit? "block":"invisible"}`}
-                        onClick={()=>cartHandler(carrito,"delete",item.nombre,item.precio)}
-                        />
+                        <RiDeleteBin6Line  
+                            size={20} 
+                            className={`${edit? "block":"invisible"}`}
+                            onClick={()=>cartHandler(carrito,"delete",item.nombre,item.precio)}
+                            />
 
-                </div>
-              
-              
-            ))}
-            <div className="flex flex-col w-full ">
-              
+                    </div>
+                
+                
+                ))}
+            </div>
+            <div className="flex flex-col w-full mt-9 m-auto slef-center">
+            
 
 
                 <div className={`flex flex-col w-full 
@@ -230,7 +254,7 @@ export default function CarritoConfirm(){
                 </div>
 
 
-              
+            
 
                     {loading ? (
                         <div className="flex flex-col justify-center w-full">

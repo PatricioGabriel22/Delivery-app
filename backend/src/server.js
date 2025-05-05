@@ -11,18 +11,18 @@ import { productRoutes } from './routes/product.routes.js'
 import { httpServer,server,serverURL } from './webSocket.js'
 
 
-dotenv.config()
-
+dotenv.config({
+    path:`src/envs/.env.${process.env.NODE_ENV}` //decirle a dotenv donde esta el .env
+})
 
 
 
 try {
 
-    await connectDB(process.env.MONGO_CLUSTER_TEST)
+    await connectDB(process.env.MONGO_CLUSTER)
 } catch (error) {
     console.log(error)
 }
-console.log(serverURL)
 
 server.use(cors({ origin: serverURL , credentials: true })) 
 server.use(express.json())
@@ -33,6 +33,8 @@ server.use(preOrderRoutes)
 server.use(productRoutes)
 
 // Iniciar el servidor HTTP + WebSocket en el mismo puerto
-httpServer.listen(Number(process.env.PORT) , () => {
-    console.log(`HTTP + WebSocket server running on port ${process.env.PORT}`)
+const puertoDeConexion = Number(process.env.PORT) || 4000
+
+httpServer.listen(puertoDeConexion , () => {
+    console.log(`HTTP + WebSocket server running on port ${puertoDeConexion}`)
 })

@@ -80,13 +80,13 @@ export default function Login(){
             <ShowPassword setFalg={setShowPassword} flagPassword={showPassword} />
 
 
-            <button type="submit" className="bg-red-500 w-full rounded-full p-2">Login</button>
+            <button type="submit" className="bg-red-500 w-full rounded-full p-2 cursor-pointer">Login</button>
 
 
           </form>
 
 
-          <Link to="/register" className="pt-4">Register</Link>
+          <Link to="/register" className="pt-4 cursor-pointer">Register</Link>
 
 
         </div>

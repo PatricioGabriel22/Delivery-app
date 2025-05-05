@@ -60,7 +60,7 @@ export default function ProfileCard({ userInfo }) {
 
   return (
     <Fragment>
-      <div className="bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-auto flex flex-col gap-6">
+      <div className="bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-2xl p-6 w-full max-w-md mx-auto flex flex-col gap-6 mb-2">
         {/* Header del perfil */}
         <div className="flex items-center gap-4 border-b pb-4">
           <div className="bg-red-100 p-3 rounded-full">

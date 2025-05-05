@@ -4,8 +4,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --watch src/server.js ",
-    "db": "node --watch src/server.js "
+    "test:local": "cross-env NODE_ENV=local node --watch src/server.js ",
+    "start:staging": "cross-env NODE_ENV=staging node --watch src/server.js",
+    "start:production": "cross-env NODE_ENV=production node  src/server.js"
   },
   "keywords": [],
   "author": "PatricioGabriel22",
@@ -14,6 +15,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",

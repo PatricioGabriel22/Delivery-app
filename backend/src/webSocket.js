@@ -4,11 +4,13 @@ import express from 'express'
 
 import dotenv from 'dotenv'
 
-dotenv.config()
+dotenv.config({
+    path:`src/envs/.env.${process.env.NODE_ENV}`
+})
 
 
 export const server = express()
-export const serverURL = process.env.PORT === '4000' ? "http://localhost:5173" : "https://delivery-app-beta-weld.vercel.app"
+export const serverURL = process.env.FRONT_URL
 
 // Este servidor HTTP se necesita para conectar Express + Socket.io
 export const httpServer = http.createServer(server);

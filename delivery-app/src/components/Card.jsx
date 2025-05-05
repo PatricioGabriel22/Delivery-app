@@ -13,7 +13,7 @@ import { ListaProductos } from "../utils/productos";
 
 
 import axios from "axios";
-import { ccapitalizer_3000 } from "../utils/capitalize";
+import { capitalize, ccapitalizer_3000 } from "../utils/capitalize";
 import toast from "react-hot-toast";
 import { useCatalogMaker } from "../context/SWR";
 import { useCatalogContext } from "../context/CatalogContext";
@@ -106,15 +106,17 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   }
 
   async function borrarProducto(){
-
+    const axiosPromise = axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true})
     try {
       //aca si ejecuto por detras la eliminacion definitiva en la DB
-      await toast.promise(
-        axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
+      toast.promise(
+        axiosPromise,
         {
           loading: 'Eliminando...',
-          success:(res) =>  res.data.message || "Producto eliminado!",
-          error: (res) => res.data.error || "No se pudo eliminar el producto",
+          success:(res) => {
+            // console.log(res) las res de axios viene para aca
+            return capitalize(res.data.message) || "Producto eliminado!"},
+          error: (res) => capitalize(res.data.error) || "No se pudo eliminar el producto",
         })
     } catch (error) {
       //y si ago sale mal uso el rollback para volver a incorporarlo al catalogo

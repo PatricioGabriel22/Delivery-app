@@ -176,7 +176,7 @@ export const PreOrderManager = async (req,res)=>{
     console.log(req.body)
 
     const comprador = orderInfo?.userInfo?.id
-    const userSocketID = connectedUsers[comprador].socketId
+    const userSocketID = connectedUsers[comprador]?.socketId
 
     const restaurante = restauranteAdmin
     const adminSocketID = connectedAdmins[restaurante]
