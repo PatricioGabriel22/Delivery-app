@@ -11,18 +11,21 @@ const productSchema = new mongoose.Schema({
     categoria: String,
     precio: Number,
     disponible:{type:Boolean,default:true},
-    img: {
-      data: {
-        type: Buffer,
-        required: false,
-        default: undefined
-      },
-      contentType: {
-        type: String,
-        required: false,
-        default: undefined
-      }
-    }
+    img: String
+
+    //para almacenar la imagen como binario
+    // {
+    //   data: {
+    //     type: Buffer,
+    //     required: false,
+    //     default: undefined
+    //   },
+    //   contentType: {
+    //     type: String,
+    //     required: false,
+    //     default: undefined
+    //   }
+    // }
 })
 
 const collectionTarget = "products-test"

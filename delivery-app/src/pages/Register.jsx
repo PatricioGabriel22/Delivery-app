@@ -73,7 +73,7 @@ export default function Register(){
     return(    
     <div className="min-h-screen flex flex-col items-center justify-center">
 
-        <img src={succesAnimation? succesLogo : '/vite.png'} 
+        <img src={succesAnimation? succesLogo : '/logoApp.png'} 
         
         className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 

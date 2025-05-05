@@ -61,11 +61,30 @@ export default function Home() {
       }, false) // false para evitar revalidar desde el servidor
     })
 
+    socket.on('cardProductoActualizada',(data)=>{
+      refresh(prevData=>{
+        const updatedArray = prevData.catalogoDelAdmin.map(prevItem=>{
+
+          if(prevItem._id === data._id){
+            return {...data}
+          }else{
+            return{...prevItem}
+          }
+        })
+
+        return{
+          ...prevData,
+          catalogoDelAdmin:updatedArray
+        }
+
+      })
+    })
 
 
 
     return ()=>{
       socket.off('AlterProductStatus')
+      socket.off('cardProductoActualizada')
     }
 
   },[])
@@ -95,7 +114,7 @@ export default function Home() {
       {(!isLoading && !isError) && (<SearchingBar searchSetter={setProductoBuscado}/>)}
 
 
-      {CategoriasProductos.map(categoria=>{
+      {(!isLoading && !isError) && CategoriasProductos.map(categoria=>{
         
         return(
           <Fragment>
@@ -134,6 +153,7 @@ export default function Home() {
                           cantidadAdquirida={target === null ? 0 : target.cantidad}
                           descripcion={producto.descripcion}
                           disponible={producto.disponible}
+                          img={producto.img}
 
                           />
         

@@ -68,7 +68,7 @@ export default function Login(){
   return (
       <Fragment>
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
-          <img src='/vite.png' className={`w-20 ${logginIn?  'animate-bounce' : ""}`}/>
+          <img src='/logoApp.png' className={`w-20 ${logginIn?  'animate-bounce' : ""}`}/>
           <form className=" w-80 h-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center justify-around " 
             onSubmit={(e)=>handleLogin(e)}>
             {CAMPOS_LOGIN.map((campo,index)=>(

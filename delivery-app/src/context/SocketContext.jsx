@@ -122,7 +122,7 @@ export function SocketProvider({children}){
                 <div className={`${costoEnvio === 0 ? 'bg-sky-300' : 'bg-red-300'} px-5 p-2 rounded shadow-lg   ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
                     
                     <Link to="/PreOrderManagement" className="text-black font-bold flex flex-row items-center gap-x-2 ">
-                        <img src="/vite.png" className="h-12 w-12"/>
+                        <img src="/logoApp.png" className="h-12 w-12"/>
                         <p className="font-medium">Nueva pre-orden de {username}</p>
                     
                     </Link>

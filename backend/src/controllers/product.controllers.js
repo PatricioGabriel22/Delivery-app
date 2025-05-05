@@ -29,7 +29,9 @@ export const dataFormNewProduct = async(req,res)=>{
 
     const {idAdmin} = req.params
     const {nombre,descripcion,categoria,precio,disponible} = req.body
-    console.log(idAdmin)
+    console.log(req)
+
+    
 
     try {
         
@@ -43,12 +45,9 @@ export const dataFormNewProduct = async(req,res)=>{
         })
     
         if(req.file){
-            const imagen = req.file.buffer
+            const imagen = req.file.path
             
-            nuevoProducto.img = {
-                data: imagen,
-                contentType: req.file.mimetype,
-            } 
+            nuevoProducto.img = imagen 
     
         }
 
@@ -104,10 +103,26 @@ export const changeStatus = async (req,res)=>{
 
 
 export const editProductInfo = async (req,res)=>{
-    const {nombre,descripcion,precio,id,img} = req.body
-    console.log(req.body)
+    const {nombre,descripcion,precio,id} = req.body
+    
+    let targetUpdated
+
+   
+
     try {
-        const target = await productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio})
+        if(!req.file){
+            const newImagen = req.file.path
+            targetUpdated = productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio})
+        }else{
+            targetUpdated = productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio,img:newImagen})
+
+        }
+
+        targetUpdated.exec()
+
+
+        io.emit('cardProductoActualizada',targetUpdated)
+
     } catch (error) {
         
     }

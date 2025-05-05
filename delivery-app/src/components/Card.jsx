@@ -6,7 +6,7 @@ import { FaExclamationTriangle, FaPlus } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 
 
-import marineras from "../assets/marineras.jpg";
+
 import { useShoppingContext } from "../context/ShoppingContext";
 import { useLoginContext } from "../context/LoginContext";
 import { ListaProductos } from "../utils/productos";
@@ -17,6 +17,7 @@ import { capitalize, ccapitalizer_3000 } from "../utils/capitalize";
 import toast from "react-hot-toast";
 import { useCatalogMaker } from "../context/SWR";
 import { useCatalogContext } from "../context/CatalogContext";
+import { useSocketContext } from "../context/SocketContext";
 
 
 
@@ -28,7 +29,7 @@ import { useCatalogContext } from "../context/CatalogContext";
 
 
 
-export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,disponible}) {
+export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,disponible,img}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toEdit,setTodit] = useState(false)
@@ -41,6 +42,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   const {catalogoDelAdmin,refresh} = useCatalogContext()
 
+  const {socket} = useSocketContext()
 
   
   
@@ -57,8 +59,11 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
 
   function handleChangesDataCard(e){
-    setEditableData({...editableData,[e.target.name]: e.target.value})
-    
+    const nombreCampo = e.target.name
+    const infoGuardada = nombreCampo !== 'imagen' ? e.target.value : e.target.files[0]
+
+    setEditableData({...editableData,[nombreCampo]: infoGuardada})
+    console.log(e)
   }
 
   async function handleChangeStatus(){
@@ -150,7 +155,6 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
 
 
-
   return (
     <div 
       className={`w-90 flex flex-col  text-black rounded-3xl mt-3 md:m-5 bg-white `}>
@@ -169,9 +173,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
           {
             toEdit && (
-              <buttton 
+              <button 
                 onClick={()=>{sendEditedProduct()}}
-                className="hover:bg-sky-400 rounded p-2 m-auto cursor-pointer">Guardar</buttton>
+                className="hover:bg-sky-400 rounded p-2 m-auto cursor-pointer">Guardar</button>
             )
           }
 
@@ -206,6 +210,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto ">
               Cambiar imagen
               <input
+                name='imagen'
                 type="file"
                 className="hidden"
                 onChange={(e)=>handleChangesDataCard(e)}
@@ -227,10 +232,10 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
             {/* Imagen que abre el modal */}
             <img
-              src={marineras}
               className="w-28 h-38 m-1 rounded cursor-pointer select-none object-cover"
               onClick={() => setIsModalOpen(true)}
-              alt="Marineras"/>
+              src={img || '/logoApp.png'}
+              alt={`${nombre}` || "Logo de la app"}/>
           </Fragment>
           )
         }
@@ -331,9 +336,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             onClick={(e) => e.stopPropagation()} // Evita que al hacer clic dentro del modal se cierre
           >
             <img
-              src={marineras}
               className="max-w-full max-h-[90vh] rounded"
-              alt="Marineras"
+              src={'/logoApp.png'}
+              alt={`${nombre}` || 'Logo de la app'}
             />
 
             {/* Botón de cierre */}
