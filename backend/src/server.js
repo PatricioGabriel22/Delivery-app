@@ -20,6 +20,7 @@ dotenv.config({
 try {
 
     await connectDB(process.env.MONGO_CLUSTER)
+    console.log(serverURL)
 } catch (error) {
     console.log(error)
 }
