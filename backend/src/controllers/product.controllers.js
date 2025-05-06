@@ -1,3 +1,4 @@
+import { cloudinary } from "../cloudinary.js"
 import productSchema from "../models/product.schema.js"
 import { io } from "../webSocket.js" 
 
@@ -105,20 +106,35 @@ export const changeStatus = async (req,res)=>{
 export const editProductInfo = async (req,res)=>{
     const {nombre,descripcion,precio,id} = req.body
     
-    let targetUpdated
+    
 
+    console.log(req.file)
    
 
     try {
-        if(!req.file){
+
+        const targetPrevio = await productSchema.findById(id)
+
+        const updatedFields = {
+            nombre,
+            descripcion,
+            precio
+        }
+
+        if(req.file){
             const newImagen = req.file.path
-            targetUpdated = productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio})
-        }else{
-            targetUpdated = productSchema.findByIdAndUpdate(id,{nombre,descripcion,precio,img:newImagen})
+            updatedFields.img = newImagen
+            updatedFields.public_IMG_ID = req.file.filename
+
+            if(targetPrevio.public_IMG_ID){
+
+                await cloudinary.uploader.destroy(targetPrevio.public_IMG_ID)
+            }
 
         }
 
-        targetUpdated.exec()
+        const targetUpdated = await productSchema.findByIdAndUpdate(id,updatedFields,{new:true})
+
 
 
         io.emit('cardProductoActualizada',targetUpdated)

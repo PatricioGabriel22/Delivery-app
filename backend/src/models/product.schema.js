@@ -11,7 +11,8 @@ const productSchema = new mongoose.Schema({
     categoria: String,
     precio: Number,
     disponible:{type:Boolean,default:true},
-    img: String
+    img: String,
+    public_IMG_ID:String
 
     //para almacenar la imagen como binario
     // {

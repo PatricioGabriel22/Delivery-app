@@ -35,14 +35,16 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const [toEdit,setTodit] = useState(false)
   const [editableData,setEditableData] = useState()
 
+  const [miniPreview,setMiniPreview] = useState(false)
+
   // Estado para controlar la cantidad en el carrito
-  const {carrito,setCarrito,cantidadVisualizer,cartHandler} = useShoppingContext()
+  const {carrito,cartHandler} = useShoppingContext()
   
   const {userInfo,renderORLocalURL} = useLoginContext()
 
-  const {catalogoDelAdmin,refresh} = useCatalogContext()
+  const {refresh} = useCatalogContext()
 
-  const {socket} = useSocketContext()
+
 
   
   
@@ -83,6 +85,13 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
       console.log(error)
     }
 
+  }
+
+  function miniPreviewOnEdit(e){
+    const imagen = e.target.files[0]
+    if(!imagen) setMiniPreview(false)
+
+    setMiniPreview(URL.createObjectURL(imagen))
   }
 
   async function sendEditedProduct(){
@@ -213,8 +222,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
                 name='imagen'
                 type="file"
                 className="hidden"
-                onChange={(e)=>handleChangesDataCard(e)}
+                onChange={(e)=>{handleChangesDataCard(e); miniPreviewOnEdit(e)}}
               />
+              {miniPreview && <img src={miniPreview} />}
             </label>
 
 
@@ -225,14 +235,14 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           (
           <Fragment>
 
-            <div className="flex flex-col justify-between p-2">
-              <span>{descripcion}</span>
+            <div className="flex flex-col justify-between p-2 ">
+              <span className="overflow-x-hidden h-30">{descripcion}</span>
               <p className="self-center font-medium text-xl">${precio}</p>
             </div>
 
             {/* Imagen que abre el modal */}
             <img
-              className="w-28 h-38 m-1 rounded cursor-pointer select-none object-cover"
+              className="w-30 h-38 m-1 rounded cursor-pointer select-none object-cover"
               onClick={() => setIsModalOpen(true)}
               src={img || '/logoApp.png'}
               alt={`${nombre}` || "Logo de la app"}/>
@@ -337,7 +347,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           >
             <img
               className="max-w-full max-h-[90vh] rounded"
-              src={'/logoApp.png'}
+              src={img || '/logoApp.png'}
               alt={`${nombre}` || 'Logo de la app'}
             />
 
