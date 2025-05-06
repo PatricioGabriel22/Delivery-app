@@ -30,14 +30,19 @@ export function LoginProvider({children}){
 
     const MODE_URLS = {
         development: 'http://localhost:4000',
+        preview: 'https://delivery-app-stagingapi.onrender.com',
         production: 'https://delivery-app-0lcx.onrender.com',
-        staging: 'https://delivery-app-stagingapi.onrender.com',
+
+        LocalStaging:'http://localhost:4000'
+
+
+
     }
     
-    const renderORLocalURL = MODE_URLS[import.meta.env.MODE] || MODE_URLS.production  // default to production if mode is not recognized
+    const renderORLocalURL = MODE_URLS[import.meta.env.VITE_VERCEL_ENV] || MODE_URLS[import.meta.env.MODE]  // default to production if mode is not recognized
 
 
-
+    console.log(renderORLocalURL)
 
 
     return(

@@ -7,8 +7,9 @@ dotenv.config({
 
 const collectionTarget = process.env.USER_COLLECTION
 
+const refSchemaTarget_Pedidos = process.env.PEDIDOS_COLLECTION
 
-
+console.log(process.env.NODE_ENV,collectionTarget)
 
 // Sí, el valor de ref debe coincidir exactamente con el nombre del modelo que definiste con mongoose.model(), incluyendo las mayúsculas y minúsculas.
 
@@ -30,7 +31,7 @@ const userSchema = new mongoose.Schema({
     categorias:{type: [String],default:[]}, //SOLO ADMINS    
     pedidos:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Pedidos'
+        ref:refSchemaTarget_Pedidos
     }]
     
 },{

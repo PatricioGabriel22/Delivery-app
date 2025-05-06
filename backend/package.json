@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:local": "cross-env NODE_ENV=local node --watch src/server.js ",
+    "test:LocalStaging": "cross-env NODE_ENV=LocalStaging node --watch src/server.js ",
     "start:staging": "cross-env NODE_ENV=staging node --watch src/server.js",
     "start:production": "cross-env NODE_ENV=production node  src/server.js"
   },
