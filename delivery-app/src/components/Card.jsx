@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 
 import { MdDelete } from "react-icons/md";
 import { FaExclamationTriangle, FaPlus } from "react-icons/fa";
@@ -22,7 +22,7 @@ import { useSocketContext } from "../context/SocketContext";
 
 
 
-
+import { MdOutlineImageSearch } from "react-icons/md";
 
 
 
@@ -35,7 +35,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const [toEdit,setTodit] = useState(false)
   const [editableData,setEditableData] = useState()
 
-  const [miniPreview,setMiniPreview] = useState(false)
+  const [miniPreview,setMiniPreview] = useState(null)
 
   // Estado para controlar la cantidad en el carrito
   const {carrito,cartHandler} = useShoppingContext()
@@ -44,9 +44,22 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   const {refresh} = useCatalogContext()
 
+  const capitalizedNombre = useMemo(() => ccapitalizer_3000(nombre), [nombre])
+  const editImgModalRef = useRef(null)
 
+  function openCloseEditPreviewModal(action){
 
-  
+    if(action === 'open'){
+
+      editImgModalRef.current.showModal()
+
+    }else if(action === 'close'){
+
+      editImgModalRef.current.close()
+
+    }
+  }
+
   
   function clearInputs(inputValue,defaultValue){
 
@@ -59,13 +72,23 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
     return inputValue
   }
 
+  
+  function handleChangesDataCard(e,flagTemporal){
+    console.log(e)
 
-  function handleChangesDataCard(e){
     const nombreCampo = e.target.name
     const infoGuardada = nombreCampo !== 'imagen' ? e.target.value : e.target.files[0]
 
     setEditableData({...editableData,[nombreCampo]: infoGuardada})
-    console.log(e)
+
+    if(flagTemporal){
+      const pathLogo = 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1746541592/productos/sxc84fxav3vdaoz1jouf.png'
+
+      setMiniPreview(pathLogo)
+
+     setEditableData({...editableData,[nombreCampo]: flagTemporal})
+
+    }
   }
 
   async function handleChangeStatus(){
@@ -145,7 +168,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
       <span className="flex flex-col ">
         <p className="justify-self-end text-end w-full m-auto cursor-pointer " onClick={()=>toast.dismiss(t.id)}>X</p>
         <FaExclamationTriangle className="text-red-500 text-5xl self-center" />
-        <p className="font-semibold">¿Seguro que desea eliminar {ccapitalizer_3000(nombre)}?</p>
+        <p className="font-semibold">¿Seguro que desea eliminar {capitalizedNombre}?</p>
 
         <div className="flex flex-row justify-around p-3">
 
@@ -177,7 +200,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               //pero mejor hacer un cartel de estaas "seguro?" IMPORTANTE
               />) 
             :
-            (<p className="text-center rounded-t-3xl py-5 text-xl text-wrap">{ccapitalizer_3000(nombre)}</p>)
+            (<p className="text-center rounded-t-3xl py-5 text-xl text-wrap">{capitalizedNombre}</p>)
           }
 
           {
@@ -216,16 +239,49 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             </div>
 
 
-            <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto ">
+            <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto" onClick={()=>openCloseEditPreviewModal('open')}>
               Cambiar imagen
-              <input
-                name='imagen'
-                type="file"
-                className="hidden"
-                onChange={(e)=>{handleChangesDataCard(e); miniPreviewOnEdit(e)}}
-              />
-              {miniPreview && <img src={miniPreview} />}
             </label>
+              <dialog className="rounded-xl p-6  shadow-xl w-full md:w-[45%] h-190 justify-self-center self-center backdrop:bg-black/50 text-xl  font-semibold" ref={editImgModalRef} >
+
+                <p className=" text-3xl font-bold text-center flex flex-col mb-6">
+                  Seleccione la nueva imagen del producto
+                  <span className="w-full h-[1px] bg-red-600"/>
+                </p>
+
+                <div className="flex flex-col gap-y-5 md:flex-row justify-center md:justify-around mt-auto">
+                  <div className="flex flex-col items-center">
+                    <p>Anterior</p>
+                    <img src={img} className=" w-68 h-70"/>
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <p onClick={()=>setMiniPreview(null)} className={`cursor-pointer select-none`}>{miniPreview ? "Cambiar":"Nueva"}</p>
+                    
+                    {miniPreview ? (<img src={miniPreview} className=" w-70 h-70"/>) 
+                      : (
+                      <label className="w-70 h-70 text-center flex flex-col justify-center items-center cursor-pointer bg-red-500 rounded">
+                        Seleccionar imagen
+                          <MdOutlineImageSearch size={80} />
+                          <input
+                          name='imagen'
+                          type="file"
+                          className="hidden"
+                          onChange={(e)=>{handleChangesDataCard(e); miniPreviewOnEdit(e)}}
+                        />
+                      </label>)
+                    }
+                  </div>
+                </div>
+
+                <div className="mt-20">
+
+                  <button name="temporalIMG" className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={(e)=>handleChangesDataCard(e,true)}>Colocar imagen temporal</button>
+
+                  <button  className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={()=>openCloseEditPreviewModal('close')}>Aceptar</button>
+                </div>
+
+              </dialog>
 
 
           

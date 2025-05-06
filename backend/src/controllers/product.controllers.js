@@ -30,7 +30,7 @@ export const dataFormNewProduct = async(req,res)=>{
 
     const {idAdmin} = req.params
     const {nombre,descripcion,categoria,precio,disponible} = req.body
-    console.log(req)
+        
 
     
 
@@ -104,12 +104,16 @@ export const changeStatus = async (req,res)=>{
 
 
 export const editProductInfo = async (req,res)=>{
-    const {nombre,descripcion,precio,id} = req.body
+    const {nombre,descripcion,precio,id,temporalIMG} = req.body
     
     
 
-    console.log(req.file)
-   
+    console.log(temporalIMG)
+
+    const logoApp = {
+        path: 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1746541592/productos/sxc84fxav3vdaoz1jouf.png',
+        filename: 'productos/sxc84fxav3vdaoz1jouf'
+    }
 
     try {
 
@@ -118,7 +122,9 @@ export const editProductInfo = async (req,res)=>{
         const updatedFields = {
             nombre,
             descripcion,
-            precio
+            precio,
+            img: temporalIMG ? logoApp.path : "",
+            public_IMG_ID: temporalIMG ? logoApp.filename : "",
         }
 
         if(req.file){

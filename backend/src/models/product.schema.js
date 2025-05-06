@@ -1,10 +1,23 @@
 import mongoose from "mongoose" 
+import dotenv from 'dotenv'
+
+dotenv.config({
+    path:`src/envs/.env.${process.env.NODE_ENV}`
+})
+
+const collectionTarget = process.env.PRODUCTOS_COLLECTION
+
+const refSchemaTarget = process.env.USER_COLLECTION
+
+
+
+
 
 
 const productSchema = new mongoose.Schema({
     adminOwner:{
       type:mongoose.Schema.Types.ObjectId,
-      ref:'users-test'
+      ref:refSchemaTarget,
     },
     nombre: String,
     descripcion: String,
@@ -29,7 +42,6 @@ const productSchema = new mongoose.Schema({
     // }
 })
 
-const collectionTarget = "products-test"
-// const collectionTarget = TEST ? "products-test" : "products" 
+
 
 export default mongoose.model(collectionTarget, productSchema)

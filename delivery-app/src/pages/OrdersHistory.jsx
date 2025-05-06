@@ -1,9 +1,7 @@
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 
 
-import {useLoginContext} from '../context/LoginContext.jsx'
-import { useOrdersContext } from "../context/OrdersContext.jsx";
 import ConfirmedOrdersPannel from "../components/ConfirmedOrdersPannel.jsx";
 import { verFecha } from "../utils/dateFunctions.js";
 
@@ -17,19 +15,9 @@ export default function OrdersHistory(){
     const [fecha,setFecha] = useState(null)
     const [nombre,setNombre] = useState()
 
-    const [totalPedidos,setTotalPedidos] = useState(0)
-    const [totaVentas,setTotalVentas] = useState()
 
 
-    useEffect(()=>{
-        // console.log(confirmedOrders)
-        // setFlagPagination(false)
-        // console.log(confirmedOrders)
 
-        // console.log(fecha)
-
-
-    },[totalPedidos])
 
 
 
@@ -71,17 +59,17 @@ export default function OrdersHistory(){
                             onChange={(e)=>setNombre(e.target.value)}
                         />
                     </label>
-
+{/* 
                     <div className="flex flex-col  mt-8 bg-white rounded w-fit p-2 text-black">
                         <p>Pedidos: {totalPedidos}</p>
                         <p>$900.000.000</p>
 
-                    </div>
+                    </div> */}
 
                 </div>
 
 
-                <ConfirmedOrdersPannel targetDate={fecha} targetName={nombre} totalPedidos={setTotalPedidos} totalVentas={setTotalVentas}/>
+                <ConfirmedOrdersPannel targetDate={fecha} targetName={nombre} />
             </div>
             
         </Fragment>
