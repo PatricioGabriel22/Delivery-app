@@ -25,7 +25,7 @@ export function preventStopNotification(notificationSound){
     if (notificationSound) {
         notificationSound.pause();
         notificationSound.currentTime = 0;
-        notificationSound = null;
+      
     }
 }
 

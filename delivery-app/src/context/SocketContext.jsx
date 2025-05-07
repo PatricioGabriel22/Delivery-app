@@ -124,11 +124,11 @@ export function SocketProvider({children}){
     useEffect(() => {
 
         if(!userInfo) return
-        let notification = null
+        let notificationSound = null
         socket.on('nuevaPreOrdenRecibida',(data)=>{
 
-            preventStopNotification(notification)
-            notification = generateNotificationSound('/sounds/notificationPreOrder.mp3', 0.7)
+            preventStopNotification(notificationSound)
+            notificationSound = generateNotificationSound('/sounds/notificationPreOrder.mp3', 0.7)
 
             const {username} = data.nuevaPreOrden.userInfo
             const {costoEnvio} = data.nuevaPreOrden
@@ -158,7 +158,8 @@ export function SocketProvider({children}){
 
                 if(data.accepted){
 
-                    preventStopNotification(notification)
+                    preventStopNotification(notificationSound)
+                    notificationSound = null
 
                     //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
                     setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
@@ -187,7 +188,8 @@ export function SocketProvider({children}){
                 }
 
                 if(data.canceled){
-                    preventStopNotification(notification)
+                    preventStopNotification(notificationSound)
+                    notificationSound = null //limpiamos la referencia a memoria para no usar recursos 
 
                     //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
                     setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
