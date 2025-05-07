@@ -27,19 +27,21 @@ export function LoginProvider({children}){
 
     const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
 
+    let renderORLocalURL 
 
-    const MODE_URLS = {
-        development: 'http://localhost:4000',
-        preview: 'https://delivery-app-stagingapi.onrender.com',
-        production: 'https://delivery-app-0lcx.onrender.com',
-
-        LocalStaging:'http://localhost:4000'
-
-
-
+    switch(import.meta.env.VITE_VERCEL_ENV){
+        case 'production':
+            renderORLocalURL = 'https://delivery-app-0lcx.onrender.com'
+        break
+    
+        case 'preview':
+            renderORLocalURL = 'https://delivery-app-stagingapi.onrender.com'
+        break 
+        default:
+            renderORLocalURL = 'http://localhost:4000'
+    
     }
     
-    const renderORLocalURL = MODE_URLS[import.meta.env.VITE_VERCEL_ENV] || MODE_URLS[import.meta.env.MODE]  // default to production if mode is not recognized
 
 
    
