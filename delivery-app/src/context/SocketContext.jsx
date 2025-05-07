@@ -13,6 +13,7 @@ import { useOrdersContext } from "./OrdersContext"
 import { Link } from "react-router-dom"
 import BannerCloseLogo from "../components/BannerCloseLogo"
 import { useCatalogContext } from "./CatalogContext"
+import {generateNotificationSound, preventStopNotification } from "../utils/soundConfig"
 
 
 
@@ -123,10 +124,15 @@ export function SocketProvider({children}){
     useEffect(() => {
 
         if(!userInfo) return
-        
+        let notification = null
         socket.on('nuevaPreOrdenRecibida',(data)=>{
+
+            preventStopNotification(notification)
+            notification = generateNotificationSound('/sounds/notificationPreOrder.mp3', 0.7)
+
             const {username} = data.nuevaPreOrden.userInfo
             const {costoEnvio} = data.nuevaPreOrden
+
             setAllPreOrders(prev=>[...prev,data.nuevaPreOrden])
 
             toast.custom((t) => (
@@ -151,6 +157,8 @@ export function SocketProvider({children}){
             if(userInfo.rol === 'admin'){
 
                 if(data.accepted){
+
+                    preventStopNotification(notification)
 
                     //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
                     setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
@@ -179,6 +187,7 @@ export function SocketProvider({children}){
                 }
 
                 if(data.canceled){
+                    preventStopNotification(notification)
 
                     //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
                     setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
@@ -229,10 +238,6 @@ export function SocketProvider({children}){
             }))
         })
 
-        socket.on('ordenPreparada',(data)=>{
-            console.log(data)
-            toast.success(data.infoToUser)
-        })
 
         socket.on('deliveredOrder',(data)=>{
             console.log(data)

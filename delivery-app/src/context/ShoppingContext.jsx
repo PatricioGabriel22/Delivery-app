@@ -114,7 +114,6 @@ export function ShoppingProvider({ children }) {
       notification
     }
 
-    console.log(payload)
 
     await axios.post(`${url}/PreOrderManagement/${orderInfo?._id}`,payload,{withCredentials:true})
     .then(res=>{

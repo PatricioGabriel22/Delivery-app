@@ -250,7 +250,7 @@ export const PreOrderManager = async (req,res)=>{
                 })
     
     
-                res.json({infoToUser:`El cliente:${orderInfo.userInfo.username}, fue notificado`})
+                res.json({infoToUser:`El cliente ${orderInfo.userInfo.username} fue notificado`})
 
             break
 

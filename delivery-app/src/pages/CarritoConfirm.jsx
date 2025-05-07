@@ -126,7 +126,7 @@ export default function CarritoConfirm(){
         setListaDeCompras(
             carrito.map(producto => {
                 const productoEnLista = catalogoDelAdmin.find(productInList => productInList.nombre === producto.nombre)
-                console.log(productoEnLista)
+                
                 return {
                     ...producto,
                     precio: productoEnLista ? productoEnLista.precio : producto.precio,
@@ -138,9 +138,7 @@ export default function CarritoConfirm(){
 
 
    
-    useEffect(()=>{
-        console.log(listaDeCompras)
-    },[listaDeCompras])
+
 
 
 
@@ -148,7 +146,7 @@ export default function CarritoConfirm(){
         <div className={`flex flex-col justify-center items-center  text-black p-4 md:w-xl m-auto  ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
 
             <button 
-                className={`bg-red-600 text-white p-4 mb-9 rounded-full  cursor-pointer hover:border-1 hover:border-white ${chekcInfoBTN? "hidden" :"text-lg" }`}
+                className={`bg-red-600 text-white p-4 mb-9 rounded-full  cursor-pointer hover:border-1 hover:border-white ${chekcInfoBTN? "hidden" :"text-lg" } ${loading || buyBTN? "hidden" :"" }`}
                 onClick={()=>{setChekcInfoBTN(prev=>!prev)}}
             >{`${chekcInfoBTN? "" :"Modificar informacion de entrega" }`}</button>
             
@@ -162,26 +160,26 @@ export default function CarritoConfirm(){
                     </div>
                    
                 </Fragment>
-                )}
-         
+            )}
 
 
-            <div className={`flex flex-col ${listaDeCompras.length>0? "h-[300px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
+
+            <div className={`flex flex-col ${listaDeCompras.length>0? "h-[250px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
 
                 {listaDeCompras?.map((item,index)=>(
-                    <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-4 mb-2">
+                    <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-2 mb-2">
 
                         {/* Cantidad (opcional) */}
                         {item.cantidad && (
-                            <p className="text-red-600 font-bold w-1/3">{item.cantidad}x</p>
+                            <p className="text-red-600 font-bold w-1/3 text-lg">{item.cantidad}x</p>
                         )}
                         
                         {/* Nombre del Producto */}
 
-                        <p className="font-medium text-lg w-1/3 text-start ">{ccapitalizer_3000(item.nombre)}</p>
+                        <p className="font-medium text-lg w-3/3 text-start">{ccapitalizer_3000(item.nombre)}</p>
 
                         {/* Precio */}
-                        <p className="text-gray-700 font-semibold w-1/3">${item.precio * item.cantidad}</p>
+                        <p className="text-gray-700 font-semibold w-1/3 text-lg">${item.precio * item.cantidad}</p>
 
 
                         <RiDeleteBin6Line  
@@ -267,16 +265,16 @@ export default function CarritoConfirm(){
                     ) : ("")}
 
                     {buyBTN ? (
-                        <Fragment>
-                            <GiConfirmed size={60} className="text-green-700 self-center mt-10"/>
-                            <p className="text-white text-center">
-                                Su pedido ha sido confirmado.<br />Puede continuar
-                            </p>
+                <Fragment>
+                    <GiConfirmed size={60} className="text-green-700 self-center mt-10 "/>
+                    <p className="text-white text-center">
+                        Su pedido ha sido confirmado.<br />Puede continuar
+                    </p>
 
-                            <Link to="/confirmar-direccion-y-comprar" className="cursor-pointer self-center text-white w-fit p-3 m-3 mt-20 rounded-full bg-red-700">
-                                Confirmar direccion y comprar
-                            </Link>
-                        </Fragment>
+                    <Link to="/confirmar-direccion-y-comprar" className="cursor-pointer self-center text-white w-fit p-3 m-1 rounded-full bg-red-700">
+                        Ir a pagar
+                    </Link>
+                </Fragment>
 
                     ):("")}
 

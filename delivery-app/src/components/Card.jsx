@@ -23,6 +23,7 @@ import { useSocketContext } from "../context/SocketContext";
 
 
 import { MdOutlineImageSearch } from "react-icons/md";
+import BannerCloseLogo from "./BannerCloseLogo";
 
 
 
@@ -52,6 +53,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
     if(action === 'open'){
 
       editImgModalRef.current.showModal()
+      editImgModalRef.current.scrollTop = 0
 
     }else if(action === 'close'){
 
@@ -242,25 +244,28 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto" onClick={()=>openCloseEditPreviewModal('open')}>
               Cambiar imagen
             </label>
-              <dialog className="rounded-xl p-6  shadow-xl w-full md:w-[45%] h-190 justify-self-center self-center backdrop:bg-black/50 text-xl  font-semibold" ref={editImgModalRef} >
+              <dialog className="fixed inset-0 m-auto w-full md:w-[45%] max-h-[90vh] rounded-xl p-2 shadow-xl backdrop:bg-black/50 text-xl font-semibold z-50" ref={editImgModalRef} >
 
+
+                <BannerCloseLogo close={()=>openCloseEditPreviewModal('close')}/>
                 <p className=" text-3xl font-bold text-center flex flex-col mb-6">
                   Seleccione la nueva imagen del producto
-                  <span className="w-full h-[1px] bg-red-600"/>
+                  <span className="w-full h-[1px] mt-3 bg-red-600"/>
                 </p>
-
                 <div className="flex flex-col gap-y-5 md:flex-row justify-center md:justify-around mt-auto">
+                
+              
                   <div className="flex flex-col items-center">
                     <p>Anterior</p>
-                    <img src={img} className=" w-68 h-70"/>
+                    <img src={img} className=" w-58 h-60 rounded-2xl "/>
                   </div>
 
                   <div className="flex flex-col items-center">
                     <p onClick={()=>setMiniPreview(null)} className={`cursor-pointer select-none`}>{miniPreview ? "Cambiar":"Nueva"}</p>
                     
-                    {miniPreview ? (<img src={miniPreview} className=" w-70 h-70"/>) 
+                    {miniPreview ? (<img src={miniPreview} className="w-58 h-60 rounded-2xl"/>) 
                       : (
-                      <label className="w-70 h-70 text-center flex flex-col justify-center items-center cursor-pointer bg-red-500 rounded">
+                      <label className="w-58 h-60 text-center flex flex-col justify-center items-center cursor-pointer bg-red-500 rounded">
                         Seleccionar imagen
                           <MdOutlineImageSearch size={80} />
                           <input
@@ -274,12 +279,13 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
                   </div>
                 </div>
 
-                <div className="mt-20">
+                <div className="md:mt-20">
 
                   <button name="temporalIMG" className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={(e)=>handleChangesDataCard(e,true)}>Colocar imagen temporal</button>
 
                   <button  className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={()=>openCloseEditPreviewModal('close')}>Aceptar</button>
                 </div>
+                
 
               </dialog>
 
@@ -333,12 +339,17 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               </div>
   
               <div className="flex flex-row items-center gap-2">
-
-                <MdModeEdit 
-                  size={30} 
-                  className={`text-black cursor-pointer hover:bg-yellow-400 rounded`}
-                  onClick={()=>{setTodit(!toEdit)}}
-                />
+                
+                {toEdit ? (
+                  <p className="bg-red-600 rounded text-white p-1 cursor-pointer" onClick={()=>{setTodit(!toEdit)}}>Cancelar</p>
+                ):(
+                  <MdModeEdit 
+                    size={30} 
+                    className={`text-black cursor-pointer hover:bg-yellow-400 rounded`}
+                    onClick={()=>{setTodit(!toEdit)}}
+                  />
+                  
+                )}
 
                 <MdDelete
                   size={30}
