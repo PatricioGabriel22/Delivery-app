@@ -42,7 +42,7 @@ export function LoginProvider({children}){
     const renderORLocalURL = MODE_URLS[import.meta.env.VITE_VERCEL_ENV] || MODE_URLS[import.meta.env.MODE]  // default to production if mode is not recognized
 
 
-    console.log(renderORLocalURL)
+   
 
 
     return(

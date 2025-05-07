@@ -16,7 +16,7 @@ import { useCatalogContext } from "./CatalogContext"
 
 
 
-const WSSmanager = import.meta.env.MODE === 'development' ? 'ws://localhost:4000' : 'wss://delivery-app-0lcx.onrender.com'
+const WSSmanager = import.meta.env.VITE_VERCEL_ENV === 'production' ? 'wss://delivery-app-0lcx.onrender.com' : 'ws://localhost:4000' 
 
 const socket = io(WSSmanager,{
   transports:['websocket'],
@@ -44,7 +44,7 @@ export const useSocketContext = ()=>{
 
 export function SocketProvider({children}){
 
-
+    
     const {userInfo} = useLoginContext()
     const {allPreOrdersFromAdmin,AdminPreOrdersData} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
