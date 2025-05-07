@@ -246,12 +246,17 @@ export function SocketProvider({children}){
             setAcceptedOrders(prev=>prev.filter(item=> item._id !== data.deliveredOrder._id))
         })
 
+        socket.on('ordenPreparada',(data)=>{
+           
+            toast.success(data.infoToUser)
+        })
+
       
         return () => {
           socket.off('preOrderStatus')
           socket.off('nuevaPreOrdenRecibida')
           socket.off('finishedOrder')
-          socket.off('avisoDeOrdenListaCliente')
+          socket.off('ordenPreparada')
           socket.off('deliveredOrder')
 
         };
