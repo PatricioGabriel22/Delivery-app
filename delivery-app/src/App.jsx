@@ -15,6 +15,8 @@ import Profile from './pages/Profile.jsx'
 import ProductForm from './pages/ProductForm.jsx'
 import CategoryFrom from './pages/CategoryFrom.jsx'
 import OrdersHistory from './pages/OrdersHistory.jsx'
+import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
+
 
 
 
@@ -55,7 +57,10 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/carrito" element={<CarritoConfirm/>}/>
-            <Route path="/confirmar-direccion-y-comprar" element={<CheckDataAndBuy/>}/>
+            <Route path="/comprar" element={<CheckDataAndBuy/>}/>
+
+            <Route path='/pago-confirmado' element={<PagoConfirmadoPage/>} />
+
 
             <Route element={<AdminPrivate/>}>
               
@@ -64,6 +69,8 @@ function App() {
               <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
               <Route path="/addProduct" element={<ProductForm/>}/>
               <Route path="/addCategory" element={<CategoryFrom/>}/>
+
+
 
 
             </Route>

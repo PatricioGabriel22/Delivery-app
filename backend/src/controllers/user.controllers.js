@@ -4,7 +4,13 @@ import jwt from 'jsonwebtoken'
 
 import { io } from '../webSocket.js'; 
 
+import mercadopago from 'mercadopago'
 
+import dotenv from 'dotenv'
+
+dotenv.config({
+    path:`src/envs/.env.${process.env.NODE_ENV}`
+})
 
 
 
@@ -201,4 +207,27 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 
 
+}
+
+
+
+export const pagarConMP = async(req,res)=>{
+    //INVESTIGAR ESTO
+    const preference = {
+        items: req.body.items,
+        back_urls: {
+          success: `${process.env.FRONT_URL}/pago-confirmado`,
+          failure: `${process.env.FRONT_URL}/pago-fallido`,
+          pending: `${process.env.FRONT_URL}/pago-pendiente`,
+        },
+        auto_return: 'approved', // Vuelve automáticamente cuando el pago está aprobado
+    }
+    
+    try {
+        const response = await mercadopago.preferences.create(preference);
+        res.json({ init_point: response.body.init_point });
+    } catch (error) {
+        res.status(500).send(error);
+    }   
+    
 }

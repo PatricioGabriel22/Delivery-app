@@ -37,9 +37,9 @@ export default function CheckDataAndBuy(){
     }]
 
     useEffect(()=>{
-        if(importeTotal === 0) navigate('/carrito')
+        // if(importeTotal === 0) navigate('/carrito')
         
-    },[importeTotal,navigate])
+    },[importeTotal,navigate,selectMethod])
 
 
 
@@ -70,7 +70,7 @@ export default function CheckDataAndBuy(){
 
                 <span className="text-lg self-center pb-5 ">Importe a pagar: ${importeTotal} </span>
 
-                <PaymentBTN/>
+                <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />
 
             </div>
             

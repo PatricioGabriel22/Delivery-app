@@ -271,7 +271,7 @@ export default function CarritoConfirm(){
                         Su pedido ha sido confirmado.<br />Puede continuar
                     </p>
 
-                    <Link to="/confirmar-direccion-y-comprar" className="cursor-pointer self-center text-white w-fit p-3 m-1 rounded-full bg-red-700">
+                    <Link to="/comprar" className="cursor-pointer self-center text-white w-fit p-3 m-1 rounded-full bg-red-700">
                         Ir a pagar
                     </Link>
                 </Fragment>
