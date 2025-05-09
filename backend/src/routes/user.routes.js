@@ -49,4 +49,4 @@ userRoutes.post('/editProfileInfo',editProfileInfo)
 userRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
 
 
-userRoutes.post('create_preference_MP',pagarConMP)
+userRoutes.post('/create_preference_MP',pagarConMP)
