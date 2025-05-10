@@ -9,7 +9,7 @@ import { RiCashLine } from "react-icons/ri";
 import { SiMercadopago } from "react-icons/si";
 import PaymentBTN from "@components/user/PaymentBTN"
 
-export default function CheckDataAndBuy(){
+export default function SelectPayment(){
 
 
     const navigate = useNavigate()

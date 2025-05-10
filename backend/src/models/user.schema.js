@@ -1,15 +1,5 @@
 import mongoose from "mongoose"
-import dotenv from 'dotenv'
 
-dotenv.config({
-    path:`src/envs/.env.${process.env.NODE_ENV}`
-})
-
-const collectionTarget = process.env.USER_COLLECTION
-
-const refSchemaTarget_Pedidos = process.env.PEDIDOS_COLLECTION
-
-console.log(process.env.NODE_ENV,collectionTarget)
 
 // Sí, el valor de ref debe coincidir exactamente con el nombre del modelo que definiste con mongoose.model(), incluyendo las mayúsculas y minúsculas.
 
@@ -31,7 +21,7 @@ const userSchema = new mongoose.Schema({
     categorias:{type: [String],default:[]}, //SOLO ADMINS    
     pedidos:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:refSchemaTarget_Pedidos
+        ref:'pedidos'
     }]
     
 },{
@@ -40,5 +30,5 @@ const userSchema = new mongoose.Schema({
 
 
 
-export default mongoose.model(collectionTarget,userSchema)
+export default mongoose.model('users',userSchema)
 

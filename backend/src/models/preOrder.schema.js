@@ -1,19 +1,11 @@
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
 
-dotenv.config({
-    path:`src/envs/.env.${process.env.NODE_ENV}`
-})
-
-const collectionTarget = process.env.PRE_ORDERS_COLLECTION
-
-const refSchemaTarget = process.env.USER_COLLECTION
 
 const preOrderSchema = new mongoose.Schema({
 
     userID:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: refSchemaTarget, 
+        ref: 'users', 
     },
     userInfo:Object,
     preOrder:Array,
@@ -39,4 +31,8 @@ const preOrderSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model(collectionTarget,preOrderSchema)
+
+
+
+
+export default mongoose.model('preorders', preOrderSchema)

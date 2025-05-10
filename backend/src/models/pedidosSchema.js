@@ -1,11 +1,14 @@
 import mongoose from 'mongoose'
 
 
+
+
+
 const pedidosSchema = new mongoose.Schema({
 
     userID:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users-test", 
+        ref: 'users', 
     },
     productos:Array,
     costoEnvio:Number,
@@ -24,4 +27,4 @@ const pedidosSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model('Pedidos',pedidosSchema)
+export default mongoose.model('pedidos',pedidosSchema)

@@ -8,7 +8,7 @@ import Home from './pages/Home.jsx'
 import Login from './pages/Login'
 import Register from './pages/Register.jsx'
 import CarritoConfirm from './pages/CarritoConfirm.jsx'
-import CheckDataAndBuy from './pages/CheckDataAndBuy.jsx'
+import SelectPayment from './pages/SelectPayment.jsx'
 import AdminPrivate from './components/admin/AdminPrivate.jsx'
 import PreOrderManagement from './pages/PreOrderManagement.jsx'
 import Profile from './pages/Profile.jsx'
@@ -57,7 +57,7 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/carrito" element={<CarritoConfirm/>}/>
-            <Route path="/comprar" element={<CheckDataAndBuy/>}/>
+            <Route path="/comprar" element={<SelectPayment/>}/>
 
             <Route path='/pago-confirmado' element={<PagoConfirmadoPage/>} />
 

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import { io } from '../webSocket.js'; 
 
-import mercadopago from 'mercadopago'
+import { MercadoPagoConfig, Preference } from 'mercadopago'
 
 import dotenv from 'dotenv'
 
@@ -211,23 +211,41 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 
 
-export const pagarConMP = async(req,res)=>{
-    //INVESTIGAR ESTO
-    const preference = {
-        items: req.body.items,
-        back_urls: {
-          success: `${process.env.FRONT_URL}/pago-confirmado`,
-          failure: `${process.env.FRONT_URL}/pago-fallido`,
-          pending: `${process.env.FRONT_URL}/pago-pendiente`,
-        },
-        auto_return: 'approved', // Vuelve automáticamente cuando el pago está aprobado
-    }
+
+export const pagarConMP = async (req, res) => {
+    const { items, payer } = req.body;
+
+    const access_token_MP = 'APP_USR-8256172845098039-051009-6f781470e50160fac4e5436d6867e3f0-2432951426';
+
+    // Configuración del token de acceso
+    const client = new MercadoPagoConfig({ accessToken: access_token_MP });
+    const preference = new Preference(client);
+
+    const urlsDeRetornoFront = {
+        success: `${process.env.FRONT_URL}/pago-confirmado`,
+        failure: `${process.env.FRONT_URL}/pago-fallido`,
+        pending: `${process.env.FRONT_URL}/pago-pendiente`,
+    };
+
+    console.log(urlsDeRetornoFront)
     
+    const mp_bodyData = {
+        items,
+        payer,
+        back_urls: urlsDeRetornoFront,
+        auto_return: 'approved'  
+    };
+
     try {
-        const response = await mercadopago.preferences.create(preference);
-        res.json({ init_point: response.body.init_point });
+        // Crear la preferencia de pago con toda la configuración correcta
+        const response = await preference.create({ body: mp_bodyData });
+
+        console.log(response);
+
+        // Enviar la URL de inicio de pago a la respuesta del cliente
+        res.json({ init_point: response.init_point });
     } catch (error) {
+        console.error(error);
         res.status(500).send(error);
-    }   
-    
+    }
 }
