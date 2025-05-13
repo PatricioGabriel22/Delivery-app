@@ -261,7 +261,6 @@ export const queryWH = async (req,res)=>{
     if(paymentQueryMP.topic === 'payment'){
 
         const payment = await new Payment(client).get({id:paymentQueryMP.id})
-        console.log(payment)
         const username_MPpayer = payment.additional_info.payer.first_name
 
         if(payment.status === 'approved'){
@@ -269,7 +268,7 @@ export const queryWH = async (req,res)=>{
             for (const [id, userInfo] of Object.entries(connectedUsers)) {
                 if(userInfo.username === username_MPpayer){
                     const msg_MP_approved = `El pago de ${username_MPpayer} fue aprobado`
-                  
+                    console.log(msg_MP_approved)
                     io.to(connectedUsers[id].socketId).emit('msg_MP_approved',msg_MP_approved)
                     break
                 }
