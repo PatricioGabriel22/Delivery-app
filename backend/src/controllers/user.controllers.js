@@ -2,9 +2,9 @@ import userSchema from '../models/user.schema.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { io } from '../webSocket.js'; 
+import { connectedUsers, io } from '../webSocket.js'; 
 
-import { MercadoPagoConfig, Preference } from 'mercadopago'
+import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
 
 import dotenv from 'dotenv'
 
@@ -211,29 +211,32 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 
 
+const access_token_MP = 'APP_USR-8256172845098039-051009-6f781470e50160fac4e5436d6867e3f0-2432951426';
+const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 export const pagarConMP = async (req, res) => {
-    const { items, payer } = req.body;
+    const { userInfoID, items, payer } = req.body;
 
-    const access_token_MP = 'APP_USR-8256172845098039-051009-6f781470e50160fac4e5436d6867e3f0-2432951426';
+
 
     // Configuración del token de acceso
-    const client = new MercadoPagoConfig({ accessToken: access_token_MP });
     const preference = new Preference(client);
 
     const urlsDeRetornoFront = {
         success: `${process.env.FRONT_URL}/pago-confirmado`,
-        failure: `${process.env.FRONT_URL}/pago-fallido`,
-        pending: `${process.env.FRONT_URL}/pago-pendiente`,
-    };
+        // failure: `${process.env.FRONT_URL}/pago-fallido`,
+        // pending: `${process.env.FRONT_URL}/pago-pendiente`,
+    }
 
-    console.log(urlsDeRetornoFront)
-    
+   
+    // ${process.env.FRONT_URL}/pago-confirmado
+
     const mp_bodyData = {
         items,
         payer,
         back_urls: urlsDeRetornoFront,
-        auto_return: 'approved'  
+        auto_return: 'approved',
+        notification_url : `https://delivery-app-stagingapi.onrender.com/paymentSatusWH`  
     };
 
     try {
@@ -243,9 +246,38 @@ export const pagarConMP = async (req, res) => {
         console.log(response);
 
         // Enviar la URL de inicio de pago a la respuesta del cliente
-        res.json({ init_point: response.init_point });
+        res.json({ init_point: response.init_point }).status(200);
     } catch (error) {
         console.error(error);
         res.status(500).send(error);
     }
+}
+
+
+export const queryWH = async (req,res)=>{
+    console.log("respuesta del WH de mercadopago: ", req.query)
+    const paymentQueryMP = req.query
+
+    if(paymentQueryMP.topic === 'payment'){
+
+        const payment = await new Payment(client).get({id:paymentQueryMP.id})
+        console.log(payment)
+        const username_MPpayer = payment.additional_info.payer.first_name
+
+        if(payment.status === 'approved'){
+            
+            for (const [id, userInfo] of Object.entries(connectedUsers)) {
+                if(userInfo.username === username_MPpayer){
+                    const msg_MP_approved = `El pago de ${username_MPpayer} fue aprobado`
+                  
+                    io.to(connectedUsers[id].socketId).emit('msg_MP_approved',msg_MP_approved)
+                    break
+                }
+            }
+        
+        }
+    }   
+
+
+    return res.sendStatus(200)
 }

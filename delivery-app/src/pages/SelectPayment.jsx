@@ -37,7 +37,7 @@ export default function SelectPayment(){
     }]
 
     useEffect(()=>{
-        // if(importeTotal === 0) navigate('/carrito')
+        if(importeTotal === 0) navigate('/carrito')
         
     },[importeTotal,navigate,selectMethod])
 

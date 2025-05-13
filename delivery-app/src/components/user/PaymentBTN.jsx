@@ -21,6 +21,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         
         const mp_payload = {
             // Datos de la compra que querés cobrar
+            userInfoID:userInfo.id,
             items: [
               {
                 title: "Pedido Victorina",
