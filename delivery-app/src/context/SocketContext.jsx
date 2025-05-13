@@ -153,7 +153,7 @@ export function SocketProvider({children}){
 
         //preOrderStatus en el admin
         socket.on('preOrderStatus',(data) => {
-        
+            console.log(data)
             if(userInfo.rol === 'admin'){
 
                 if(data.accepted){
@@ -199,29 +199,29 @@ export function SocketProvider({children}){
                     setLoading(prev =>{ 
                     sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
                     return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
-                })
-            
-                if(data.accepted){
-                    
-                    setBuyBTN(prev=>{
-                        sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
-                        return JSON.parse(sessionStorage.getItem("buyBTN"))
                     })
-
-                    //refresco la lista de pedidos del usuario/admin
-                    refresh((oldData) => {
-                        return {
-                            ...oldData,
-                            allOrders: [data.nuevoPedido, ...oldData.allOrders],
-                        };
-                        }, false)
-
             
-                }
-        
-                if(data.canceled){
-                    setResponseFromServer(data)
-                }
+                    if(data.accepted){
+                        sessionStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
+                        setBuyBTN(prev=>{
+                            sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
+                            return JSON.parse(sessionStorage.getItem("buyBTN"))
+                        })
+
+                        //refresco la lista de pedidos del usuario/admin
+                        refresh((oldData) => {
+                            return {
+                                ...oldData,
+                                allOrders: [data.nuevoPedido, ...oldData.allOrders],
+                            };
+                            }, false)
+
+                
+                    }
+            
+                    if(data.canceled){
+                        setResponseFromServer(data)
+                    }
             }   
 
 

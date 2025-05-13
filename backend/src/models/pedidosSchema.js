@@ -16,6 +16,11 @@ const pedidosSchema = new mongoose.Schema({
     confirmed:{type:Boolean,default:false},
     finished:{type:Boolean,default:false},
     formaDeEntrega:String,
+    payment:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'pago'
+    },
+    isPayed:{type:Boolean,default:false},
     createdAt: {
         type: Date,
         default: () => {

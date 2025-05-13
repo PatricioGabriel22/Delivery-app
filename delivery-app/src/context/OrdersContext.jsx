@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 
 import axios from 'axios'
 import { useLoginContext } from "./LoginContext"
-import { useConfirmedOrders } from "./SWR"
+import { useHistorialOrdenes } from "./SWR"
 
 
 
@@ -99,7 +99,7 @@ export function OrderProvider({children}){
     }
 
 
-    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useConfirmedOrders(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
+    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useHistorialOrdenes(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
 
     
     

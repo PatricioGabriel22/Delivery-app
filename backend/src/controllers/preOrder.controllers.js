@@ -2,7 +2,7 @@ import productSchema from "../models/product.schema.js"
 import preOrderSchema from "../models/preOrder.schema.js"
 
 
-import  {ListaProductos} from './productos.test.js'
+
 import { io } from "../webSocket.js" 
 import { connectedAdmins, connectedUsers } from "../webSocket.js"
 import pedidosSchema from "../models/pedidosSchema.js"
@@ -272,7 +272,8 @@ export const PreOrderManager = async (req,res)=>{
             
             case 'entregada':
                 const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:true}},{new:true})
-    
+                await pedidosSchema.findByIdAndUpdate(idOrden, {$set:{delivered:true}},{new:true})
+                await preOrderSchema.findByIdAndDelete(idOrden)
                 io.to(adminSocketID).emit("deliveredOrder",{
                     deliveredOrder
                 })

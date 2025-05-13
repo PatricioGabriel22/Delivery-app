@@ -13,7 +13,7 @@ async function getAllConfirmedOrdersData(url){
 }
 
 
-export function useConfirmedOrders(userInfo,url,flagPagination,page, limit){
+export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 
 
     let targetURL

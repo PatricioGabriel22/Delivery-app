@@ -9,6 +9,7 @@ import { userRoutes } from './routes/user.routes.js'
 import {preOrderRoutes} from './routes/preOrder.routes.js'
 import { productRoutes } from './routes/product.routes.js'
 import { httpServer,server,serverURL } from './webSocket.js'
+import { paymentRoutes } from './routes/payment.routes.js'
 
 
 dotenv.config({
@@ -32,6 +33,7 @@ server.use(express.json())
 server.use(userRoutes)
 server.use(preOrderRoutes)
 server.use(productRoutes)
+server.use(paymentRoutes)
 
 // Iniciar el servidor HTTP + WebSocket en el mismo puerto
 const puertoDeConexion = Number(process.env.PORT) || 4000

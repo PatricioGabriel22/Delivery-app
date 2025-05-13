@@ -21,7 +21,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         
         const mp_payload = {
             // Datos de la compra que querés cobrar
-            userInfoID:userInfo.id,
+            pedidoID:JSON.parse(sessionStorage.getItem("pedidoID")),
             items: [
               {
                 title: "Pedido Victorina",
@@ -31,7 +31,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
               },
             ],
             payer:{
-                name:userInfo.username
+                name:userInfo.username,
+                last_name:userInfo.id
             }
         }
 
@@ -55,14 +56,28 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     }
 
 
-    function redirigirAlPago(routeToPay,callbackMP){
+    async function efectivo_payment_management(){
+        const efectivo_payload= {
+            pedidoID:JSON.parse(sessionStorage.getItem("pedidoID")),
+            userID:userInfo.id,
+            importe:importeTotal
+        }
+
+        await axios.post(`${renderORLocalURL}/pagar_en_efectivo`,efectivo_payload,{withCredentials:true})
+        .then(res=>console.log(res))
+        .catch(e=>console.log(e))
+    }
+
+
+    function redirigirAlPago(routeToPay){
 
         switch(routeToPay){
             case 'Efectivo':
+                efectivo_payment_management()
                 navigate('/pago-confirmado')
                 break
             case 'Mercado Pago (incluye tarjetas)':
-                callbackMP()
+                mp_payment_management()
                 break
         }
     }
@@ -70,7 +85,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     return(
         <Fragment>
             <button className="bg-red-600 rounded-full self-center w-full md:w-[40%] p-5  text-xl cursor-pointer hover:bg-red-700"
-                onClick={()=>redirigirAlPago(paymentMethod,mp_payment_management)}
+                onClick={()=>redirigirAlPago(paymentMethod)}
             >Pagar</button>
 
         </Fragment>

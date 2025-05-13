@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal,pagarConMP,queryWH } from "../controllers/user.controllers.js"
+import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal } from "../controllers/user.controllers.js"
 
 import jwt from "jsonwebtoken"
 
@@ -49,12 +49,3 @@ userRoutes.post('/editProfileInfo',editProfileInfo)
 userRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
 
 
-userRoutes.post('/create_preference_MP',pagarConMP)
-
-
-
-userRoutes.post('/paymentSatusWH',queryWH)
-
-
-// userComrpador : TESTUSER2024569287
-// passComprador : HQSQNBjHbG
