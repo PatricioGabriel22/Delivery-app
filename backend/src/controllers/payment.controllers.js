@@ -2,7 +2,7 @@ import pagoSchema from '../models/pagosSchema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
 
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
-import {connectedUsers, io} from '../webSocket.js'
+import {connectedUsers, io, serverURL} from '../webSocket.js'
 
 import dotenv from 'dotenv'
 
@@ -61,8 +61,8 @@ export const pagarConMP = async (req, res) => {
     const preference = new Preference(client);
 
     const urlsDeRetornoFront = {
-        // success: `${process.env.FRONT_URL}/pago-confirmado`,
-        failure: `https://qtf8ztjh-3000.brs.devtunnels.ms/`,
+        success: `${process.env.FRONT_URL}/pago-confirmado`,
+        // failure: `https://qtf8ztjh-3000.brs.devtunnels.ms/`,
         // pending: `${process.env.FRONT_URL}/pago-pendiente`,
     }
 
@@ -72,9 +72,9 @@ export const pagarConMP = async (req, res) => {
     const mp_bodyData = {
         items,
         payer,
-        // back_urls: urlsDeRetornoFront,
-        // auto_return: 'approved',
-        notification_url : `https://fe91-181-230-65-50.ngrok-free.app/paymentSatusWH`,
+        back_urls: urlsDeRetornoFront,
+        auto_return: 'approved',
+        notification_url : `${serverURL}/paymentSatusWH`,
         external_reference: pedidoID  
     };
 

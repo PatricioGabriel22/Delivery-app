@@ -153,7 +153,7 @@ export function SocketProvider({children}){
 
         //preOrderStatus en el admin
         socket.on('preOrderStatus',(data) => {
-            console.log(data)
+            
             if(userInfo.rol === 'admin'){
 
                 if(data.accepted){
@@ -230,7 +230,7 @@ export function SocketProvider({children}){
        
 
         socket.on('finishedOrder',(data)=>{
-            console.log(data)
+            
             setAcceptedOrders(prev=>prev.map(item=>{
                 let aux = {...item}
                 if(item._id === data.finishedOrder._id){
@@ -242,7 +242,7 @@ export function SocketProvider({children}){
 
 
         socket.on('deliveredOrder',(data)=>{
-            console.log(data)
+          
             setAcceptedOrders(prev=>prev.filter(item=> item._id !== data.deliveredOrder._id))
         })
 

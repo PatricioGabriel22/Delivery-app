@@ -66,6 +66,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             if(res.data.verificado){
                 
                 toast.success(res.data.verificado)
+                navigate('/pago-confirmado')
+
             }
 
 

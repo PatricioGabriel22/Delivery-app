@@ -76,7 +76,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   
   function handleChangesDataCard(e,flagTemporal){
-    console.log(e)
+   
 
     const nombreCampo = e.target.name
     const infoGuardada = nombreCampo !== 'imagen' ? e.target.value : e.target.files[0]

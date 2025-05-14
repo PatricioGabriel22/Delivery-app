@@ -10,7 +10,7 @@ export default function Nav() {
 
 
   useEffect(()=>{
-    // console.log(carrito)
+    
     if(carrito.length >= 0){
       setTotal(carrito.reduce((acc,curr)=>acc + curr.cantidad,0))
       sessionStorage.setItem("total", total);

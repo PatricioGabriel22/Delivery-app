@@ -44,7 +44,7 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
 
     useMemo(()=>{
         setSelectedOrder(confirmedOrders[0])
-        console.log(confirmedOrders)
+        
     },[confirmedOrders])
 
 
