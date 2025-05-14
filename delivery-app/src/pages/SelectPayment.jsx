@@ -37,7 +37,20 @@ export default function SelectPayment(){
     }]
 
     useEffect(()=>{
-        if(importeTotal === 0) navigate('/carrito')
+
+        const params = new URLSearchParams(window.location.search);
+        console.log(params.get('status')); // "approved"
+
+        if(params.get('status') === "approved") {
+            navigate('/comprar')
+            return
+        }
+
+        if(importeTotal === 0) {
+            navigate('/carrito')
+            return
+        }
+
         
     },[importeTotal,navigate,selectMethod])
 

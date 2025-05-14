@@ -10,7 +10,7 @@ dotenv.config({
 
 
 export const server = express()
-export const serverURL = process.env.FRONT_URL
+export const frontURL = process.env.FRONT_URL
 
 // Este servidor HTTP se necesita para conectar Express + Socket.io
 export const httpServer = http.createServer(server);
@@ -18,7 +18,7 @@ export const httpServer = http.createServer(server);
 // Socket.io se engancha al servidor HTTP
 export const io = new SocketServer(httpServer, {
     cors: {
-    origin: serverURL,
+    origin: frontURL,
     credentials: true
     }
 })

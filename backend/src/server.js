@@ -8,7 +8,7 @@ import { connectDB } from './DB.js'
 import { userRoutes } from './routes/user.routes.js'
 import {preOrderRoutes} from './routes/preOrder.routes.js'
 import { productRoutes } from './routes/product.routes.js'
-import { httpServer,server,serverURL } from './webSocket.js'
+import { httpServer,server,frontURL } from './webSocket.js'
 import { paymentRoutes } from './routes/payment.routes.js'
 
 
@@ -21,12 +21,12 @@ dotenv.config({
 try {
 
     await connectDB(process.env.MONGO_CLUSTER)
-    console.log(serverURL)
+    console.log(frontURL)
 } catch (error) {
     console.log(error)
 }
 
-server.use(cors({ origin: serverURL , credentials: true })) 
+server.use(cors({ origin: frontURL , credentials: true })) 
 server.use(express.json())
 
 

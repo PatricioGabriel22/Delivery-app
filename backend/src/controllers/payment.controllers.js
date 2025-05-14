@@ -2,7 +2,7 @@ import pagoSchema from '../models/pagosSchema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
 
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
-import {connectedUsers, io, serverURL} from '../webSocket.js'
+import {connectedUsers, io, frontURL} from '../webSocket.js'
 
 import dotenv from 'dotenv'
 
@@ -69,14 +69,18 @@ export const pagarConMP = async (req, res) => {
    
     // ${process.env.FRONT_URL}/pago-confirmado
 
+    //ver que agrega mp a pago confirmado
+
     const mp_bodyData = {
         items,
         payer,
         back_urls: urlsDeRetornoFront,
         auto_return: 'approved',
-        notification_url : `${serverURL}/paymentSatusWH`,
+        notification_url : `${process.env.BACK_URL}/paymentSatusWH`,
         external_reference: pedidoID  
     };
+
+    // `${process.env.BACK_URL}/paymentSatusWH
 
     try {
 
