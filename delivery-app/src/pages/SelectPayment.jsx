@@ -84,7 +84,7 @@ export default function SelectPayment(){
 
                 
 
-                {selectMethod && <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />}
+                <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />
 
             </div>
             
