@@ -2,7 +2,7 @@ import pagoSchema from '../models/pagosSchema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
 
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
-
+import {connectedUsers, io} from '../webSocket.js'
 
 import dotenv from 'dotenv'
 
@@ -19,8 +19,9 @@ const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 export const pagarConEfectivo = async (req,res)=>{
     const {pedidoID, userID,importe} = req.body
 
-    console.log(userID)
+    
     try {
+
 
         const nuevoPago = await pagoSchema.create({
             userID,
@@ -29,14 +30,21 @@ export const pagarConEfectivo = async (req,res)=>{
             importe
         })
 
-        const pedido = await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}})
+        await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}})
         //create crea el documento una vez y lanza error 11000 si esta duplicado
-        console.log("Pago registrado")
+        
+        res.status(200).json({message:"Se abonará en efectivo"})
 
     } catch (error) {
         const ERROR_DUPLICADO_CODE = 11000
         if(error.code === ERROR_DUPLICADO_CODE){
-            console.log("Pago ya registrado para este pedido")
+
+            const pagoExistente = await pagoSchema.findOne({pedido:pedidoID})
+
+            const msgPagoEfectivo = "El pedido ya fue seleccionado para pago en efectivo"
+            const msgPagadoConMp = "El pedido fue abonado con Mercado Pago"
+
+            return res.status(409).json({message: pagoExistente.pagoEfectivo ? msgPagoEfectivo : msgPagadoConMp})
         }
       
     }
@@ -45,9 +53,9 @@ export const pagarConEfectivo = async (req,res)=>{
 
 
 export const pagarConMP = async (req, res) => {
-    const { pedidoID, items, payer } = req.body;
+    const { pedidoID, items, payer,flagVerify } = req.body;
 
-    console.log(pedidoID)
+
 
     // Configuración del token de acceso
     const preference = new Preference(client);
@@ -66,7 +74,7 @@ export const pagarConMP = async (req, res) => {
         payer,
         // back_urls: urlsDeRetornoFront,
         // auto_return: 'approved',
-        notification_url : `https://7db6-181-230-65-50.ngrok-free.app/paymentSatusWH`,
+        notification_url : `https://fe91-181-230-65-50.ngrok-free.app/paymentSatusWH`,
         external_reference: pedidoID  
     };
 
@@ -75,9 +83,16 @@ export const pagarConMP = async (req, res) => {
 
         const targetPedidoYaPagado = await pedidosSchema.findById(pedidoID)
 
+        
+
         if(targetPedidoYaPagado.isPayed){
             console.log("Se esta tratando de volver a pagar con mp")
-            return res.status(409).json({ message: "Este pago ya fue realizado" })
+
+            // io.to(connectedUsers[payer.last_name].socketId).emit('pagoDuplicado', { message: "Este pago ya fue registrado" })
+
+            if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
+
+            return res.status(409).json({message:"El producto ya fue abonado"})
         }
 
         // Crear la preferencia de pago con toda la configuración correcta
@@ -119,15 +134,11 @@ export const queryWH = async (req,res)=>{
             })
     
             
-            const pedido = await pedidosSchema.findByIdAndUpdate(payment.external_reference,{$set:{isPayed:true, payment:nuevoPago._id}},{new:true})
+            await pedidosSchema.findByIdAndUpdate(payment.external_reference,{$set:{isPayed:true, payment:nuevoPago._id}},{new:true})
             
-            console.log(pedido)
+            
         } catch (error) {
-            const ERROR_DUPLICADO_CODE = 11000
-
-            if(error.code === ERROR_DUPLICADO_CODE){
-                console.log("Este pago ya fue efectuado")
-            }
+            console.log(error)
         }
 
     }   

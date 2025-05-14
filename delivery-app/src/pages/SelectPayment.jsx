@@ -70,7 +70,7 @@ export default function SelectPayment(){
 
                 <span className="text-lg self-center pb-5 ">Importe a pagar: ${importeTotal} </span>
 
-                <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />
+                {selectMethod && <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />}
 
             </div>
             
