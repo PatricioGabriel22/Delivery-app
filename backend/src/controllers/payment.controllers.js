@@ -61,7 +61,7 @@ export const pagarConMP = async (req, res) => {
     const preference = new Preference(client);
 
     const urlsDeRetornoFront = {
-        success: `${process.env.FRONT_URL}/pago-confirmado`,
+        success: `${process.env.FRONT_URL}/comprar`,
         // failure: `https://qtf8ztjh-3000.brs.devtunnels.ms/`,
         // pending: `${process.env.FRONT_URL}/pago-pendiente`,
     }
