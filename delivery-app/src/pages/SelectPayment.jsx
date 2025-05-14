@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useEffect, useState } from "react"
 import ProfileCard from "../components/ProfileCard"
 import { useShoppingContext } from "../context/ShoppingContext"
@@ -52,7 +53,7 @@ export default function SelectPayment(){
         }
 
         
-    },[importeTotal,navigate,selectMethod])
+    },[])
 
 
 
@@ -81,7 +82,7 @@ export default function SelectPayment(){
 
                 </div>
 
-                <span className="text-lg self-center pb-5 ">Importe a pagar: ${importeTotal} </span>
+                
 
                 {selectMethod && <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />}
 
