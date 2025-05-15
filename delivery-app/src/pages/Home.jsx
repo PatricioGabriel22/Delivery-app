@@ -91,13 +91,13 @@ export default function Home() {
   },[])
 
   const [help,setHelp] = useState(false)
-  const [copiado, setCopiado] = useState(false)  
+  const [copiadoIndex, setCopiadoIndex] = useState(null)  
   const numeros = [{id:"Panaderia", telefono:1168080019},{id:"Soporte",telefono:1151278287}]
-  const copiarAlPortapapeles = async (num) => {
+  const copiarAlPortapapeles = async (num,index) => {
   try {
     await navigator.clipboard.writeText(num);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 2000); // Mensaje por 2 seg
+    setCopiadoIndex(index);
+    setTimeout(() => setCopiadoIndex(false), 2000); // Mensaje por 2 seg
   } catch (err) {
     console.error("Error al copiar", err);
   }
@@ -120,11 +120,11 @@ export default function Home() {
               <p className="text-center px-2">{numero.id}: </p> 
               <span >{numero.telefono}</span>
               <button
-                onClick={()=>copiarAlPortapapeles(numero.telefono)}
-                className="bg-blue-600 text-white p-1 m-1 flex flex-row rounded hover:bg-blue-700"
+                onClick={()=>copiarAlPortapapeles(numero.telefono,index)}
+                className={` ${copiadoIndex === index ? 'bg-green-600' : "bg-blue-600" }  text-white p-1 m-1 flex flex-row rounded ` }
               >
                 <Copy size={16} />
-                {copiado ? "Copiado!" : "Copiar"}
+                {copiadoIndex === index ? "Copiado!" : "Copiar"}
               </button>
                 
             </div>
