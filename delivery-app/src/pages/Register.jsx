@@ -22,21 +22,20 @@ export default function Register(){
 
     function handleRegister(e){
         e.preventDefault()
-       
+        
         const password = e.target[1].value
         const confirmPassword = e.target[2].value
 
         const registerData = {
             username:e.target[0].value.trim(),
             password:e.target[1].value,
-            email:e.target[3].value.toLowerCase(),
-            direccion:e.target[4].value.toLowerCase(),
-            localidad:e.target[5].value.toLowerCase(),
-            entreCalles:e.target[6].value.toLowerCase(),
+            direccion:e.target[3].value.toLowerCase(),
+            localidad:e.target[4].value.toLowerCase(),
+            entreCalles:e.target[5].value.toLowerCase(),
             telefono:e.target[7].value
         }
 
-
+        
 
   
 
