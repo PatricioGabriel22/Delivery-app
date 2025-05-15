@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useLoginContext } from "../context/LoginContext";
 import { useSocketContext } from "../context/SocketContext";
 
+import {ccapitalizer_3000} from '../utils/capitalize.js'
 
 export default function ProfileCard({ userInfo }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -107,21 +108,24 @@ export default function ProfileCard({ userInfo }) {
                 className="border rounded px-1"
               />
             ) : (
-              <span>{userInfo.direccion}</span>
+              <span>{ccapitalizer_3000(userInfo.direccion)}</span>
             )}
           </div>
           <div className="flex items-center gap-2">
             <span className="font-medium">🏘️ Localidad:</span>
             {isEditing ? (
-              <input
-                type="text"
+              <select
                 name="localidad"
                 value={editableInfo.localidad}
                 onChange={handleChange}
-                className="border rounded px-1"
-              />
+                className="border rounded px-1">
+
+                <option value="">Seleccione una localidad</option>
+                <option value="monte grande">Monte Grande</option>
+                <option value="luis guillon">Luis Guillón</option>
+              </select>
             ) : (
-              <span>{userInfo.localidad}</span>
+              <span>{ccapitalizer_3000(userInfo.localidad)}</span>
             )}
           </div>
           {userInfo.entreCalles && (
@@ -136,7 +140,7 @@ export default function ProfileCard({ userInfo }) {
                   className="border rounded px-1"
                 />
               ) : (
-                <span>{userInfo.entreCalles}</span>
+                <span>{ccapitalizer_3000(userInfo.entreCalles)}</span>
               )}
             </div>
           )}

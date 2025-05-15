@@ -22,6 +22,7 @@ import Error from "../components/Error.jsx";
 import { useCatalogContext } from "../context/CatalogContext.jsx";
 
 
+import { Copy,BadgeHelp  } from "lucide-react"
 
 export default function Home() {
   
@@ -89,12 +90,52 @@ export default function Home() {
 
   },[])
 
+  const [help,setHelp] = useState(false)
+  const [copiado, setCopiado] = useState(false)  
+  const numeros = [{id:"Panaderia", telefono:1168080019},{id:"Soporte",telefono:1151278287}]
+  const copiarAlPortapapeles = async (num) => {
+  try {
+    await navigator.clipboard.writeText(num);
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2000); // Mensaje por 2 seg
+  } catch (err) {
+    console.error("Error al copiar", err);
+  }
+}
 
 
 
 
   return (
     <div className="flex flex-col min-h-screen items-center">
+
+      {help ? (
+        <div className="flex flex-col justify-center items-center md:justify-around  md:flex-row w-full relative ">
+          <p className="absolute top-0 right-2 p-2 font-bold  text-lg cursor-pointer" onClick={()=>setHelp(!help)}>X</p>
+
+          {numeros.map((numero,index)=>{
+            return(
+              
+            <div className="flex items-center " key={index}>
+              <p className="text-center px-2">{numero.id}: </p> 
+              <span >{numero.telefono}</span>
+              <button
+                onClick={()=>copiarAlPortapapeles(numero.telefono)}
+                className="bg-blue-600 text-white p-1 m-1 flex flex-row rounded hover:bg-blue-700"
+              >
+                <Copy size={16} />
+                {copiado ? "Copiado!" : "Copiar"}
+              </button>
+                
+            </div>
+            )
+          })}
+
+        </div>
+      ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute cursor-pointer"/>)}
+
+
+
       <div className=" mt-3">
         <img src={victorinaLogo} className="w-96 "/>  
       </div>

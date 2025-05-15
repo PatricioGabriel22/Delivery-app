@@ -114,7 +114,13 @@ export function SocketProvider({children}){
 
     //evento del socket con usuarios conectaodos (usuariosConectados)
     useEffect(()=>{
-        socket.on('usuariosConectados',(data)=>setLoggedUsers(data))
+        socket.on('usuariosConectados',(data)=>{
+            console.log(data)
+            if(data){
+
+                setLoggedUsers(data) //no hace falta "mergear" estados previos
+            }
+        })
 
     },[])
 

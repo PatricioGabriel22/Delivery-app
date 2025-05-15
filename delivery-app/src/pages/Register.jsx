@@ -4,13 +4,14 @@ import axios from "axios";
 import { useLoginContext } from "../context/LoginContext";
 import {useState } from "react";
 import succesLogo from '../assets/succesLogo.png'
+import toast from "react-hot-toast";
 
 
 
 export default function Register(){
 
 
-    const CAMPOS_REGISTRO = ['Nombre de usuario','Contraseña','Confirmar Contraseña','Email','Direccion',"Localidad","Entre calles o esquina",'Telefono']
+    const CAMPOS_REGISTRO = ['Nombre de usuario','Contraseña','Confirmar Contraseña','Direccion',"Localidad","Entre calles o esquina",'Telefono']
 
     const {renderORLocalURL} =  useLoginContext()
 
@@ -40,7 +41,7 @@ export default function Register(){
   
 
         if(confirmPassword !== password){
-            alert('Las contraseñas no coinciden')
+            toast.error('Las contraseñas no coinciden')
             return
         }
 
@@ -49,7 +50,7 @@ export default function Register(){
         axios.post(`${renderORLocalURL}/register`, registerData,{withCredentials:true})
         .then(res=>{
             if(res.status === 200){
-                console.log(res.data)
+                toast.success(res.data.message)
                 sessionStorage.setItem('auth','true')
                 
                 setTimeout(()=>{
@@ -81,9 +82,9 @@ export default function Register(){
             {CAMPOS_REGISTRO.map((campo, index) => (
                 campo === 'Localidad' ? (
                     <select key={index} className="bg-white text-black rounded w-full m-1 p-1 text-lg" required={true}>
-                    <option value="">Seleccione una localidad</option>
-                    <option value="monte grande">Monte Grande</option>
-                    <option value="luis guillon">Luis Guillón</option>
+                        <option value="">Seleccione una localidad</option>
+                        <option value="monte grande">Monte Grande</option>
+                        <option value="luis guillon">Luis Guillón</option>
                     </select>
                 ) : (
                     <input

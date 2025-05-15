@@ -45,6 +45,8 @@ io.on('connection', (socket) => {
             connectedAdmins[socket.userId] = socket.id
             console.log("Usuario admin",sessionPayload.username)
 
+
+
         }else if(!socket.rol){
 
 
@@ -60,13 +62,14 @@ io.on('connection', (socket) => {
             connectedUsers[socket.userId] = dataUserOnSession
             console.log("Usuario conectado",sessionPayload.username)
 
-            //cambiar a futuro con los distintos restaurantID
-            if(connectedAdmins['6806b8fe2b72a9697aa59e5f']){
-
-                io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
-            }
 
 
+        }
+
+        //cambiar a futuro con los distintos restaurantID
+        if(connectedAdmins['6806b8fe2b72a9697aa59e5f']){
+
+            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
         }
 
         console.log("Usuarios conectados:",connectedUsers)

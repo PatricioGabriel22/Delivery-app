@@ -100,22 +100,22 @@ export const loginUser = async(req,res)=>{
 
 
 export const registerUser = async (req,res)=>{
-    const {username,email,password,direccion,telefono,localidad,entreCalles} = req.body
+    const {username,password,direccion,telefono,localidad,entreCalles} = req.body
     
 
     try {
         
 
         const userDuplciated = await userSchema.findOne({username})
-        const emailDuplciated = await userSchema.findOne({email})
+       
 
         // console.log(userDuplciated || emailDuplciated)
 
-        if(userDuplciated || emailDuplciated){
+        if(userDuplciated){
 
             const alerta = userDuplciated ? 
-            `El usuario ${userDuplciated.username} ya esta registrado`:
-            `El mail ${emailDuplciated.email} ya esta registrado`
+            `El usuario ${userDuplciated.username} ya esta registrado`: ""
+            
 
 
             return res.status(400).json({message:alerta})
@@ -126,7 +126,6 @@ export const registerUser = async (req,res)=>{
 
         new userSchema({
             username,
-            email,
             password:hashedPassword,
             direccion,
             localidad,

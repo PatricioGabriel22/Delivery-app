@@ -30,7 +30,7 @@ export default function LoggedUsers(){
 
 
                 <div  className="flex flex-col  items-center p-1 overflow-x-hidden ">
-                    {loggedUsers.length > 0 && loggedUsers?.map((user,index)=>(
+                    {loggedUsers?.length > 0 && loggedUsers.map((user,index)=>(
                         <div className=" bg-green-200 flex flex-row w-full items-center rounded h-9 md:h-12 border-1 my-1 hover:bg-white cursor-pointer" key={index}>
                             <span className="bg-green-600 rounded-full w-4 h-4 p-2 mx-1 border-2"/>
                             <p className="w-2/3 overflow-hidden text-ellipsis whitespace-nowrap">{ccapitalizer_3000(user.username)}</p>

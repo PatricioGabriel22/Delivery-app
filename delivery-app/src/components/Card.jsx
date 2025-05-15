@@ -39,7 +39,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const [miniPreview,setMiniPreview] = useState(null)
 
   // Estado para controlar la cantidad en el carrito
-  const {carrito,cartHandler} = useShoppingContext()
+  const {carrito,cartHandler,loading, buyBTN} = useShoppingContext()
   
   const {userInfo,renderORLocalURL} = useLoginContext()
 
@@ -369,14 +369,14 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
             <MdDelete 
               size={40} 
-              className="text-red-600 cursor-pointer"  
+              className={`text-red-600 cursor-pointer ${loading || buyBTN? "hidden" :"" } `} 
               onClick={()=>cartHandler(carrito,"delete",nombre)}
             />
     
             
             <FaPlus
               size={40}
-              className="text-green-600 cursor-pointer"
+              className={`text-green-600 cursor-pointer ${loading || buyBTN? "hidden" :"" } `}
               onClick={()=>{
                 cartHandler(carrito,"add",nombre)
                 // cantidadVisualizer()
