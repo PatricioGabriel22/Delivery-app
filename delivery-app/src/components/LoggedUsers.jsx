@@ -25,7 +25,7 @@ export default function LoggedUsers(){
     return(
         <Fragment>
 
-            <div className="flex flex-col w-full md:w-[30%]  bg-gray-200 text-black rounded h-50 ">
+            <div className="flex flex-col w-80  bg-gray-200 text-black rounded h-48 ">
                 <h3 className="text-center font-extrabold text-xl p-1 mb-2">Usuarios en la tienda</h3>
 
 

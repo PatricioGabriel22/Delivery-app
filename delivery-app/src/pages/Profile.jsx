@@ -115,7 +115,7 @@ export default function Profile(){
                     }
 
                     
-                    <span className="md:fixed md:bottom-0 md:left-5 md:w-[90%] mt-3 w-[70%] pb-2 self-center z-0 ">
+                    <span className="md:fixed md:bottom-0 md:left-5  mt-3 pb-2 self-center  ">
                         <LoggedUsers/>
                     </span>
 

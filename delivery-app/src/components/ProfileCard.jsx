@@ -120,7 +120,7 @@ export default function ProfileCard({ userInfo }) {
                 onChange={handleChange}
                 className="border rounded px-1">
 
-                <option value="">Seleccione una localidad</option>
+                <option value="" disabled selected hidden>Seleccione una localidad</option>
                 <option value="monte grande">Monte Grande</option>
                 <option value="luis guillon">Luis Guillón</option>
               </select>

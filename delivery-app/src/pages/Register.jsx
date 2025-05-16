@@ -32,7 +32,7 @@ export default function Register(){
             direccion:e.target[3].value.toLowerCase(),
             localidad:e.target[4].value.toLowerCase(),
             entreCalles:e.target[5].value.toLowerCase(),
-            telefono:e.target[7].value
+            telefono:e.target[6].value
         }
 
         
@@ -81,7 +81,7 @@ export default function Register(){
             {CAMPOS_REGISTRO.map((campo, index) => (
                 campo === 'Localidad' ? (
                     <select key={index} className="bg-white text-black rounded w-full m-1 p-1 text-lg" required={true}>
-                        <option value="">Seleccione una localidad</option>
+                        <option value="" disabled selected hidden >Seleccione una localidad</option>
                         <option value="monte grande">Monte Grande</option>
                         <option value="luis guillon">Luis Guillón</option>
                     </select>
