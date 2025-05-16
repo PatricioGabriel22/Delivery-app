@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useLoginContext } from '../context/LoginContext';
 import { capitalize } from '../utils/capitalize';
 import toast from 'react-hot-toast';
+import { FaSpinner } from 'react-icons/fa6';
 
 export default function ProductForm() {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export default function ProductForm() {
   const handleUpload = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    console.log(loading)
     const formData = new FormData();
     formData.append('imagen', e.target.imagen.files[0]);
     formData.append('nombre', e.target.nombreProducto.value.toLowerCase().trim());
@@ -23,23 +24,24 @@ export default function ProductForm() {
     formData.append('precio', e.target.precio.value.trim());
     formData.append('disponible', e.target.disponible.value);
 
-    try {
-      axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, 
-        {withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        }).then(res => {
-          toast.success(`${res.data.message}`)
-          e.target.reset();
-          setPreview(null);
-        }).catch(error=>toast.error(`${error.data.errorMessage}`))
+   
+    await axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, 
+      {withCredentials: true,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      }).then(res => {
+        toast.success(`${res.data.message}`)
+        e.target.reset()
+        setPreview(null)
+        setLoading(false)
+
+      }).catch(error=>{
+        toast.error(`${error.data.errorMessage}`)
+        setLoading(false)
+      })
         
-      } catch (err) {
-        console.error('Error al subir producto:', err);
-      } finally {
-        setLoading(false);
-      }
+  
   };
 
   const handleImageChange = (e) => {
@@ -136,9 +138,16 @@ export default function ProductForm() {
           <button
               type="submit"
               disabled={loading}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-all"
+              className={`bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-all cursor-pointer ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}
           >
-              {loading ? 'Guardando...' : 'Guardar producto'}
+                {loading ? (
+                  <div className='flex flex-col justify-center items-center'>
+                    <FaSpinner className="animate-spin" />
+                    <p>Guardando...</p>
+                  </div>
+                ) : (
+                  'Guardar producto'
+                )}
           </button>
       </form>
     </div>
