@@ -44,7 +44,7 @@ export default function Profile(){
 
     return(
         <Fragment>
-            <div className="flex flex-col relative min-h-screen">
+            <div className="flex flex-col relative min-h-screen ">
 
                 <Link to={'/'} className="p-5 w-full text-start">
                     <MdArrowBackIosNew size={30} />
@@ -115,7 +115,7 @@ export default function Profile(){
                     }
 
                     
-                    <span className="md:fixed md:bottom-0 md:left-5  mt-3 pb-2 self-center  ">
+                    <span className="md:absolute md:top-20 md:left-5  mt-3 pb-2 self-center  ">
                         <LoggedUsers/>
                     </span>
 
