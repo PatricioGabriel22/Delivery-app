@@ -36,7 +36,7 @@ export default function Home() {
 
 
 
-  const CategoriasProductos = [...new Set(catalogoDelAdmin.map(p => p.categoria))]
+  const CategoriasProductos = [...new Set(catalogoDelAdmin.map(p => p.categoria))].sort()
   
   const [showItems,setShowItems] = useState({})
 
