@@ -200,15 +200,15 @@ export function SocketProvider({children}){
                 }
             }else if(!userInfo.rol){
                     setLoading(prev =>{ 
-                    sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                    return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+                    localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                    return JSON.parse(localStorage.getItem('loadingPreOrder'))
                     })
             
                     if(data.accepted){
-                        sessionStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
+                        localStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
                         setBuyBTN(prev=>{
-                            sessionStorage.setItem('buyBTN',JSON.stringify(!prev))
-                            return JSON.parse(sessionStorage.getItem("buyBTN"))
+                            localStorage.setItem('buyBTN',JSON.stringify(!prev))
+                            return JSON.parse(localStorage.getItem("buyBTN"))
                         })
 
                         //refresco la lista de pedidos del usuario/admin

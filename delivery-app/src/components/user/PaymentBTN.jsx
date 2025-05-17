@@ -23,7 +23,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         
         const mp_payload = {
             // Datos de la compra que querés cobrar
-            pedidoID:JSON.parse(sessionStorage.getItem("pedidoID")),
+            pedidoID:JSON.parse(localStorage.getItem("pedidoID")),
             items: [
               {
                 title: "Pedido Victorina",
@@ -83,7 +83,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     async function efectivo_payment_management(){
         const efectivo_payload= {
-            pedidoID:JSON.parse(sessionStorage.getItem("pedidoID")),
+            pedidoID:JSON.parse(localStorage.getItem("pedidoID")),
             userID:userInfo.id,
             importe:importeTotal,
             

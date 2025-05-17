@@ -24,13 +24,13 @@ export const useShoppingContext = () => {
 export function ShoppingProvider({ children }) {
 
 
-  const [carrito, setCarrito] = useState(JSON.parse(sessionStorage.getItem("carrito")) || [])
+  const [carrito, setCarrito] = useState(JSON.parse(localStorage.getItem("carrito")) || [])
   const [total, setTotal] = useState(0)
 
   const [importeTotal,setImporteTotal] = useState(0)
 
-  const [loading,setLoading] = useState(JSON.parse(sessionStorage.getItem('loadingPreOrder')) || false)
-  const [buyBTN,setBuyBTN] = useState(JSON.parse(sessionStorage.getItem("buyBTN")) || false)
+  const [loading,setLoading] = useState(JSON.parse(localStorage.getItem('loadingPreOrder')) || false)
+  const [buyBTN,setBuyBTN] = useState(JSON.parse(localStorage.getItem("buyBTN")) || false)
   const [responseFromServer,setResponseFromServer] = useState(null)
 
   
@@ -97,9 +97,9 @@ export function ShoppingProvider({ children }) {
   
   
       
-      sessionStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como string
+      localStorage.setItem('carrito',JSON.stringify(newCart)) //almaceno como string
   
-      setCarrito(JSON.parse(sessionStorage.getItem('carrito'))) //recupero y parseo
+      setCarrito(JSON.parse(localStorage.getItem('carrito'))) //recupero y parseo
   
   } 
 

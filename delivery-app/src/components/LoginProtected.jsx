@@ -12,7 +12,7 @@ export default function LoginProtected(){
   // const {getAllPreOrdersData} = useLoginContext()
   
 
-  const isAuth = sessionStorage.getItem('auth') === 'true'
+  const isAuth = localStorage.getItem('auth') === 'true'
   
 
     

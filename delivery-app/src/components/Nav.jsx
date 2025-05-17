@@ -13,7 +13,7 @@ export default function Nav() {
     
     if(carrito.length >= 0){
       setTotal(carrito.reduce((acc,curr)=>acc + curr.cantidad,0))
-      sessionStorage.setItem("total", total);
+      localStorage.setItem("total", total);
     }
 
   },[carrito,setTotal,total])

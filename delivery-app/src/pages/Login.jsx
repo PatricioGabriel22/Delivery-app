@@ -32,10 +32,10 @@ export default function Login(){
 
           
         
-          sessionStorage.setItem('auth','true')
-          sessionStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
+          localStorage.setItem('auth','true')
+          localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo))
 
-          setUserInfo( JSON.parse(sessionStorage.getItem('userInfo')) )
+          setUserInfo( JSON.parse(localStorage.getItem('userInfo')) )
           
 
           navigate('/')

@@ -25,7 +25,7 @@ export function LoginProvider({children}){
     //para aceder a las variables de entorno de VITE import.meta.env
     
 
-    const [userInfo,setUserInfo] = useState(JSON.parse(sessionStorage.getItem('userInfo')) || false)
+    const [userInfo,setUserInfo] = useState(JSON.parse(localStorage.getItem('userInfo')) || false)
 
     let renderORLocalURL 
 

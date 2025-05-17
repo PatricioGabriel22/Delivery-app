@@ -60,7 +60,7 @@ export default function CategoryFrom(){
         socket.on('categoriaAgregada',(data)=>{
             console.log(data)
             userInfo.categorias = [...new Set([...userInfo.categorias,...data.listaCategorias])]
-            sessionStorage.setItem('userInfo',JSON.stringify(userInfo))
+            localStorage.setItem('userInfo',JSON.stringify(userInfo))
         })
 
         return ()=>{

@@ -15,7 +15,7 @@ export default function PagoConfirmadoPage(){
 
     const {setTotal,setImporteTotal,setLoading,setBuyBTN,setCarrito} = useShoppingContext()
 
-    const codigoOrden = JSON.parse(sessionStorage.getItem("pedidoID"))
+    const codigoOrden = JSON.parse(localStorage.getItem("pedidoID"))
 
     function limpiarSecuenciaDeCompras() {
         const keys = [
@@ -26,7 +26,7 @@ export default function PagoConfirmadoPage(){
             'pedidoID',
         ];
 
-        keys.forEach((key) => sessionStorage.removeItem(key))
+        keys.forEach((key) => localStorage.removeItem(key))
 
         // Resetear estados asociados
         setCarrito([])

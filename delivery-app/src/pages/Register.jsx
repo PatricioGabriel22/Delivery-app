@@ -50,7 +50,7 @@ export default function Register(){
         .then(res=>{
             if(res.status === 200){
                 toast.success(res.data.message)
-                sessionStorage.setItem('auth','true')
+                localStorage.setItem('auth','true')
                 
                 setTimeout(()=>{
                     navigate('/login')

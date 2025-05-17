@@ -47,7 +47,7 @@ export default function ProfileCard({ userInfo }) {
   useEffect(()=>{
 
     socket.on('newUserInfo',(data)=>{
-        sessionStorage.setItem('userInfo',JSON.stringify(data))
+        localStorage.setItem('userInfo',JSON.stringify(data))
 
         setUserInfo(prev => ({...prev,...data}))
     })

@@ -59,8 +59,8 @@ export default function CarritoConfirm(){
 
     function confirmarOrdenConElLocal(){
         setLoading(prev =>{ 
-            sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-            return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+            localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+            return JSON.parse(localStorage.getItem('loadingPreOrder'))
         })
 
 
@@ -81,8 +81,8 @@ export default function CarritoConfirm(){
                 
                 setTimeout(()=>{
                     setLoading(prev =>{ 
-                        sessionStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                        return JSON.parse(sessionStorage.getItem('loadingPreOrder'))
+                        localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                        return JSON.parse(localStorage.getItem('loadingPreOrder'))
                         })
                 },2000)
 
