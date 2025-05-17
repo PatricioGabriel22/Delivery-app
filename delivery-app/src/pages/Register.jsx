@@ -29,10 +29,10 @@ export default function Register(){
         const registerData = {
             username:e.target[0].value.trim(),
             password:e.target[1].value,
-            direccion:e.target[3].value,
-            localidad:e.target[4].value,
-            entreCalles:e.target[5].value,
-            telefono:e.target[6].value
+            direccion:e.target[3].value.toLowerCase().trim(),
+            localidad:e.target[4].value.toLowerCase(),
+            entreCalles:e.target[5].value.toLowerCase().trim(),
+            telefono:e.target[6].value.trim()
         }
 
         
