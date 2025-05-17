@@ -22,7 +22,8 @@ const userSchema = new mongoose.Schema({
     pedidos:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'pedidos'
-    }]
+    }],
+    doDelivery:{type:Boolean,default:true}
     
 },{
     timestamps:true

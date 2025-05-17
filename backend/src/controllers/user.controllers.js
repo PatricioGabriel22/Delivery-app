@@ -3,7 +3,7 @@ import userSchema from '../models/user.schema.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { io } from '../webSocket.js'; 
+import { connectedAdmins, io } from '../webSocket.js'; 
 
 
 import dotenv from 'dotenv'
@@ -209,4 +209,29 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 }
 
 
+
+
+
+export const findRestaurant = async (req,res) =>{
+    const {idRestaurant} = req.params
+
+    const targetRestaurant = await userSchema.findById(idRestaurant)
+
+    res.status(200).json({deliveryStatus:targetRestaurant.doDelivery})
+}
+
+export const estadoDelDelivery = async (req,res)=>{
+    const {idRestaurant,flagDelivery} = req.body
+
+    try {
+        const target = await userSchema.findByIdAndUpdate(idRestaurant,{$set:{doDelivery:!flagDelivery}},{new:true})
+        
+        io.emit('cambioDeEstadoDelivery',target.doDelivery)
+
+        res.status(200).json({deliveryStatus:target.doDelivery})
+    } catch (error) {
+        console.log(error)
+    }
+
+}
 

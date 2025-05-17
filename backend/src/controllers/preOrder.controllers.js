@@ -127,7 +127,9 @@ export const sendPreOrder =  async (req,res)=>{
 
     try {
         
-        if(deliveryMethod === 'Envio' && !connectedAdmins[restauranteAdmin]){
+        const target = await userSchema.findById(restauranteAdmin)
+
+        if(deliveryMethod === 'Envio' && !target.doDelivery){
 
             return res.status(501).json({message:"Local no disponible para delivery temporalmente. Podes realizar el pedido y retirarlo por el local."})
         }

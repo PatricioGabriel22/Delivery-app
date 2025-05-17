@@ -114,14 +114,16 @@ export default function Profile(){
                         )})
                     }
 
-                    
-                    <span className="md:absolute md:top-20 md:left-5  mt-3 pb-2 self-center  ">
-                        <LoggedUsers/>
-                    </span>
 
                 </div>
                 )}
 
+                {userInfo.rol && (
+
+                <span className=" mt-auto p-2 self-center md:self-start  ">
+                    <LoggedUsers/>
+                </span>
+                )}   
 
 
             </div>

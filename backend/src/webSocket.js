@@ -3,6 +3,7 @@ import http from 'http'
 import express from 'express'
 
 import dotenv from 'dotenv'
+import userSchema from './models/user.schema.js'
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -32,7 +33,7 @@ io.on('connection', (socket) => {
     console.log("cliente conectado:", socket.id)
 
 
-    socket.on('sesionIniciada', (sessionPayload) => {
+    socket.on('sesionIniciada', async (sessionPayload) => {
         
         socket.username = sessionPayload.username
         socket.localidad = sessionPayload.localidad
@@ -43,9 +44,8 @@ io.on('connection', (socket) => {
         if(socket.rol === 'admin'){
             
             connectedAdmins[socket.userId] = socket.id
-            console.log("Usuario admin",sessionPayload.username)
-
-
+            
+        
 
         }else if(!socket.rol){
 
@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
 
 
             connectedUsers[socket.userId] = dataUserOnSession
-            console.log("Usuario conectado",sessionPayload.username)
+      
 
 
 
@@ -72,7 +72,6 @@ io.on('connection', (socket) => {
             io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
         }
 
-        console.log("Usuarios conectados:",connectedUsers)
 
     })
 

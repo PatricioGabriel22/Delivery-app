@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal } from "../controllers/user.controllers.js"
+import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal,findRestaurant,estadoDelDelivery } from "../controllers/user.controllers.js"
 
 import jwt from "jsonwebtoken"
 
@@ -43,9 +43,13 @@ userRoutes.post('/login',loginUser)
 
 userRoutes.post('/register',registerUser)
 
-
 userRoutes.post('/editProfileInfo',editProfileInfo)
 
 userRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
+
+
+userRoutes.get('/getRestaurant/:idRestaurant',findRestaurant)
+
+userRoutes.post('/cambiarEstadoDelivery',estadoDelDelivery)
 
 
