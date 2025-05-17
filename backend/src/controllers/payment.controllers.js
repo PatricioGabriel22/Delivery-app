@@ -12,7 +12,7 @@ dotenv.config({
 
 
 
-const access_token_MP = 'APP_USR-8256172845098039-051009-6f781470e50160fac4e5436d6867e3f0-2432951426';
+const access_token_MP = process.env.ACCESS_TOKEN //ojo cuando cambie a staging
 const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 
