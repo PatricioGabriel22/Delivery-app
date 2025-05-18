@@ -59,9 +59,10 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
     const {userInfo} = useLoginContext()
-    const {allPreOrdersFromAdmin,AdminPreOrdersData} = useOrdersContext()
+    const {allPreOrdersFromAdmin,AdminPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {refresh} = useCatalogContext() 
+    
     
 
     const [allPreOrders, setAllPreOrders] = useState([])
@@ -172,8 +173,8 @@ export function SocketProvider({children}){
                         const ordenesPreviasConfirmadas = prev.filter(item=>item._id !== data.id)
 
                         
+                     
                         if(esDeHoy(data.confirmedOrder.createdAt)){
-
                             return [...ordenesPreviasConfirmadas,data.confirmedOrder]
                         }
                         
@@ -181,11 +182,12 @@ export function SocketProvider({children}){
                     })
 
 
-                    refresh((oldData) => {
-                    return {
-                        ...oldData,
-                        allOrders: [data.nuevoPedido, ...oldData.allOrders],
-                    };
+                    refreshHistorialOrdenes((oldData) => {
+                     
+                        return {
+                            ...oldData,
+                            allOrders: [data.nuevoPedido, ...oldData.allOrders], //deja mas reciente el de la izquierda
+                        };
                     }, false)
                 
                 }
@@ -199,38 +201,49 @@ export function SocketProvider({children}){
                     return
                 }
             }else if(!userInfo.rol){
-                    setLoading(prev =>{ 
-                    localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
-                    return JSON.parse(localStorage.getItem('loadingPreOrder'))
+                setLoading(prev =>{ 
+                    if(prev){
+                        localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
+                        return JSON.parse(localStorage.getItem('loadingPreOrder'))
+                    }
+                })
+        
+                if(data.accepted){
+                    localStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
+                    localStorage.setItem('preOrdenID',JSON.stringify(data.id))
+
+                    setBuyBTN(prev=>{
+                        localStorage.setItem('buyBTN',JSON.stringify(!prev))
+                        return JSON.parse(localStorage.getItem("buyBTN"))
                     })
-            
-                    if(data.accepted){
-                        localStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
-                        setBuyBTN(prev=>{
-                            localStorage.setItem('buyBTN',JSON.stringify(!prev))
-                            return JSON.parse(localStorage.getItem("buyBTN"))
-                        })
 
-                        //refresco la lista de pedidos del usuario/admin
-                        refresh((oldData) => {
-                            return {
-                                ...oldData,
-                                allOrders: [data.nuevoPedido, ...oldData.allOrders],
-                            };
-                            }, false)
+                    //refresco la lista de pedidos del usuario/admin
+                    refresh((oldData) => {
+                        return {
+                            ...oldData,
+                            allOrders: [data.nuevoPedido, ...oldData.allOrders],
+                        };
+                        }, false)
 
-                
-                    }
             
-                    if(data.canceled){
-                        setResponseFromServer(data)
-                    }
+                }
+        
+                if(data.canceled){
+                    setResponseFromServer(data)
+                }
             }   
 
 
         });
 
-       
+       socket.on('preOrdenPagoVerificado',(data)=>{
+            setAcceptedOrders(prev=>prev.map(item=>{
+                if(item._id === data._id){
+                    return {...item, paymentMethod: data.paymentMethod}
+                }
+                return item
+            }))
+       })
 
         socket.on('finishedOrder',(data)=>{
             
@@ -256,11 +269,12 @@ export function SocketProvider({children}){
 
       
         return () => {
-          socket.off('preOrderStatus')
-          socket.off('nuevaPreOrdenRecibida')
-          socket.off('finishedOrder')
-          socket.off('ordenPreparada')
-          socket.off('deliveredOrder')
+            socket.off('nuevaPreOrdenRecibida')
+            socket.off('preOrderStatus')
+            socket.off('preOrdenPagoVerificado')
+            socket.off('finishedOrder')
+            socket.off('ordenPreparada')
+            socket.off('deliveredOrder')
 
         };
     }, [userInfo]);

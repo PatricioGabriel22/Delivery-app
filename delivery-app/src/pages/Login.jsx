@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useLoginContext } from "../context/LoginContext"
 
 import ShowPassword from "../components/ShowPassword.jsx";
+import toast from "react-hot-toast";
 
 
 
@@ -22,9 +23,18 @@ export default function Login(){
     e.preventDefault()
     setLogginIn(true)
 
+    const username = e.target[0].value.trim()
+    const password = e.target[1].value.trim()
+
+    if (!username || !password) {
+      toast.error("Por favor ingresa usuario y contraseña");
+      setLogginIn(false)
+      return
+    }
+
     axios.post(`${renderORLocalURL}/login`, {
-      username:e.target[0].value,
-      password:e.target[1].value,
+      username,
+      password,
 
     },{withCredentials:true})
     .then(res=>{

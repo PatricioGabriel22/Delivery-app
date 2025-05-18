@@ -16,6 +16,9 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     const {renderORLocalURL,userInfo} = useLoginContext()
     const {socket} = useSocketContext()
 
+    const pedidoID = JSON.parse(localStorage.getItem("pedidoID"))
+    const preOrdenID = JSON.parse(localStorage.getItem("preOrdenID"))
+
     async function mp_payment_management(verifyMode){
 
         console.log("entro a mp payment ")
@@ -23,7 +26,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         
         const mp_payload = {
             // Datos de la compra que querés cobrar
-            pedidoID:JSON.parse(localStorage.getItem("pedidoID")),
+            pedidoID,
+            preOrdenID,
             items: [
               {
                 title: "Pedido Victorina",
@@ -34,7 +38,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             ],
             payer:{
                 name:userInfo.username,
-                last_name:userInfo.id
+                last_name:userInfo.id //uso la propiedad last name para colar el userid
             },
             flagVerify:verifyMode
         }
@@ -83,7 +87,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     async function efectivo_payment_management(){
         const efectivo_payload= {
-            pedidoID:JSON.parse(localStorage.getItem("pedidoID")),
+            pedidoID,
+            preOrdenID,
             userID:userInfo.id,
             importe:importeTotal,
             

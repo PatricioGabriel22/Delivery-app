@@ -58,7 +58,7 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
         confirmedOrders: data?.allOrders || [],
         isLoading,
         isError: error,
-        refresh: mutate,
+        refreshHistorialOrdenes: mutate,
         totalPages: data?.totalPages || 0
       };
 }

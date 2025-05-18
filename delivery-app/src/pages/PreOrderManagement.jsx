@@ -15,17 +15,6 @@ export default function PreOrderManagement(){
 
 
 
-
-
-    
-    
-            
-    
-    
-
-
-
-
     return(
         <Fragment>
 

@@ -43,9 +43,17 @@ io.on('connection', (socket) => {
 
         if(socket.rol === 'admin'){
             
-            connectedAdmins[socket.userId] = socket.id
+            // connectedAdmins[socket.userId] = socket.id
+            if(!connectedAdmins[socket.userId]){
+                connectedAdmins[socket.userId] = []
+            }
+
+            if(!connectedAdmins[socket.userId].includes(socket.id)){
+                connectedAdmins[socket.userId].push(socket.id)
+            }
             
-        
+            console.log("ADMIN conectado",connectedAdmins)
+            
 
         }else if(!socket.rol){
 
@@ -61,7 +69,7 @@ io.on('connection', (socket) => {
 
             connectedUsers[socket.userId] = dataUserOnSession
       
-
+            console.log("Usuarios conectados",connectedUsers)
 
 
         }
@@ -70,14 +78,23 @@ io.on('connection', (socket) => {
         if(connectedAdmins['6806b8fe2b72a9697aa59e5f']){
 
             io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
+
+            // connectedAdmins['6806b8fe2b72a9697aa59e5f'].forEach((connection)=>{
+            //     io.to(connection).emit('usuariosConectados',Object.values(connectedUsers))
+            // })
         }
 
 
     })
 
     socket.on('disconnect', () => {
-        if(socket.rol === 'admin'){
-            delete connectedAdmins[socket.userId]
+        if(socket.rol === 'admin' &&  connectedAdmins[socket.userId]){
+            connectedAdmins[socket.userId] = connectedAdmins[socket.userId].filter(targetID=> targetID != socket.id)
+            
+            if(connectedAdmins[socket.userId].length === 0){
+                delete  connectedAdmins[socket.userId]
+            }
+
         }else if(!socket.rol){
             delete connectedUsers[socket.userId]
         }
