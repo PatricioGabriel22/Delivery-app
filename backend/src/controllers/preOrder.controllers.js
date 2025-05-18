@@ -178,12 +178,12 @@ export const PreOrderManager = async (req,res)=>{
     console.log(req.body)
 
     const comprador = orderInfo?.userInfo?.id
-    const userSocketID = connectedUsers[comprador]?.socketId
+    const userSocketID = connectedUsers[comprador]?.socketId 
 
     const restaurante = restauranteAdmin
-    const adminSocketID = connectedAdmins[restaurante]
+    const adminSocketID = connectedAdmins[restaurante] || [] //array de las conexiones del admin
 
-    const socketsToNotify = [userSocketID,adminSocketID]
+    const socketsToNotify = [userSocketID,...adminSocketID]
 
 
     let nuevaDataEmitida
@@ -201,7 +201,7 @@ export const PreOrderManager = async (req,res)=>{
                     {new:true}
                 )
                 
-                const nuevoPedido =  new pedidosSchema({
+                const nuevoPedido = await  new pedidosSchema({
                     
                     userID:orderInfo.userInfo.id,
                     productos:orderInfo.preOrder,
@@ -210,9 +210,9 @@ export const PreOrderManager = async (req,res)=>{
                     confirmed:true,
                     formaDeEntrega:updatedOrder.formaDeEntrega,
 
-                })
+                }).save()
 
-                await nuevoPedido.save()
+                console.log(nuevoPedido)
 
                 await userSchema.findByIdAndUpdate(
                     orderInfo.userInfo.id,

@@ -99,7 +99,7 @@ export function OrderProvider({children}){
     }
 
 
-    const { confirmedOrders, isLoading, isError, refresh, totalPages} = useHistorialOrdenes(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
+    const { confirmedOrders, isLoading, isError, refreshHistorialOrdenes, totalPages} = useHistorialOrdenes(userInfo,urlConfirmedOrders,flagPagination,pages,limite)
 
     
     
@@ -114,7 +114,7 @@ export function OrderProvider({children}){
             setAllPreOrdersFromAdmin,
 
 
-            confirmedOrders, isLoading, isError, refresh,
+            confirmedOrders, isLoading, isError, refreshHistorialOrdenes,
             actionVerMasOrdenes,
             setPages,setLimite,setFlagPagination
 

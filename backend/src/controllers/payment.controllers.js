@@ -2,9 +2,10 @@ import pagoSchema from '../models/pagosSchema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
 
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
-import {connectedUsers, io, frontURL} from '../webSocket.js'
+import {connectedUsers, io, frontURL, connectedAdmins} from '../webSocket.js'
 
 import dotenv from 'dotenv'
+import preOrderSchema from '../models/preOrder.schema.js';
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -17,7 +18,7 @@ const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 
 export const pagarConEfectivo = async (req,res)=>{
-    const {pedidoID, userID,importe} = req.body
+    const {pedidoID,preOrdenID, userID,importe} = req.body
 
     
     try {
@@ -30,7 +31,23 @@ export const pagarConEfectivo = async (req,res)=>{
             importe
         })
 
-        await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}})
+        const pedidoPagadoEnEfectivo = await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}},{new:true})
+
+        if(pedidoPagadoEnEfectivo.isPayed){
+    
+            const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Efectivo'}},{new:true})
+
+            io
+            .to(connectedAdmins['6806b8fe2b72a9697aa59e5f'])    
+            .to(connectedUsers[userID].socketId)
+            .emit('preOrdenPagoVerificado', preOrderPaga)
+
+
+        }
+
+        
+
+
         //create crea el documento una vez y lanza error 11000 si esta duplicado
         
         res.status(200).json({message:"Se abonará en efectivo"})
@@ -53,7 +70,7 @@ export const pagarConEfectivo = async (req,res)=>{
 
 
 export const pagarConMP = async (req, res) => {
-    const { pedidoID, items, payer,flagVerify } = req.body;
+    const { pedidoID,preOrdenID, items, payer,flagVerify } = req.body;
 
 
 
@@ -91,9 +108,10 @@ export const pagarConMP = async (req, res) => {
 
         if(targetPedidoYaPagado.isPayed){
             console.log("Se esta tratando de volver a pagar con mp")
-
-            // io.to(connectedUsers[payer.last_name].socketId).emit('pagoDuplicado', { message: "Este pago ya fue registrado" })
-
+            
+            const preOrderPaga = await preOrderSchema.findById(preOrdenID)
+            io.to(connectedUsers[payer.last_name].socketId).emit('preOrdenPagoVerificado', preOrderPaga)
+            
             if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
 
             return res.status(409).json({message:"El producto ya fue abonado"})

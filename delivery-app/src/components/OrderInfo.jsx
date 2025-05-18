@@ -11,9 +11,10 @@ import BannerCloseLogo from "./BannerCloseLogo";
 
 
 
+
 export default function OrderInfo({title,preOrderInfo}){
 
-    const {formaDeEntrega,importeTotal,confirmed,finished,delivered} = preOrderInfo
+    const {formaDeEntrega,importeTotal,confirmed,finished,delivered,paymentMethod,_id} = preOrderInfo
     const {username} = preOrderInfo.userInfo
 
 
@@ -23,7 +24,6 @@ export default function OrderInfo({title,preOrderInfo}){
     const {orderStatusHandler} = useShoppingContext()
 
     const [flagMsgSugerencias,setFlagMsgSugerencias] = useState(false)
-
 
  
 
@@ -47,7 +47,6 @@ export default function OrderInfo({title,preOrderInfo}){
         orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada",msgDeSugerencia)
         cerrarModal()
     }
-
 
 
 
@@ -130,8 +129,6 @@ export default function OrderInfo({title,preOrderInfo}){
                                     </span>
                             </div>
                             
-
-                            
                             
                             <div 
                                 className={`flex flex-row justify-between  w-full text-xl text-end rounded p-2
@@ -139,6 +136,12 @@ export default function OrderInfo({title,preOrderInfo}){
                                 <p className="font-bold">{formaDeEntrega}</p>
                                 <p className="font-bold ">Total: ${importeTotal}</p>
                             </div>
+
+                            {paymentMethod && (
+                                <span className="font-semibold text-center p-5">Metodo de pago: {paymentMethod}</span>
+                            )}
+
+
 
                         </div>
 
