@@ -72,7 +72,7 @@ export const pagarConEfectivo = async (req,res)=>{
 export const pagarConMP = async (req, res) => {
     const { pedidoID,preOrdenID, items, payer,flagVerify } = req.body;
 
-
+    console.log(preOrdenID)
 
     // Configuración del token de acceso
     const preference = new Preference(client);
@@ -107,9 +107,9 @@ export const pagarConMP = async (req, res) => {
         
 
         if(targetPedidoYaPagado.isPayed){
-            console.log("Se esta tratando de volver a pagar con mp")
+
             
-            const preOrderPaga = await preOrderSchema.findById(preOrdenID)
+            const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
             
             io
             .to(connectedAdmins['6806b8fe2b72a9697aa59e5f'])    

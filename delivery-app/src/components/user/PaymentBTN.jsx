@@ -43,7 +43,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             flagVerify:verifyMode
         }
 
-       
+      
 
         try {
             const res = await axios.post(`${renderORLocalURL}/create_preference_MP`, mp_payload, {withCredentials: true});

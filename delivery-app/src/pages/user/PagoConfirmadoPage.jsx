@@ -24,6 +24,7 @@ export default function PagoConfirmadoPage(){
             'loadingPreOrder',
             'total',
             'pedidoID',
+            'preOrdenID'
         ];
 
         keys.forEach((key) => localStorage.removeItem(key))
