@@ -110,7 +110,11 @@ export const pagarConMP = async (req, res) => {
             console.log("Se esta tratando de volver a pagar con mp")
             
             const preOrderPaga = await preOrderSchema.findById(preOrdenID)
-            io.to(connectedUsers[payer.last_name].socketId).emit('preOrdenPagoVerificado', preOrderPaga)
+            
+            io
+            .to(connectedAdmins['6806b8fe2b72a9697aa59e5f'])    
+            .to(connectedUsers[userID].socketId)
+            .emit('preOrdenPagoVerificado', preOrderPaga)
             
             if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
 
