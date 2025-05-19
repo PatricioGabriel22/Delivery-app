@@ -69,7 +69,6 @@ export const pagarConEfectivo = async (req,res)=>{
 export const pagarConMP = async (req, res) => {
     const { pedidoID,preOrdenID, items, payer,flagVerify } = req.body;
 
-    console.log(preOrdenID)
 
     // Configuración del token de acceso
     const preference = new Preference(client);
@@ -101,7 +100,7 @@ export const pagarConMP = async (req, res) => {
 
         const targetPedidoYaPagado = await pedidosSchema.findById(pedidoID)
 
-        console.log(targetPedidoYaPagado)
+
 
         if(targetPedidoYaPagado.isPayed){
 

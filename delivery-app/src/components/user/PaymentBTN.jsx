@@ -1,9 +1,7 @@
-import { Fragment, useEffect } from "react"
+import { Fragment } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLoginContext } from "../../context/LoginContext";
 import axios from "axios";
-
-import { useSocketContext } from "../../context/SocketContext.jsx";
 
 
 import toast from 'react-hot-toast'
@@ -14,14 +12,13 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     const navigate = useNavigate()
     const {renderORLocalURL,userInfo} = useLoginContext()
-    const {socket} = useSocketContext()
+
 
     const pedidoID = JSON.parse(localStorage.getItem("pedidoID"))
     const preOrdenID = JSON.parse(localStorage.getItem("preOrdenID"))
 
     async function mp_payment_management(verifyMode){
 
-        console.log("entro a mp payment ")
 
         
         const mp_payload = {
@@ -38,13 +35,13 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             ],
             payer:{
                 name:userInfo.username,
-                last_name:userInfo.id //uso la propiedad last name para colar el userid
+                last_name:userInfo.id //uso la propiedad last name para "colar" el userid
             },
             flagVerify:verifyMode
         }
 
       
-
+        
         try {
             const res = await axios.post(`${renderORLocalURL}/create_preference_MP`, mp_payload, {withCredentials: true});
         
@@ -97,7 +94,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         try {
             
             const res = await axios.post(`${renderORLocalURL}/pagar_en_efectivo`,efectivo_payload,{withCredentials:true})
-            console.log(res)
+
             toast.success(res.data?.message)
             navigate('/pago-confirmado')
 
@@ -121,17 +118,6 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     }
 
 
-    useEffect(()=>{
-        socket.on('pagoDuplicado',(data)=>{
-            console.log(data)
-        })
-
-
-        return ()=>{
-            socket.off('pagoDuplicado')
-        }
-
-    },[socket])
 
 
     return(
