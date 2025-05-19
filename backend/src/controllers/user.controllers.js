@@ -135,7 +135,7 @@ export const registerUser = async (req,res)=>{
 
         }).save()
     
-        res.json({message:`Usuario creado, ${username}`})
+        res.json({message:`Usuario creado: ${username}`})
 
 
     } catch (error) {

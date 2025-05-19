@@ -25,7 +25,7 @@ export default function Register(){
         
         const password = e.target[1].value
         const confirmPassword = e.target[2].value
-
+        const telefono = e.target[6].value.trim()
         const registerData = {
             username:e.target[0].value.trim(),
             password:e.target[1].value,
@@ -41,6 +41,11 @@ export default function Register(){
 
         if(confirmPassword !== password){
             toast.error('Las contraseñas no coinciden')
+            return
+        }
+
+        if(isNaN(telefono)){
+            toast.error('El numero de telefono no es valido')
             return
         }
 
