@@ -37,10 +37,7 @@ export const pagarConEfectivo = async (req,res)=>{
     
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Efectivo'}},{new:true})
 
-            io
-            .to(connectedAdmins['6806b8fe2b72a9697aa59e5f'])    
-            .to(connectedUsers[userID].socketId)
-            .emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
 
 
         }
@@ -104,17 +101,14 @@ export const pagarConMP = async (req, res) => {
 
         const targetPedidoYaPagado = await pedidosSchema.findById(pedidoID)
 
-        
+        console.log(targetPedidoYaPagado)
 
         if(targetPedidoYaPagado.isPayed){
 
             
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
             
-            io
-            .to(connectedAdmins['6806b8fe2b72a9697aa59e5f'])    
-            .to(connectedUsers[userID].socketId)
-            .emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
             
             if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
 
