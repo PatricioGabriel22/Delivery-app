@@ -7,6 +7,7 @@ import { useLoginContext } from "../context/LoginContext";
 import { useShoppingContext } from "../context/ShoppingContext";
 import { decidirCostoEnvio } from "../utils/envioFunctions";
 import BannerCloseLogo from "./BannerCloseLogo";
+import { ccapitalizer_3000 } from "../utils/capitalize";
 
 
 
@@ -114,7 +115,7 @@ export default function OrderInfo({title,preOrderInfo}){
                                 {preOrderInfo.preOrder.map(item=>(
 
                                     <div className={`flex flex-row justify-between w-full p-2 items-center text-xl   `}>
-                                        <p>{item.cantidad}x {item.nombre}</p>
+                                        <p>{item.cantidad}x {ccapitalizer_3000(item.nombre)}</p>
                                         <p>${item.precio}</p>
 
                                     </div>
@@ -145,12 +146,12 @@ export default function OrderInfo({title,preOrderInfo}){
 
                         </div>
 
-                        <div className="flex flex-row justify-around bg-gray-600  rounded-full w-full mt-2">
+                        <div className="flex flex-row justify-around bg-gray-300  rounded-full w-full mt-2">
                             {title === "Pre-Ordenes" ? (
                                 <Fragment>
                                     <MdOutlineCancel 
                                         size={80} 
-                                        className={`text-red-700 hover:text-red-500 ${flagMsgSugerencias ? "text-center":""} `}
+                                        className={`text-red-500 hover:text-red-600 ${flagMsgSugerencias ? "text-center":""} `}
                                         onClick={()=>{
                                             
                                             setFlagMsgSugerencias(!flagMsgSugerencias)
@@ -158,7 +159,7 @@ export default function OrderInfo({title,preOrderInfo}){
                                     />
                                     <GiConfirmed 
                                         size={80} 
-                                        className={`text-green-700 hover:text-green-500 ${confirmed || flagMsgSugerencias? "hidden":""} `}
+                                        className={`text-green-500 hover:text-green-600 ${confirmed || flagMsgSugerencias? "hidden":""} `}
                                         onClick={()=>{
                                             orderStatusHandler(renderORLocalURL,preOrderInfo,"aceptada")
                                             cerrarModal()

@@ -131,7 +131,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
                 onClick={()=> mp_payment_management(true)}
                 >
 
-                <span className="text-center p-2 text-lg">Verificar mi pago de Mercado Pago y continuar</span>
+                <span className="text-center p-2 text-lg">Notificar mi pago de Mercado Pago y continuar</span>
                 <span className="w-full h-[1px] bg-sky-600"/>
 
             </div>

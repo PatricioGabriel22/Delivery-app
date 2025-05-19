@@ -13,7 +13,7 @@ export function ccapitalizer_3000(word){
     let splittedWords = word.split(" ")
 
     for(let i = 0; i < splittedWords.length ; i++){
-        if(splittedWords[i] !== 'y') {
+        if(splittedWords[i] !== 'y' || splittedWords[i] !== 'a') {
 
             splittedWords[i] = splittedWords[i][0].toUpperCase() +splittedWords[i].slice(1) 
             //slice(1) me toma hasta el final
