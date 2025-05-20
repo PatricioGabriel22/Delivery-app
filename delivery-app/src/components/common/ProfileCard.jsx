@@ -4,10 +4,10 @@ import { FaRegUser } from "react-icons/fa";
 import { MdEditNote } from "react-icons/md";
 
 import axios from 'axios'
-import { useLoginContext } from "../context/LoginContext";
-import { useSocketContext } from "../context/SocketContext";
+import { useLoginContext } from "@context/LoginContext";
+import { useSocketContext } from "@context/SocketContext";
 
-import {ccapitalizer_3000} from '../utils/capitalize.js'
+import {ccapitalizer_3000} from '../../utils/capitalize.js'
 
 export default function ProfileCard({ userInfo }) {
   const [isEditing, setIsEditing] = useState(false);

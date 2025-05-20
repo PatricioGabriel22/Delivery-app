@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import { useState } from "react";
-import { useLoginContext } from "../context/LoginContext";
+import { useLoginContext } from "@context/LoginContext";
 import {useState } from "react";
-import succesLogo from '../assets/succesLogo.png'
+import succesLogo from '../../assets/succesLogo.png'
 import toast from "react-hot-toast";
 
 

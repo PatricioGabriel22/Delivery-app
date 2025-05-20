@@ -1,6 +1,6 @@
 import { Fragment } from "react"
 import { useNavigate } from "react-router-dom"
-import { useLoginContext } from "../../context/LoginContext";
+import { useLoginContext } from "@context/LoginContext";
 import axios from "axios";
 
 

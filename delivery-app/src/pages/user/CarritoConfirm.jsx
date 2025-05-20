@@ -1,9 +1,12 @@
 import {Fragment, useEffect, useState } from "react"
 import {Link} from 'react-router-dom'
-import { useShoppingContext } from "../context/ShoppingContext"
-import { useLoginContext } from "../context/LoginContext";
 
 import axios from 'axios'
+
+import { useShoppingContext } from "@context/ShoppingContext"
+import { useLoginContext } from "@context/LoginContext";
+import { useCatalogContext } from "@context/CatalogContext";
+
 
 import { RiDeleteBin6Line } from "react-icons/ri"
 import { MdArrowBackIosNew } from "react-icons/md";
@@ -11,16 +14,17 @@ import {FadeLoader} from 'react-spinners'
 import { FaCarSide } from "react-icons/fa6";
 import { FaShop } from "react-icons/fa6";
 import { GiConfirmed } from "react-icons/gi";
-import { ListaProductos } from "../utils/productos";
 import { FaFaceSadCry } from "react-icons/fa6";
 import { GiCook } from "react-icons/gi";
 
-import { decidirCostoEnvio } from "../utils/envioFunctions";
 import toast from "react-hot-toast";
-import { useCatalogContext } from "../context/CatalogContext";
-import { ccapitalizer_3000 } from "../utils/capitalize";
-import ProfileCard from "../components/ProfileCard";
-import BannerCloseLogo from "../components/BannerCloseLogo";
+
+import { decidirCostoEnvio } from "../../utils/envioFunctions"
+import { ccapitalizer_3000 } from "../../utils/capitalize"
+
+
+import ProfileCard from "@components/common/ProfileCard"
+import BannerCloseLogo from "@components/common/BannerCloseLogo"
 
 
 

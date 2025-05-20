@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useLoginContext } from '../context/LoginContext';
-import { capitalize } from '../utils/capitalize';
+import { useLoginContext } from '@context/LoginContext';
+import { capitalize } from '../../../utils/capitalize';
 import toast from 'react-hot-toast';
 import { FaSpinner } from 'react-icons/fa6';
 

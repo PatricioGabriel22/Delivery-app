@@ -2,8 +2,8 @@
 import { Fragment, useState } from "react";
 
 
-import ConfirmedOrdersPannel from "../components/ConfirmedOrdersPannel.jsx";
-import { verFecha } from "../utils/dateFunctions.js";
+import ConfirmedOrdersPannel from "@components/common/ConfirmedOrdersPannel.jsx";
+import { verFecha } from "../../utils/dateFunctions.js";
 
 
 export default function OrdersHistory(){

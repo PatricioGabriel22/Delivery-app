@@ -11,7 +11,7 @@ import { useShoppingContext } from "./ShoppingContext"
 import toast from "react-hot-toast"
 import { useOrdersContext } from "./OrdersContext"
 import { Link } from "react-router-dom"
-import BannerCloseLogo from "../components/BannerCloseLogo"
+import BannerCloseLogo from "@components/common/BannerCloseLogo"
 import { useCatalogContext } from "./CatalogContext"
 import {generateNotificationSound, preventStopNotification } from "../utils/soundConfig"
 

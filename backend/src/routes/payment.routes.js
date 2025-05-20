@@ -6,6 +6,9 @@ import { pagarConMP, queryWH,pagarConEfectivo } from "../controllers/payment.con
 export const paymentRoutes = Router()
 
 
+// paymentRoutes.get('/obtenerTodosLosPagos',queryWH)
+
+
 paymentRoutes.post('/pagar_en_efectivo',pagarConEfectivo)
 
 paymentRoutes.post('/create_preference_MP',pagarConMP)

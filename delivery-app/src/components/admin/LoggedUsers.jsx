@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
-import { useSocketContext } from "../context/SocketContext";
-import { ccapitalizer_3000 } from "../utils/capitalize";
+import { useSocketContext } from "@context/SocketContext";
+import { ccapitalizer_3000 } from "../../utils/capitalize";
 
 
 

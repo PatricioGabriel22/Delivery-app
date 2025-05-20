@@ -4,13 +4,13 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import { useLoginContext } from "../context/LoginContext";
-import { useOrdersContext } from "../context/OrdersContext";
+import { useLoginContext } from "@context/LoginContext";
+import { useOrdersContext } from "@context/OrdersContext";
 
 
-import ProfileCard from "../components/ProfileCard"
-import ConfirmedOrdersPannel from "../components/ConfirmedOrdersPannel"
-import LoggedUsers from "../components/LoggedUsers"
+import ProfileCard from "@components/common/ProfileCard"
+import ConfirmedOrdersPannel from "@components/common/ConfirmedOrdersPannel"
+import LoggedUsers from "@components/admin/LoggedUsers"
 
 import { MdArrowBackIosNew } from "react-icons/md";
 

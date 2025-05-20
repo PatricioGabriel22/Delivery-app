@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useShoppingContext } from "../context/ShoppingContext";
+import { useShoppingContext } from "@context/ShoppingContext";
 import LogoutBTN from "./LogoutBTN";
 import { CiShoppingCart } from "react-icons/ci";
 import { useEffect, useState } from "react";

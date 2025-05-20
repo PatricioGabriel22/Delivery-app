@@ -1,10 +1,10 @@
 
 import { Fragment} from "react"
-import OrderInfo from "../components/OrderInfo"
+import OrderInfo from "@components/admin/OrderInfo"
 
 
 
-import { useSocketContext } from "../context/SocketContext"
+import { useSocketContext } from "@context/SocketContext"
 
 
 

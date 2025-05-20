@@ -1,25 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import {useState } from 'react';
-import Nav from "../components/Nav";
-import Card from "../components/Card";
-// import { useLoginContext } from "../context/LoginContext";
+import Nav from "@components/common/Nav";
+import Card from "@components/common/Card";
+// import { useLoginContext } from "@context/LoginContext";
 
 
 
-import { useShoppingContext } from "../context/ShoppingContext.jsx";
+import { useShoppingContext } from "@context/ShoppingContext.jsx";
 import { Fragment, useEffect, useState } from "react";
 
 
-import victorinaLogo from '../assets/victorina-logo.jpg'
-import SearchingBar from "../components/SearchingBar.jsx";
-import { useLoginContext } from "../context/LoginContext.jsx";
-import { useSocketContext } from "../context/SocketContext.jsx";
+import victorinaLogo from '../../assets/victorina-logo.jpg'
+import SearchingBar from "@components/common/SearchingBar.jsx";
+import { useLoginContext } from "@context/LoginContext.jsx";
+import { useSocketContext } from "@context/SocketContext.jsx";
 
-import {ccapitalizer_3000} from '../utils/capitalize.js'
+import {ccapitalizer_3000} from '../../utils/capitalize.js'
 
-import Loading from "../components/Loading.jsx";
-import Error from "../components/Error.jsx";
-import { useCatalogContext } from "../context/CatalogContext.jsx";
+import Loading from "@components/common/Loading.jsx";
+import Error from "@components/common/Error.jsx";
+import { useCatalogContext } from "@context/CatalogContext.jsx";
 
 
 import { Copy,BadgeHelp  } from "lucide-react"

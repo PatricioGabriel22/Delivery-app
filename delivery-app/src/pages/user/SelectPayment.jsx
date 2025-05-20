@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useEffect, useState } from "react"
-import ProfileCard from "../components/ProfileCard"
-import { useShoppingContext } from "../context/ShoppingContext"
+import ProfileCard from "@components/common/ProfileCard"
+import { useShoppingContext } from "@context/ShoppingContext"
 
 import {useNavigate} from 'react-router-dom'
 

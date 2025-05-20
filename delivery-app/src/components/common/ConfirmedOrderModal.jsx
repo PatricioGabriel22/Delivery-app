@@ -1,6 +1,6 @@
 import { Fragment } from "react";
-import BannerCloseLogo from "./BannerCloseLogo";
-import { verFecha, verHoraYMinutos } from "../utils/dateFunctions";
+import BannerCloseLogo from "@components/common/BannerCloseLogo";
+import { verFecha, verHoraYMinutos } from "../../utils/dateFunctions";
 
 
 
