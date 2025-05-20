@@ -21,19 +21,24 @@ export default defineConfig({
         name: 'Victorina Pasteleria APP',
         short_name: 'Victorina APP',
         start_url: '/',
+        display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'browser'],
         background_color: '#000000',
         theme_color: '#FF0000',
         icons: [
           {
+            //192x192 para el acceso rápido o launcher
             src: 'pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose:'any'
           },
           {
-            src: 'pwa-512x512.png',
+            //512x512 para pantalla de instalación, la pantalla de inicio y la tienda
+            src: 'logoApp.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose:'maskable'
           }
         ]
       }
