@@ -1,9 +1,9 @@
 import axios from "axios"
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useLoginContext } from "../context/LoginContext"
+import { useLoginContext } from "@context/LoginContext"
 
-import ShowPassword from "../components/ShowPassword.jsx";
+import ShowPassword from "@components/common/ShowPassword.jsx";
 import toast from "react-hot-toast";
 
 
@@ -70,9 +70,6 @@ export default function Login(){
   }
 
 
-  useEffect(()=>{
-    console.log(import.meta.env)
-  },[])
 
 
   return (

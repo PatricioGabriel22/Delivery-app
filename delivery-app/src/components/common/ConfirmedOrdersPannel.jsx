@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useRef, useState } from "react";
-import { useLoginContext } from "../context/LoginContext";
-import { useOrdersContext } from "../context/OrdersContext";
+import { useLoginContext } from "@context/LoginContext";
+import { useOrdersContext } from "@context/OrdersContext";
 
 
 
@@ -11,8 +11,8 @@ import { SlRefresh } from "react-icons/sl";
 import { VscError } from "react-icons/vsc";
 
 
-import { verFecha, verHoraYMinutos } from "../utils/dateFunctions";
-import ConfirmedOrderModal from "../components/ConfirmedOrderModal";
+import { verFecha, verHoraYMinutos } from "../../utils/dateFunctions.js";
+import ConfirmedOrderModal from "@components/common/ConfirmedOrderModal";
 import Loading from "./Loading.jsx";
 import Error from "./Error.jsx";
 

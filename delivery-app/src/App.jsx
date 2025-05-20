@@ -1,20 +1,21 @@
-
 import { Fragment } from 'react'
 import {Route, Routes } from 'react-router-dom'
 
 
-import LoginProtected from './components/LoginProtected.jsx'
-import Home from './pages/Home.jsx'
-import Login from './pages/Login'
-import Register from './pages/Register.jsx'
-import CarritoConfirm from './pages/CarritoConfirm.jsx'
-import SelectPayment from './pages/SelectPayment.jsx'
-import AdminPrivate from './components/admin/AdminPrivate.jsx'
-import PreOrderManagement from './pages/PreOrderManagement.jsx'
-import Profile from './pages/Profile.jsx'
-import ProductForm from './pages/ProductForm.jsx'
-import CategoryFrom from './pages/CategoryFrom.jsx'
-import OrdersHistory from './pages/OrdersHistory.jsx'
+import AdminPrivate from '@components/admin/AdminPrivate.jsx'
+import PreOrderManagement from '@pages/admin/ordenes/PreOrderManagement.jsx'
+import ProductForm from '@pages/admin/productos-categorias/ProductForm.jsx'
+import CategoryFrom from '@pages/admin/productos-categorias/CategoryFrom.jsx'
+
+import Home from '@pages/common/Home.jsx'
+import Login from '@pages/common/Login'
+import Register from '@pages/common/Register.jsx'
+import LoginProtected from '@components/common/LoginProtected.jsx'
+import Profile from '@pages/common/Profile.jsx'
+import OrdersHistory from '@pages/common/OrdersHistory.jsx'
+
+import CarritoConfirm from '@pages/user/CarritoConfirm.jsx'
+import SelectPayment from '@pages/user/SelectPayment.jsx'
 import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
 
 

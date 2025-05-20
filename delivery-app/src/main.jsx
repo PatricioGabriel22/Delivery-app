@@ -3,14 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
-import { ShoppingProvider } from './context/ShoppingContext.jsx'
-import { LoginProvider } from './context/LoginContext.jsx'
-import { SocketProvider } from './context/SocketContext.jsx'
-import { OrderProvider } from './context/OrdersContext.jsx'
+import { ShoppingProvider } from '@context/ShoppingContext.jsx'
+import { LoginProvider } from '@context/LoginContext.jsx'
+import { SocketProvider } from '@context/SocketContext.jsx'
+import { OrderProvider } from '@context/OrdersContext.jsx'
 
 import {Toaster} from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
-import { CatalogoProvider } from './context/CatalogContext.jsx'
+import { CatalogoProvider } from '@context/CatalogContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   

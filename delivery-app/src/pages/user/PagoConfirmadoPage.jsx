@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 
+import { useShoppingContext } from "@context/ShoppingContext";
+
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useShoppingContext } from "../../context/ShoppingContext";
 
 
 

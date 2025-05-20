@@ -7,23 +7,23 @@ import { MdModeEdit } from "react-icons/md";
 
 
 
-import { useShoppingContext } from "../context/ShoppingContext";
-import { useLoginContext } from "../context/LoginContext";
-import { ListaProductos } from "../utils/productos";
+import { useShoppingContext } from "@context/ShoppingContext";
+import { useLoginContext } from "@context/LoginContext";
+import { ListaProductos } from "../../utils/productos";
 
 
 import axios from "axios";
-import { capitalize, ccapitalizer_3000 } from "../utils/capitalize";
+import { capitalize, ccapitalizer_3000 } from "../../utils/capitalize";
 import toast from "react-hot-toast";
-import { useCatalogMaker } from "../context/SWR";
-import { useCatalogContext } from "../context/CatalogContext";
-import { useSocketContext } from "../context/SocketContext";
+import { useCatalogMaker } from "@context/SWR";
+import { useCatalogContext } from "@context/CatalogContext";
+import { useSocketContext } from "@context/SocketContext";
 
 
 
 
 import { MdOutlineImageSearch } from "react-icons/md";
-import BannerCloseLogo from "./BannerCloseLogo";
+import BannerCloseLogo from "@components/common/BannerCloseLogo";
 
 
 

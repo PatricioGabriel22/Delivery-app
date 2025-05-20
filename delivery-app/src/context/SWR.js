@@ -4,7 +4,40 @@ import axios from 'axios'
 
 
 
+//--- CREO EL CATALOGO CON BASE EN LAS CATEGORIAS QUE TIENE REGISTRADAS EL ADMIN---
+async function getAllCatalogFromAdmin(url){
 
+    const res = await axios.get(url, { withCredentials: true })
+    return res.data
+
+    
+}
+
+
+export function useCatalogMaker(urlAPI){
+
+    
+    let targetURL = `${urlAPI}/bringAllCatalog/6806b8fe2b72a9697aa59e5f`
+
+
+    const SWRoptions =   {
+        revalidateOnFocus: true
+    }
+
+    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromAdmin,SWRoptions)
+
+
+    return {
+        catalogoDelAdmin: data?.catalogoDelAdmin || [],
+        isLoading,
+        isError: error,
+        refresh: mutate
+      };
+
+
+}
+
+//---ME TRAIGO LAS ORDENES CONFIRMADAS ("PEDIDOS" EN DB)---
 async function getAllConfirmedOrdersData(url){
 
     const res = await axios.get(url, { withCredentials: true })
@@ -65,38 +98,31 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 
 
 
+//---SECCION ESTADISTICAS DEL ADMIN---
 
-
-async function getAllCatalogFromAdmin(url){
-
-    const res = await axios.get(url, { withCredentials: true })
-    return res.data
-
-    
+async function getImportesDeVentas(url){
+    try {
+        const res = await axios.get(url)
+        
+        return res
+    } catch (error) {
+        console.log(error)
+    }
 }
 
+export function useCalcularImportesDeVentas(desde,hasta,shouldFetch){
 
-export function useCatalogMaker(urlAPI){
+    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}`:null
+    const url = shouldFetch ? `/obtenerTodosLosPagos${query}`:null
 
-    
-    let targetURL = `${urlAPI}/bringAllCatalog/6806b8fe2b72a9697aa59e5f`
+    const {data,error,isLoading,mutate} = useSWR(url,getImportesDeVentas,{revalidateOnFocus:true})
 
-
-    const SWRoptions =   {
-        revalidateOnFocus: true
-    }
-
-    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromAdmin,SWRoptions)
-
-
-    return {
-        catalogoDelAdmin: data?.catalogoDelAdmin || [],
+    return{
+        importeDelRango: data?.importeDelRango,
         isLoading,
-        isError: error,
-        refresh: mutate
-      };
-
-
+        error,
+        refreshSearching:mutate
+    }
 }
 
 

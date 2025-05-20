@@ -3,8 +3,8 @@ import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
-import { useLoginContext } from "../context/LoginContext.jsx";
-import { useSocketContext } from "../context/SocketContext.jsx";
+import { useLoginContext } from "@context/LoginContext.jsx";
+import { useSocketContext } from "@context/SocketContext.jsx";
 
 
 import { MdArrowBackIosNew } from "react-icons/md";
