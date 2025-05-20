@@ -29,15 +29,13 @@ export default defineConfig({
             //192x192 para el acceso rápido o launcher
             src: 'pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/png',
-            purpose:'any'
+            type: 'image/png'
           },
           {
             //512x512 para pantalla de instalación, la pantalla de inicio y la tienda
-            src: 'logoApp.png',
+            src: 'pwa-512x512.png',
             sizes: '512x512',
-            type: 'image/png',
-            purpose:'maskable'
+            type: 'image/png'
           }
         ]
       }
