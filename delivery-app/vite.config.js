@@ -21,7 +21,6 @@ export default defineConfig({
         name: 'Victorina Pasteleria APP',
         short_name: 'Victorina APP',
         start_url: '/',
-        display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'browser'],
         background_color: '#000000',
         theme_color: '#FF0000',
