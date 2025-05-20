@@ -18,8 +18,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Delivery App',
-        short_name: 'Delivery',
+        name: 'Victorina Pasteleria APP',
+        short_name: 'Victorina APP',
         start_url: '/',
         display_override: ['window-controls-overlay', 'standalone', 'browser'],
         background_color: '#000000',
