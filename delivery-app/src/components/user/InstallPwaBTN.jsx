@@ -22,8 +22,8 @@ export default function InstallPwaBTN(){
 
         // Captura evento de instalación
         window.addEventListener('appinstalled', () => {
-            console.log('✅ App instalada')
-            toast.success("Instaste la aplicacion!")
+          
+            toast("Aguarde a que la app se instale",{icon:'⏳'})
             setIsInstalled(true)
         })
 
@@ -48,17 +48,16 @@ export default function InstallPwaBTN(){
 
 
     function handleInstallPWA(){
-        console.log("entro al boton")
+
         if (!deferredPrompt) return
 
         deferredPrompt.prompt()
 
-        console.log(deferredPrompt)
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('🟢 Usuario aceptó instalar')
+                toast('La instalacion comenzará ponto',{icon:'⚙️'})
             } else {
-                console.log('🔴 Usuario canceló la instalación')
+                toast.error('Instalacion cancelada')
             }
             setDeferredPrompt(null)
         })
@@ -67,7 +66,7 @@ export default function InstallPwaBTN(){
     if (isInstalled || !deferredPrompt) return null
 
     return(
-        <button onClick={handleInstallPWA} className='flex gap-x-3 bg-red-600 p-2 rounded-full cursor-pointer m-5 absolute top-0 left-0'>
+        <button onClick={handleInstallPWA} className='flex gap-x-3 bg-red-600 p-2 rounded-full cursor-pointer m-5 '>
             <Download />
             <p>Descargate la app acá!</p>
             

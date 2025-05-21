@@ -17,6 +17,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true, // 👈 fuerza el uso de PWA en dev
+      },
       manifest: {
         name: 'Victorina Pasteleria APP',
         short_name: 'Victorina APP',
@@ -25,6 +28,13 @@ export default defineConfig({
         background_color: '#000000',
         theme_color: '#FF0000',
         icons: [
+            {
+            // Mínimo requerido para ser instalable en escritorio
+            src: 'pwa-144x144.png',
+            sizes: '144x144',
+            type: 'image/png',
+            purpose: 'any'
+          },
           {
             //192x192 para el acceso rápido o launcher
             src: 'pwa-192x192.png',
