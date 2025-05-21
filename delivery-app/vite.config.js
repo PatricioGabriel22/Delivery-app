@@ -33,7 +33,7 @@ export default defineConfig({
           },
           {
             //512x512 para pantalla de instalación, la pantalla de inicio y la tienda
-            src: 'pwa-512x512.png',
+            src: 'logoApp.png',
             sizes: '512x512',
             type: 'image/png'
           }

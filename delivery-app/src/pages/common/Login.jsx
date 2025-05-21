@@ -5,6 +5,7 @@ import { useLoginContext } from "@context/LoginContext"
 
 import ShowPassword from "@components/common/ShowPassword.jsx";
 import toast from "react-hot-toast";
+import InstallPwaBTN from "../../components/user/InstallPwaBTN";
 
 
 
@@ -97,7 +98,7 @@ export default function Login(){
 
           <Link to="/register" className="pt-4 cursor-pointer">Register</Link>
 
-
+            <InstallPwaBTN/>
         </div>
 
       </Fragment>
