@@ -104,19 +104,27 @@ async function getImportesDeVentas(url){
     try {
         const res = await axios.get(url)
         
-        return res
+        return res.data //clave deolver el res.data espeficiamente para que lo capture el data de useSWR
     } catch (error) {
         console.log(error)
     }
 }
 
-export function useCalcularImportesDeVentas(desde,hasta,shouldFetch){
+export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
 
-    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}`:null
-    const url = shouldFetch ? `/obtenerTodosLosPagos${query}`:null
+    
 
-    const {data,error,isLoading,mutate} = useSWR(url,getImportesDeVentas,{revalidateOnFocus:true})
+    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}&adminID=${userInfo.id}`:null
 
+    
+    
+
+    const shouldFetch = desde && hasta && userInfo.rol === 'admin'
+    
+    const targetURL = shouldFetch ? `${url}/obtenerTodosLosPagos${query}`:null
+
+    const {data,error,isLoading,mutate} = useSWR(targetURL,getImportesDeVentas,{revalidateOnFocus:true})
+    
     return{
         importeDelRango: data?.importeDelRango,
         isLoading,

@@ -1,12 +1,12 @@
 import { Router } from "express"
-import { pagarConMP, queryWH,pagarConEfectivo } from "../controllers/payment.controllers.js"
+import { pagarConMP, queryWH,pagarConEfectivo,calcularPagosEnRango } from "../controllers/payment.controllers.js"
 
 
 
 export const paymentRoutes = Router()
 
 
-// paymentRoutes.get('/obtenerTodosLosPagos',queryWH)
+paymentRoutes.get('/obtenerTodosLosPagos',calcularPagosEnRango)
 
 
 paymentRoutes.post('/pagar_en_efectivo',pagarConEfectivo)

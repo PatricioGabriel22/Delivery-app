@@ -46,9 +46,7 @@ export default function Profile(){
         <Fragment>
             <div className="flex flex-col relative min-h-screen ">
 
-                <Link to={'/'} className="p-5 w-full text-start">
-                    <MdArrowBackIosNew size={30} />
-                </Link>
+
 
                 <ProfileCard userInfo={userInfo} />
 

@@ -3,7 +3,8 @@ import { Fragment, useState } from "react";
 
 
 import ConfirmedOrdersPannel from "@components/common/ConfirmedOrdersPannel.jsx";
-import { verFecha } from "../../utils/dateFunctions.js";
+
+import { Link } from "react-router-dom";
 
 
 export default function OrdersHistory(){
@@ -12,7 +13,7 @@ export default function OrdersHistory(){
     // const {userInfo} = useLoginContext()
     // const {confirmedOrders, isLoading, isError, refresh, setFlagPagination } = useOrdersContext()
 
-    const [fecha,setFecha] = useState(null)
+   
     const [nombre,setNombre] = useState()
 
 
@@ -20,20 +21,6 @@ export default function OrdersHistory(){
 
 
 
-
-    const handleDateChange = (e) => {
-        
-        const selectedDate = e.target.value; // "2025-04-29"
-
-        if(!selectedDate) return
-
-        const [year, month, day] = selectedDate.split('-');
-      
-        // Crear fecha como si fuera en zona local (UTC-3) sin desfase
-        const date = new Date(year, month - 1, day); // sin zona horaria
-      
-        setFecha(verFecha(date));
-    };
 
 
     //muestro las 20 ultimas y son setFlagPagination puedo traerme todas , o tambien podria ir pidiendo mas de a 20 pero calcularme todo el total en el backend
@@ -43,33 +30,26 @@ export default function OrdersHistory(){
             <div className="flex flex-col">
                 <h1 className="w-full text-3xl font-extrabold text-gray-200 text-center">Todos los pedididos</h1>
 
-                <div className="flex flex-col md:flex-row p-3 justify-around ">
+                <div className="flex flex-col md:flex-row  justify-around gap-5 ">
 
-                    <label className="flex flex-col  pt-8">
-                        Buscar por fecha
-                        <input type="date" className="w-[40%] md:w-full  bg-white text-black" 
-                            onChange={(e)=>handleDateChange(e)}
-                        />
-                    </label>
-
-
-                    <label className="flex flex-col  pt-8">
+                    <label className="flex flex-col  pt-8 text-center">
                         Buscar nombre
-                        <input type="text" className="w-[60%] md:w-full  bg-white text-black" 
+                        <input type="text" className=" self-center text-center w-40 md:w-full  bg-white text-black" 
                             onChange={(e)=>setNombre(e.target.value)}
                         />
                     </label>
-{/* 
-                    <div className="flex flex-col  mt-8 bg-white rounded w-fit p-2 text-black">
-                        <p>Pedidos: {totalPedidos}</p>
-                        <p>$900.000.000</p>
 
-                    </div> */}
+
+                    <button className="rounded-full p-1 border-1 hover:bg-red-600 cursor-pointer w-40 self-center ">
+                        <Link to={"/estadisticas"}>
+                            Estadisticas de mis ventas
+                        </Link>
+                    </button>
 
                 </div>
 
 
-                <ConfirmedOrdersPannel targetDate={fecha} targetName={nombre} />
+                <ConfirmedOrdersPannel  targetName={nombre} />
             </div>
             
         </Fragment>

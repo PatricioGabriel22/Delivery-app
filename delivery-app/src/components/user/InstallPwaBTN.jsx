@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Download } from 'lucide-react'
+import { BadgeHelp, Download } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 
@@ -11,6 +11,7 @@ export default function InstallPwaBTN(){
     const [deferredPrompt, setDeferredPrompt] = useState(null)
     const [isInstalled, setIsInstalled] = useState(false)
 
+    const [hintMsg,setHintMsg] = useState(true)
 
 
     useEffect(()=>{
@@ -66,10 +67,20 @@ export default function InstallPwaBTN(){
     if (isInstalled || !deferredPrompt) return null
 
     return(
-        <button onClick={handleInstallPWA} className='flex gap-x-3 bg-red-600 p-2 rounded-full cursor-pointer m-5 '>
-            <Download />
-            <p>Descargate la app acá!</p>
-            
-        </button>
+        <div className='flex flex-col justify-center items-center'>
+
+            <button onClick={handleInstallPWA} className='flex gap-x-3 bg-red-600 p-2 rounded-full cursor-pointer m-5 '>
+                <Download />
+                <p>Descargate la app acá!</p>
+                
+            </button>
+
+            {hintMsg ? (
+                <p className='w-90 text-center text-sm cursor-pointer border-2 border-blue-600 rounded-2xl' onClick={()=>setHintMsg(!hintMsg)}>Una vez descargada, la app aparecerá en el menu de aplicaciones de su dispositivo</p>
+            ):(
+                <BadgeHelp size={30} className="text-blue-600 cursor-pointer" onClick={()=>setHintMsg(!hintMsg)}/>
+            )}
+
+        </div>
     )
 }

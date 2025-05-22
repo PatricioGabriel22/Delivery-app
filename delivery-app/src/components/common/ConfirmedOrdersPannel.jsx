@@ -76,7 +76,7 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
                 <Fragment>
 
                 
-                    <h3 className="pt-12  self-center font-bold text-3xl">Pedidos de {userInfo.username}</h3>
+                    <h3 className="pt-12  self-center font-bold text-3xl">Ultimos pedidos de {userInfo.username}</h3>
 
 
                     <span className="bg-red-700 w-[90%] h-[1px] self-center m-1 my-3"/>

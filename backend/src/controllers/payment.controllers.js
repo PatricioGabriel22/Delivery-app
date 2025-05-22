@@ -17,6 +17,35 @@ const access_token_MP = process.env.ACCESS_TOKEN //ojo cuando cambie a staging
 const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 
+
+
+export const calcularPagosEnRango = async (req,res)=>{
+    const {desde,hasta,adminID} = req.query
+
+    const periodoDeVentas = await pedidosSchema.aggregate([
+        {
+            $match: {
+            // adminID: adminID,
+            createdAt: {
+                $gte: new Date(desde),
+                $lte: new Date(hasta)
+            }
+            }
+        },
+        {
+            $group: {
+            _id: null,
+            totalVentas: { $sum: "$importeTotal" }
+            }
+        }
+    ])
+
+    const importeDelRango = periodoDeVentas[0].totalVentas || 0
+    // io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit("ventasEnPeriodoSeleccionado",periodoDeVentas)
+    res.status(200).json({importeDelRango })
+}
+
+
 export const pagarConEfectivo = async (req,res)=>{
     const {pedidoID,preOrdenID, userID,importe} = req.body
 
@@ -165,3 +194,4 @@ export const queryWH = async (req,res)=>{
 
     return res.sendStatus(200)
 }
+
