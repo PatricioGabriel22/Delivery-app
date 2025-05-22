@@ -11,7 +11,7 @@ export default function InstallPwaBTN(){
     const [deferredPrompt, setDeferredPrompt] = useState(null)
     const [isInstalled, setIsInstalled] = useState(false)
 
-    const [hintMsg,setHintMsg] = useState(true)
+    const [hintMsg,setHintMsg] = useState(false)
 
 
     useEffect(()=>{
