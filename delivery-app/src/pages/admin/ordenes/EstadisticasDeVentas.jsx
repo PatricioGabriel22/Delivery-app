@@ -40,7 +40,7 @@ export default function EstadisticasDeVentas(){
         
         setFecha(prev=>({
             ...prev,
-            [e.target.name]: date.toDateString()
+            [e.target.name]: date
         }));
     };
 
@@ -59,7 +59,7 @@ export default function EstadisticasDeVentas(){
 
             </div>
 
-            {importeDelRango && (<div className="self-center p-4 m-4 border-2 bg-red-600 rounded">
+            {importeDelRango && importeDelRango !== 0 && (<div className="self-center p-4 m-4 border-2 bg-red-600 rounded">
                 <p>Importe vendido en el periodo consultado</p>
                 <p className="text-2xl text-center">${importeDelRango}</p>
             </div>)}

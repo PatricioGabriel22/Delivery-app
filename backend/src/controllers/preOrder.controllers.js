@@ -60,12 +60,13 @@ export const getAllPedidos = async (req,res)=>{
             case 'cliente':
 
                 let userConPedidos = await userSchema.findById(idTarget)
-                    .populate({path:'pedidos',
-                        options: {
-                            sort:{ createdAt: -1 },
-                            skip:skippedData,
-                            limit:parseLimit
-                        }})
+                .populate({path:'pedidos',
+                    options: {
+                        sort:{ createdAt: -1 },
+                        skip:skippedData,
+                        limit:parseLimit
+                    }
+                })
 
                 allOrders = userConPedidos.pedidos
                 
@@ -175,7 +176,7 @@ export const PreOrderManager = async (req,res)=>{
 
     const {orderInfo,status,notification} = req.body
     const {idOrden} = req.params
-    console.log(req.body)
+
 
     const comprador = orderInfo?.userInfo?.id
     const userSocketID = connectedUsers[comprador]?.socketId 

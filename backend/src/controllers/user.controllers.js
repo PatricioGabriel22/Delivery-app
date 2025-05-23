@@ -7,6 +7,8 @@ import { connectedAdmins, io } from '../webSocket.js';
 
 
 import dotenv from 'dotenv'
+import preOrderSchema from '../models/preOrder.schema.js';
+import pedidosSchema from '../models/pedidosSchema.js';
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -178,6 +180,33 @@ export const editProfileInfo = async(req,res)=>{
 
 
 
+export const cancelarMiCompra = async(req,res)=>{
+
+    const {preOrdenID,pedidoID,username} = req.body
+
+    try {
+        await preOrderSchema.findByIdAndDelete(preOrdenID)
+        await pedidosSchema.findByIdAndDelete(pedidoID)
+
+        io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('canceloMiPedido',{
+            message:`${username} decidió cancelar su pedido`,
+            pedidoID,
+            preOrdenID
+        })
+
+        res.status(200).json({message:"El pedido fue eliminado y retirado del sistema, aniquilado. Destruido."})
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({message:"Algo salió mal"})
+    }
+
+}
+
+
+
+
+//--Funciones de admin
 export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
     const {id,categoria} = req.body
 

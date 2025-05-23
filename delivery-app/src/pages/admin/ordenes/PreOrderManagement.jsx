@@ -1,6 +1,6 @@
 
 import { Fragment} from "react"
-import OrderInfo from "@components/admin/OrderInfo"
+import IncomingPreOrder from "@components/admin/IncomingPreOrder"
 
 
 
@@ -25,7 +25,7 @@ export default function PreOrderManagement(){
                     <div className="flex flex-col w-full p-2">   
                         <h2 className="self-center mb-3 text-3xl">Pre-Ordenes</h2>
                         {allPreOrders?.map((preOrder)=>( 
-                            <OrderInfo 
+                            <IncomingPreOrder 
                             title={"Pre-Ordenes"} 
                             preOrderInfo={preOrder}
                             />
@@ -35,7 +35,7 @@ export default function PreOrderManagement(){
                     <div className="flex flex-col w-full p-2">   
                         <h2 className="self-center mb-3 text-3xl">Aceptadas</h2>
                         {acceptedOrders?.filter(item=> !item.delivered).map((acceptedOrder)=>( 
-                            <OrderInfo 
+                            <IncomingPreOrder 
                                 title={"Aceptadas"} 
                                 preOrderInfo={acceptedOrder}
                                 />

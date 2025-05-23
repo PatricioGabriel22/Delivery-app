@@ -5,7 +5,7 @@ import {Route, Routes } from 'react-router-dom'
 import AdminPrivate from '@components/admin/AdminPrivate.jsx'
 import PreOrderManagement from '@pages/admin/ordenes/PreOrderManagement.jsx'
 import EstadisticasDeVentas from '@pages/admin/ordenes/EstadisticasDeVentas.jsx'
-
+import OrdersHistory from '@pages/admin/ordenes/OrdersHistory.jsx'
 import ProductForm from '@pages/admin/productos-categorias/ProductForm.jsx'
 import CategoryFrom from '@pages/admin/productos-categorias/CategoryFrom.jsx'
 
@@ -13,7 +13,6 @@ import Home from '@pages/common/Home.jsx'
 import Login from '@pages/common/Login'
 import Register from '@pages/common/Register.jsx'
 import Profile from '@pages/common/Profile.jsx'
-import OrdersHistory from '@pages/common/OrdersHistory.jsx'
 import LoginProtected from '@components/common/LoginProtected.jsx'
 import BackArrow from '@components/common/BackArrow.jsx'
 

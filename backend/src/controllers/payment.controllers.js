@@ -22,13 +22,15 @@ const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 export const calcularPagosEnRango = async (req,res)=>{
     const {desde,hasta,adminID} = req.query
 
+
+
     const periodoDeVentas = await pedidosSchema.aggregate([
         {
             $match: {
             // adminID: adminID,
             createdAt: {
                 $gte: new Date(desde),
-                $lte: new Date(hasta)
+                $lt: new Date(hasta)
             }
             }
         },
@@ -40,7 +42,8 @@ export const calcularPagosEnRango = async (req,res)=>{
         }
     ])
 
-    const importeDelRango = periodoDeVentas[0].totalVentas || 0
+    const importeDelRango = periodoDeVentas[0]?.totalVentas || 0
+    
     // io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit("ventasEnPeriodoSeleccionado",periodoDeVentas)
     res.status(200).json({importeDelRango })
 }

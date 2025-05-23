@@ -25,6 +25,7 @@ import { ccapitalizer_3000 } from "../../utils/capitalize"
 
 import ProfileCard from "@components/common/ProfileCard"
 import BannerCloseLogo from "@components/common/BannerCloseLogo"
+import CancelarCompraBTN from "../../components/user/CancelarCompraBTN";
 
 
 
@@ -278,6 +279,8 @@ export default function CarritoConfirm(){
                     <Link to="/comprar" className="cursor-pointer self-center text-white w-fit p-3 m-1 rounded-full bg-red-700">
                         Ir a pagar
                     </Link>
+
+                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}/>
                 </Fragment>
 
                     ):("")}

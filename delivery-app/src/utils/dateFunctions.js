@@ -23,14 +23,17 @@ export const verFecha = (date) => {
 };
 
 export const verHoraYMinutos = (date) => {
-    const fecha = new Date(date);
-    let horas = fecha.getHours();
-    const minutos = fecha.getMinutes().toString().padStart(2, '0');
-    const ampm = horas >= 12 ? 'PM' : 'AM';
+    
+    const fecha = new Date(date)
+
+    let horas = fecha.getUTCHours()
+
+    const minutos = fecha.getUTCMinutes().toString().padStart(2, '0')
+
+    const ampm = horas >= 12 ? 'PM' : 'AM'
   
-    horas = horas % 12;
-    horas = horas ? horas : 12; // el 0 se transforma en 12
-  
+
+    
     return `${horas}:${minutos} ${ampm}`;
 }
 

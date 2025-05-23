@@ -12,9 +12,9 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
 
     if (!confirmedOrder) return;
 
-    const {productos,costoEnvio,importeTotal,formaDeEntrega,createdAt} = confirmedOrder
-
-
+    const {productos,costoEnvio,importeTotal,formaDeEntrega,createdAt,isPayed} = confirmedOrder
+    const {username,telefono,direccion,entreCalles} = confirmedOrder.userID
+    console.log(confirmedOrder)
 
 
     return(
@@ -23,11 +23,18 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
             <dialog 
 
                 ref={ref} 
-                className="rounded-xl p-6 shadow-xl w-full md:w-[45%]  justify-self-center self-center backdrop:bg-black/50 text-xl overflow-x-hidden font-semibold">
+                className="rounded-xl p-6 shadow-xl w-full md:w-120 justify-self-center self-center backdrop:bg-black/50 text-xl overflow-x-hidden font-semibold">
 
                 <BannerCloseLogo close={close}/>
                
                 <p className="text-center">{verFecha(createdAt)} | {verHoraYMinutos(createdAt)}</p>
+
+                <p>{username}</p>
+                <p>{telefono}</p>
+                <p>{direccion}</p>
+                <p>{entreCalles}</p>
+
+
 
                 <div className="w-full h-[1px] my-8 bg-black"/>
                     
@@ -40,7 +47,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                         
                         <div className="flex flex-row w-full justify-between p-1" key={producto._id}>
                             <p className=" text-end">{producto.cantidad}X {producto.nombre}</p>
-                            <p className=" text-end">${producto.precio* producto.cantidad}</p>
+                            <p className=" text-end">${producto.precio * producto.cantidad}</p>
 
                         </div>
                         
@@ -57,7 +64,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                     )}
 
                 
-
+                    <p>{isPayed ? "Está pago" : "Falta pagar"}</p>
                     <p className="text-end py-8 m-auto">Total: ${importeTotal}</p>
                 </div>
 

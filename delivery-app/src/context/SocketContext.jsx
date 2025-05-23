@@ -198,6 +198,7 @@ export function SocketProvider({children}){
 
                     //aca saco del array de pre ordenes aquella cuyo id se aceptó y ya no la quiero ver en preordenes
                     setAllPreOrders(prev => prev.filter(item=> item._id !== data.id))
+                    setAcceptedOrders(prev => prev.filter(item=> item._id !== data.id))
                     return
                 }
             }else if(!userInfo.rol){
@@ -209,8 +210,8 @@ export function SocketProvider({children}){
                 })
         
                 if(data.accepted){
-                    localStorage.setItem('pedidoID',JSON.stringify(data.nuevoPedido._id))
-                    localStorage.setItem('preOrdenID',JSON.stringify(data.id))
+                    localStorage.setItem('pedidoID',data.nuevoPedido._id)
+                    localStorage.setItem('preOrdenID',data.id)
 
                     setBuyBTN(prev=>{
                         localStorage.setItem('buyBTN',JSON.stringify(!prev))
@@ -267,6 +268,13 @@ export function SocketProvider({children}){
             toast.success(data.infoToUser)
         })
 
+
+        socket.on('canceloMiPedido',(data)=>{
+            console.log(data)
+            setAllPreOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
+            setAcceptedOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
+            toast(data.message,{icon:'⚠️',duration:700 * 10})
+        })
       
         return () => {
             socket.off('nuevaPreOrdenRecibida')

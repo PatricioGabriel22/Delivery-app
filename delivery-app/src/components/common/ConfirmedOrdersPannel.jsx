@@ -44,10 +44,10 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
 
     useMemo(()=>{
         setSelectedOrder(confirmedOrders[0])
-        
+       
     },[confirmedOrders])
 
-
+   console.log(confirmedOrders)
   
     const filteredOrders = confirmedOrders
     .filter(orderDate=> targetDate ? verFecha(orderDate.createdAt) === targetDate : true)
@@ -124,10 +124,12 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
                                     onClick={()=>abrirModal(confirmedOrder)} 
                                     className={`${confirmedOrder.formaDeEntrega === 'Envio'? "bg-red-500":"bg-sky-500"} sm:w-full w-[90%] h-20  rounded-2xl text-black flex  items-center justify-between px-4 shadow-sm m-2 cursor-pointer`}>
                                     <IoIosArrowDown size={30} className=""/>
+
                                     <p className="text-lg p-1 w-1/2 text-center ">{verFecha(confirmedOrder.createdAt)} | {verHoraYMinutos(confirmedOrder.createdAt)}</p>
                                     {userInfo.rol === 'admin'&& (<p className="text-lg p-1 w-1/2 text-center overflow-hidden text-ellipsis whitespace-nowrap">{confirmedOrder.userID?.username}</p>)}
                                     <p className="text-lg p-1 w-1/2 text-center ">{confirmedOrder.formaDeEntrega}</p>
                                     <p className="text-lg p-1 w-1/2  text-end font-semibold">${confirmedOrder.importeTotal}</p>
+
                                 </span>
 
                                 <ConfirmedOrderModal 

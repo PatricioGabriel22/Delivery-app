@@ -93,7 +93,7 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
         isError: error,
         refreshHistorialOrdenes: mutate,
         totalPages: data?.totalPages || 0
-      };
+    };
 }
 
 
@@ -103,7 +103,7 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 async function getImportesDeVentas(url){
     try {
         const res = await axios.get(url)
-        
+        console.log(res)
         return res.data //clave deolver el res.data espeficiamente para que lo capture el data de useSWR
     } catch (error) {
         console.log(error)

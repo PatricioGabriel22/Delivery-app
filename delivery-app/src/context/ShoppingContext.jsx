@@ -126,6 +126,25 @@ export function ShoppingProvider({ children }) {
   }
 
 
+  function limpiarSecuenciaDeCompras() {
+    const keys = [
+      'carrito',
+      'buyBTN',
+      'loadingPreOrder',
+      'total',
+      'pedidoID',
+      'preOrdenID'
+    ]
+
+    keys.forEach((key) => localStorage.removeItem(key))
+
+    // Resetear estados asociados
+    setCarrito([])
+    setBuyBTN(null);
+    setLoading(null);
+    setTotal(null);
+    setImporteTotal(null);
+}
 
 
 
@@ -152,8 +171,8 @@ export function ShoppingProvider({ children }) {
           
           cantidadVisualizer,
           cartHandler,
-
-          orderStatusHandler
+          orderStatusHandler,
+          limpiarSecuenciaDeCompras
 
 
         }}>

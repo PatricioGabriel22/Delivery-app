@@ -75,9 +75,6 @@ export default function CategoryFrom(){
 
 
             <div className="flex flex-col">
-                <Link to={'/profile'} className="p-5 w-full text-start">
-                    <MdArrowBackIosNew size={30}  />
-                </Link>
 
                 <form
                     onSubmit={handleUploadCategoria}

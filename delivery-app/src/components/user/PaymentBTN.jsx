@@ -14,8 +14,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     const {renderORLocalURL,userInfo} = useLoginContext()
 
 
-    const pedidoID = JSON.parse(localStorage.getItem("pedidoID"))
-    const preOrdenID = JSON.parse(localStorage.getItem("preOrdenID"))
+    const pedidoID = localStorage.getItem("pedidoID")
+    const preOrdenID = localStorage.getItem("preOrdenID")
 
     async function mp_payment_management(verifyMode){
 

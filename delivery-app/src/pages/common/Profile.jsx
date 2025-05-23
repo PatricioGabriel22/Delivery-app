@@ -118,7 +118,7 @@ export default function Profile(){
 
                 {userInfo.rol && (
 
-                <span className=" mt-auto p-2 self-center md:self-start  ">
+                <span className=" mt-15 p-2 self-center md:self-start  ">
                     <LoggedUsers/>
                 </span>
                 )}   

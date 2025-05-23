@@ -14,29 +14,11 @@ export default function PagoConfirmadoPage(){
 
     const navigate = useNavigate()
 
-    const {setTotal,setImporteTotal,setLoading,setBuyBTN,setCarrito} = useShoppingContext()
+    const {limpiarSecuenciaDeCompras} = useShoppingContext()
 
-    const codigoOrden = JSON.parse(localStorage.getItem("pedidoID"))
+    const codigoOrden = localStorage.getItem("pedidoID")
 
-    function limpiarSecuenciaDeCompras() {
-        const keys = [
-            'carrito',
-            'buyBTN',
-            'loadingPreOrder',
-            'total',
-            'pedidoID',
-            'preOrdenID'
-        ];
 
-        keys.forEach((key) => localStorage.removeItem(key))
-
-        // Resetear estados asociados
-        setCarrito([])
-        setBuyBTN(null);
-        setLoading(null);
-        setTotal(null);
-        setImporteTotal(null);
-    }
 
 
     return(
