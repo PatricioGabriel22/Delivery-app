@@ -169,15 +169,15 @@ export default function Home() {
       <div className=" mt-3">
         <img src={victorinaLogo} className="w-96 "/>  
       </div>
-
       <button 
         className={`rounded bg-gray-100 text-black p-3 flex flex-row gap-x-2  ${userInfo.rol? "cursor-pointer":"pointer-events-none"} `}
         onClick={()=>handleDeliveryStatus(false)}
-      >
+        >
         <span className={`rounded-full p-3 ${auxDelivery ? "bg-green-500":"bg-red-500"}`} />
         <p>{auxDelivery? "Delivery activo":"Sin delivery"}</p>
       </button>      
 
+     
 
 
       {isLoading &&  (
@@ -189,7 +189,14 @@ export default function Home() {
         
       )}
 
-      {(!isLoading && !isError) && (<SearchingBar searchSetter={setProductoBuscado}/>)}
+      {(!isLoading && !isError) && (
+        <Fragment>
+
+          <SearchingBar searchSetter={setProductoBuscado}/>
+          <span >🔵🔵⚪☀️⚪🔵🔵</span>
+
+        </Fragment>
+        )}
 
 
       {(!isLoading && !isError) && CategoriasProductos.map(categoria=>{
@@ -198,6 +205,7 @@ export default function Home() {
           <Fragment>
 
             <h2 
+            
               className="bg-white text-black m-4 flex flex-col  w-full md:w-[90%] rounded-xl font-extrabold text-4xl text-center cursor-pointer"
               onClick={()=>setShowItems(prev=>({...prev,[categoria]:!prev[categoria]}))}>
                 {/* //manejo el cambio de categoria de forma dinamica con [categoria]
