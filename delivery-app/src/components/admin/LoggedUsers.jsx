@@ -15,9 +15,6 @@ export default function LoggedUsers(){
     useEffect(()=>{
         if(loggedUsers.length === 0){
             console.log("Todavia no hay usuarios en la tienda")
-        }else{
-            console.log(loggedUsers)
-
         }
     },[loggedUsers])
 

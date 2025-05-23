@@ -162,7 +162,7 @@ export default function Home() {
           })}
 
         </div>
-      ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute cursor-pointer"/>)}
+      ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute cursor-pointer m-2"/>)}
 
 
 

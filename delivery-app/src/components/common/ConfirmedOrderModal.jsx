@@ -14,7 +14,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
 
     const {productos,costoEnvio,importeTotal,formaDeEntrega,createdAt,isPayed} = confirmedOrder
     const {username,telefono,direccion,entreCalles} = confirmedOrder.userID
-    console.log(confirmedOrder)
+ 
 
 
     return(
