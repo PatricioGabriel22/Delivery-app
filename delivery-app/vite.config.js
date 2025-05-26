@@ -49,6 +49,10 @@ export default defineConfig({
             type: 'image/png'
           }
         ]
+      },
+      workbox:{
+        cleanupOutdatedCaches: true,
+        navigateFallback: '/index.html', // previene el error MIME para rutas no encontradas
       }
     })
   ],
