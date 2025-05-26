@@ -4,10 +4,16 @@ import { registerSW } from 'virtual:pwa-register'
 
 
     async function handleUpdateApp(t){
+        toast('Actualizando...',{icon:'⏳'})
         await updateSW(true)
-        window.location.reload()
-        toast.dismiss(t.id)
-        console.log("click en update detectado")
+
+
+        setTimeout(()=>{
+            toast.dismiss(t.id)
+            window.location.reload()
+        },2000)
+
+        
     }
 
 export const updateSW = registerSW({
