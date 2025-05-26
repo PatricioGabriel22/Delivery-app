@@ -176,10 +176,10 @@ export default function Home() {
         <img src={victorinaLogo} className="w-96 "/>  
       </div>
       <button 
-        className={`rounded bg-gray-100 text-black p-3 flex flex-row gap-x-2  ${userInfo.rol? "cursor-pointer":"pointer-events-none"} `}
+        className={`rounded bg-gray-100 text-black p-3 flex flex-row gap-x-2 border-2 border-black ${userInfo.rol? "cursor-pointer":"pointer-events-none"} `}
         onClick={()=>handleDeliveryStatus(false)}
         >
-        <span className={`rounded-full p-3 ${auxDelivery ? "bg-green-500":"bg-red-500"}`} />
+        <span className={`rounded-full p-3 ${auxDelivery ? "bg-green-500":"bg-red-500"} `} />
         <p>{auxDelivery? "Delivery activo":"Sin delivery"}</p>
       </button>      
 

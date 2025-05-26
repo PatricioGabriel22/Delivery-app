@@ -13,8 +13,8 @@ export default function BackArrow(){
     if (hideOnRoutes.includes(location.pathname)) return null
 
     return(
-        <button className="text-start cursor-pointer relative p-5 " onClick={()=>navigate(-1)}>
-            <IoArrowBack size={30}  className="fixed"/>
+        <button className="text-start cursor-pointer relative " onClick={()=>navigate(-1)}>
+            <IoArrowBack size={30}  className="absoltue"/>
         </button>
     )
 }
