@@ -17,7 +17,7 @@ export const updateSW = registerSW({
             <button className="cursor-pointer" onClick={()=>handleUpdateApp(t)}>
                 <p>Hay una nueva version de la app!</p>
                 <p>Toca aqui para </p>
-                <p>🎇ACTUALIZAR🎇</p>
+                <p>🔔ACTUALIZAR🔔</p>
             </button>
             ),{
 
