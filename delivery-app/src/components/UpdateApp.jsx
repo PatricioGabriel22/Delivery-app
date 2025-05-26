@@ -3,8 +3,8 @@ import { registerSW } from 'virtual:pwa-register'
 
 
 
-    function handleUpdateApp(t){
-        updateSW(true)
+    async function handleUpdateApp(t){
+        await updateSW(true)
         window.location.reload()
         toast.dismiss(t.id)
         console.log("click en update detectado")
