@@ -16,7 +16,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       devOptions: {
         enabled: true,
         type:'module' // 👈 fuerza el uso de PWA en dev

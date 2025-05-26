@@ -26,6 +26,7 @@ import { Copy,BadgeHelp  } from "lucide-react"
 import axios from "axios";
 import { updateSW } from "../../components/UpdateApp.jsx";
 
+
 export default function Home() {
   
   const {socket} = useSocketContext()
@@ -139,7 +140,7 @@ export default function Home() {
 
   useEffect(()=>{updateSW()},[])
 
-
+  //nueva version para probar el update sssssssssss
 
   return (
     <div className="flex flex-col min-h-screen items-center">
