@@ -18,6 +18,7 @@ export const updateSW = registerSW({
                 <p>Hay una nueva version de la app!</p>
                 <p>Toca aqui para </p>
                 <p>🔔ACTUALIZAR🔔</p>
+                <span className='w-full h-[1px] bg-red-600'/>
             </button>
             ),{
 
