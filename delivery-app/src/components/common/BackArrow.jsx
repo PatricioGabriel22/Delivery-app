@@ -16,7 +16,7 @@ export default function BackArrow(){
 
     return(
         <button className="text-start cursor-pointer relative " onClick={()=>navigate(-1)}>
-            {/* <IoArrowBack size={30}  className="absoltue"/> */}
+            <IoArrowBack size={30}  className="absoltue"/>
         </button>
     )
 }
