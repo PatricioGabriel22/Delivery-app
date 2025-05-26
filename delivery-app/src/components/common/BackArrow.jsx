@@ -12,6 +12,8 @@ export default function BackArrow(){
 
     if (hideOnRoutes.includes(location.pathname)) return null
 
+    //se necesita que esta con absolute para que funciones bien
+
     return(
         <button className="text-start cursor-pointer relative " onClick={()=>navigate(-1)}>
             <IoArrowBack size={30}  className="absoltue"/>
