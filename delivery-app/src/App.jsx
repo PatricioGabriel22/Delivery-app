@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import {Route, Routes } from 'react-router-dom'
 
 
@@ -15,6 +15,7 @@ import Register from '@pages/common/Register.jsx'
 import Profile from '@pages/common/Profile.jsx'
 import LoginProtected from '@components/common/LoginProtected.jsx'
 import BackArrow from '@components/common/BackArrow.jsx'
+import { updateSW } from '@components/common/UpdateApp.jsx'
 
 
 import CarritoConfirm from '@pages/user/CarritoConfirm.jsx'
@@ -24,25 +25,10 @@ import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
 
 
 
+
 function App() {
 
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event) => {
-  //     // Mostrar el mensaje de alerta
-  //     event.preventDefault()
-  //     console.log(event)
-  //     confirm("¡Estás a punto de actualizar o salir de la página!");
-      
-  //   };
-
-  //   window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener("beforeunload", handleBeforeUnload);
-  //   };
-  // }, [])
-
-
+  useEffect(()=>{updateSW()},[])
 
 
 

@@ -24,7 +24,7 @@ import { useCatalogContext } from "@context/CatalogContext.jsx";
 
 import { Copy,BadgeHelp  } from "lucide-react"
 import axios from "axios";
-import { updateSW } from "../../components/UpdateApp.jsx";
+
 
 
 export default function Home() {
@@ -138,7 +138,7 @@ export default function Home() {
 
   useEffect(()=>{handleDeliveryStatus(true)},[])
 
-  useEffect(()=>{updateSW()},[])
+
 
   //probando nueva version con sensor de cambios en el worker
 
