@@ -57,7 +57,10 @@ export default defineConfig({
           new RegExp('^/assets/'),
           new RegExp('/[^/?]+\\.[^/]+$'),
         ],
-      }
+        skipWaiting:true,
+        clientsClaim:true
+      },
+      
     })
   ],
   resolve:{
