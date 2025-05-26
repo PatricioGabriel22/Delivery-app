@@ -50,9 +50,13 @@ export default defineConfig({
           }
         ]
       },
-      workbox:{
+      workbox: {
         cleanupOutdatedCaches: true,
-        navigateFallback: '/index.html', // previene el error MIME para rutas no encontradas
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [
+          new RegExp('^/assets/'),
+          new RegExp('/[^/?]+\\.[^/]+$'),
+        ],
       }
     })
   ],
