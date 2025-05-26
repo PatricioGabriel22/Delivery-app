@@ -44,7 +44,7 @@ export default function Profile(){
 
     return(
         <Fragment>
-            <div className="flex flex-col relative min-h-screen ">
+            <div className="flex flex-col relative  ">
 
 
 
@@ -118,7 +118,7 @@ export default function Profile(){
 
                 {userInfo.rol && (
 
-                <span className=" mt-15 p-2 self-center md:self-start  ">
+                <span className=" mt-15 pl-2 pb-2 self-center md:self-start  ">
                     <LoggedUsers/>
                 </span>
                 )}   

@@ -8,6 +8,7 @@ import { useShoppingContext } from "@context/ShoppingContext";
 import { decidirCostoEnvio } from "../../utils/envioFunctions";
 import BannerCloseLogo from "@components/common/BannerCloseLogo";
 import { ccapitalizer_3000 } from "../../utils/capitalize";
+import { openCloseEditPreviewModal } from "../../utils/modalFunctions";
 
 
 
@@ -32,14 +33,6 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
 
     const dialogRef = useRef(null);
 
-    const abrirModal = () => {
-    dialogRef.current.showModal(); // Abre el modal
-    };
-
-    const cerrarModal = () => {
-    dialogRef.current.close(); // Cierra el modal
-    };
-    
 
     function handleSugerencias(e){
         e.preventDefault()
@@ -48,7 +41,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
         console.log(msgDeSugerencia)
 
         orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada",msgDeSugerencia)
-        cerrarModal()
+        openCloseEditPreviewModal(dialogRef,'close')()
     }
 
 
@@ -89,7 +82,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                     <div className="flex flex-col  w-full">
                         <p 
                             className="text-xl font-semibold rounded-lg hover:bg-gray-300 p-2 self-center text-center w-fit cursor-pointer"
-                            onClick={()=>abrirModal()}
+                            onClick={()=>openCloseEditPreviewModal(dialogRef,'open')}
                             >Ver pre-orden
                         </p>
 
@@ -116,7 +109,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                     </div>      
 
                     <dialog ref={dialogRef} className={`rounded-xl p-2 shadow-xl w-full md:w-160 min-h-screen justify-self-center self-center backdrop:bg-black/50 border-5 ${formaDeEntrega === 'Envio' ? "border-red-500" : "border-sky-500"} }`}>
-                        <BannerCloseLogo close={cerrarModal} />
+                        <BannerCloseLogo close={()=>openCloseEditPreviewModal(dialogRef,'close')} />
 
                         <div className="flex flex-col text-lg ">
                             <p className="font-bold">Nombre: {preOrderInfo.userInfo.username}</p>
@@ -128,7 +121,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
 
                             
 
-                            <div className="flex flex-col h-58 overflow-x-hidden">
+                            <div className="flex flex-col h-54 overflow-x-hidden ">
                                 {preOrderInfo.preOrder.map((item,index)=>(
 
                                     <div 
@@ -144,7 +137,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                             
                                 ))}
 
-                                    <span className="flex flex-row self-end p-2">
+                                    <span className="flex flex-row self-end p-2 ">
                                     {preOrderInfo.formaDeEntrega === "Envio"
                                         ? `Envio: $${decidirCostoEnvio(preOrderInfo.formaDeEntrega, preOrderInfo.userInfo.localidad)}`
                                         : ""}
@@ -153,7 +146,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                             
                             
                             <div 
-                                className={`flex flex-row justify-between  w-full text-xl text-end rounded p-2
+                                className={`flex flex-row justify-between  w-full text-xl text-end rounded p-2 mt-3
                                     ${formaDeEntrega === 'Envio' ? "bg-red-500" : "bg-sky-500"} } `}>
                                 <p className="font-bold">{formaDeEntrega}</p>
                                 <p className="font-bold ">Total: ${importeTotal}</p>
@@ -170,7 +163,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                         {activeButtons && (
                             <Fragment>
 
-                                <div className="flex flex-row justify-around bg-gray-300  rounded-full w-full cursor-pointer">
+                                <div className="flex flex-row justify-around bg-gray-300  rounded w-full cursor-pointer">
                                     {title === "Pre-Ordenes" ? (
                                         <Fragment>
                                             <div className="flex flex-col items-center">
@@ -183,7 +176,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                                         setFlagMsgSugerencias(!flagMsgSugerencias)
                                                     }}
                                                 />
-                                                <p className="font-bold">Sugerirle cambios al cliente</p>
+                                                <p className="font-bold text-wrap">Sugerirle cambios al cliente</p>
                                             </div>
 
                                             <div className={`flex flex-col items-center ${confirmed || flagMsgSugerencias? "hidden":""}`}>
@@ -193,10 +186,10 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                                     className={`text-green-600 hover:text-green-700  `}
                                                     onClick={()=>{
                                                         orderStatusHandler(renderORLocalURL,preOrderInfo,"aceptada")
-                                                        cerrarModal()
+                                                        openCloseEditPreviewModal(dialogRef,'close')
                                                     }}
                                                 />
-                                                <p className="font-bold">Aceptar</p>
+                                                <p className="font-bold text-wrap">Aceptar</p>
                                             </div>
         
         
@@ -230,7 +223,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                     <button 
                                         onClick={()=>{
                                             orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada")
-                                            cerrarModal()
+                                            openCloseEditPreviewModal(dialogRef,'close')
                                         }} 
                                         className={`text-black hover:text-red-700  w-full text-center cursor-pointer`}> Cancelar definitivamente</button>
                                     <span className="w-full h-[1px] bg-black"/>

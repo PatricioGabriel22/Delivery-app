@@ -48,16 +48,16 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   const capitalizedNombre = useMemo(() => ccapitalizer_3000(nombre), [nombre])
   const editImgModalRef = useRef(null)
 
-  function openCloseEditPreviewModal(action){
+  function openCloseEditPreviewModal(modalTarget,action){
 
     if(action === 'open'){
 
-      editImgModalRef.current.showModal()
-      editImgModalRef.current.scrollTop = 0
+      modalTarget.current.showModal()
+      modalTarget.current.scrollTop = 0
 
     }else if(action === 'close'){
 
-      editImgModalRef.current.close()
+      modalTarget.current.close()
 
     }
   }
@@ -241,13 +241,13 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             </div>
 
 
-            <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto" onClick={()=>openCloseEditPreviewModal('open')}>
+            <label className="cursor-pointer hover:bg-red-400 rounded  text-center m-auto" onClick={()=>openCloseEditPreviewModal(editImgModalRef,'open')}>
               Cambiar imagen
             </label>
               <dialog className="fixed inset-0 m-auto w-full md:w-[45%] max-h-[90vh] rounded-xl p-2 shadow-xl backdrop:bg-black/50 text-xl font-semibold z-50" ref={editImgModalRef} >
 
 
-                <BannerCloseLogo close={()=>openCloseEditPreviewModal('close')}/>
+                <BannerCloseLogo close={()=>openCloseEditPreviewModal(editImgModalRef,'close')}/>
                 <p className=" text-3xl font-bold text-center flex flex-col mb-6">
                   Seleccione la nueva imagen del producto
                   <span className="w-full h-[1px] mt-3 bg-red-600"/>

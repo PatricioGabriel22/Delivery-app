@@ -18,7 +18,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: true, // 👈 fuerza el uso de PWA en dev
+        enabled: true,
+        type:'module' // 👈 fuerza el uso de PWA en dev
       },
       manifest: {
         name: 'Victorina Pasteleria APP',

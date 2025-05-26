@@ -13,7 +13,7 @@ import { paymentRoutes } from './routes/payment.routes.js'
 
 
 dotenv.config({
-    path:`src/envs/.env.${process.env.NODE_ENV}` //decirle a dotenv donde esta el .env
+    path:`backend/src/envs/.env.${process.env.NODE_ENV}` //decirle a dotenv donde esta el .env
 })
 
 

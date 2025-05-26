@@ -24,6 +24,7 @@ import { useCatalogContext } from "@context/CatalogContext.jsx";
 
 import { Copy,BadgeHelp  } from "lucide-react"
 import axios from "axios";
+import { updateSW } from "../../components/UpdateApp.jsx";
 
 export default function Home() {
   
@@ -94,14 +95,15 @@ export default function Home() {
   const [help,setHelp] = useState(false)
   const [copiadoIndex, setCopiadoIndex] = useState(null)  
   const numeros = [{id:"Panaderia", telefono:1168080019},{id:"Soporte",telefono:1151278287}]
+
   const copiarAlPortapapeles = async (num,index) => {
-  try {
-    await navigator.clipboard.writeText(num);
-    setCopiadoIndex(index);
-    setTimeout(() => setCopiadoIndex(false), 2000); // Mensaje por 2 seg
-  } catch (err) {
-    console.error("Error al copiar", err);
-  }
+    try {
+      await navigator.clipboard.writeText(num);
+      setCopiadoIndex(index);
+      setTimeout(() => setCopiadoIndex(false), 2000); // Mensaje por 2 seg
+    } catch (err) {
+      console.error("Error al copiar", err);
+    }
   }
 
 
@@ -134,6 +136,9 @@ export default function Home() {
 
 
   useEffect(()=>{handleDeliveryStatus(true)},[])
+
+  useEffect(()=>{updateSW()},[])
+
 
 
   return (
