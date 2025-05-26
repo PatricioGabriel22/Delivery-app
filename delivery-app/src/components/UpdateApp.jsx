@@ -8,10 +8,11 @@ import { registerSW } from 'virtual:pwa-register'
         await updateSW(true)
 
 
+
         setTimeout(()=>{
             toast.dismiss(t.id)
             window.location.reload()
-        },2000)
+        },1000 * 10)
 
         
     }
