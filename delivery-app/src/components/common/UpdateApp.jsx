@@ -5,14 +5,18 @@ import { registerSW } from 'virtual:pwa-register'
 
     async function handleUpdateApp(t){
         toast('Actualizando...',{icon:'⏳'})
-        await updateSW(true)
+        const wasUpdatedRes = await updateSW(true)
 
+        if(wasUpdatedRes){
 
-
-        setTimeout(()=>{
             toast.dismiss(t.id)
             window.location.reload()
-        },1000 * 10)
+        }else{
+            toast.error('No se pudo instalar la actualizacion')
+        }
+
+        // setTimeout(()=>{
+        // },1000 * 10)
 
         
     }
