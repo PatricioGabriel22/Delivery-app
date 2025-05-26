@@ -50,14 +50,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        cleanupOutdatedCaches: true,
-        // navigateFallback: '/index.html',
-        // navigateFallbackDenylist: [
-        //   new RegExp('^/assets/'),
-        //   new RegExp('/[^/?]+\\.[^/]+$'),
-        // ],
-        // skipWaiting:true,
-        // clientsClaim:true
+        cleanupOutdatedCaches: true
       },
       
     })
