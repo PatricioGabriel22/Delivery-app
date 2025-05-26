@@ -140,7 +140,7 @@ export default function Home() {
 
   useEffect(()=>{updateSW()},[])
 
- 
+  //probando nueva version con sensor de cambios en el worker
 
   return (
     <div className="flex flex-col min-h-screen items-center">
