@@ -126,7 +126,7 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
                                     <IoIosArrowDown size={30} className=""/>
 
                                     <p className="text-lg p-1 w-1/2 text-center ">{verFecha(confirmedOrder.createdAt)} | {verHoraYMinutos(confirmedOrder.createdAt)}</p>
-                                    {userInfo.rol === 'admin'&& (<p className="text-lg p-1 w-1/2 text-center overflow-hidden text-ellipsis whitespace-nowrap">{confirmedOrder.userID?.username}</p>)}
+                                    {userInfo.rol === 'bistro'&& (<p className="text-lg p-1 w-1/2 text-center overflow-hidden text-ellipsis whitespace-nowrap">{confirmedOrder.userID?.username}</p>)}
                                     <p className="text-lg p-1 w-1/2 text-center ">{confirmedOrder.formaDeEntrega}</p>
                                     <p className="text-lg p-1 w-1/2  text-end font-semibold">${confirmedOrder.importeTotal}</p>
 

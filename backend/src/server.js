@@ -10,6 +10,7 @@ import {preOrderRoutes} from './routes/preOrder.routes.js'
 import { productRoutes } from './routes/product.routes.js'
 import { httpServer,server,frontURL } from './webSocket.js'
 import { paymentRoutes } from './routes/payment.routes.js'
+import { bistroRoutes } from './routes/bistro.routes.js'
 
 
 dotenv.config({
@@ -31,6 +32,7 @@ server.use(express.json())
 
 
 server.use(userRoutes)
+server.use(bistroRoutes)
 server.use(preOrderRoutes)
 server.use(productRoutes)
 server.use(paymentRoutes)

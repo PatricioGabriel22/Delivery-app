@@ -257,13 +257,13 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               
                   <div className="flex flex-col items-center">
                     <p>Anterior</p>
-                    <img src={img} className=" w-58 h-60 rounded-2xl "/>
+                    <img src={img} className=" w-58 h-60 rounded-2xl " loading="lazy" />
                   </div>
 
                   <div className="flex flex-col items-center">
                     <p onClick={()=>setMiniPreview(null)} className={`cursor-pointer select-none`}>{miniPreview ? "Cambiar":"Nueva"}</p>
                     
-                    {miniPreview ? (<img src={miniPreview} className="w-58 h-60 rounded-2xl"/>) 
+                    {miniPreview ? (<img src={miniPreview} className="w-58 h-60 rounded-2xl" loading="lazy" />) 
                       : (
                       <label className="w-58 h-60 text-center flex flex-col justify-center items-center cursor-pointer bg-red-500 rounded">
                         Seleccionar imagen
@@ -283,7 +283,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
                   <button name="temporalIMG" className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={(e)=>handleChangesDataCard(e,true)}>Colocar imagen temporal</button>
 
-                  <button  className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={()=>openCloseEditPreviewModal('close')}>Aceptar</button>
+                  <button  className="rounded-full bg-red-600 w-full p-2 my-2 cursor-pointer" onClick={()=>openCloseEditPreviewModal(editImgModalRef,'close')}>Aceptar</button>
                 </div>
                 
 
@@ -304,6 +304,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
             {/* Imagen que abre el modal */}
             <img
+              loading="lazy"
               className="w-30 h-38 m-1 rounded cursor-pointer select-none object-cover"
               onClick={() => setIsModalOpen(true)}
               src={img || '/logoApp.png'}
@@ -318,7 +319,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
       <div className="justify-around items-center flex flex-row w-full">
 
-        {userInfo.rol === 'admin' ? (
+        {userInfo.rol === 'bistro' ? (
           <Fragment>
   
             <div className={`w-full rounded-b-xl  p-4 flex justify-between gap-3 ${disponible ? "bg-green-100":"bg-red-100"} `}>
@@ -413,6 +414,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
             onClick={(e) => e.stopPropagation()} // Evita que al hacer clic dentro del modal se cierre
           >
             <img
+              loading="lazy"
               className="max-w-full max-h-[90vh] rounded"
               src={img || '/logoApp.png'}
               alt={`${nombre}` || 'Logo de la app'}

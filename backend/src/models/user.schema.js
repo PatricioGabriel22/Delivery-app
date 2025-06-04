@@ -12,18 +12,12 @@ const userSchema = new mongoose.Schema({
     localidad:String,
     entreCalles:String,
     telefono:Number,
-    rol:{
-        type:String,
-        enum:["admin","cliente","GM"],
-        default:'cliente'
-    },
-    hintPassword:String,
-    categorias:{type: [String],default:[]}, //SOLO ADMINS    
+    hintPassword:String,  
     pedidos:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'pedidos'
     }],
-    doDelivery:{type:Boolean,default:true}
+
     
 },{
     timestamps:true

@@ -2,7 +2,7 @@ import pagoSchema from '../models/pagosSchema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
 
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
-import {connectedUsers, io, frontURL, connectedAdmins} from '../webSocket.js'
+import {connectedUsers, io, frontURL, connectedBistros} from '../webSocket.js'
 
 import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
@@ -20,14 +20,14 @@ const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 
 export const calcularPagosEnRango = async (req,res)=>{
-    const {desde,hasta,adminID} = req.query
+    const {desde,hasta,bistroID} = req.query
 
 
 
     const periodoDeVentas = await pedidosSchema.aggregate([
         {
             $match: {
-            // adminID: adminID,
+            // bistroID: bistroID,
             createdAt: {
                 $gte: new Date(desde),
                 $lt: new Date(hasta)
@@ -44,7 +44,7 @@ export const calcularPagosEnRango = async (req,res)=>{
 
     const importeDelRango = periodoDeVentas[0]?.totalVentas || 0
     
-    // io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit("ventasEnPeriodoSeleccionado",periodoDeVentas)
+    // io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit("ventasEnPeriodoSeleccionado",periodoDeVentas)
     res.status(200).json({importeDelRango })
 }
 
@@ -69,7 +69,7 @@ export const pagarConEfectivo = async (req,res)=>{
     
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Efectivo'}},{new:true})
 
-            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
 
 
         }
@@ -139,7 +139,7 @@ export const pagarConMP = async (req, res) => {
             
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
             
-            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
             
             if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
 

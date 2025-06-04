@@ -28,7 +28,7 @@ export function CatalogoProvider({children}){
     const {renderORLocalURL} = useLoginContext()
 
     
-    const {catalogoDelAdmin,refresh,isLoading,isError} = useCatalogMaker(renderORLocalURL)
+    const {catalogoDelBistro,refresh,isLoading,isError} = useCatalogMaker(renderORLocalURL)
     
 
     
@@ -37,7 +37,7 @@ export function CatalogoProvider({children}){
     return(
         <catalogoContext.Provider value={{
 
-            catalogoDelAdmin,
+            catalogoDelBistro,
             refresh,
             isLoading,
             isError

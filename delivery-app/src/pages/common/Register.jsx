@@ -3,41 +3,34 @@ import axios from "axios";
 // import { useState } from "react";
 import { useLoginContext } from "@context/LoginContext";
 import {useState } from "react";
-import succesLogo from '../../assets/succesLogo.png'
 import toast from "react-hot-toast";
 
-
+import succesLogo from '../../assets/succesLogo.png'
+import { IoStorefrontSharp } from "react-icons/io5";
+import AsBistro from "../../components/bistro/AsBistro";
 
 export default function Register(){
 
 
-    const CAMPOS_REGISTRO = ['Nombre de usuario','Contraseña','Confirmar Contraseña','Direccion',"Localidad","Entre calles o esquina",'Telefono']
+    const CAMPOS_REGISTRO = ['bistroFlag','Nombre de usuario','Contraseña','Confirmar Contraseña','Direccion',"Localidad","Entre calles o esquina",'Telefono']
 
     const {renderORLocalURL} =  useLoginContext()
 
     const [succesAnimation, setSuccesAnimation] = useState(false)
     const [errorAnimation, setErrorAnimation] = useState(false)
 
+  
+
     const navigate = useNavigate()
 
     function handleRegister(e){
         e.preventDefault()
-        
-        const password = e.target[1].value
-        const confirmPassword = e.target[2].value
-        const telefono = e.target[6].value.trim()
-        const registerData = {
-            username:e.target[0].value.trim(),
-            password:e.target[1].value,
-            direccion:e.target[3].value.toLowerCase().trim(),
-            localidad:e.target[4].value.toLowerCase(),
-            entreCalles:e.target[5].value.toLowerCase().trim(),
-            telefono:e.target[6].value.trim()
-        }
-
-        
 
   
+        
+        const password = e.target[2].value
+        const confirmPassword = e.target[3].value
+        const telefono = e.target[7].value.trim()
 
         if(confirmPassword !== password){
             toast.error('Las contraseñas no coinciden')
@@ -48,6 +41,21 @@ export default function Register(){
             toast.error('El numero de telefono no es valido')
             return
         }
+
+        const registerData = {
+            bistroFlag:e.target[0].checked,
+            username:e.target[1].value.trim(),
+            password: password,
+            direccion:e.target[4].value.toLowerCase().trim(),
+            localidad:e.target[5].value.toLowerCase().trim(),
+            entreCalles:e.target[6].value.toLowerCase().trim(),
+            telefono:telefono
+        }
+
+        
+
+        console.log(registerData)
+
 
         setSuccesAnimation(true)
 
@@ -76,21 +84,21 @@ export default function Register(){
 
 
     return(    
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className=" flex flex-col items-center justify-center">
 
         <img src={succesAnimation? succesLogo : '/logoApp.png'} 
         
         className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 
         <form className="w-80 h-fit border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center " onSubmit={(e)=>handleRegister(e)}>
+
+ 
+
             {CAMPOS_REGISTRO.map((campo, index) => (
-                campo === 'Localidad' ? (
-                    <select key={index} className="bg-white text-black rounded w-full m-1 p-1 text-lg" required={true}>
-                        <option value="" disabled selected hidden >Seleccione una localidad</option>
-                        <option value="monte grande">Monte Grande</option>
-                        <option value="luis guillon">Luis Guillón</option>
-                    </select>
-                ) : (
+                campo === "bistroFlag" ? (
+                    <AsBistro txt={"Voy a registrar mi empresa"}/>
+                ):
+                (
                     <input
                     key={index}
                     required={true}
@@ -100,15 +108,18 @@ export default function Register(){
                     />
                 )
             ))}
+
+
+
             <button 
                 type="submit" 
                 className="bg-red-500 w-full m-5 p-2 rounded-full"
-            >Register</button>
+            >Registrarme</button>
 
 
         </form>
 
-        <Link to="/login" className="mt-19">Login</Link>
+        <Link to="/login" className="mt-19">Ingresar a la app</Link>
 
 
   </div>

@@ -38,7 +38,7 @@ export default function CarritoConfirm(){
         loading,setLoading,responseFromServer,setResponseFromServer
     } = useShoppingContext()
 
-    const {catalogoDelAdmin} = useCatalogContext()
+    const {catalogoDelBistro} = useCatalogContext()
 
     const [edit,setEdit] = useState(false)
 
@@ -130,7 +130,7 @@ export default function CarritoConfirm(){
     useEffect(() => {
         setListaDeCompras(
             carrito.map(producto => {
-                const productoEnLista = catalogoDelAdmin.find(productInList => productInList.nombre === producto.nombre)
+                const productoEnLista = catalogoDelBistro.find(productInList => productInList.nombre === producto.nombre)
                 
                 return {
                     ...producto,
@@ -139,7 +139,7 @@ export default function CarritoConfirm(){
             })
         );
 
-    }, [carrito,catalogoDelAdmin]); // Se ejecuta cada vez que cambia el carrito
+    }, [carrito,catalogoDelBistro]); // Se ejecuta cada vez que cambia el carrito
 
 
    

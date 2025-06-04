@@ -1,5 +1,8 @@
 
-
+export function navigateToBistro(bistroName,navigate){
+        const target = bistroName.replace(/\s+/g, '-').toLowerCase()
+        navigate(`/bistros/${target}`)
+    }
 
 export function decidirCostoEnvio(formaEntrega,localidad){
 

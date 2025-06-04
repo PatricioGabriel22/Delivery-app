@@ -32,7 +32,7 @@ export function OrderProvider({children}){
     const {renderORLocalURL,userInfo} = useLoginContext()
 
 
-    const [allPreOrdersFromAdmin,setAllPreOrdersFromAdmin] = useState()
+    const [allPreOrdersFromBistro,setAllPreOrdersFromBistro] = useState()
     const [urlConfirmedOrders,setUrlConfirmedOrders] = useState()
 
     const [flagPagination,setFlagPagination] = useState(true)
@@ -47,15 +47,15 @@ export function OrderProvider({children}){
         
         if(!userInfo.rol){
             const rol = "cliente"
-            const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
+            const aux = `${renderORLocalURL}/getAllOrders/${userInfo._id}?rol=${rol}`
             setUrlConfirmedOrders(aux)
             setLimite(5)
             
         }
 
-        if(userInfo.rol === "admin"){
-            const rol = "admin"
-            const aux = `${renderORLocalURL}/getAllOrders/${userInfo.id}?rol=${rol}`
+        if(userInfo.rol === "bistro"){
+            const rol = "bistro"
+            const aux = `${renderORLocalURL}/getAllOrders/${userInfo._id}?rol=${rol}`
             setUrlConfirmedOrders(aux)
             setLimite(20)
             
@@ -67,19 +67,19 @@ export function OrderProvider({children}){
 
 
 
-    async function AdminPreOrdersData(){
+    async function BistroPreOrdersData(){
 
         if(!userInfo.rol) return
             
         try {
             
-            const res = await axios.get(`${renderORLocalURL}/AdminPreOrders/${userInfo.id}`,{withCredentials:true})
+            const res = await axios.get(`${renderORLocalURL}/BistroPreOrders/${userInfo._id}`,{withCredentials:true})
     
             if(!res) return
     
             if(res.data){
     
-                setAllPreOrdersFromAdmin(res.data)
+                setAllPreOrdersFromBistro(res.data)
             }
         } catch (error) {
         console.log(error)   
@@ -107,11 +107,11 @@ export function OrderProvider({children}){
 
     return(
         <ordersContext.Provider value={{
-            AdminPreOrdersData,
+            BistroPreOrdersData,
            
             
-            allPreOrdersFromAdmin,
-            setAllPreOrdersFromAdmin,
+            allPreOrdersFromBistro,
+            setAllPreOrdersFromBistro,
 
 
             confirmedOrders, isLoading, isError, refreshHistorialOrdenes,

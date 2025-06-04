@@ -25,7 +25,7 @@ export const io = new SocketServer(httpServer, {
 })
 
 
-export const connectedAdmins = {}
+export const connectedBistros = {}
 export const connectedUsers = {}
 
 
@@ -34,25 +34,24 @@ io.on('connection', (socket) => {
 
 
     socket.on('sesionIniciada', async (sessionPayload) => {
-        
         socket.username = sessionPayload.username
         socket.localidad = sessionPayload.localidad
-        socket.userId = sessionPayload.id
+        socket.userId = sessionPayload._id
         socket.rol = sessionPayload.rol
         
 
-        if(socket.rol === 'admin'){
+        if(socket.rol === 'bistro'){
             
-            // connectedAdmins[socket.userId] = socket.id
-            if(!connectedAdmins[socket.userId]){
-                connectedAdmins[socket.userId] = []
+            // connectedBistros[socket.userId] = socket.id
+            if(!connectedBistros[socket.userId]){
+                connectedBistros[socket.userId] = []
             }
 
-            if(!connectedAdmins[socket.userId].includes(socket.id)){
-                connectedAdmins[socket.userId].push(socket.id)
+            if(!connectedBistros[socket.userId].includes(socket.id)){
+                connectedBistros[socket.userId].push(socket.id)
             }
             
-            console.log("ADMIN conectado",connectedAdmins)
+            console.log("bistro conectado",connectedBistros)
             
 
         }else if(!socket.rol){
@@ -63,7 +62,7 @@ io.on('connection', (socket) => {
                 username:socket.username,
                 localidad:socket.localidad,
                 socketId:socket.id,
-                rol:sessionPayload.rol
+                
             }
 
 
@@ -74,12 +73,12 @@ io.on('connection', (socket) => {
 
         }
 
-        //cambiar a futuro con los distintos restaurantID
-        if(connectedAdmins['6806b8fe2b72a9697aa59e5f']){
+        //cambiar a futuro con los distintos bistroID
+        if(connectedBistros['6806b8fe2b72a9697aa59e5f']){
 
-            io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
+            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
 
-            // connectedAdmins['6806b8fe2b72a9697aa59e5f'].forEach((connection)=>{
+            // connectedBistros['6806b8fe2b72a9697aa59e5f'].forEach((connection)=>{
             //     io.to(connection).emit('usuariosConectados',Object.values(connectedUsers))
             // })
         }
@@ -88,19 +87,19 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        if(socket.rol === 'admin' &&  connectedAdmins[socket.userId]){
-            connectedAdmins[socket.userId] = connectedAdmins[socket.userId].filter(targetID=> targetID != socket.id)
+        if(socket.rol === 'bistro' &&  connectedBistros[socket.userId]){
+            connectedBistros[socket.userId] = connectedBistros[socket.userId].filter(targetID=> targetID != socket.id)
             
-            if(connectedAdmins[socket.userId].length === 0){
-                delete  connectedAdmins[socket.userId]
+            if(connectedBistros[socket.userId].length === 0){
+                delete  connectedBistros[socket.userId]
             }
 
         }else if(!socket.rol){
             delete connectedUsers[socket.userId]
         }
 
-        // Emitir la nueva lista de usuarios conectados en el restaurante
-        io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados', Object.values(connectedUsers))
+        // Emitir la nueva lista de usuarios conectados en el bistroe
+        io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados', Object.values(connectedUsers))
 
         console.log("usuario desconectado")
     })

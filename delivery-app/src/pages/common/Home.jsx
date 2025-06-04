@@ -33,13 +33,13 @@ export default function Home() {
   const {carrito} = useShoppingContext()
   const {userInfo,renderORLocalURL} = useLoginContext()
   
-  const {catalogoDelAdmin,refresh,isLoading,isError} = useCatalogContext()
+  const {catalogoDelBistro,refresh,isLoading,isError} = useCatalogContext()
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
 
 
-  const CategoriasProductos = [...new Set(catalogoDelAdmin.map(p => p.categoria))].sort()
+  const CategoriasProductos = [...new Set(catalogoDelBistro.map(p => p.categoria))].sort()
   
   const [showItems,setShowItems] = useState({})
 
@@ -51,7 +51,7 @@ export default function Home() {
       refresh(prevData => {
         if (!prevData) return prevData
     
-        const updatedStatuses = prevData.catalogoDelAdmin.map(item => {
+        const updatedStatuses = prevData.catalogoDelBistro.map(item => {
           if (item._id === data.target._id) {
             return { ...item, disponible: data.target.disponible }
           }
@@ -60,14 +60,14 @@ export default function Home() {
   
         return {
           ...prevData,
-          catalogoDelAdmin: updatedStatuses
+          catalogoDelBistro: updatedStatuses
         }
       }, false) // false para evitar revalidar desde el servidor
     })
 
     socket.on('cardProductoActualizada',(data)=>{
       refresh(prevData=>{
-        const updatedArray = prevData.catalogoDelAdmin.map(prevItem=>{
+        const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
 
           if(prevItem._id === data._id){
             return {...data}
@@ -78,7 +78,7 @@ export default function Home() {
 
         return{
           ...prevData,
-          catalogoDelAdmin:updatedArray
+          catalogoDelBistro:updatedArray
         }
 
       })
@@ -172,7 +172,7 @@ export default function Home() {
 
 
 
-      <div className=" mt-3">
+      <div className="mt-3">
         <img src={victorinaLogo} className="w-96 "/>  
       </div>
       <button 
@@ -225,7 +225,7 @@ export default function Home() {
 
               <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center p-4">
 
-                {catalogoDelAdmin
+                {catalogoDelBistro
                   .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
                   .filter(producto => !userInfo.rol ? producto.disponible : producto)
                   .map((producto,index)=>{

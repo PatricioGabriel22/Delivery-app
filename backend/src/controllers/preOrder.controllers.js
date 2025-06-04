@@ -4,18 +4,20 @@ import preOrderSchema from "../models/preOrder.schema.js"
 
 
 import { io } from "../webSocket.js" 
-import { connectedAdmins, connectedUsers } from "../webSocket.js"
+import { connectedBistros, connectedUsers } from "../webSocket.js"
 import pedidosSchema from "../models/pedidosSchema.js"
 import userSchema from "../models/user.schema.js"
 
 
 
 //lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo, cambiar tambien para websocket para ver los conectados
-const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
+const bistroID = '6806b8fe2b72a9697aa59e5f' //serian los bistros
 
 
 
 export const getAllPedidos = async (req,res)=>{
+
+    //obtiene los ultimos 5 pedidos del cliente y los ultimos 20 del bistro
 
     const {rol,pagination,page,limit} = req.query 
     const {idTarget} = req.params
@@ -35,7 +37,7 @@ export const getAllPedidos = async (req,res)=>{
 
 
         switch (rol) {
-            case 'admin':
+            case 'bistro':
                 
 
                 const query = pedidosSchema.find({}).sort({ createdAt: -1 })
@@ -97,13 +99,13 @@ export const getAllPedidos = async (req,res)=>{
 export const pivoteDePreOrdenes = async (req,res)=>{
 
     
-    const {idAdmin} = req.params
+    const {idBistro} = req.params
    
     
 
-    if(!idAdmin) return res.status(400)
+    if(!idBistro) return res.status(400)
 
-    //dejemos cuestiones de preORdenes SOLO para los admins
+    //dejemos cuestiones de preORdenes SOLO para los bistros
 
     try {
         
@@ -128,7 +130,7 @@ export const sendPreOrder =  async (req,res)=>{
 
     try {
         
-        const target = await userSchema.findById(restauranteAdmin)
+        const target = await userSchema.findById(bistroID)
 
         if(deliveryMethod === 'Envio' && !target.doDelivery){
 
@@ -152,7 +154,7 @@ export const sendPreOrder =  async (req,res)=>{
 
         
         //aca usar io para avisarle al front quue tiene una nueva preorden
-        io.to(connectedAdmins[restauranteAdmin]).emit("nuevaPreOrdenRecibida",{
+        io.to(connectedBistros[bistroID]).emit("nuevaPreOrdenRecibida",{
             nuevaPreOrden
         })
 
@@ -181,10 +183,10 @@ export const PreOrderManager = async (req,res)=>{
     const comprador = orderInfo?.userInfo?.id
     const userSocketID = connectedUsers[comprador]?.socketId 
 
-    const restaurante = restauranteAdmin
-    const adminSocketID = connectedAdmins[restaurante] || [] //array de las conexiones del admin
+    const restaurante = bistroID
+    const bistroSocketIDs = connectedBistros[restaurante] || [] //array de las conexiones del bistro
 
-    const socketsToNotify = [userSocketID,...adminSocketID]
+    const socketsToNotify = [userSocketID,...bistroSocketIDs]
 
 
     let nuevaDataEmitida
@@ -263,7 +265,7 @@ export const PreOrderManager = async (req,res)=>{
             
                 
     
-                io.to(adminSocketID).emit("finishedOrder",{
+                io.to(bistroSocketIDs).emit("finishedOrder",{
                     finishedOrder
                 })
     
@@ -277,7 +279,7 @@ export const PreOrderManager = async (req,res)=>{
                 const deliveredOrder = await preOrderSchema.findByIdAndUpdate(idOrden,{$set:{delivered:true}},{new:true})
                 await pedidosSchema.findByIdAndUpdate(idOrden, {$set:{delivered:true}},{new:true})
                 await preOrderSchema.findByIdAndDelete(idOrden)
-                io.to(adminSocketID).emit("deliveredOrder",{
+                io.to(bistroSocketIDs).emit("deliveredOrder",{
                     deliveredOrder
                 })
             break

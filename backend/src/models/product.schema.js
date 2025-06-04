@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 
 
 const productSchema = new mongoose.Schema({
-    adminOwner:{
+    bistroOwner:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'users',
     },

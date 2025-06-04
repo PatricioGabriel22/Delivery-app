@@ -3,12 +3,13 @@ import userSchema from '../models/user.schema.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { connectedAdmins, io } from '../webSocket.js'; 
+import { connectedBistros, io } from '../webSocket.js'; 
 
 
 import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
 import pedidosSchema from '../models/pedidosSchema.js';
+import bistroSchema from '../models/bistro.schema.js';
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -19,17 +20,25 @@ dotenv.config({
 
 
 export const loginUser = async(req,res)=>{
-    const {username,password} = req.body
-    let userInfo
+    const {bistroFlag,username,password} = req.body
+
+    let loginTarget
+   
+
     try {
         
-        const loginUserTarget = await userSchema.findOne({username})
+        if(!bistroFlag){
+            loginTarget = await userSchema.findOne({username})
 
-        const isValid = loginUserTarget? bcrypt.compareSync(password,loginUserTarget.password) : false
+        }else{
+            loginTarget = await bistroSchema.findOne({username})
+        }
+
+        const isValid = loginTarget? bcrypt.compareSync(password,loginTarget.password) : false
     
-        if(!loginUserTarget || !isValid){
+        if(!loginTarget || !isValid){
     
-            const alerta = loginUserTarget ? 
+            const alerta = loginTarget ? 
             `La contraseña no es valida`:
             `El usuario no es valido`
     
@@ -38,40 +47,17 @@ export const loginUser = async(req,res)=>{
             
         } 
         
+        console.log(loginTarget)
+
         const token = jwt.sign(
-            {id:loginUserTarget._id,username:loginUserTarget.username},
+            {id:loginTarget._id,username:loginTarget.username},
             process.env.SECRET_JWT_TOKEN_KEY,
             {
                 expiresIn:'7d'
             }
         )
 
-
-        if(loginUserTarget.rol === 'admin'){
-
-            userInfo = {
-                id:loginUserTarget._id,
-                username: loginUserTarget.username,
-                direccion: loginUserTarget.direccion,
-                localidad: loginUserTarget.localidad,
-                entreCalles:loginUserTarget.entreCalles,
-                telefono:loginUserTarget.telefono,
-                rol: loginUserTarget.rol,
-                categorias: loginUserTarget.categorias
-            }
-        }else{
-            userInfo = {
-                id:loginUserTarget._id,
-                username: loginUserTarget.username,
-                direccion: loginUserTarget.direccion,
-                localidad: loginUserTarget.localidad,
-                entreCalles:loginUserTarget.entreCalles,
-                telefono:loginUserTarget.telefono
-            }
-        }
-
-        
-
+        console.log("paso el token")
 
 
         res.status(200)
@@ -81,8 +67,8 @@ export const loginUser = async(req,res)=>{
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
         })
         .json({
-            message:`Bienvenido, ${loginUserTarget.username}`,
-            userInfo,
+            message:`Bienvenido, ${loginTarget.username}`,
+            userInfo:loginTarget,
             token:token
         })
 
@@ -102,42 +88,70 @@ export const loginUser = async(req,res)=>{
 
 
 export const registerUser = async (req,res)=>{
-    const {username,password,direccion,telefono,localidad,entreCalles} = req.body
+    const {bistroFlag,username,password,direccion,telefono,localidad,entreCalles} = req.body
     
+    console.log(req.body)
+
 
     try {
         
+        if(!bistroFlag){
 
-        const userDuplciated = await userSchema.findOne({username})
-       
-
-        // console.log(userDuplciated || emailDuplciated)
-
-        if(userDuplciated){
-
-            const alerta = userDuplciated ? 
-            `El usuario ${userDuplciated.username} ya esta registrado`: ""
+            const userDuplciated = await userSchema.findOne({username})
             
-
-
-            return res.status(400).json({message:alerta})
-            
-        } 
-
-        const hashedPassword = await bcrypt.hash(password,10)
-
-        new userSchema({
-            username,
-            password:hashedPassword,
-            direccion,
-            localidad,
-            entreCalles,
-            telefono,
-            hintPassword:password,
-
-        }).save()
+            if(userDuplciated){
+                
+                const alerta = userDuplciated ? 
+                `El usuario ${userDuplciated.username} ya esta registrado`: ""
+                
+                return res.status(400).json({message:alerta})
+                
+            } 
+        
+            const hashedPassword = await bcrypt.hash(password,10)
     
-        res.json({message:`Usuario creado: ${username}`})
+            new userSchema({
+                username,
+                password:hashedPassword,
+                direccion,
+                localidad,
+                entreCalles,
+                telefono,
+                hintPassword:password,
+    
+            }).save()
+        
+            res.json({message:`Usuario creado: ${username}`})
+
+        } else if(bistroFlag){
+
+            const bistroDuplciated = await bistroSchema.findOne({username})
+            
+            if(bistroDuplciated){
+                
+                const alerta = bistroDuplciated ? 
+                `El local ${bistroDuplciated.username} ya esta registrado`: ""
+                
+                return res.status(400).json({message:alerta})
+                
+            } 
+        
+            const hashedPassword = await bcrypt.hash(password,10)
+
+            new bistroSchema({
+                username,
+                password:hashedPassword,
+                direccion,
+                localidad,
+                entreCalles,
+                telefono,
+                hintPassword:password,
+    
+            }).save()
+
+            res.json({message:`Local registrado: ${username}`})
+
+        }
 
 
     } catch (error) {
@@ -165,8 +179,7 @@ export const editProfileInfo = async(req,res)=>{
             direccion: newUserInfo.direccion,
             localidad: newUserInfo.localidad,
             entreCalles: newUserInfo.entreCalles,
-            telefono: newUserInfo.telefono,
-            rol:newUserInfo.rol
+            telefono: newUserInfo.telefono
         })
 
 
@@ -188,7 +201,7 @@ export const cancelarMiCompra = async(req,res)=>{
         await preOrderSchema.findByIdAndDelete(preOrdenID)
         await pedidosSchema.findByIdAndDelete(pedidoID)
 
-        io.to(connectedAdmins['6806b8fe2b72a9697aa59e5f']).emit('canceloMiPedido',{
+        io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('canceloMiPedido',{
             message:`${username} decidió cancelar su pedido`,
             pedidoID,
             preOrdenID
@@ -204,63 +217,13 @@ export const cancelarMiCompra = async(req,res)=>{
 }
 
 
-
-
-//--Funciones de admin
-export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
-    const {id,categoria} = req.body
-
+export const getAllOpenBistros = async (req,res)=>{
     try {
-
-        const nuevaCategoriaAgregada = await userSchema.findByIdAndUpdate(id,{$addToSet : {categorias: categoria}},{new:true})
-
-       
-
-        if(nuevaCategoriaAgregada){
-
-            io.emit('categoriaAgregada',{
-                status:true,
-                listaCategorias:nuevaCategoriaAgregada.categorias
-            })
-
-            res.json({"message":`La categoria: ${categoria.toUpperCase()} fue agregada`})
-        }
-
-
-
-
-    } catch (error) {
-        console.log(error)
-    }
-
-
-
-}
-
-
-
-
-
-export const findRestaurant = async (req,res) =>{
-    const {idRestaurant} = req.params
-
-    const targetRestaurant = await userSchema.findById(idRestaurant)
-
-    res.status(200).json({deliveryStatus:targetRestaurant.doDelivery})
-}
-
-export const estadoDelDelivery = async (req,res)=>{
-    const {idRestaurant,flagDelivery} = req.body
-
-    try {
-        const target = await userSchema.findByIdAndUpdate(idRestaurant,{$set:{doDelivery:!flagDelivery}},{new:true})
+        const openBistros = await bistroSchema.find({isOpen:true})
         
-        io.emit('cambioDeEstadoDelivery',target.doDelivery)
+        res.status(200).json({openBistros})
 
-        res.status(200).json({deliveryStatus:target.doDelivery})
     } catch (error) {
         console.log(error)
     }
-
 }
-

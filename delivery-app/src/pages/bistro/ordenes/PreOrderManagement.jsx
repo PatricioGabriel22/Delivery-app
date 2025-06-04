@@ -1,6 +1,6 @@
 
 import { Fragment} from "react"
-import IncomingPreOrder from "@components/admin/IncomingPreOrder"
+import IncomingPreOrder from "@components/bistro/IncomingPreOrder"
 
 
 

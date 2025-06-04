@@ -59,7 +59,7 @@ export const useSocketContext = ()=>{
 export function SocketProvider({children}){
 
     const {userInfo} = useLoginContext()
-    const {allPreOrdersFromAdmin,AdminPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
+    const {allPreOrdersFromBistro,BistroPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {refresh} = useCatalogContext() 
     
@@ -78,8 +78,8 @@ export function SocketProvider({children}){
         const infoDeConexion = ()=>{
             socket.emit('sesionIniciada', userInfo)
 
-            if(userInfo?.rol === "admin"){
-                AdminPreOrdersData()
+            if(userInfo?.rol === "bistro"){
+                BistroPreOrdersData()
               }
         }
 
@@ -105,12 +105,12 @@ export function SocketProvider({children}){
 
     useEffect(() => {
 
-        if (allPreOrdersFromAdmin) {
+        if (allPreOrdersFromBistro) {
 
-          setAllPreOrders(allPreOrdersFromAdmin.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
-          setAcceptedOrders(allPreOrdersFromAdmin.filter(data => data.confirmed && esDeHoy(data.createdAt)));
+          setAllPreOrders(allPreOrdersFromBistro.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
+          setAcceptedOrders(allPreOrdersFromBistro.filter(data => data.confirmed && esDeHoy(data.createdAt)));
         }
-    }, [allPreOrdersFromAdmin]);       
+    }, [allPreOrdersFromBistro]);       
 
 
     //evento del socket con usuarios conectaodos (usuariosConectados)
@@ -155,10 +155,10 @@ export function SocketProvider({children}){
         })
 
 
-        //preOrderStatus en el admin
+        //preOrderStatus en el bistro
         socket.on('preOrderStatus',(data) => {
             
-            if(userInfo.rol === 'admin'){
+            if(userInfo.rol === 'bistro'){
 
                 if(data.accepted){
 
@@ -218,7 +218,7 @@ export function SocketProvider({children}){
                         return JSON.parse(localStorage.getItem("buyBTN"))
                     })
 
-                    //refresco la lista de pedidos del usuario/admin
+                    //refresco la lista de pedidos del usuario/bistro
                     refresh((oldData) => {
                         return {
                             ...oldData,
@@ -295,22 +295,22 @@ export function SocketProvider({children}){
               //prevData es la data cruda del hook useSWR
               if(!prevData) return
       
-              const newCatalogo = [...prevData.catalogoDelAdmin, data.nuevoProducto]
+              const newCatalogo = [...prevData.catalogoDelBistro, data.nuevoProducto]
       
               return {
                 ...prevData,
-                catalogoDelAdmin: newCatalogo
+                catalogoDelBistro: newCatalogo
               }
             },false)
         })
 
         socket.on('productoEliminado',(data)=>{
             refresh(prevData=>{
-                const newCatalogo = prevData.catalogoDelAdmin.filter(producto => producto._id !== data.deletedId)
+                const newCatalogo = prevData.catalogoDelBistro.filter(producto => producto._id !== data.deletedId)
 
                 return {
                     ...prevData,
-                    catalogoDelAdmin: newCatalogo
+                    catalogoDelBistro: newCatalogo
                 }
             })
         })

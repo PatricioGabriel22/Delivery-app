@@ -6,12 +6,12 @@ import { useLoginContext } from "@context/LoginContext";
 
 
 
-export default function AdminPrivate(){
+export default function BistroPrivate(){
 
 
     const {userInfo} = useLoginContext()
 
-    return userInfo.rol === 'admin' ? <Outlet/> : null
+    return userInfo.rol === 'bistro' ? <Outlet/> : null
 }
 
 

@@ -2,12 +2,12 @@ import { Fragment, useEffect } from 'react'
 import {Route, Routes } from 'react-router-dom'
 
 
-import AdminPrivate from '@components/admin/AdminPrivate.jsx'
-import PreOrderManagement from '@pages/admin/ordenes/PreOrderManagement.jsx'
-import EstadisticasDeVentas from '@pages/admin/ordenes/EstadisticasDeVentas.jsx'
-import OrdersHistory from '@pages/admin/ordenes/OrdersHistory.jsx'
-import ProductForm from '@pages/admin/productos-categorias/ProductForm.jsx'
-import CategoryFrom from '@pages/admin/productos-categorias/CategoryFrom.jsx'
+import BistroPrivate from '@components/bistro/BistroPrivate.jsx'
+import PreOrderManagement from '@pages/bistro/ordenes/PreOrderManagement.jsx'
+import EstadisticasDeVentas from '@pages/bistro/ordenes/EstadisticasDeVentas.jsx'
+import OrdersHistory from '@pages/bistro/ordenes/OrdersHistory.jsx'
+import ProductForm from '@pages/bistro/productos-categorias/ProductForm.jsx'
+import CategoryFrom from '@pages/bistro/productos-categorias/CategoryFrom.jsx'
 
 import Home from '@pages/common/Home.jsx'
 import Login from '@pages/common/Login'
@@ -21,6 +21,7 @@ import { updateSW } from '@components/common/UpdateApp.jsx'
 import CarritoConfirm from '@pages/user/CarritoConfirm.jsx'
 import SelectPayment from '@pages/user/SelectPayment.jsx'
 import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
+import Bistros from '@pages/user/Bistros'
 
 
 
@@ -45,6 +46,10 @@ function App() {
           <Route element={<LoginProtected/>}>
 
             <Route path="/" element={<Home/>}/>
+            <Route path="/bistros" element={<Bistros/>}/>
+            <Route path="/bistros/:bistroName" element={<Home/>}/>
+
+
             <Route path="/profile" element={<Profile/>}/>
             <Route path="/carrito" element={<CarritoConfirm/>}/>
             <Route path="/comprar" element={<SelectPayment/>}/>
@@ -52,7 +57,7 @@ function App() {
             <Route path='/pago-confirmado' element={<PagoConfirmadoPage/>} />
 
 
-            <Route element={<AdminPrivate/>}>
+            <Route element={<BistroPrivate/>}>
               
               <Route path="/OrdersHistory" element={<OrdersHistory/>}/>
               <Route path='/estadisticas' element={<EstadisticasDeVentas/>} />

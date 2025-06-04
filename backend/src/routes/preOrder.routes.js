@@ -9,7 +9,7 @@ export const preOrderRoutes = Router()
 preOrderRoutes.get('/getAllOrders/:idTarget?',getAllPedidos) //me traigo todas las ordenes hechas al perfil 
 
 
-preOrderRoutes.get('/AdminPreOrders/:idAdmin?',pivoteDePreOrdenes) //pivote de preordenes para verlas en el front
+preOrderRoutes.get('/BistroPreOrders/:idBistro?',pivoteDePreOrdenes) //pivote de preordenes para verlas en el front
 
 preOrderRoutes.post('/sendPreOrder',sendPreOrder) //el usuario manda su pre orden para aceptar/rechazar
 

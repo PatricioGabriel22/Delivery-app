@@ -13,9 +13,9 @@ export default function LoginProtected(){
   
 
   const isAuth = localStorage.getItem('auth') === 'true'
-  
 
-    
+
+
 
 
     

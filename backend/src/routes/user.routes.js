@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUser, registerUser, editProfileInfo,agregarCategoriaDeProductoAlLocal,findRestaurant,estadoDelDelivery,cancelarMiCompra } from "../controllers/user.controllers.js"
+import { loginUser, registerUser, editProfileInfo,cancelarMiCompra,getAllOpenBistros } from "../controllers/user.controllers.js"
 
 import jwt from "jsonwebtoken"
 
@@ -38,6 +38,7 @@ userRoutes.use((req,res,next)=>{
 })
 
 
+userRoutes.get('/getAllOpenBistros',getAllOpenBistros)
 
 userRoutes.post('/login',loginUser)
 
@@ -48,10 +49,10 @@ userRoutes.post('/editProfileInfo',editProfileInfo)
 userRoutes.post('/cancelarPedidoUsuario/:idUsuario',cancelarMiCompra)
 
 
-userRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
 
-userRoutes.get('/getRestaurant/:idRestaurant',findRestaurant)
 
-userRoutes.post('/cambiarEstadoDelivery',estadoDelDelivery)
+
+
+
 
 

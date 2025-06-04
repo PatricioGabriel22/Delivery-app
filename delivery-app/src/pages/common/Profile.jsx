@@ -10,11 +10,11 @@ import { useOrdersContext } from "@context/OrdersContext";
 
 import ProfileCard from "@components/common/ProfileCard"
 import ConfirmedOrdersPannel from "@components/common/ConfirmedOrdersPannel"
-import LoggedUsers from "@components/admin/LoggedUsers"
+import LoggedUsers from "@components/bistro/LoggedUsers"
 
 import { MdArrowBackIosNew } from "react-icons/md";
 
-const adminButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
+const bistroButtons = ['Todos los pedidos','Pre-ordenes','Agregar categoria/producto']
 
 export default function Profile(){
 
@@ -57,12 +57,12 @@ export default function Profile(){
                     )
                 }
                 
-                {userInfo.rol === 'admin'&&  (
+                {userInfo.rol === 'bistro'&&  (
 
                 <div className="flex flex-col justify-center pt-10 gap-x-20 gap-y-10 flex-wrap w-full  p-2
                     md:w-full md:flex-row md:justify-around">
 
-                    {adminButtons.map(button=>{
+                    {bistroButtons.map(button=>{
 
                         let dirToGo
 

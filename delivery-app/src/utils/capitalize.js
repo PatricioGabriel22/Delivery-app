@@ -16,7 +16,7 @@ export function ccapitalizer_3000(word){
         if(splittedWords[i] !== 'y' || splittedWords[i] !== 'a') {
 
             splittedWords[i] = splittedWords[i][0].toUpperCase() +splittedWords[i].slice(1) 
-            //slice(1) me toma hasta el final
+                                                                                 //slice(1) me toma hasta el final
         } 
 
         

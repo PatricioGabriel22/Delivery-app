@@ -8,6 +8,7 @@ import { useLoginContext } from "@context/LoginContext";
 import { useSocketContext } from "@context/SocketContext";
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
+import { IoStorefrontSharp } from "react-icons/io5";
 
 export default function ProfileCard({ userInfo }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,7 +29,7 @@ export default function ProfileCard({ userInfo }) {
     setIsEditing(false);
 
     const editPayload = {
-        userID:userInfo.id,
+        userID:userInfo._id,
         editableInfo
     }
 
@@ -65,8 +66,15 @@ export default function ProfileCard({ userInfo }) {
         {/* Header del perfil */}
         <div className="flex items-center gap-4 border-b pb-4">
           <div className="bg-red-100 p-3 rounded-full">
-            <FaRegUser size={40} className="text-red-700" />
+            {userInfo.rol ? (
+              <IoStorefrontSharp size={40} className="text-red-700"/>
+              
+            ):(
+
+              <FaRegUser size={40} className="text-red-700" />
+            )}
           </div>
+          
           <div>
             {isEditing ? (
               <>
@@ -168,12 +176,12 @@ export default function ProfileCard({ userInfo }) {
         <div className="flex ">
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              userInfo.rol === "admin"
+              userInfo.rol === "bistro"
                 ? "bg-red-200 text-red-800"
                 : "bg-blue-200 text-blue-800"
             }`}
           >
-            { userInfo.rol !== "admin" ? "cliente" : "admin"}
+            { userInfo.rol !== "bistro" ? "cliente" : "bistro"}
           </span>
 
           <p 

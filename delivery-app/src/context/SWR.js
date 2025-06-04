@@ -5,7 +5,7 @@ import axios from 'axios'
 
 
 //--- CREO EL CATALOGO CON BASE EN LAS CATEGORIAS QUE TIENE REGISTRADAS EL ADMIN---
-async function getAllCatalogFromAdmin(url){
+async function getAllCatalogFromBistro(url){
 
     const res = await axios.get(url, { withCredentials: true })
     return res.data
@@ -24,11 +24,11 @@ export function useCatalogMaker(urlAPI){
         revalidateOnFocus: true
     }
 
-    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromAdmin,SWRoptions)
+    const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromBistro,SWRoptions)
 
 
     return {
-        catalogoDelAdmin: data?.catalogoDelAdmin || [],
+        catalogoDelBistro: data?.catalogoDelBistro || [],
         isLoading,
         isError: error,
         refresh: mutate
@@ -66,7 +66,7 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
             targetURL = paginatedURL
                 
             
-        } else if(userInfo.rol === "admin"){
+        } else if(userInfo.rol === "bistro"){
 
             paginatedURL = `${fetchFlag ? url : ''}&pagination=${true}&page=${page}&limit=${limit}`;
             targetURL = paginatedURL
@@ -114,12 +114,12 @@ export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
 
     
 
-    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}&adminID=${userInfo.id}`:null
+    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}&bistroID=${userInfo.id}`:null
 
     
     
 
-    const shouldFetch = desde && hasta && userInfo.rol === 'admin'
+    const shouldFetch = desde && hasta && userInfo.rol === 'bistro'
     
     const targetURL = shouldFetch ? `${url}/obtenerTodosLosPagos${query}`:null
 
@@ -134,5 +134,30 @@ export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
 }
 
 
+async function getAllBistros(url){
 
+    try {
+        const res = await axios.get(url, { withCredentials: true })
+        console.log(res)
+        return res.data
+        
+    } catch (error) {
+        console.log(error)
+    }
 
+    
+}
+
+export function useBistroList(url){
+
+    const targetURL = `${url}/getAllOpenBistros`
+
+    const {data,error,isLoading,mutate} = useSWR(targetURL,getAllBistros,{revalidateOnFocus:false})
+    
+    return{
+        openBistros: data?.openBistros,
+        isLoading,
+        error,
+        refreshopenBistros:mutate
+    }
+}

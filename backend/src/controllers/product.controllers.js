@@ -1,22 +1,24 @@
+import { Socket } from "socket.io"
 import { cloudinary } from "../cloudinary.js"
 import productSchema from "../models/product.schema.js"
 import { io } from "../webSocket.js" 
 
-import { connectedAdmins } from "../webSocket.js"
+import { connectedBistros } from "../webSocket.js"
+import { modifyData } from "./auxFunctions.js"
 
-const restauranteAdmin = '6806b8fe2b72a9697aa59e5f' //serian los admins
+// const restauranteBistro = '6806b8fe2b72a9697aa59e5f' //serian los bistros
 
 
 export async function catalogMaker(req,res){
-    const {idAdmin} = req.params
+    const {idBistro} = req.params
 
 
     try {
-        const catalogoDelAdmin = await productSchema.find({adminOwner:idAdmin})
+        const catalogoDelBistro = await productSchema.find({bistroOwner:idBistro})
 
         
 
-        res.json({catalogoDelAdmin})
+        res.json({catalogoDelBistro})
     } catch (error) {
         console.log(error)
     }
@@ -28,7 +30,7 @@ export async function catalogMaker(req,res){
 export const dataFormNewProduct = async(req,res)=>{
     
 
-    const {idAdmin} = req.params
+    const {idBistro} = req.params
     const {nombre,descripcion,categoria,precio,disponible} = req.body
         
 
@@ -37,7 +39,7 @@ export const dataFormNewProduct = async(req,res)=>{
     try {
         
         const nuevoProducto = new productSchema({
-            adminOwner:idAdmin,
+            bistroOwner:idBistro,
             nombre,
             descripcion,
             categoria,
@@ -85,7 +87,7 @@ export const changeStatus = async (req,res)=>{
         if(target){
             console.log("entramos al if del socket")
             
-            //to(connectedAdmins[restauranteAdmin])
+            //to(connectedBistros[restauranteBistro])
             io.emit('AlterProductStatus',{
                 target
             })
@@ -117,7 +119,7 @@ export const editProductInfo = async (req,res)=>{
 
     try {
 
-        const targetPrevio = await productSchema.findById(id)
+
 
         const updatedFields = {
             nombre,
@@ -127,23 +129,9 @@ export const editProductInfo = async (req,res)=>{
             public_IMG_ID: temporalIMG ? logoApp.filename : "",
         }
 
-        if(req.file){
-            const newImagen = req.file.path
-            updatedFields.img = newImagen
-            updatedFields.public_IMG_ID = req.file.filename
-
-            if(targetPrevio.public_IMG_ID){
-
-                await cloudinary.uploader.destroy(targetPrevio.public_IMG_ID)
-            }
-
-        }
-
-        const targetUpdated = await productSchema.findByIdAndUpdate(id,updatedFields,{new:true})
+        modifyData(id,productSchema,updatedFields,req.file,io,"cardProductoActualizada")
 
 
-
-        io.emit('cardProductoActualizada',targetUpdated)
 
     } catch (error) {
         
