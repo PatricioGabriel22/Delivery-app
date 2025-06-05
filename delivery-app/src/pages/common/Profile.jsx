@@ -44,11 +44,14 @@ export default function Profile(){
 
     return(
         <Fragment>
-            <div className="flex flex-col relative  ">
+            <div className="flex flex-col ">
 
+
+            
 
 
                 <ProfileCard userInfo={userInfo} />
+
 
                 {
                     !userInfo.rol  && (
@@ -59,8 +62,7 @@ export default function Profile(){
                 
                 {userInfo.rol === 'bistro'&&  (
 
-                <div className="flex flex-col justify-center pt-10 gap-x-20 gap-y-10 flex-wrap w-full  p-2
-                    md:w-full md:flex-row md:justify-around">
+                <div className="flex flex-col md:flex-row justify-center  gap-x-20 gap-y-10 flex-wrap w-full  p-2 md:justify-around">
 
                     {bistroButtons.map(button=>{
 
@@ -78,12 +80,13 @@ export default function Profile(){
                                         <button className="cursor-pointer">{button}</button>
                                     </Link>
                                 ) : (
-                                    <div className="relative w-fit m-auto">
+                                    <div className="relative ">
                                         <button
                                         onClick={() => setOpen(!open)}
-                                        className="bg-red-600 text-white px-4  rounded-lg shadow-md hover:bg-red-700 transition cursor-pointer"
+                                        className="bg-red-600 text-white text-center rounded-lg  hover:bg-red-700 transition cursor-pointer"
                                         >
-                                        Agregar categoría/producto
+
+                                            Agregar categoría/producto
                                         </button>
                                 
                                         {open && (
@@ -111,18 +114,20 @@ export default function Profile(){
 
                         )})
                     }
+                    <Link to={"/configuraciones"}>
 
-
+                        <button className="p-3 rounded bg-yellow-300 text-black border-2 border-red-600 hover:cursor-pointer">Configuraciones</button>
+                    </Link>
                 </div>
                 )}
-
+ 
                 {userInfo.rol && (
 
-                <span className=" mt-15 pl-2 pb-2 self-center md:self-start  ">
+                <span className=" mt-10 p-2 self-center md:self-start m-auto ">
                     <LoggedUsers/>
                 </span>
-                )}   
 
+                )}  
 
             </div>
         </Fragment>

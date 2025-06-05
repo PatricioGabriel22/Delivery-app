@@ -1,6 +1,10 @@
 
+export function createSlug(target){
+    return target.replace(/\s+/g, '-').toLowerCase()
+}
+
 export function navigateToBistro(bistroName,navigate){
-        const target = bistroName.replace(/\s+/g, '-').toLowerCase()
+        const target = createSlug(bistroName)
         navigate(`/bistros/${target}`)
     }
 

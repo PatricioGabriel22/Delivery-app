@@ -1,15 +1,16 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBistroList } from "@context/SWR";
 import { useLoginContext } from "@context/LoginContext";
 
 import Loading from '@components/common/Loading.jsx'
+import Nav from '@components/common/Nav.jsx'
 
-import {ccapitalizer_3000} from '../../utils/capitalize.js'
 
 import Fuse from 'fuse.js'
 import Swal from 'sweetalert2'
 import { navigateToBistro } from "../../utils/envioFunctions.js";
+import {ccapitalizer_3000} from '../../utils/capitalize.js'
 
 
 export default function Bistros(){
@@ -19,9 +20,7 @@ export default function Bistros(){
 
     const navigate = useNavigate()
     const [showDelivery,setShowDelivery] = useState(false)
-    // useEffect(()=>{console.log(openBistros)},[openBistros])
-
-
+    const [indexDelivery,setIndexDelivery] = useState(null)
 
     function checkDeliveryZone(bistroData){
         console.log(bistroData)
@@ -59,9 +58,29 @@ export default function Bistros(){
         navigateToBistro(username,navigate)
     }
 
+    function checkOwnershipAndContinue(bistroData,userData){
+        if(userData.rol && userData.username !== bistroData.username){
+            Swal.fire("Por favor ingresá como usuario para visitar otros bistros")
+            return
+        }
+
+        localStorage.setItem('bistro',bistroData.username)
+        localStorage.setItem('bistroNumber',bistroData.telefono)
+
+
+        checkDeliveryZone(bistroData)
+    }
+
+    function verDeliveryZonas(flag,index){
+        setShowDelivery(!flag)
+        setIndexDelivery(index)
+    }
+    
+
     return(
         <Fragment>
             <div className="flex flex-col w-full items-center ">
+
 
                 {isLoading ?  (
                     <Loading msg={"Cargando locales abiertos"} />
@@ -75,7 +94,7 @@ export default function Bistros(){
 
 
                 {openBistros?.map((bistro,index)=>(
-                    <div className="flex p-2 w-[98%] md:w-120 justify-between bg-white text-b rounded items-center cursor-pointer border-3 border-red-600" key={index}
+                    <div className="flex p-2 m-5 w-[98%] md:w-120 justify-between bg-white text-b rounded items-center cursor-pointer border-3 border-red-600" key={index}
                         >
 
                         <div className="flex flex-col text-black  ">
@@ -88,9 +107,9 @@ export default function Bistros(){
                             <p className="font-semibold">📍{ccapitalizer_3000(bistro.localidad)}</p>
                         
 
-                            <span className="pt-3" onClick={()=>setShowDelivery(!showDelivery)}>🧭Ver zonas de delivery</span>
+                            <span className="pt-3" onClick={()=>verDeliveryZonas(showDelivery,index)}>🧭Ver zonas de delivery</span>
 
-                            <div className={`h-20 ${showDelivery ? "block":"hidden"} overflow-y-hidden `}>
+                            <div className={`h-20 ${showDelivery && indexDelivery === index ? "block":"hidden"} overflow-y-hidden `}>
 
                                 {showDelivery && bistro.zonas_delivery.map((zona,index)=>(
                                     <p className="text-black" key={index}>-{ccapitalizer_3000(zona.zona)}</p>
@@ -100,12 +119,14 @@ export default function Bistros(){
 
                         </div>
                                 {/* navigateToBistro(bistro.username) */}
-                        <div className="flex flex-col self-start " onClick={()=>checkDeliveryZone(bistro)}>
+                        <div className="flex flex-col self-start " onClick={()=>checkOwnershipAndContinue(bistro,userInfo)}>
                             <img loading="lazy" src={bistro.imgBistro || `./victorina-logo.jpg`} width={190} className="rounded  "  />
                             <span className="text-black text-center cursor-pointer font-bold text-lg" >Comprar!</span>
                         </div>
                     </div>
                 ))}
+
+               <Nav/> 
             </div>
         </Fragment>
     )

@@ -101,8 +101,7 @@ export function SocketProvider({children}){
     },[userInfo,socket.connected])
 
 
-    //me traigo las ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
-
+    //me traigo las pre-ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
     useEffect(() => {
 
         if (allPreOrdersFromBistro) {
@@ -113,7 +112,7 @@ export function SocketProvider({children}){
     }, [allPreOrdersFromBistro]);       
 
 
-    //evento del socket con usuarios conectaodos (usuariosConectados)
+    //evento del socket con usuarios conectaodos (usuariosConectados) loggedUsers
     useEffect(()=>{
         socket.on('usuariosConectados',(data)=>{
             
@@ -324,6 +323,58 @@ export function SocketProvider({children}){
       
     },[refresh,socket])
 
+
+      //eventos sockets de cambio de estado, edicion de producto, delivery
+  useEffect(()=>{
+
+    socket.on('AlterProductStatus', (data) => {
+    
+      refresh(prevData => {
+        if (!prevData) return prevData
+    
+        const updatedStatuses = prevData.catalogoDelBistro.map(item => {
+          if (item._id === data.target._id) {
+            return { ...item, disponible: data.target.disponible }
+          }
+          return item
+        })
+  
+        return {
+          ...prevData,
+          catalogoDelBistro: updatedStatuses
+        }
+      }, false) // false para evitar revalidar desde el servidor
+    })
+
+    socket.on('cardProductoActualizada',(data)=>{
+      refresh(prevData=>{
+        const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
+
+          if(prevItem._id === data._id){
+            return {...data}
+          }else{
+            return{...prevItem}
+          }
+        })
+
+        return{
+          ...prevData,
+          catalogoDelBistro:updatedArray
+        }
+
+      })
+    })
+
+   
+
+    return ()=>{
+      socket.off('AlterProductStatus')
+      socket.off('cardProductoActualizada')
+      
+    }
+
+  },[])
+    
 
     return(
         <socketContext.Provider value={{

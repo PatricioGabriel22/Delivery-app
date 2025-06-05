@@ -1,6 +1,5 @@
-import userSchema from "../models/user.schema.js"
-
-
+import bistroSchema from "../models/bistro.schema.js"
+import { io } from "../webSocket.js" 
 
 
 export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
@@ -8,7 +7,7 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
     try {
 
-        const nuevaCategoriaAgregada = await userSchema.findByIdAndUpdate(id,{$addToSet : {categorias: categoria}},{new:true})
+        const nuevaCategoriaAgregada = await bistroSchema.findByIdAndUpdate(id,{$addToSet : {categorias: categoria}},{new:true})
 
        
 
@@ -37,8 +36,8 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 export const findRestaurant = async (req,res) =>{
     const {idRestaurant} = req.params
-
-    const targetRestaurant = await userSchema.findById(idRestaurant)
+    console.log(idRestaurant)
+    const targetRestaurant = await bistroSchema.findById(idRestaurant)
 
     res.status(200).json({deliveryStatus:targetRestaurant.doDelivery})
 }
@@ -47,7 +46,7 @@ export const estadoDelDelivery = async (req,res)=>{
     const {idRestaurant,flagDelivery} = req.body
 
     try {
-        const target = await userSchema.findByIdAndUpdate(idRestaurant,{$set:{doDelivery:!flagDelivery}},{new:true})
+        const target = await bistroSchema.findByIdAndUpdate(idRestaurant,{$set:{doDelivery:!flagDelivery}},{new:true})
         
         io.emit('cambioDeEstadoDelivery',target.doDelivery)
 

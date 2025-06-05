@@ -1,10 +1,13 @@
+import { v2 as cloudinary } from 'cloudinary'
+
+
 export async function modifyData(idTarget,schema,updateParams,file,socket,eventName){
     const targetPrevio = await schema.findById(idTarget)
 
     if(file){
-        const newImagen = req.file.path
+        const newImagen = file.path
         updateParams.img = newImagen
-        updateParams.public_IMG_ID = req.file.filename
+        updateParams.public_IMG_ID = file.filename
 
         if(targetPrevio.public_IMG_ID){
 

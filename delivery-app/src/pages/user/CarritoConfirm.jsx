@@ -188,7 +188,7 @@ export default function CarritoConfirm(){
 
 
                         <RiDeleteBin6Line  
-                            size={20} 
+                            size={45} 
                             className={`${edit? "block":"invisible"}`}
                             onClick={()=>cartHandler(carrito,"delete",item.nombre,item.precio)}
                             />

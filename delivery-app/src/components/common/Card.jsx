@@ -165,6 +165,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   }
 
+
+
+  
   const alertDelete = ()=>{
     toast((t) => (
       <span className="flex flex-col ">
