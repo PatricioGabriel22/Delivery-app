@@ -11,6 +11,7 @@ import { OrderProvider } from '@context/OrdersContext.jsx'
 import {Toaster} from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
 import { CatalogoProvider } from '@context/CatalogContext.jsx'
+import { BistroProvider } from './context/BistrosContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   
@@ -18,35 +19,32 @@ createRoot(document.getElementById('root')).render(
 
     <BrowserRouter>
       <LoginProvider>
-        
-        <ShoppingProvider>
-          <CatalogoProvider>
-          <OrderProvider>
-            <SocketProvider>
+        <BistroProvider>
+          <ShoppingProvider>
+            <CatalogoProvider>
+            <OrderProvider>
+              <SocketProvider>
                 
+                <App />
+                <Toaster
+                  position="top-right"
+                  reverseOrder={false}
+                  toastOptions={{
+                    duration: 3000,
+                    style: {
+                      background: '#fff',
+                      color: '#333',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                    },
+                  }}
+                />  
 
-          
-              <App />
-              <Toaster
-                position="top-right"
-                reverseOrder={false}
-                toastOptions={{
-                  duration: 3000,
-                  style: {
-                    background: '#fff',
-                    color: '#333',
-                    borderRadius: '8px',
-                    padding: '12px 16px',
-                  },
-                }}
-              />
-                
-
-            </SocketProvider>
-          </OrderProvider>
-          </CatalogoProvider>
-        </ShoppingProvider>
-      
+              </SocketProvider>
+            </OrderProvider>
+            </CatalogoProvider>
+          </ShoppingProvider>
+        </BistroProvider>
       </LoginProvider>
     </BrowserRouter>     
 

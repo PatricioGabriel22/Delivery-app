@@ -7,35 +7,37 @@ import Card from "@components/common/Card";
 
 
 import { useShoppingContext } from "@context/ShoppingContext.jsx";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 
 import victorinaLogo from '../../assets/victorina-logo.jpg'
 import SearchingBar from "@components/common/SearchingBar.jsx";
 import { useLoginContext } from "@context/LoginContext.jsx";
 // import { useSocketContext } from "@context/SocketContext.jsx";
+import { useCatalogContext } from "@context/CatalogContext.jsx";
+import { useBistroContext } from "../../context/BistrosContext.jsx";
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
 
 import Loading from "@components/common/Loading.jsx";
 import Error from "@components/common/Error.jsx";
-import { useCatalogContext } from "@context/CatalogContext.jsx";
 
 
-import { Navigate,useParams } from "react-router-dom";
-import { createSlug } from "../../utils/envioFunctions.js";
 import Help from "../user/Help.jsx";
 import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
+import { useParams } from "react-router-dom";
 
 
 
 export default function Home() {
   
+
   const {bistroName} = useParams()
-  // const {socket} = useSocketContext()
+
   const {carrito} = useShoppingContext()
   const {userInfo} = useLoginContext()
   const {catalogoDelBistro,isLoading,isError} = useCatalogContext()
+  const {checkOwnershipAndContinue} = useBistroContext()
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
@@ -47,9 +49,14 @@ export default function Home() {
 
 
 
-  
-  const slug = createSlug(userInfo.username)
-  if(userInfo.rol && bistroName !== slug) return <Navigate to="/bistros"/>
+  useEffect(()=>{
+
+    if(userInfo.rol){
+
+      checkOwnershipAndContinue({userData:userInfo,param:bistroName})
+    }
+
+  },[checkOwnershipAndContinue,userInfo,bistroName])
 
 
 
@@ -90,10 +97,10 @@ export default function Home() {
         )}
 
 
-      {(!isLoading && !isError) && CategoriasProductos.map(categoria=>{
+      {(!isLoading && !isError) && CategoriasProductos.map((categoria,index)=>{
         
         return(
-          <Fragment>
+          <Fragment key={index}>
 
             <h2 
             
@@ -121,7 +128,7 @@ export default function Home() {
                     if(producto.categoria === categoria){
                       
                       return (
-                        <Fragment>
+                        <Fragment key={index}>
         
                           <Card key={index} 
                           id={producto._id}

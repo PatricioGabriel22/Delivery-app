@@ -1,8 +1,9 @@
 import { BadgeHelp, Copy } from "lucide-react";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 
 
 import { useLoginContext } from "@context/LoginContext.jsx";
+import { useBistroContext } from "../../context/BistrosContext";
 
 
 
@@ -12,11 +13,12 @@ import { useLoginContext } from "@context/LoginContext.jsx";
 export default function Help(){
 
     const {userInfo} = useLoginContext()
-    
+    const {bistroInfo} = useBistroContext()
 
     const [help,setHelp] = useState(false)
     const [copiadoIndex, setCopiadoIndex] = useState(null)  
-    const numeros = [{id:localStorage.getItem('bistro') || userInfo.username, telefono:localStorage.getItem('bistroNumber') || userInfo.telefono},{id:"Soporte",telefono:1151278287}]
+
+    const numeros = useMemo(()=>[{id: bistroInfo.username || userInfo.username, telefono:bistroInfo.telefono || userInfo.telefono},{id:"Soporte",telefono:1151278287}],[bistroInfo,userInfo])
 
     const copiarAlPortapapeles = async (num,index) => {
         try {

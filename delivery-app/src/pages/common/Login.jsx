@@ -7,7 +7,8 @@ import ShowPassword from "@components/common/ShowPassword.jsx";
 import toast from "react-hot-toast";
 import InstallPwaBTN from "../../components/user/InstallPwaBTN";
 import AsBistro from "../../components/bistro/AsBistro";
-import { navigateToBistro } from "../../utils/envioFunctions";
+import { useBistroContext } from "../../context/BistrosContext";
+
 
 
 
@@ -16,9 +17,10 @@ export default function Login(){
   const [logginIn,setLogginIn] = useState(false)
   const [showPassword,setShowPassword] = useState(false)
 
+  
   const navigate = useNavigate()
-
   const {renderORLocalURL,setUserInfo} = useLoginContext()
+  const {navigateToBistro} = useBistroContext()
 
   const CAMPOS_LOGIN = ['bistroFlag','Nombre de usuario','Contraseña']
 
@@ -55,6 +57,7 @@ export default function Login(){
           if(res.data.userInfo.rol){
             return navigateToBistro(res.data.userInfo.username,navigate)
           }
+
           navigate('/bistros')
         }
 
@@ -89,7 +92,7 @@ export default function Login(){
 
             {CAMPOS_LOGIN.map((campo,index)=>(
               campo === 'bistroFlag' ? (
-                <AsBistro txt={"Ingresar como empresa"}/>
+                <AsBistro txt={"Ingresar como empresa"} key={index}/>
               ):(
                 
                 <input key={index} 

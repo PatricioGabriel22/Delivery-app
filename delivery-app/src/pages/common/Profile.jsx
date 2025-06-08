@@ -116,7 +116,7 @@ export default function Profile(){
                     }
                     <Link to={"/configuraciones"}>
 
-                        <button className="p-3 rounded bg-yellow-300 text-black border-2 border-red-600 hover:cursor-pointer">Configuraciones</button>
+                        <button className="p-3 rounded w-full bg-yellow-300 text-black border-2 border-red-600 hover:cursor-pointer">Configuraciones</button>
                     </Link>
                 </div>
                 )}

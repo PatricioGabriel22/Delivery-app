@@ -1,0 +1,141 @@
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useContext, useState} from "react"
+import { useBistroList } from "./SWR"
+import { useLoginContext } from "./LoginContext.jsx"
+
+import Fuse from 'fuse.js'
+import Swal from 'sweetalert2'
+import { useNavigate } from "react-router-dom"
+
+const bistroContext = createContext()
+
+
+export const useBistroContext = ()=>{
+    const contextHook = useContext(bistroContext)
+    if (!contextHook){
+        throw new Error("Este hook se usa dentro de un provider")
+    }
+    return contextHook
+
+
+}
+
+
+
+
+
+
+export function BistroProvider({children}){
+    const navigate = useNavigate()
+
+    const {renderORLocalURL} = useLoginContext()
+
+    const {openBistros,isLoading} = useBistroList(renderORLocalURL)
+
+    const [bistroInfo,setBistroInfo] = useState(JSON.parse(localStorage.getItem('bistroInfo')) || false)
+
+    function createSlug(target){
+        return target.replace(/\s+/g, '-').toLowerCase()
+    }       
+
+
+
+
+    function bistroHelpDataHandler(bistroData){
+        const {_id,username,telefono} = bistroData
+
+        const aux = {_id:_id,username:username,telefono:telefono}
+
+        localStorage.setItem('bistroInfo',JSON.stringify(aux))
+
+        setBistroInfo(JSON.parse(localStorage.getItem('bistroInfo')))
+    }
+
+
+    function navigateToBistro(bistroName,navigate){
+        const target = createSlug(bistroName)
+
+        navigate(`/bistros/${target}`)
+    }
+
+    function checkDeliveryZone(bistroData,localidad){
+        const {username,imgBistro,zonas_delivery} = bistroData
+
+        const fuse = new Fuse(zonas_delivery,{threshold: 0.3, keys:["zona"]})
+
+        const result = fuse.search(localidad)
+
+        let msg 
+
+
+        if(result.length === 0){
+            msg = "El local no llega a la zona, pero podes comprar y pasar a retirar!"
+            Swal.fire({
+                title: username,
+                text: msg,
+                showCancelButton: true,
+                confirmButtonText:"Comprar y pasar a retirar",
+                cancelButtonText:"Cancelar",
+                draggable:true,
+                imageUrl: imgBistro || `./victorina-logo.jpg`,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: "Logo app"
+            }).then(result=>{
+                const {isConfirmed} = result
+
+                if(isConfirmed){
+                    bistroHelpDataHandler(bistroData)
+                    navigateToBistro(username,navigate)
+                }
+            })
+            
+            return
+        }
+
+        bistroHelpDataHandler(bistroData)
+        navigateToBistro(username,navigate)
+    }
+
+    function checkOwnershipAndContinue({bistroData,userData,param}){
+        
+        if(!bistroData) {
+            const slug = createSlug(userData.username)
+            
+            if(userData.rol && param !== slug) return navigate(`/bistros/${slug}`)
+        }
+
+        if(bistroData){
+
+            if(userData.rol && userData.username !== bistroData.username){
+                Swal.fire("Por favor ingresá como usuario para visitar otros bistros")
+                return
+            }
+    
+            
+        }
+    }
+
+
+
+
+
+
+    return(
+        <bistroContext.Provider value={{
+            openBistros,isLoading,
+            navigateToBistro,createSlug,
+            checkOwnershipAndContinue,checkDeliveryZone,
+            bistroInfo
+        }}>
+
+
+
+        {children}
+        </bistroContext.Provider>
+    )
+}
+
+
+
+

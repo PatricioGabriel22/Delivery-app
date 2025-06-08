@@ -191,7 +191,7 @@ export default function CarritoConfirm(){
                             size={45} 
                             className={`${edit? "block":"invisible"}`}
                             onClick={()=>cartHandler(carrito,"delete",item.nombre,item.precio)}
-                            />
+                        />
 
                     </div>
                 

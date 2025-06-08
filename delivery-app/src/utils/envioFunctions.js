@@ -1,12 +1,5 @@
 
-export function createSlug(target){
-    return target.replace(/\s+/g, '-').toLowerCase()
-}
 
-export function navigateToBistro(bistroName,navigate){
-        const target = createSlug(bistroName)
-        navigate(`/bistros/${target}`)
-    }
 
 export function decidirCostoEnvio(formaEntrega,localidad){
 

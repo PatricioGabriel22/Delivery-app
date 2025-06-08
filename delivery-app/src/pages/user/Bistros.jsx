@@ -1,75 +1,24 @@
 import { Fragment, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useBistroList } from "@context/SWR";
+
 import { useLoginContext } from "@context/LoginContext";
 
 import Loading from '@components/common/Loading.jsx'
 import Nav from '@components/common/Nav.jsx'
 
 
-import Fuse from 'fuse.js'
-import Swal from 'sweetalert2'
-import { navigateToBistro } from "../../utils/envioFunctions.js";
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
+import { useBistroContext } from "../../context/BistrosContext.jsx";
 
 
 export default function Bistros(){
 
-    const {renderORLocalURL,userInfo} = useLoginContext()
-    const {openBistros,isLoading} = useBistroList(renderORLocalURL)
+    const {userInfo} = useLoginContext()
+    const {checkDeliveryZone,checkOwnershipAndContinue,openBistros,isLoading} = useBistroContext()
 
-    const navigate = useNavigate()
     const [showDelivery,setShowDelivery] = useState(false)
     const [indexDelivery,setIndexDelivery] = useState(null)
 
-    function checkDeliveryZone(bistroData){
-        console.log(bistroData)
-        const {username,imgBistro,zonas_delivery} = bistroData
 
-        const fuse = new Fuse(zonas_delivery,{threshold: 0.3, keys:["zona"]})
-
-        const result = fuse.search(userInfo.localidad)
-
-        let msg 
-
-
-        if(result.length === 0){
-            msg = "El local no llega a la zona, pero podes comprar y pasar a retirar!"
-            Swal.fire({
-                title: username,
-                text: msg,
-                showCancelButton: true,
-                confirmButtonText:"Seguir con mi compra",
-                cancelButtonText:"Cancelar",
-                draggable:true,
-                imageUrl: imgBistro || `./victorina-logo.jpg`,
-                imageWidth: 400,
-                imageHeight: 200,
-                imageAlt: "Logo app"
-            }).then(result=>{
-                const {isConfirmed} = result
-    
-                if(isConfirmed) navigateToBistro(username,navigate)
-            })
-            
-            return
-        }
-
-        navigateToBistro(username,navigate)
-    }
-
-    function checkOwnershipAndContinue(bistroData,userData){
-        if(userData.rol && userData.username !== bistroData.username){
-            Swal.fire("Por favor ingresá como usuario para visitar otros bistros")
-            return
-        }
-
-        localStorage.setItem('bistro',bistroData.username)
-        localStorage.setItem('bistroNumber',bistroData.telefono)
-
-
-        checkDeliveryZone(bistroData)
-    }
 
     function verDeliveryZonas(flag,index){
         setShowDelivery(!flag)
@@ -118,8 +67,12 @@ export default function Bistros(){
                             </div>
 
                         </div>
-                                {/* navigateToBistro(bistro.username) */}
-                        <div className="flex flex-col self-start " onClick={()=>checkOwnershipAndContinue(bistro,userInfo)}>
+                                {/* Debo chequear que no sea otro local y que si la zona de delivery llega al usuario) */}
+                        <div className="flex flex-col self-start " 
+                            onClick={()=>{
+                                checkOwnershipAndContinue({bistroData:bistro,userData:userInfo})
+                                checkDeliveryZone(bistro,userInfo.localidad)
+                            }}>
                             <img loading="lazy" src={bistro.imgBistro || `./victorina-logo.jpg`} width={190} className="rounded  "  />
                             <span className="text-black text-center cursor-pointer font-bold text-lg" >Comprar!</span>
                         </div>
