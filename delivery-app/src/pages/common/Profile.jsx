@@ -46,13 +46,7 @@ export default function Profile(){
         <Fragment>
             <div className="flex flex-col ">
 
-
-            
-
-
                 <ProfileCard userInfo={userInfo} />
-
-
                 {
                     !userInfo.rol  && (
 
@@ -62,9 +56,9 @@ export default function Profile(){
                 
                 {userInfo.rol === 'bistro'&&  (
 
-                <div className="flex flex-col md:flex-row justify-center  gap-x-20 gap-y-10 flex-wrap w-full  p-2 md:justify-around">
+                <div className="flex flex-col md:flex-row justify-center flex-wrap w-full md:justify-around">
 
-                    {bistroButtons.map(button=>{
+                    {bistroButtons.map((button,index)=>{
 
                         let dirToGo
 
@@ -74,9 +68,9 @@ export default function Profile(){
 
 
                         return(
-                            <span  className="p-2 rounded-lg bg-red-600 cursor-pointer text-center" >
+                            <span  className="flex p-2 rounded-lg bg-red-600 cursor-pointer text-center items-center" key={index} >
                                 {button !== "Agregar categoria/producto" ? (
-                                    <Link to={dirToGo} className="p-2 rounded-lg bg-red-600  text-center " >
+                                    <Link to={dirToGo}  >
                                         <button className="cursor-pointer">{button}</button>
                                     </Link>
                                 ) : (
@@ -90,15 +84,15 @@ export default function Profile(){
                                         </button>
                                 
                                         {open && (
-                                        <div className="absolute z-10 mt-2 w-full bg-white border border-red-500 rounded-lg ">
+                                        <div className="absolute z-10  w-full bg-white border border-red-500 rounded-lg ">
                                             <Link to={"/addProduct"} >
-                                                <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
+                                                <button className="cursor-pointer w-full px-4 py-2 text-center text-red-600">
                                                 Producto
                                                 </button>
                                             </Link>
 
                                             <Link to={"/addCategory"} >
-                                                <button className="cursor-pointer w-full px-4 py-2 text-left  text-red-600">
+                                                <button className="cursor-pointer w-full px-4 py-2 text-center text-red-600">
                                                 Categoria
                                                 </button>
                                             </Link>
@@ -116,7 +110,7 @@ export default function Profile(){
                     }
                     <Link to={"/configuraciones"}>
 
-                        <button className="p-3 rounded w-full bg-yellow-300 text-black border-2 border-red-600 hover:cursor-pointer">Configuraciones</button>
+                        <button className="p-2 rounded w-full bg-yellow-300 text-black border-2 border-red-600 hover:cursor-pointer">Configuraciones</button>
                     </Link>
                 </div>
                 )}

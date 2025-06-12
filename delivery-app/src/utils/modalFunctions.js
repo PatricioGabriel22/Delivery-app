@@ -1,13 +1,13 @@
-export   function openCloseEditPreviewModal(modalTarget,action){
+export function openCloseEditPreviewModal(modalTarget,action){
 
-    if(action === 'open'){
+  if(action === 'open'){
 
-      modalTarget.current.showModal()
-      modalTarget.current.scrollTop = 0
+    modalTarget.current.showModal()
+    modalTarget.current.scrollTop = 0
 
-    }else if(action === 'close'){
+  }else if(action === 'close'){
 
-      modalTarget.current.close()
+    modalTarget.current.close()
 
-    }
   }
+}

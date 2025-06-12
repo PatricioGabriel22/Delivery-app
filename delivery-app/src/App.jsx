@@ -22,6 +22,7 @@ import CarritoConfirm from '@pages/user/CarritoConfirm.jsx'
 import SelectPayment from '@pages/user/SelectPayment.jsx'
 import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
 import Bistros from '@pages/user/Bistros'
+import Configuraciones from '@pages/bistro/Configuraciones'
 
 
 
@@ -65,6 +66,8 @@ function App() {
               <Route path="/PreOrderManagement" element={<PreOrderManagement/>}/>
               <Route path="/addProduct" element={<ProductForm/>}/>
               <Route path="/addCategory" element={<CategoryFrom/>}/>
+              <Route path="/configuraciones" element={<Configuraciones/>}/>
+
 
 
 

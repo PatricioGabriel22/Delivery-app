@@ -12,15 +12,15 @@ import { IoStorefrontSharp } from "react-icons/io5";
 
 export default function ProfileCard({ userInfo }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editableInfo, setEditableInfo] = useState({ ...userInfo });
-
-    const {renderORLocalURL,setUserInfo} = useLoginContext()
-    const {socket} = useSocketContext()
-
+  
+  const {renderORLocalURL,setUserInfo} = useLoginContext()
+  const {socket} = useSocketContext()
+  
+  const [editableInfo, setEditableInfo] = useState({ ...userInfo })
 
   const handleChange = (e) => {
  
-    setEditableInfo({ ...editableInfo, [e.target.name]: e.target.value });
+    setEditableInfo({ ...editableInfo, [e.target.name]: e.target.value })
   };
 
   const handleSave = () => {

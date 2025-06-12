@@ -7,6 +7,8 @@ export function capitalize(word){
 
 
 export function ccapitalizer_3000(word){
+    
+
 
     let wordCapitalizered 
 

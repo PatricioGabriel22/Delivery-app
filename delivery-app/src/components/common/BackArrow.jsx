@@ -8,7 +8,7 @@ export default function BackArrow(){
     const location = useLocation();
     const navigate = useNavigate();
 
-    const hideOnRoutes = ["/", "/login"]
+    const hideOnRoutes = ["/", "/login","/bistros"]
 
     if (hideOnRoutes.includes(location.pathname)) return null
 
