@@ -1,18 +1,13 @@
 import { Router } from "express";
 import {catalogMaker, dataFormNewProduct, changeStatus,editProductInfo,eliminarProductoDB } from "../controllers/product.controllers.js";
-import { storageCustomCloudinary } from '../cloudinary.js'
-import multer from 'multer'
+import { multerMiddleware } from "../middlewares/imageCloudinaryFunc.js";
+
 
 
 export const productRoutes = Router()
 
 
 
-function multerMiddleware(){
-    // const storage = multer.memoryStorage() //guardo en ram del servidor la imagen
-    const upload = multer({storage: storageCustomCloudinary}) //storage de cloudinary
-    return upload
-}
 
 
 productRoutes.get('/bringAllCatalog/:idBistro', catalogMaker)

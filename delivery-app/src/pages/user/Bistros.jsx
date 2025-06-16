@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { useLoginContext } from "@context/LoginContext";
 
@@ -8,11 +8,13 @@ import Nav from '@components/common/Nav.jsx'
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
 import { useBistroContext } from "../../context/BistrosContext.jsx";
+import { useSocketContext } from "../../context/SocketContext.jsx";
 
 
 export default function Bistros(){
 
     const {userInfo} = useLoginContext()
+   
     const {checkDeliveryZone,checkOwnershipAndContinue,openBistros,isLoading} = useBistroContext()
 
     const [showDelivery,setShowDelivery] = useState(false)
@@ -25,6 +27,7 @@ export default function Bistros(){
         setIndexDelivery(index)
     }
     
+    useEffect(()=>{console.log(openBistros)},[openBistros])
 
     return(
         <Fragment>

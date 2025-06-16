@@ -10,7 +10,7 @@ import { useShoppingContext } from "@context/ShoppingContext.jsx";
 import { Fragment, useEffect, useState } from "react";
 
 
-import victorinaLogo from '../../assets/victorina-logo.jpg'
+// import victorinaLogo from '../../assets/victorina-logo.jpg'
 import SearchingBar from "@components/common/SearchingBar.jsx";
 import { useLoginContext } from "@context/LoginContext.jsx";
 // import { useSocketContext } from "@context/SocketContext.jsx";
@@ -34,10 +34,10 @@ export default function Home() {
 
   const {bistroName} = useParams()
 
-  const {carrito} = useShoppingContext()
   const {userInfo} = useLoginContext()
+  const {carrito} = useShoppingContext()
   const {catalogoDelBistro,isLoading,isError} = useCatalogContext()
-  const {checkOwnershipAndContinue} = useBistroContext()
+  const {checkOwnershipAndContinue,bistroInfo} = useBistroContext()
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
@@ -67,8 +67,15 @@ export default function Home() {
       
       <Help />
 
-      <div className="mt-3">
-        <img src={victorinaLogo} className="w-96 "/>  
+      <div className=" flex flex-col items-center text-center mt-10">
+        {(!userInfo?.imgBistro && !bistroInfo?.img) ? (
+          <Fragment>
+            <h2 className="font-semibold text-2xl">{bistroInfo.username || userInfo.username  }</h2>
+            <img src="/logoApp.png" width={200} className="object-fit" />
+          </Fragment>
+        ) : (
+          <img src={userInfo.imgBistro || bistroInfo.img} width={200} className="object-fit" />
+        )}
       </div>
 
       <div className="w-full flex flex-row justify-center items-center">

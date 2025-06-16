@@ -4,7 +4,7 @@ import productSchema from "../models/product.schema.js"
 import { io } from "../webSocket.js" 
 
 import { connectedBistros } from "../webSocket.js"
-import { modifyData } from "./auxFunctions.js"
+import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 
 // const restauranteBistro = '6806b8fe2b72a9697aa59e5f' //serian los bistros
 

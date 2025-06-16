@@ -56,7 +56,7 @@ export default function Profile(){
                 
                 {userInfo.rol === 'bistro'&&  (
 
-                <div className="flex flex-col md:flex-row justify-center flex-wrap w-full md:justify-around">
+                <div className="flex flex-col md:flex-row justify-center flex-wrap  md:justify-around gap-y-5">
 
                     {bistroButtons.map((button,index)=>{
 
@@ -68,31 +68,31 @@ export default function Profile(){
 
 
                         return(
-                            <span  className="flex p-2 rounded-lg bg-red-600 cursor-pointer text-center items-center" key={index} >
+                            <span  className="flex justify-center   p-2 rounded-lg bg-red-600 cursor-pointer " key={index} >
                                 {button !== "Agregar categoria/producto" ? (
                                     <Link to={dirToGo}  >
-                                        <button className="cursor-pointer">{button}</button>
+                                        <button className="cursor-pointer text-center ">{button}</button>
                                     </Link>
                                 ) : (
                                     <div className="relative ">
                                         <button
                                         onClick={() => setOpen(!open)}
-                                        className="bg-red-600 text-white text-center rounded-lg  hover:bg-red-700 transition cursor-pointer"
+                                        className="bg-red-600 text-white  rounded-lg  hover:bg-red-700 transition cursor-pointer"
                                         >
 
                                             Agregar categoría/producto
                                         </button>
                                 
                                         {open && (
-                                        <div className="absolute z-10  w-full bg-white border border-red-500 rounded-lg ">
+                                        <div className="absolute z-10  bg-white border border-red-500 rounded-lg ">
                                             <Link to={"/addProduct"} >
-                                                <button className="cursor-pointer w-full px-4 py-2 text-center text-red-600">
+                                                <button className="cursor-pointer  px-4 py-2  text-red-600">
                                                 Producto
                                                 </button>
                                             </Link>
 
                                             <Link to={"/addCategory"} >
-                                                <button className="cursor-pointer w-full px-4 py-2 text-center text-red-600">
+                                                <button className="cursor-pointer  px-4 py-2  text-red-600">
                                                 Categoria
                                                 </button>
                                             </Link>

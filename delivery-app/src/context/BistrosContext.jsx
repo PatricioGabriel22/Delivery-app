@@ -30,9 +30,12 @@ export function BistroProvider({children}){
 
     const {renderORLocalURL} = useLoginContext()
 
-    const {openBistros,isLoading} = useBistroList(renderORLocalURL)
-
     const [bistroInfo,setBistroInfo] = useState(JSON.parse(localStorage.getItem('bistroInfo')) || false)
+
+    const {openBistros,isLoading,refreshopenBistros} = useBistroList(renderORLocalURL)
+    
+
+    
 
     function createSlug(target){
         return target.replace(/\s+/g, '-').toLowerCase()
@@ -42,9 +45,9 @@ export function BistroProvider({children}){
 
 
     function bistroHelpDataHandler(bistroData){
-        const {_id,username,telefono} = bistroData
+        const {_id,username,telefono,imgBistro} = bistroData
 
-        const aux = {_id:_id,username:username,telefono:telefono}
+        const aux = {_id:_id,username:username,telefono:telefono,img:imgBistro}
 
         localStorage.setItem('bistroInfo',JSON.stringify(aux))
 
@@ -123,10 +126,11 @@ export function BistroProvider({children}){
 
     return(
         <bistroContext.Provider value={{
-            openBistros,isLoading,
+            openBistros,isLoading,refreshopenBistros,
             navigateToBistro,createSlug,
             checkOwnershipAndContinue,checkDeliveryZone,
-            bistroInfo
+            bistroInfo,
+           
         }}>
 
 

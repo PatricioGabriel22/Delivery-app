@@ -14,6 +14,7 @@ import { Link } from "react-router-dom"
 import BannerCloseLogo from "@components/common/BannerCloseLogo"
 import { useCatalogContext } from "./CatalogContext"
 import {generateNotificationSound, preventStopNotification } from "../utils/soundConfig"
+import { useBistroContext } from "./BistrosContext"
 
 
 
@@ -62,6 +63,7 @@ export function SocketProvider({children}){
     const {allPreOrdersFromBistro,BistroPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {refresh} = useCatalogContext() 
+    const {refreshopenBistros} = useBistroContext()
     
     
 
@@ -324,57 +326,96 @@ export function SocketProvider({children}){
     },[refresh,socket])
 
 
-      //eventos sockets de cambio de estado, edicion de producto, delivery
-  useEffect(()=>{
+    //eventos sockets de cambio de estado, edicion de producto, delivery
+    useEffect(()=>{
 
-    socket.on('AlterProductStatus', (data) => {
+        socket.on('AlterProductStatus', (data) => {
+        
+        refresh(prevData => {
+            if (!prevData) return prevData
+        
+            const updatedStatuses = prevData.catalogoDelBistro.map(item => {
+            if (item._id === data.target._id) {
+                return { ...item, disponible: data.target.disponible }
+            }
+            return item
+            })
     
-      refresh(prevData => {
-        if (!prevData) return prevData
-    
-        const updatedStatuses = prevData.catalogoDelBistro.map(item => {
-          if (item._id === data.target._id) {
-            return { ...item, disponible: data.target.disponible }
-          }
-          return item
-        })
-  
-        return {
-          ...prevData,
-          catalogoDelBistro: updatedStatuses
-        }
-      }, false) // false para evitar revalidar desde el servidor
-    })
-
-    socket.on('cardProductoActualizada',(data)=>{
-      refresh(prevData=>{
-        const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
-
-          if(prevItem._id === data._id){
-            return {...data}
-          }else{
-            return{...prevItem}
-          }
+            return {
+            ...prevData,
+            catalogoDelBistro: updatedStatuses
+            }
+        }, false) // false para evitar revalidar desde el servidor
         })
 
-        return{
-          ...prevData,
-          catalogoDelBistro:updatedArray
+        socket.on('cardProductoActualizada',(data)=>{
+        refresh(prevData=>{
+            const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
+
+            if(prevItem._id === data._id){
+                return {...data}
+            }else{
+                return{...prevItem}
+            }
+            })
+
+            return{
+            ...prevData,
+            catalogoDelBistro:updatedArray
+            }
+
+        })
+        })
+
+    
+
+        return ()=>{
+        socket.off('AlterProductStatus')
+        socket.off('cardProductoActualizada')
+        
         }
 
-      })
-    })
+    },[])
 
-   
+    //eventos sockets de cambio de configuraciones
+    useEffect(()=>{
+        socket.on('nuevaConfiguracion',(data)=>{
+            //aca habria que sobreescribir el userInfo (bistro), y el SWR de los bistros
+            console.log(data)
+            localStorage.setItem('userInfo', JSON.stringify(data))
 
-    return ()=>{
-      socket.off('AlterProductStatus')
-      socket.off('cardProductoActualizada')
-      
-    }
+            
 
-  },[])
+            refreshopenBistros(prevData=>{
+
+                if(!prevData) return
+                console.log(prevData)
+                const nuevaData = prevData.openBistros.map(bistro =>{
+                    if(bistro._id === data._id){
+                        return {...bistro, zonas_delivery:[...data.zonas_delivery]}
+                    }
+
+                    return {...bistro}
+                })
+
+                setOpenBistrosLIVE(prev=>({...prev,data}))
+                
+                return{
+                    ...prevData,
+                    openBistros:nuevaData
+                }
+            },{revalidate:false})
+        })
+
+        
+        
+        return ()=>{
+            socket.off('nuevaConfiguracion')
+        }
+
+    },[])
     
+
 
     return(
         <socketContext.Provider value={{

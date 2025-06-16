@@ -1,5 +1,5 @@
 import bistroSchema from "../models/bistro.schema.js"
-import { io } from "../webSocket.js" 
+import { connectedBistros, io } from "../webSocket.js" 
 
 
 export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
@@ -57,5 +57,36 @@ export const estadoDelDelivery = async (req,res)=>{
 
 }
 
+export const guardarNuevaConfiguracion = async (req,res)=>{
+    const {idBistro} = req.params
+    const {nuevas_zonas_precios,nueva_foto,nuevas_categorias} = req.body
 
+    console.log("bodyde la req",req.body)
+
+    let updateData = {}
+
+    if (nuevas_zonas_precios !== null) {
+        updateData.zonas_delivery = nuevas_zonas_precios
+    }
+
+    if (nueva_foto !== null) {
+        updateData.imgBistro = nueva_foto
+    }
+
+    if (nuevas_categorias !== null) {
+        updateData.categorias = nuevas_categorias
+    }
+
+
+    if(Object.keys(updateData).length > 0){
+        console.log("objeto creado updatedData",updateData)
+        const target = await bistroSchema.findByIdAndUpdate(idBistro,{$set: updateData},{new:true})
+
+        io.emit('nuevaConfiguracion',target)
+        res.status(200).json({message:"Cambios guardados!"})
+    }
+
+
+
+}
 

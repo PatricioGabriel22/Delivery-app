@@ -1,12 +1,17 @@
 import { Fragment, useEffect, useState } from "react";
+import axios from 'axios'
 
-import BannerCloseLogo from "../../components/common/BannerCloseLogo";
+import BannerCloseLogo from "@components/common/BannerCloseLogo";
 
 import {useLoginContext} from '@context/LoginContext.jsx'
-import { RiDeleteBin6Line } from "react-icons/ri";
+
+
+import { RiDeleteBin6Line, RiPerplexityFill } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import { ccapitalizer_3000 } from "../../utils/capitalize";
 import { GiConfirmed } from "react-icons/gi";
+import toast from "react-hot-toast";
+
 
 
 
@@ -18,11 +23,20 @@ import { GiConfirmed } from "react-icons/gi";
 
 export default function Configuraciones(){
 
-    const {userInfo} = useLoginContext()
+   
+    const {userInfo,renderORLocalURL} = useLoginContext()
+    
     
     
     const [editIndex, setEditIndex] = useState(null)
     const [infoDelivery,setInfoDelivery] = useState([...userInfo.zonas_delivery])
+    // const [imgPresentacion,setImgPresentacion] = useState(userInfo.imgBistro)
+    const [categorias,setCategorias] = useState([...userInfo.categorias])
+
+
+
+
+
     const [newPayloadCollector,setNewPayloadCollector] = useState({
         nuevas_zonas_precios:null,
         nueva_foto:null,
@@ -39,14 +53,17 @@ export default function Configuraciones(){
 
 
     const handleChange = (e, index) => {
+        //cambia la informacion dentro de un array de objetos
         const aux = [...infoDelivery]
         console.log(index)
 
         aux[index] = {
             ...aux[index],
-            [e.target.name]: e.target.value
+            [e.target.name]:  e.target.name === 'precio' ?  Number(e.target.value) : String(e.target.value)
         }
 
+        console.log(infoDelivery)
+        setNewPayloadCollector(prev=>({...prev,nuevas_zonas_precios:aux}))
         setInfoDelivery(aux)
 
     }
@@ -55,25 +72,34 @@ export default function Configuraciones(){
         setInfoDelivery(prev=>{
             const aux ={
                 zona:"Nueva zona",
-                precio:"Pecio"
+                precio:0
             }
 
             return [...prev,aux]
         })
     }
 
+
     const deleteField = (target,deleteMode)=>{
        
-        let nuevasZonas = []
+        let nuevo = []
 
         switch(deleteMode){ 
             case 'zona':
                 //En JavaScript, los bloques case deben estar entre llaves si vas a usar declaraciones como const, let o function, o lo declaro afuera para mantener uniformidad
-                nuevasZonas = infoDelivery.filter(item => item.zona !== target.zona)
-                setInfoDelivery(nuevasZonas)
-                setNewPayloadCollector(prev=>({...prev, nuevas_zonas_precios:nuevasZonas}))
+                nuevo = infoDelivery.filter(item => item.zona !== target.zona)
+                setInfoDelivery(nuevo)
+                setNewPayloadCollector(prev=>({...prev, nuevas_zonas_precios:nuevo}))
                 break
-            
+            case 'imagen':
+                break
+            case 'categoria':
+                nuevo = categorias.filter(categoria => categoria !== target)
+                console.log(nuevo)
+                setCategorias(nuevo)
+                setNewPayloadCollector(prev=>({...prev, nuevas_categorias:nuevo}))
+
+                break
 
               
 
@@ -83,15 +109,36 @@ export default function Configuraciones(){
 
     }
 
+
+    async function guardarCambios(){
+        console.log("guardar cambios")
+
+        try {
+            
+            const res = await axios.post(`${renderORLocalURL}/nuevaConfiguracion/${userInfo._id}`,newPayloadCollector,{withCredentials:true})
+            toast.success(res.data.message)
+
+        } catch (error) {
+            console.log(error)
+        }   
+
+    }
+
+
     useEffect(()=>{
+
+
         console.log(newPayloadCollector)
+
     },[newPayloadCollector])
     
     return(
         <Fragment>
 
             <div className="text-white flex flex-col p-2 m-2 jystify-center items-center cursor-pointer relative">
-                <button className="bg-sky-600 rounded text-2xl font-bold p-3  justify-self-center m-3">Guardar cambios</button>
+                <button 
+                    onClick={guardarCambios}
+                    className="bg-sky-600 rounded text-2xl font-bold p-3 justify-self-center m-3 cursor-pointer">Guardar cambios</button>
                
                 <p 
                     onClick={()=>setShowConfig((prev)=>({...prev,zonas_precios:!prev.zonas_precios}))}    
@@ -100,15 +147,15 @@ export default function Configuraciones(){
 
                 {showConfig.zonas_precios && (
 
-                    <div  className=" text-white">
+                    <div  className=" text-white w-full md:w-[30%]">
                         {infoDelivery.map((zona,index)=>(
-                            <div className="flex flex-row items-center text-center justify-between border-1 m-2" key={index}>
+                            <div className="flex flex-row items-center text-center justify-between border-1 m-2 " key={index}>
                                 <RiDeleteBin6Line size={30} className="text-red-600 ml-2" onClick={()=>deleteField(zona,"zona")}/>
                                 {editIndex === index? (
                                     <Fragment key={index}>
-                                        <input onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.zona} name="zona" className="w-full text-lg p-2 text-center"/>
-                                        <input onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.precio} name="precio" className="w-22 text-lg p-2 text-center"/>
-                                        <GiConfirmed size={40} onClick={()=>setEditIndex(null)} />
+                                        <input  onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.zona} name="zona" className="w-full text-lg p-2 text-center"/>
+                                        <input  onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.precio} name="precio" className="w-22 text-lg p-2 text-center"/>
+                                        <GiConfirmed size={40} onClick={()=>{setEditIndex(null)}} />
 
 
                                     </Fragment>
@@ -150,11 +197,11 @@ export default function Configuraciones(){
                 
                 {showConfig.categorias && (
 
-                    <div  className=" text-white h-70 overflow-x-hidden">
-                        {userInfo.categorias.map((categoria,index)=>(
+                    <div  className=" text-white h-70  overflow-x-hidden w-full md:w-[30%]">
+                        {categorias.map((categoria,index)=>(
                             <div className="flex flex-row items-center  justify-between border-1 m-2 " key={index}>
-                                <p className=" text-lg p-2">{categoria}</p>
-                                <RiDeleteBin6Line size={30} className="text-red-600"/>
+                                <p className=" text-lg p-2 ">{categoria}</p>
+                                <RiDeleteBin6Line size={30} className="text-red-600" onClick={()=>deleteField(categoria,'categoria')}/>
                             </div>    
 
                             ))}
