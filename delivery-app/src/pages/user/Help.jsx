@@ -18,7 +18,11 @@ export default function Help(){
     const [help,setHelp] = useState(false)
     const [copiadoIndex, setCopiadoIndex] = useState(null)  
 
-    const numeros = useMemo(()=>[{id: bistroInfo.username || userInfo.username, telefono:bistroInfo.telefono || userInfo.telefono},{id:"Soporte",telefono:1151278287}],[bistroInfo,userInfo])
+    const numeros = useMemo(()=>[{
+        nombre: userInfo.rol ? userInfo.username : bistroInfo.username,
+        telefono:userInfo.rol ? userInfo.telefono : bistroInfo.telefono},
+        {nombre:"Soporte",telefono:1151278287}]
+    ,[bistroInfo,userInfo])
 
     const copiarAlPortapapeles = async (num,index) => {
         try {
@@ -42,7 +46,7 @@ export default function Help(){
                     return(
                         
                     <div className="flex items-center " key={index}>
-                        <p className="text-center px-2">{numero.id}: </p> 
+                        <p className="text-center px-2">{numero.nombre}: </p> 
                         <span >{numero.telefono}</span>
                         <button
                         onClick={()=>copiarAlPortapapeles(numero.telefono,index)}

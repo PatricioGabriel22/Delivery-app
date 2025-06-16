@@ -36,6 +36,11 @@ export function BistroProvider({children}){
     
 
     
+    function findBistro(bistroList,bistroTarget){
+        const target = bistroList.find(bistro=>bistro.username === bistroTarget.username)
+        console.log(target.zonas_delivery)
+       return target.zonas_delivery
+    }
 
     function createSlug(target){
         return target.replace(/\s+/g, '-').toLowerCase()
@@ -45,9 +50,15 @@ export function BistroProvider({children}){
 
 
     function bistroHelpDataHandler(bistroData){
-        const {_id,username,telefono,imgBistro} = bistroData
+        const {_id,username,telefono,imgBistro,rol} = bistroData
 
-        const aux = {_id:_id,username:username,telefono:telefono,img:imgBistro}
+
+        const aux = {
+            _id:_id,
+            username:username,
+            telefono:telefono,
+            img:imgBistro
+        }
 
         localStorage.setItem('bistroInfo',JSON.stringify(aux))
 
@@ -56,9 +67,36 @@ export function BistroProvider({children}){
 
 
     function navigateToBistro(bistroName,navigate){
+        //reemplaza espacios, saltos de linea y tabulaciones por "-"
         const target = createSlug(bistroName)
 
         navigate(`/bistros/${target}`)
+    }
+
+
+
+    
+    function checkOwnershipAndContinue({bistroData,userData,param}){
+       
+
+        if(!bistroData) {
+            const slug = createSlug(userData.username)
+            
+            if(userData.rol && param !== slug) return navigate(`/bistros/${slug}`)
+            return false
+        }
+
+        if(bistroData){
+
+            if(userData.rol && userData.username !== bistroData.username){
+                return Swal.fire("Por favor ingresá como usuario para visitar otros bistros")
+
+            }
+            return false
+            
+        }
+
+        return true
     }
 
     function checkDeliveryZone(bistroData,localidad){
@@ -100,24 +138,6 @@ export function BistroProvider({children}){
         navigateToBistro(username,navigate)
     }
 
-    function checkOwnershipAndContinue({bistroData,userData,param}){
-        
-        if(!bistroData) {
-            const slug = createSlug(userData.username)
-            
-            if(userData.rol && param !== slug) return navigate(`/bistros/${slug}`)
-        }
-
-        if(bistroData){
-
-            if(userData.rol && userData.username !== bistroData.username){
-                Swal.fire("Por favor ingresá como usuario para visitar otros bistros")
-                return
-            }
-    
-            
-        }
-    }
 
 
 
@@ -130,6 +150,7 @@ export function BistroProvider({children}){
             navigateToBistro,createSlug,
             checkOwnershipAndContinue,checkDeliveryZone,
             bistroInfo,
+            findBistro
            
         }}>
 

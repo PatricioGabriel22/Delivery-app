@@ -398,7 +398,7 @@ export function SocketProvider({children}){
                     return {...bistro}
                 })
 
-                setOpenBistrosLIVE(prev=>({...prev,data}))
+           
                 
                 return{
                     ...prevData,

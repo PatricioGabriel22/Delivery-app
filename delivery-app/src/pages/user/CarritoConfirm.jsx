@@ -26,12 +26,14 @@ import { ccapitalizer_3000 } from "../../utils/capitalize"
 import ProfileCard from "@components/common/ProfileCard"
 import BannerCloseLogo from "@components/common/BannerCloseLogo"
 import CancelarCompraBTN from "../../components/user/CancelarCompraBTN";
+import { useBistroContext } from "../../context/BistrosContext";
 
 
 
 
 
 export default function CarritoConfirm(){
+    const {openBistros,bistroInfo,findBistro} = useBistroContext()
     const {renderORLocalURL,userInfo} = useLoginContext()
     
     const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,
@@ -51,7 +53,10 @@ export default function CarritoConfirm(){
     const [chekcInfoBTN,setChekcInfoBTN] = useState(false)
 
     
-    setImporteTotal(listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0) + decidirCostoEnvio(deliveryMethod,userInfo.localidad))
+    setImporteTotal(
+        listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0)
+     + decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad)
+    )
 
 
     

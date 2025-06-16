@@ -70,7 +70,7 @@ export default function Home() {
       <div className=" flex flex-col items-center text-center mt-10">
         {(!userInfo?.imgBistro && !bistroInfo?.img) ? (
           <Fragment>
-            <h2 className="font-semibold text-2xl">{bistroInfo.username || userInfo.username  }</h2>
+            <h2 className="font-semibold text-2xl">{userInfo.rol ? userInfo.username : bistroInfo.username }</h2>
             <img src="/logoApp.png" width={200} className="object-fit" />
           </Fragment>
         ) : (

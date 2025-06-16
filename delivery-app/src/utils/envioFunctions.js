@@ -1,28 +1,25 @@
 
 
 
-export function decidirCostoEnvio(formaEntrega,localidad){
+export function decidirCostoEnvio(formaEntrega,zonasDeliveryLocal,localidadUser){
 
     let costoEnvio = 0
-    localidad.toLowerCase()
     
-    if(formaEntrega === "Envio"){
 
-        if(localidad === "monte grande"){
-           costoEnvio = 3500
-          
+    if(formaEntrega === 'Envio'){
+
+        for(let i = 0; i<zonasDeliveryLocal.length ;i++){
+    
+            if(zonasDeliveryLocal[i].zona.toLowerCase() === localidadUser.toLowerCase()){
+                costoEnvio = zonasDeliveryLocal[i].precio
+                return costoEnvio
+            }
+    
+    
         }
+    }
 
-        if(localidad === "luis guillon"){
-            costoEnvio = 2500
-            
-        }
+    if(formaEntrega !== 'Envio') return costoEnvio
 
-        if(localidad === "otro"){
-            return costoEnvio        
-        }
-
-    } 
-
-    return costoEnvio
+   
 }

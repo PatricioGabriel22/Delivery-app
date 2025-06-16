@@ -8,7 +8,7 @@ import Nav from '@components/common/Nav.jsx'
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
 import { useBistroContext } from "../../context/BistrosContext.jsx";
-import { useSocketContext } from "../../context/SocketContext.jsx";
+
 
 
 export default function Bistros(){
@@ -74,6 +74,7 @@ export default function Bistros(){
                         <div className="flex flex-col self-start " 
                             onClick={()=>{
                                 checkOwnershipAndContinue({bistroData:bistro,userData:userInfo})
+                               
                                 checkDeliveryZone(bistro,userInfo.localidad)
                             }}>
                             <img loading="lazy" src={bistro.imgBistro || `./victorina-logo.jpg`} width={190} className="rounded  "  />
