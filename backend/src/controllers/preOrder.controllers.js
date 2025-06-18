@@ -209,7 +209,7 @@ export const PreOrderManager = async (req,res)=>{
                 
                 const nuevoPedido = await  new pedidosSchema({
                     
-                    userID:orderInfo.userInfo.id,
+                    userID:orderInfo.userInfo._id,
                     productos:orderInfo.preOrder,
                     costoEnvio:orderInfo.costoEnvio,
                     importeTotal:orderInfo.importeTotal,
@@ -221,7 +221,7 @@ export const PreOrderManager = async (req,res)=>{
                 console.log(nuevoPedido)
 
                 await userSchema.findByIdAndUpdate(
-                    orderInfo.userInfo.id,
+                    orderInfo.userInfo._id,
                     { $push: { pedidos: nuevoPedido._id } }
                 )
         

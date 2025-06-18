@@ -26,7 +26,7 @@ export default function CancelarCompraBTN({pedidoID,preOrdenID}){
         console.log(pyaload)
 
         try {
-            const res = await axios.post(`${renderORLocalURL}/cancelarPedidoUsuario/${userInfo.id}`,pyaload,{withCredentials:true})
+            const res = await axios.post(`${renderORLocalURL}/cancelarPedidoUsuario/${userInfo._id}`,pyaload,{withCredentials:true})
             console.log(res)
             toast(res.data.message,{icon:'⚠️',duration:700 * 10})
             limpiarSecuenciaDeCompras()
