@@ -46,7 +46,7 @@ export default function Bistros(){
 
 
                 {openBistros?.map((bistro,index)=>(
-                    <div className="p-2 m-5 w-[85%] md:w-120  bg-white text-b rounded cursor-pointer border-3 border-red-600" key={index}>
+                    <div className="p-2 m-5 w-[95%] md:w-120  bg-white text-b rounded cursor-pointer border-3 border-red-600" key={index}>
 
                         <div className="flex flex-col text-black "
                             onClick={()=>{
@@ -63,7 +63,7 @@ export default function Bistros(){
                                     <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
                                 </div>
                                 <div className="flex flex-col ">
-                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={250} className="rounded  "  />
+                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={200} className="rounded  "  />
                                     <span className="text-black text-center cursor-pointer font-bold text-lg" >Conocé más sobre {ccapitalizer_3000(bistro.username)}!</span>
                                 </div>
                             </div>
