@@ -114,7 +114,7 @@ export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
 
     
 
-    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}&bistroID=${userInfo.id}`:null
+    const query = desde && hasta ? `?desde=${desde}&hasta=${hasta}&bistroID=${userInfo._id}`:null
 
     
     

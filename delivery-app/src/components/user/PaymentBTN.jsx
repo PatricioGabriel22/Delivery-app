@@ -35,7 +35,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             ],
             payer:{
                 name:userInfo.username,
-                last_name:userInfo.id //uso la propiedad last name para "colar" el userid
+                last_name:userInfo._id //uso la propiedad last name para "colar" el userid
             },
             flagVerify:verifyMode
         }
@@ -86,7 +86,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         const efectivo_payload= {
             pedidoID,
             preOrdenID,
-            userID:userInfo.id,
+            userID:userInfo._id,
             importe:importeTotal,
             
         }

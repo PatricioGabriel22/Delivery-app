@@ -25,7 +25,7 @@ export default function ProductForm() {
     formData.append('disponible', e.target.disponible.value);
 
    
-    await axios.post(`${renderORLocalURL}/uploadProduct/${userInfo.id}`, formData, 
+    await axios.post(`${renderORLocalURL}/uploadProduct/${userInfo._id}`, formData, 
       {withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
