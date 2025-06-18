@@ -5,7 +5,6 @@ import { GiConfirmed } from "react-icons/gi";
 
 import { useLoginContext } from "@context/LoginContext";
 import { useShoppingContext } from "@context/ShoppingContext";
-import { decidirCostoEnvio } from "../../utils/envioFunctions";
 import BannerCloseLogo from "@components/common/BannerCloseLogo";
 import { ccapitalizer_3000 } from "../../utils/capitalize";
 import { openCloseEditPreviewModal } from "../../utils/modalFunctions";
