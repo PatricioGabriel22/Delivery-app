@@ -59,7 +59,7 @@ export const useSocketContext = ()=>{
 
 export function SocketProvider({children}){
 
-    const {userInfo} = useLoginContext()
+    const {userInfo,setUserInfo} = useLoginContext()
     const {allPreOrdersFromBistro,BistroPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
     const {refresh} = useCatalogContext() 
@@ -389,10 +389,17 @@ export function SocketProvider({children}){
             refreshopenBistros(prevData=>{
 
                 if(!prevData) return
-                console.log(prevData)
+             
                 const nuevaData = prevData.openBistros.map(bistro =>{
                     if(bistro._id === data._id){
-                        return {...bistro, zonas_delivery:[...data.zonas_delivery]}
+
+                        setUserInfo(data)
+
+                        return {...bistro,
+                            zonas_delivery:[...data.zonas_delivery],
+                            categorias:[...data.categorias],
+                            img:data.img
+                        }
                     }
 
                     return {...bistro}

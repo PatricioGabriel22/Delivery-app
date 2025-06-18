@@ -87,7 +87,6 @@ export default function Register(){
     <div className=" flex flex-col items-center justify-center">
 
         <img src={succesAnimation? succesLogo : '/logoApp.png'} 
-        
         className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 
         <form className="w-80 h-fit border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center " onSubmit={(e)=>handleRegister(e)}>
@@ -96,7 +95,7 @@ export default function Register(){
 
             {CAMPOS_REGISTRO.map((campo, index) => (
                 campo === "bistroFlag" ? (
-                    <AsBistro txt={"Voy a registrar mi empresa"}/>
+                    <AsBistro txt={"Voy a registrar mi empresa"} key={index}/>
                 ):
                 (
                     <input

@@ -29,6 +29,11 @@ export async function modifyData(idTarget,schema,updateParams,file,socket,eventN
 
     }
 
+    if(!file) updateParams.img = ''
+
+   
+
+    console.log(updateParams)
     const targetUpdated = await schema.findByIdAndUpdate(idTarget,updateParams,{new:true})
 
 

@@ -1,25 +1,34 @@
 
 
 
-export function decidirCostoEnvio(formaEntrega,zonasDeliveryLocal,localidadUser){
+export function decidirCostoEnvio(formaEntrega,zonasDeliveryLocal,localidadUser,callbackFuse){
 
     let costoEnvio = 0
+    if(!formaEntrega || !zonasDeliveryLocal || !localidadUser) return costoEnvio
     
 
-    if(formaEntrega === 'Envio'){
+    switch(formaEntrega){
+        case 'Envio':{
 
-        for(let i = 0; i<zonasDeliveryLocal.length ;i++){
-    
-            if(zonasDeliveryLocal[i].zona.toLowerCase() === localidadUser.toLowerCase()){
-                costoEnvio = zonasDeliveryLocal[i].precio
+            const resultFuse = callbackFuse('zona',zonasDeliveryLocal,localidadUser)
+            console.log(resultFuse)
+            if(resultFuse.length > 0){
+                costoEnvio = resultFuse[0].item.precio
                 return costoEnvio
             }
-    
-    
+            
+            return costoEnvio
+            
         }
-    }
 
-    if(formaEntrega !== 'Envio') return costoEnvio
+      
+
+        case 'Retiro en el local':
+            return costoEnvio
+        
+        default:
+            return costoEnvio
+    }
 
    
 }

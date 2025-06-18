@@ -46,44 +46,45 @@ export default function Bistros(){
 
 
                 {openBistros?.map((bistro,index)=>(
-                    <div className="flex p-2 m-5 w-[98%] md:w-120 justify-between bg-white text-b rounded items-center cursor-pointer border-3 border-red-600" key={index}
-                        >
+                    <div className="p-2 m-5 w-[85%] md:w-120  bg-white text-b rounded cursor-pointer border-3 border-red-600" key={index}>
 
-                        <div className="flex flex-col text-black  ">
-                            <p className="font-bold mb-2 text-lg">{ccapitalizer_3000(bistro.username)}</p>
+                        <div className="flex flex-col text-black "
+                            onClick={()=>{
+                                    checkOwnershipAndContinue({bistroData:bistro,userData:userInfo})
+                                
+                                    checkDeliveryZone(bistro,userInfo.localidad)
+                            }}>
 
-                            <div className="flex flex-row">
-
+                            <div className="flex flex-row justify-between ">
+                                <div className="flex flex-col">
+                                    <p className="font-bold mb-2 text-2xl text-center">{ccapitalizer_3000(bistro.username)}</p>
+                                    <p className="font-semibold">📞{bistro.telefono}</p>
+                                    <p className="font-semibold">📍{ccapitalizer_3000(bistro.direccion)}</p>
+                                    <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
+                                </div>
+                                <div className="flex flex-col ">
+                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={250} className="rounded  "  />
+                                    <span className="text-black text-center cursor-pointer font-bold text-lg" >Conocé más sobre {ccapitalizer_3000(bistro.username)}!</span>
+                                </div>
                             </div>
-                            <p className="font-semibold">📞{bistro.telefono}</p>
-                            <p className="font-semibold">📍{ccapitalizer_3000(bistro.localidad)}</p>
                         
 
-                            <span className="pt-3" onClick={()=>verDeliveryZonas(showDelivery,index)}>🧭Ver zonas de delivery</span>
+                        </div>
+                        <span className="pt-3 text-black" onClick={()=>verDeliveryZonas(showDelivery,index)}>🧭Ver zonas de delivery</span>
+                    
+                        <div className={`h-20 ${showDelivery && indexDelivery === index ? "block":"hidden"} overflow-x-hidden `}>
 
-                            <div className={`h-20 ${showDelivery && indexDelivery === index ? "block":"hidden"} overflow-y-hidden `}>
-
-                                {showDelivery && bistro.zonas_delivery.map((zona,index)=>(
-                                    <p className="text-black" key={index}>-{ccapitalizer_3000(zona.zona)}</p>
-                                ))}
-
-                            </div>
+                            {showDelivery && bistro.zonas_delivery.map((zona,index)=>(
+                                <p className="text-black" key={index}>-{ccapitalizer_3000(zona.zona)}</p>
+                            ))}
 
                         </div>
-                                {/* Debo chequear que no sea otro local y que si la zona de delivery llega al usuario) */}
-                        <div className="flex flex-col self-start " 
-                            onClick={()=>{
-                                checkOwnershipAndContinue({bistroData:bistro,userData:userInfo})
-                               
-                                checkDeliveryZone(bistro,userInfo.localidad)
-                            }}>
-                            <img loading="lazy" src={bistro.imgBistro || `./victorina-logo.jpg`} width={190} className="rounded  "  />
-                            <span className="text-black text-center cursor-pointer font-bold text-lg" >Comprar!</span>
-                        </div>
+       
                     </div>
                 ))}
 
-               <Nav/> 
+                <div className="mt-20 w-full h-3"/>
+                <Nav/> 
             </div>
         </Fragment>
     )

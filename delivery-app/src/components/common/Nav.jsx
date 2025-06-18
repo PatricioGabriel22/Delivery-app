@@ -4,8 +4,13 @@ import LogoutBTN from "./LogoutBTN";
 import { CiShoppingCart } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useLoginContext } from "../../context/LoginContext";
+
+
+import { IoSettingsOutline } from "react-icons/io5"
 
 export default function Nav() {
+  const {userInfo} = useLoginContext()
   const { carrito,total,setTotal } = useShoppingContext();
   const [showCarritoBTN, setShowCarritoBTN] = useState(false);
   const {bistroName} = useParams()
@@ -58,7 +63,10 @@ export default function Nav() {
  
       )}
 
-      {bistroName && (
+
+      
+
+      {!userInfo.rol && bistroName && (
 
         <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600">
           <CiShoppingCart size={90} onClick={() => setShowCarritoBTN(!showCarritoBTN)} />
@@ -72,6 +80,11 @@ export default function Nav() {
         <Link to={"/profile"} >
           <h1>Perfil</h1>
         </Link>
+        {userInfo.rol && (
+          <Link to={'/configuraciones'}>
+            <IoSettingsOutline  size={30}/>
+          </Link>
+        )}
         <LogoutBTN />
       </div>
     </div>

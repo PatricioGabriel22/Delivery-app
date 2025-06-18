@@ -29,9 +29,11 @@ export default function ProfileCard({ userInfo }) {
     setIsEditing(false);
 
     const editPayload = {
-        userID:userInfo._id,
-        editableInfo
+      userID:userInfo._id,
+      editableInfo
     }
+
+    console.log(editPayload)
 
     axios.post(`${renderORLocalURL}/editProfileInfo`,editPayload,{withCredentials:true})
 
@@ -48,7 +50,7 @@ export default function ProfileCard({ userInfo }) {
   useEffect(()=>{
 
     socket.on('newUserInfo',(data)=>{
-        localStorage.setItem('userInfo',JSON.stringify(data))
+  
 
         setUserInfo(prev => ({...prev,...data}))
     })
@@ -122,16 +124,13 @@ export default function ProfileCard({ userInfo }) {
           <div className="flex items-center gap-2">
             <span className="font-medium">🏘️ Localidad:</span>
             {isEditing ? (
-              <select
+              <input
                 name="localidad"
                 value={editableInfo.localidad}
                 onChange={handleChange}
                 className="border rounded px-1">
 
-                <option value="" disabled selected hidden>Seleccione una localidad</option>
-                <option value="monte grande">Monte Grande</option>
-                <option value="luis guillon">Luis Guillón</option>
-              </select>
+              </input>
             ) : (
               <span>{ccapitalizer_3000(userInfo.localidad)}</span>
             )}

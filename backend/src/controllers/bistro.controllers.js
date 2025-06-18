@@ -1,3 +1,4 @@
+import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 import bistroSchema from "../models/bistro.schema.js"
 import { connectedBistros, io } from "../webSocket.js" 
 
@@ -59,32 +60,46 @@ export const estadoDelDelivery = async (req,res)=>{
 
 export const guardarNuevaConfiguracion = async (req,res)=>{
     const {idBistro} = req.params
-    const {nuevas_zonas_precios,nueva_foto,nuevas_categorias} = req.body
+    const {nuevas_zonas_precios,nuevas_categorias} = req.body
 
-    console.log("bodyde la req",req.body)
+    try {
+        
+        console.log(req.file)
+       
 
-    let updateData = {}
-
-    if (nuevas_zonas_precios !== null) {
-        updateData.zonas_delivery = nuevas_zonas_precios
-    }
-
-    if (nueva_foto !== null) {
-        updateData.imgBistro = nueva_foto
-    }
-
-    if (nuevas_categorias !== null) {
-        updateData.categorias = nuevas_categorias
-    }
-
-
-    if(Object.keys(updateData).length > 0){
-        console.log("objeto creado updatedData",updateData)
-        const target = await bistroSchema.findByIdAndUpdate(idBistro,{$set: updateData},{new:true})
-
-        io.emit('nuevaConfiguracion',target)
+        const updateParams = {
+            zonas_delivery: JSON.parse(nuevas_zonas_precios),
+            categorias: JSON.parse(nuevas_categorias)
+        }
+    
+        modifyData(idBistro,bistroSchema,updateParams,req.file,io,'nuevaConfiguracion')
         res.status(200).json({message:"Cambios guardados!"})
+    } catch (error) {
+        console.log(error)
     }
+
+
+    // let updateData = {}
+
+    // if (nuevas_zonas_precios !== null) {
+    //     updateData.zonas_delivery = nuevas_zonas_precios
+    // }
+
+    // if (nueva_foto !== null) {
+    //     updateData.img = nueva_foto
+    // }
+
+    // if (nuevas_categorias !== null) {
+    //     updateData.categorias = nuevas_categorias
+    // }
+
+
+    // if(Object.keys(updateData).length > 0){
+    //     console.log("objeto creado updatedData",updateData)
+    //     const target = await bistroSchema.findByIdAndUpdate(idBistro,{$set: updateData},{new:true})
+
+    //     io.emit('nuevaConfiguracion',target)
+    // }
 
 
 

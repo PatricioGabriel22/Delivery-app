@@ -166,11 +166,11 @@ export const registerUser = async (req,res)=>{
 
 export const editProfileInfo = async(req,res)=>{
     const {userID,editableInfo} =  req.body
-
+    console.log(req.body)
    
     try {
         
-        const newUserInfo = await userSchema.findByIdAndUpdate(userID,editableInfo,{new:true})
+        const newUserInfo = await userSchema.findByIdAndUpdate({_id:userID},editableInfo,{new:true})
 
 
         io.emit('newUserInfo',

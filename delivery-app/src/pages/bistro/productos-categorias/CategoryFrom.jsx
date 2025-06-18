@@ -28,7 +28,7 @@ export default function CategoryFrom(){
         setLoading(!loading)
         
         const payloadNuevaCategoria = {
-            id:userInfo.id,
+            id:userInfo._id,
             categoria:e.target[0].value.toLowerCase().trim()
         }
         
@@ -59,7 +59,7 @@ export default function CategoryFrom(){
 
         socket.on('categoriaAgregada',(data)=>{
             console.log(data)
-            userInfo.categorias = [...new Set([data.listaCategorias])]
+            userInfo.categorias = [...new Set(data.listaCategorias)]
             localStorage.setItem('userInfo',JSON.stringify(userInfo))
         })
 

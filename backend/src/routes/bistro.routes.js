@@ -16,4 +16,4 @@ bistroRoutes.post('/addCategoriaAlPerfil',agregarCategoriaDeProductoAlLocal)
 
 bistroRoutes.post('/cambiarEstadoDelivery',estadoDelDelivery)
 
-bistroRoutes.post('/nuevaConfiguracion/:idBistro',multerMiddleware().single('imagen'), guardarNuevaConfiguracion)
+bistroRoutes.post('/nuevaConfiguracion/:idBistro',multerMiddleware().single('nueva_foto'), guardarNuevaConfiguracion)

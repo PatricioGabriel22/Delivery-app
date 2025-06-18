@@ -33,7 +33,7 @@ import { useBistroContext } from "../../context/BistrosContext";
 
 
 export default function CarritoConfirm(){
-    const {openBistros,bistroInfo,findBistro} = useBistroContext()
+    const {openBistros,bistroInfo,findBistro,fuseSearch} = useBistroContext()
     const {renderORLocalURL,userInfo} = useLoginContext()
     
     const {carrito, importeTotal,setImporteTotal,cartHandler,buyBTN,
@@ -55,7 +55,7 @@ export default function CarritoConfirm(){
     
     setImporteTotal(
         listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0)
-     + decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad)
+     + decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch)
     )
 
 
@@ -230,7 +230,7 @@ export default function CarritoConfirm(){
                                 setDeliveryMethod("Envio")}}>
 
                                 <FaCarSide size={20} />
-                                <p>Envio: ${decidirCostoEnvio("Envio",userInfo.localidad)}</p>
+                                <p>Envio: ${decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch)}</p>
                         </div>
                     </div>
 

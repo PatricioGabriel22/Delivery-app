@@ -68,13 +68,13 @@ export default function Home() {
       <Help />
 
       <div className=" flex flex-col items-center text-center mt-10">
-        {(!userInfo?.imgBistro && !bistroInfo?.img) ? (
+        {(!userInfo?.img && !bistroInfo?.img) ? (
           <Fragment>
             <h2 className="font-semibold text-2xl">{userInfo.rol ? userInfo.username : bistroInfo.username }</h2>
-            <img src="/logoApp.png" width={200} className="object-fit" />
+            <img src="/logoApp.png" width={300} className="h-55 object-cover" />
           </Fragment>
         ) : (
-          <img src={userInfo.imgBistro || bistroInfo.img} width={200} className="object-fit" />
+          <img src={userInfo?.img || bistroInfo?.img} width={350} className="h-55 rounded object-cover" />
         )}
       </div>
 

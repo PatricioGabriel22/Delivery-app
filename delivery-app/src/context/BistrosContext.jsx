@@ -37,8 +37,9 @@ export function BistroProvider({children}){
 
     
     function findBistro(bistroList,bistroTarget){
+        if(!bistroList) return 
         const target = bistroList.find(bistro=>bistro.username === bistroTarget.username)
-        console.log(target.zonas_delivery)
+        
        return target.zonas_delivery
     }
 
@@ -50,14 +51,14 @@ export function BistroProvider({children}){
 
 
     function bistroHelpDataHandler(bistroData){
-        const {_id,username,telefono,imgBistro,rol} = bistroData
+        const {_id,username,telefono,img} = bistroData
 
 
         const aux = {
             _id:_id,
             username:username,
             telefono:telefono,
-            img:imgBistro
+            img:img
         }
 
         localStorage.setItem('bistroInfo',JSON.stringify(aux))
@@ -99,12 +100,19 @@ export function BistroProvider({children}){
         return true
     }
 
+    function fuseSearch(key,mainList,target){
+        
+        const fuse = new Fuse(mainList,{threshold: 0.3, keys:[key]})
+
+       return fuse.search(target)
+    }
+
     function checkDeliveryZone(bistroData,localidad){
-        const {username,imgBistro,zonas_delivery} = bistroData
+        const {username,img,zonas_delivery} = bistroData
 
-        const fuse = new Fuse(zonas_delivery,{threshold: 0.3, keys:["zona"]})
 
-        const result = fuse.search(localidad)
+
+        const result = fuseSearch('zona',zonas_delivery,localidad)
 
         let msg 
 
@@ -118,7 +126,7 @@ export function BistroProvider({children}){
                 confirmButtonText:"Comprar y pasar a retirar",
                 cancelButtonText:"Cancelar",
                 draggable:true,
-                imageUrl: imgBistro || `./victorina-logo.jpg`,
+                imageUrl: img || `./victorina-logo.jpg`,
                 imageWidth: 400,
                 imageHeight: 200,
                 imageAlt: "Logo app"
@@ -148,7 +156,7 @@ export function BistroProvider({children}){
         <bistroContext.Provider value={{
             openBistros,isLoading,refreshopenBistros,
             navigateToBistro,createSlug,
-            checkOwnershipAndContinue,checkDeliveryZone,
+            checkOwnershipAndContinue,checkDeliveryZone,fuseSearch,
             bistroInfo,
             findBistro
            
