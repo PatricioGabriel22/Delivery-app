@@ -77,7 +77,7 @@ export default function CarritoConfirm(){
         const payload = {
             userInfo,
             preOrderPayload: listaDeCompras,
-            costoEnvio:decidirCostoEnvio(deliveryMethod,userInfo.localidad),
+            costoEnvio:decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch),
             deliveryMethod,
             importeTotal:importeTotal
         }

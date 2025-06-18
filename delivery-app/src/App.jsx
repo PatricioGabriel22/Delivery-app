@@ -33,6 +33,23 @@ function App() {
   useEffect(()=>{updateSW()},[])
 
 
+  useEffect(() => {
+    const APP_VERSION = "2.0.0";
+    const storedVersion = localStorage.getItem("appVersion");
+
+    if (storedVersion !== APP_VERSION) {
+      localStorage.clear();
+      localStorage.setItem("appVersion", APP_VERSION);
+      
+      // ⚠️ Este setTimeout evita que el reload ocurra antes de que se guarde la nueva versión
+      setTimeout(() => {
+        window.location.reload();
+      }, 100); 
+    }
+  }, []);
+  
+
+
 
   return (
     <Fragment>

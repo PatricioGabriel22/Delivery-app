@@ -60,6 +60,9 @@ export default function Home() {
 
 
 
+
+
+
   //probando nueva version con sensor de cambios en el worker
 
   return (

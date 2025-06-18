@@ -4,6 +4,7 @@ import { useShoppingContext } from "@context/ShoppingContext";
 
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { useBistroContext } from "../../context/BistrosContext";
 
 
 
@@ -15,6 +16,7 @@ export default function PagoConfirmadoPage(){
     const navigate = useNavigate()
 
     const {limpiarSecuenciaDeCompras} = useShoppingContext()
+    const {bistroInfo,createSlug} = useBistroContext()
 
     const codigoOrden = localStorage.getItem("pedidoID")
 
@@ -29,8 +31,8 @@ export default function PagoConfirmadoPage(){
                     
                     <p>Codigo de pedido: {codigoOrden}</p>
 
-                    <buton className="p-3 bg-red-600 rounded-full"
-                    onClick={()=>{limpiarSecuenciaDeCompras(); navigate('/')}}
+                    <buton className="p-3 bg-red-600 rounded-full cursor-pointer"
+                    onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/bistros/${createSlug(bistroInfo.username)}`)}}
                     >Regresar al inicio</buton>
                 </div>
         </Fragment>

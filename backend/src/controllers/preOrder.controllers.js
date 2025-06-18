@@ -7,6 +7,7 @@ import { io } from "../webSocket.js"
 import { connectedBistros, connectedUsers } from "../webSocket.js"
 import pedidosSchema from "../models/pedidosSchema.js"
 import userSchema from "../models/user.schema.js"
+import bistroSchema from "../models/bistro.schema.js"
 
 
 
@@ -130,7 +131,7 @@ export const sendPreOrder =  async (req,res)=>{
 
     try {
         
-        const target = await userSchema.findById(bistroID)
+        const target = await bistroSchema.findById(bistroID)
 
         if(deliveryMethod === 'Envio' && !target.doDelivery){
 
@@ -141,7 +142,7 @@ export const sendPreOrder =  async (req,res)=>{
         
 
         const nuevaPreOrden = new preOrderSchema({
-            userID:userInfo.id,
+            userID:userInfo._id,
             userInfo,
             preOrder:preOrderPayload,
             importeTotal:importeTotal,
@@ -154,7 +155,9 @@ export const sendPreOrder =  async (req,res)=>{
 
         
         //aca usar io para avisarle al front quue tiene una nueva preorden
-        io.to(connectedBistros[bistroID]).emit("nuevaPreOrdenRecibida",{
+        io
+        .to(connectedBistros[bistroID])
+        .emit("nuevaPreOrdenRecibida",{
             nuevaPreOrden
         })
 
@@ -180,7 +183,7 @@ export const PreOrderManager = async (req,res)=>{
     const {idOrden} = req.params
 
 
-    const comprador = orderInfo?.userInfo?.id
+    const comprador = orderInfo?.userInfo?._id
     const userSocketID = connectedUsers[comprador]?.socketId 
 
     const restaurante = bistroID
@@ -232,9 +235,9 @@ export const PreOrderManager = async (req,res)=>{
                 }
 
                 
-                socketsToNotify.forEach((socket)=>{
-                    io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
-                })
+                
+                io.to(socketsToNotify).emit('preOrderStatus',nuevaDataEmitida)
+                
 
 
 

@@ -108,7 +108,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
 
                     </div>      
 
-                    <dialog ref={dialogRef} className={`rounded-xl p-2 shadow-xl w-full md:w-160 min-h-screen justify-self-center self-center backdrop:bg-black/50 border-5 ${formaDeEntrega === 'Envio' ? "border-red-500" : "border-sky-500"} }`}>
+                    <dialog ref={dialogRef} className={`rounded-xl p-2 shadow-xl w-full  md:w-160 min-h-screen justify-self-center backdrop:bg-black/50 border-5 ${formaDeEntrega === 'Envio' ? "border-red-500" : "border-sky-500"} }`}>
                         <BannerCloseLogo close={()=>openCloseEditPreviewModal(dialogRef,'close')} />
 
                         <div className="flex flex-col text-lg ">
@@ -137,9 +137,9 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                             
                                 ))}
 
-                                    <span className="flex flex-row self-end p-2 ">
+                                    <span className="flex flex-row  p-2 self-end">
                                     {preOrderInfo.formaDeEntrega === "Envio"
-                                        ? `Envio: $${decidirCostoEnvio(preOrderInfo.formaDeEntrega, preOrderInfo.userInfo.localidad)}`
+                                        ? `Envio: $${preOrderInfo.costoEnvio}`
                                         : ""}
                                     </span>
                             </div>

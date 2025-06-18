@@ -47,7 +47,7 @@ export const loginUser = async(req,res)=>{
             
         } 
         
-        console.log(loginTarget)
+       
 
         const token = jwt.sign(
             {id:loginTarget._id,username:loginTarget.username},
