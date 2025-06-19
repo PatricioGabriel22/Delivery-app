@@ -224,7 +224,7 @@ export default function CarritoConfirm(){
 
                     </div>
                 ) : (
-                                        <Fragment>
+                    <Fragment>
                         {/* Opciones de retiro/envío */}
                         <div className="flex flex-row justify-center  bg-gray-200 w-full gap-x-7 font-medium rounded-full shadow-lg">
 
