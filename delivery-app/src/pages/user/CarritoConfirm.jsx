@@ -46,28 +46,32 @@ export default function CarritoConfirm(){
 
     const [changeDeliveryColor,setChangeDeliveryColor] = useState()
 
-    const [deliveryMethod,setDeliveryMethod] = useState("Envio")
+    const [deliveryMethod,setDeliveryMethod] = useState("Retiro en el local")
 
-    const [listaDeCompras, setListaDeCompras] = useState([]);
+    const [listaDeCompras, setListaDeCompras] = useState([])
     
     const [chekcInfoBTN,setChekcInfoBTN] = useState(false)
 
-    
+    const [costoEnvio,setCostoEnvio] = useState(0)
+
+    const [checkEnvioAllowed,setCheckEnvioAllowed] = useState(fuseSearch('zona',findBistro(openBistros,bistroInfo),userInfo.localidad))
+
+    useEffect(()=>{
+        const auxCostoEnvio = decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch)
+        setCostoEnvio(auxCostoEnvio)
+
+        setCheckEnvioAllowed(fuseSearch('zona',findBistro(openBistros,bistroInfo),userInfo.localidad))
+
+    },[deliveryMethod,findBistro,openBistros,bistroInfo,userInfo.localidad,fuseSearch])
+
     setImporteTotal(
         listaDeCompras.reduce((acc,curr)=>acc+curr.precio*curr.cantidad,0)
-     + decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch)
+     + costoEnvio
     )
-
-
     
-    //aca en vez de carrito me tengo que armar otro carrito o lista que contenga lo que esta comprando con el precio
-    //deberia buscar por nombre d eprducto en la lista grande que me viene de la DB para poner el precio
-
-    
-
-
 
     function confirmarOrdenConElLocal(){
+
         setLoading(prev =>{ 
             localStorage.setItem('loadingPreOrder',JSON.stringify(!prev))
             return JSON.parse(localStorage.getItem('loadingPreOrder'))
@@ -77,7 +81,7 @@ export default function CarritoConfirm(){
         const payload = {
             userInfo,
             preOrderPayload: listaDeCompras,
-            costoEnvio:decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch),
+            costoEnvio:costoEnvio,
             deliveryMethod,
             importeTotal:importeTotal
         }
@@ -129,8 +133,6 @@ export default function CarritoConfirm(){
     }
 
 
-
-
         
     useEffect(() => {
         setListaDeCompras(
@@ -145,10 +147,6 @@ export default function CarritoConfirm(){
         );
 
     }, [carrito,catalogoDelBistro]); // Se ejecuta cada vez que cambia el carrito
-
-
-   
-
 
 
 
@@ -211,70 +209,78 @@ export default function CarritoConfirm(){
                     ${loading ? "opacity-50 pointer-events-none" : "opacity-100"} 
                     ${buyBTN ? "pointer-events-none":""}
                     `}>
-                            
-                    {/* Opciones de retiro/envío */}
-                    <div className="flex flex-row justify-center items-end  bg-gray-200 w-full gap-x-7 text-end font-medium rounded-full shadow-lg">
+                    
 
-                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${ changeDeliveryColor ? "bg-sky-500 rounded-2xl" : ""} `}
-                            onClick={() => {
-                                setChangeDeliveryColor(true)
-                                setDeliveryMethod('Retiro en el local')
-                                }}>
-                                <FaShop size={20} />
-                                <p>Retirar en el local</p>
-                        </div>
-                        
-                        <div className={`flex flex-row items-center justify-center gap-1 p-1 ${changeDeliveryColor ? "" : "bg-red-500 rounded-2xl"}`}
-                            onClick={() => {
-                                setChangeDeliveryColor(false)
-                                setDeliveryMethod("Envio")}}>
-
-                                <FaCarSide size={20} />
-                                <p>Envio: ${decidirCostoEnvio(deliveryMethod,findBistro(openBistros,bistroInfo),userInfo.localidad,fuseSearch)}</p>
-                        </div>
-                    </div>
-
-                    {/* Botones de acción */}
-                    <div className="flex flex-row justify-center gap-3 mt-3">
-                        <button
-                            className="cursor-pointer text-white w-fit p-3 rounded-full bg-red-500"
-                            onClick={() => setEdit(!edit)}>
-                                Editar orden
-                        </button>
-
-                        <button
-                            className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
-                            onClick={() => {
-                                confirmarOrdenConElLocal()
-                                setResponseFromServer(null)
-                                }}>
-                                Pre-ordenar
-                        </button>
-                    </div>
-
-                    {/* Separador */}
-                    <span className="bg-gray-400 h-[1px] m-2"></span>
-
-                    {/* Total */}
-                    <p className={`bg-white text-black rounded-lg w-full mt-5 text-center `}>
-                        TOTAL: ${importeTotal}
-                    </p>
                 </div>
 
 
-            
+        
+                {loading ? (
+                    <div className="flex flex-col justify-center w-full">
+                        <FadeLoader color="#f90b0b" className="self-center mt-10" />
+                        <p className="text-white text-center">
+                            El local se encuentra verificando el stock. Podrá seguir comprando cuando su pedido sea confirmado
+                        </p>
 
-                    {loading ? (
-                        <div className="flex flex-col justify-center w-full">
-                            <FadeLoader color="#f90b0b" className="self-center mt-10" />
-                            <p className="text-white text-center">
-                                El local se encuentra verificando el stock. Podrá seguir comprando cuando su pedido sea confirmado
-                            </p>
+                    </div>
+                ) : (
+                                        <Fragment>
+                        {/* Opciones de retiro/envío */}
+                        <div className="flex flex-row justify-center  bg-gray-200 w-full gap-x-7 font-medium rounded-full shadow-lg">
 
+                            <div className={`flex flex-row items-center justify-center gap-1 p-1 ${ changeDeliveryColor ? "": "bg-sky-500 rounded-2xl" } `}
+                                onClick={() => {
+                                    setChangeDeliveryColor(false)
+                                    setDeliveryMethod('Retiro en el local')
+                                    }}>
+                                    <FaShop size={20} />
+                                    <p>Retirar en el local</p>
+                            </div>
+
+                            {checkEnvioAllowed?.length > 0 && (
+                                
+                                <div className={`flex flex-row items-center justify-center gap-1 p-1 ${changeDeliveryColor ? "bg-red-500 rounded-2xl" : ""} `}
+                                    onClick={() => {
+                                        setChangeDeliveryColor(true)
+                                        setDeliveryMethod("Envio")}}>
+
+                                        <FaCarSide size={20} />
+                                        <p>Envio: ${costoEnvio}</p>
+                                </div>
+                            )}
+                                    {/* ${costoEnvio ?  "opacity-100" : "opacity-20 pointer-events-none"} */}
+                        
                         </div>
-                    ) : ("")}
 
-                    {buyBTN ? (
+                        {/* Botones de acción */}
+                        <div className="flex flex-row justify-center gap-3 mt-3">
+                            <button
+                                className="cursor-pointer text-white w-fit p-3 rounded-full bg-red-500"
+                                onClick={() => setEdit(!edit)}>
+                                    Editar orden
+                            </button>
+
+                            <button
+                                className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
+                                onClick={() => {
+                                    confirmarOrdenConElLocal()
+                                    setResponseFromServer(null)
+                                    }}>
+                                    Pre-ordenar
+                            </button>
+                        </div>
+
+                        {/* Separador */}
+                        <span className="bg-gray-400 h-[1px] m-2"></span>
+
+                        {/* Total */}
+                        <p className={`bg-white text-black rounded-lg w-full mt-5 text-center `}>
+                            TOTAL: ${importeTotal}
+                        </p>
+                    </Fragment>
+                )}
+
+                {buyBTN ? (
                 <Fragment>
                     <GiConfirmed size={60} className="text-green-700 self-center mt-10 "/>
                     <p className="text-white text-center">
@@ -288,27 +294,27 @@ export default function CarritoConfirm(){
                     <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}/>
                 </Fragment>
 
-                    ):("")}
+                ):("")}
 
 
 
-                    {responseFromServer?.canceled && (
-                        <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
-                            <FaFaceSadCry  size={90}/>
-                            Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas
+                {responseFromServer?.canceled && (
+                    <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
+                        <FaFaceSadCry  size={90}/>
+                        Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas
 
-                            {responseFromServer?.msgDeSugerencia && (
-                                <div className="w-full text-justify bg-white text-black  rounded p-2">
-                                    <span className="flex justify-between items-center gap-2 text-lg font-semibold"> 
-                                        El local sugiere: <GiCook  size={35}/> </span>
-                                    <p className="mt-3">{responseFromServer.msgDeSugerencia}</p>
-                                </div>
-                            )}
+                        {responseFromServer?.msgDeSugerencia && (
+                            <div className="w-full text-justify bg-white text-black  rounded p-2">
+                                <span className="flex justify-between items-center gap-2 text-lg font-semibold"> 
+                                    El local sugiere: <GiCook  size={35}/> </span>
+                                <p className="mt-3">{responseFromServer.msgDeSugerencia}</p>
+                            </div>
+                        )}
 
-                            <span className="text-center ">Esta pre-orden se cancela automaticamente por falta de producto sin costo alguno</span>
+                        <span className="text-center ">Esta pre-orden se cancela automaticamente por falta de producto sin costo alguno</span>
 
-                        </div>
-                    )} 
+                    </div>
+                )} 
 
             </div>
 

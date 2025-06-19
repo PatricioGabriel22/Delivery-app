@@ -169,18 +169,18 @@ export const editProfileInfo = async(req,res)=>{
     console.log(req.body)
    
     try {
+
+        const sanitizedInfo = {};
+
+        for (const key in editableInfo) {
+            const value = editableInfo[key];
+            sanitizedInfo[key] = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : value;
+        }
         
-        const newUserInfo = await userSchema.findByIdAndUpdate({_id:userID},editableInfo,{new:true})
+        const newUserInfo = await userSchema.findByIdAndUpdate({_id:userID},sanitizedInfo,{new:true})
 
 
-        io.emit('newUserInfo',
-            {
-            username: newUserInfo.username,
-            direccion: newUserInfo.direccion,
-            localidad: newUserInfo.localidad,
-            entreCalles: newUserInfo.entreCalles,
-            telefono: newUserInfo.telefono
-        })
+        io.emit('newUserInfo',newUserInfo)
 
 
         res.status(200).json({message:"Usuario actualizado"});

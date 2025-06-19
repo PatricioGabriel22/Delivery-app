@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 // import axios from 'axios'
 
 import { useLoginContext } from "./LoginContext"
-import { esDeHoy } from "../utils/dateFunctions"
+// import { esDeHoy } from "../utils/dateFunctions"
 import { io } from "socket.io-client"
 import { useShoppingContext } from "./ShoppingContext"
 import toast from "react-hot-toast"
@@ -107,9 +107,8 @@ export function SocketProvider({children}){
     useEffect(() => {
 
         if (allPreOrdersFromBistro) {
-
-          setAllPreOrders(allPreOrdersFromBistro.filter(data => !data.confirmed && esDeHoy(data.createdAt)));
-          setAcceptedOrders(allPreOrdersFromBistro.filter(data => data.confirmed && esDeHoy(data.createdAt)));
+          setAllPreOrders(allPreOrdersFromBistro.filter(data => !data.confirmed))
+          setAcceptedOrders(allPreOrdersFromBistro.filter(data => data.confirmed))
         }
     }, [allPreOrdersFromBistro]);       
 
@@ -175,9 +174,9 @@ export function SocketProvider({children}){
 
                         
                      
-                        if(esDeHoy(data.confirmedOrder.createdAt)){
+                        
                             return [...ordenesPreviasConfirmadas,data.confirmedOrder]
-                        }
+                        
                         
 
                     })

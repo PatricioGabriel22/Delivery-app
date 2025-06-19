@@ -4,6 +4,7 @@
 export function decidirCostoEnvio(formaEntrega,zonasDeliveryLocal,localidadUser,callbackFuse){
 
     let costoEnvio = 0
+ 
     if(!formaEntrega || !zonasDeliveryLocal || !localidadUser) return costoEnvio
     
 
@@ -16,13 +17,12 @@ export function decidirCostoEnvio(formaEntrega,zonasDeliveryLocal,localidadUser,
                 costoEnvio = resultFuse[0].item.precio
                 return costoEnvio
             }
-            
+         
             return costoEnvio
             
         }
 
-      
-
+    
         case 'Retiro en el local':
             return costoEnvio
         

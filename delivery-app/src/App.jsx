@@ -34,7 +34,7 @@ function App() {
 
 
   useEffect(() => {
-    const APP_VERSION = "2.0.0";
+    const APP_VERSION = "2.0.1";
     const storedVersion = localStorage.getItem("appVersion");
 
     if (storedVersion !== APP_VERSION) {

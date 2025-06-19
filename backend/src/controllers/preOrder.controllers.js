@@ -236,8 +236,9 @@ export const PreOrderManager = async (req,res)=>{
 
                 
                 
-                io.to(socketsToNotify).emit('preOrderStatus',nuevaDataEmitida)
-                
+                socketsToNotify.forEach((socket)=>{
+                    io.to(socket).emit('preOrderStatus',nuevaDataEmitida)
+                })
 
 
 

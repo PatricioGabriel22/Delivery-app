@@ -101,7 +101,7 @@ export function BistroProvider({children}){
     }
 
     function fuseSearch(key,mainList,target){
-        
+        if(!mainList) return
         const fuse = new Fuse(mainList,{threshold: 0.3, keys:[key]})
 
        return fuse.search(target)

@@ -28,6 +28,8 @@ export default function ProfileCard({ userInfo }) {
     console.log("Guardando cambios:", editableInfo);
     setIsEditing(false);
 
+    
+
     const editPayload = {
       userID:userInfo._id,
       editableInfo
@@ -50,9 +52,9 @@ export default function ProfileCard({ userInfo }) {
   useEffect(()=>{
 
     socket.on('newUserInfo',(data)=>{
-  
-
-        setUserInfo(prev => ({...prev,...data}))
+      console.log(data)
+      setUserInfo(data)
+      localStorage.setItem('userInfo', JSON.stringify(data))
     })
 
 
