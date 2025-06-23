@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { storageCustomCloudinary } from '../cloudinary.js'
 import multer from 'multer'
+import { connectedUsers,connectedBistros, io } from "../webSocket.js" 
 
 
 export function multerMiddleware(){
@@ -14,7 +15,7 @@ export function multerMiddleware(){
 
 
 
-export async function modifyData(idTarget,schema,updateParams,file,socket,eventName){
+export async function modifyData(idTarget,schema,updateParams,file,eventName){
     const targetPrevio = await schema.findById(idTarget)
 
     if(file){
@@ -27,16 +28,15 @@ export async function modifyData(idTarget,schema,updateParams,file,socket,eventN
             await cloudinary.uploader.destroy(targetPrevio.public_IMG_ID)
         }
 
-    }
-
-    if(!file) updateParams.img = ''
-
-   
+    }   
 
     console.log(updateParams)
     const targetUpdated = await schema.findByIdAndUpdate(idTarget,updateParams,{new:true})
 
 
 
-    socket.emit(eventName,targetUpdated)
+    io
+    .to(connectedBistros[idTarget])
+    .to(connectedUsers)
+    .emit(eventName,targetUpdated)
 }

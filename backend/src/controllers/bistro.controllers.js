@@ -1,6 +1,6 @@
 import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 import bistroSchema from "../models/bistro.schema.js"
-import { connectedBistros, io } from "../webSocket.js" 
+import { connectedUsers,connectedBistros, io } from "../webSocket.js" 
 
 
 export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
@@ -72,7 +72,7 @@ export const guardarNuevaConfiguracion = async (req,res)=>{
             categorias: JSON.parse(nuevas_categorias)
         }
     
-        modifyData(idBistro,bistroSchema,updateParams,req.file,io,'nuevaConfiguracion')
+        modifyData(idBistro,bistroSchema,updateParams,req.file,'nuevaConfiguracion')
         res.status(200).json({message:"Cambios guardados!"})
     } catch (error) {
         console.log(error)

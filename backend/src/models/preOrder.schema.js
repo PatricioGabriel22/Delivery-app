@@ -7,6 +7,7 @@ const preOrderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users', 
     },
+    bistroID:{ type: mongoose.Schema.Types.ObjectId},
     userInfo:Object,
     preOrder:Array,
     costoEnvio:Number,

@@ -15,13 +15,13 @@ import { openCloseEditPreviewModal } from "../../utils/modalFunctions";
 
 export default function IncomingPreOrder({title,preOrderInfo,activeButtons = true}){
 
-    const {formaDeEntrega,importeTotal,confirmed,finished,delivered,paymentMethod,_id} = preOrderInfo
+    const {formaDeEntrega,importeTotal,confirmed,finished,delivered,paymentMethod} = preOrderInfo
 
     const {username} = preOrderInfo.userInfo
 
 
 
-    const {renderORLocalURL} = useLoginContext()
+    const {renderORLocalURL,userInfo} = useLoginContext()
 
     const {orderStatusHandler} = useShoppingContext()
 
@@ -39,8 +39,8 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
         const msgDeSugerencia = e.target[0].value
         console.log(msgDeSugerencia)
 
-        orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada",msgDeSugerencia)
-        openCloseEditPreviewModal(dialogRef,'close')()
+        orderStatusHandler(userInfo._id,renderORLocalURL,preOrderInfo,"cancelada",msgDeSugerencia)
+        openCloseEditPreviewModal(dialogRef,'close')
     }
 
 
@@ -91,12 +91,12 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                 <div className="flex flex-row justify-around w-full ">                           
                                     <button 
                                         className={`cursor-pointer hover:bg-sky-500 rounded-lg p-2 ${finished? "bg-green-500":"bg-sky-100"} `}
-                                        onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"preparada")}
+                                        onClick={()=>orderStatusHandler(userInfo._id,renderORLocalURL,preOrderInfo,"preparada")}
                                         >Preparada</button>
 
                                     <button 
                                         className={`cursor-pointer bg-sky-100 hover:bg-green-500 rounded-lg p-2 ${delivered? "bg-green-500":""} `}
-                                        onClick={()=>orderStatusHandler(renderORLocalURL,preOrderInfo,"entregada")}
+                                        onClick={()=>orderStatusHandler(userInfo._id,renderORLocalURL,preOrderInfo,"entregada")}
                                         >Entregada</button>
 
                                 </div>
@@ -184,7 +184,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                                     size={80} 
                                                     className={`text-green-600 hover:text-green-700  `}
                                                     onClick={()=>{
-                                                        orderStatusHandler(renderORLocalURL,preOrderInfo,"aceptada")
+                                                        orderStatusHandler(userInfo._id,renderORLocalURL,preOrderInfo,"aceptada")
                                                         openCloseEditPreviewModal(dialogRef,'close')
                                                     }}
                                                 />
@@ -221,7 +221,7 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                     <span className="w-full h-[1px] bg-black"/>
                                     <button 
                                         onClick={()=>{
-                                            orderStatusHandler(renderORLocalURL,preOrderInfo,"cancelada")
+                                            orderStatusHandler(userInfo._id,renderORLocalURL,preOrderInfo,"cancelada")
                                             openCloseEditPreviewModal(dialogRef,'close')
                                         }} 
                                         className={`text-black hover:text-red-700  w-full text-center cursor-pointer`}> Cancelar definitivamente</button>

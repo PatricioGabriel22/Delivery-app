@@ -7,6 +7,7 @@ import mongoose from "mongoose"
 const bistroSchema = new mongoose.Schema({
     username:String,
     img: {type:String,default:""},
+    public_IMG_ID: {type:String,default:""},
     email:String,
     password:String,
     direccion:String,

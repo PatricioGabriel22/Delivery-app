@@ -253,7 +253,7 @@ export default function Configuraciones(){
                 {showConfig.categorias && (
 
                     <div  className=" text-white h-70  overflow-x-hidden w-full md:w-[30%]">
-                        {categorias.length >0 && categorias.map((categoria,index)=>(
+                        {categorias.length > 0 && categorias.map((categoria,index)=>(
                             <div className="flex flex-row items-center  justify-between border-1 m-2 " key={index}>
                                 <p className=" text-lg p-2 ">{ccapitalizer_3000(categoria)}</p>
                                 <RiDeleteBin6Line size={30} className="text-red-600" onClick={()=>deleteField(categoria,'categoria')}/>

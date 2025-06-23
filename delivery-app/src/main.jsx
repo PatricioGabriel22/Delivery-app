@@ -10,7 +10,6 @@ import { OrderProvider } from '@context/OrdersContext.jsx'
 
 import {Toaster} from 'react-hot-toast'
 import { BrowserRouter } from 'react-router-dom'
-import { CatalogoProvider } from '@context/CatalogContext.jsx'
 import { BistroProvider } from './context/BistrosContext.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -21,7 +20,6 @@ createRoot(document.getElementById('root')).render(
       <LoginProvider>
         <BistroProvider>
           <ShoppingProvider>
-            <CatalogoProvider>
             <OrderProvider>
               <SocketProvider>
                 
@@ -42,7 +40,6 @@ createRoot(document.getElementById('root')).render(
 
               </SocketProvider>
             </OrderProvider>
-            </CatalogoProvider>
           </ShoppingProvider>
         </BistroProvider>
       </LoginProvider>

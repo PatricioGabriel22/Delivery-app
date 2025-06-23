@@ -5,16 +5,17 @@ import { createContext, useContext, useEffect, useState } from "react"
 // import axios from 'axios'
 
 import { useLoginContext } from "./LoginContext"
-// import { esDeHoy } from "../utils/dateFunctions"
+
 import { io } from "socket.io-client"
 import { useShoppingContext } from "./ShoppingContext"
 import toast from "react-hot-toast"
 import { useOrdersContext } from "./OrdersContext"
 import { Link } from "react-router-dom"
-import BannerCloseLogo from "@components/common/BannerCloseLogo"
-import { useCatalogContext } from "./CatalogContext"
+
 import {generateNotificationSound, preventStopNotification } from "../utils/soundConfig"
 import { useBistroContext } from "./BistrosContext"
+import { esDeHoy } from "../utils/dateFunctions"
+import { useCatalogMaker } from "./SWR"
 
 
 
@@ -59,10 +60,11 @@ export const useSocketContext = ()=>{
 
 export function SocketProvider({children}){
 
-    const {userInfo,setUserInfo} = useLoginContext()
+    const {renderORLocalURL,userInfo,bistroInfo,setUserInfo} = useLoginContext()
     const {allPreOrdersFromBistro,BistroPreOrdersData,refreshHistorialOrdenes} = useOrdersContext()
     const {setBuyBTN,setLoading,setResponseFromServer} = useShoppingContext()
-    const {refresh} = useCatalogContext() 
+    const {refresh} = useCatalogMaker(renderORLocalURL, bistroInfo?._id || userInfo?._id)
+     
     const {refreshopenBistros} = useBistroContext()
     
     
@@ -107,8 +109,8 @@ export function SocketProvider({children}){
     useEffect(() => {
 
         if (allPreOrdersFromBistro) {
-          setAllPreOrders(allPreOrdersFromBistro.filter(data => !data.confirmed))
-          setAcceptedOrders(allPreOrdersFromBistro.filter(data => data.confirmed))
+          setAllPreOrders(allPreOrdersFromBistro.filter(data => !data.confirmed && esDeHoy(data.createdAt)))
+          setAcceptedOrders(allPreOrdersFromBistro.filter(data => data.confirmed && esDeHoy(data.createdAt)))
         }
     }, [allPreOrdersFromBistro]);       
 
@@ -172,8 +174,8 @@ export function SocketProvider({children}){
                         //me aseguro que no me repita la orden por si acaso
                         const ordenesPreviasConfirmadas = prev.filter(item=>item._id !== data.id)
 
+
                         
-                     
                         
                             return [...ordenesPreviasConfirmadas,data.confirmedOrder]
                         

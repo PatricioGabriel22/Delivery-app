@@ -14,7 +14,7 @@ import { Fragment, useEffect, useState } from "react";
 import SearchingBar from "@components/common/SearchingBar.jsx";
 import { useLoginContext } from "@context/LoginContext.jsx";
 // import { useSocketContext } from "@context/SocketContext.jsx";
-import { useCatalogContext } from "@context/CatalogContext.jsx";
+
 import { useBistroContext } from "../../context/BistrosContext.jsx";
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
@@ -26,6 +26,7 @@ import Error from "@components/common/Error.jsx";
 import Help from "../user/Help.jsx";
 import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
 import { useParams } from "react-router-dom";
+import { useCatalogMaker } from "../../context/SWR.js";
 
 
 
@@ -34,10 +35,12 @@ export default function Home() {
 
   const {bistroName} = useParams()
 
-  const {userInfo} = useLoginContext()
+  const {userInfo,renderORLocalURL} = useLoginContext()
   const {carrito} = useShoppingContext()
-  const {catalogoDelBistro,isLoading,isError} = useCatalogContext()
   const {checkOwnershipAndContinue,bistroInfo} = useBistroContext()
+  
+  const {catalogoDelBistro,isLoading,isError} = useCatalogMaker(renderORLocalURL, bistroInfo._id || userInfo._id)
+  
 
   const [productoBuscado,setProductoBuscado] = useState('')
 
@@ -45,7 +48,6 @@ export default function Home() {
   const CategoriasProductos = [...new Set(catalogoDelBistro.map(p => p.categoria))].sort()
   
   const [showItems,setShowItems] = useState({})
-
 
 
 
@@ -59,22 +61,20 @@ export default function Home() {
   },[checkOwnershipAndContinue,userInfo,bistroName])
 
 
-
-
   useEffect(() => {
-  const APP_VERSION = "2.0.1";
-  const storedVersion = localStorage.getItem("appVersion");
+    const APP_VERSION = "2.0.1";
+    const storedVersion = localStorage.getItem("appVersion");
 
-  if (storedVersion !== APP_VERSION) {
-    localStorage.clear();
-    localStorage.setItem("appVersion", APP_VERSION);
-    
-    // ⚠️ Este setTimeout evita que el reload ocurra antes de que se guarde la nueva versión
-    setTimeout(() => {
-      window.location.reload();
-    }, 100); 
-  }
-}, []);
+    if (storedVersion !== APP_VERSION) {
+      localStorage.clear();
+      localStorage.setItem("appVersion", APP_VERSION);
+      
+      // ⚠️ Este setTimeout evita que el reload ocurra antes de que se guarde la nueva versión
+      setTimeout(() => {
+        window.location.reload();
+      }, 100); 
+    }
+  }, [])
 
 
 
@@ -92,7 +92,7 @@ export default function Home() {
             <img src="/logoApp.png" width={300} className="h-55 object-cover" />
           </Fragment>
         ) : (
-          <img src={userInfo?.img || bistroInfo?.img} width={350} className="h-55 rounded object-cover" />
+          <img src={userInfo?.img || bistroInfo?.img || "/logoApp.png"} width={350} className="h-55 rounded object-cover" />
         )}
       </div>
 
@@ -168,7 +168,7 @@ export default function Home() {
         
                         </Fragment>
                       )
-                  }
+                    }
         
                   
                 })}

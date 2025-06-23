@@ -16,8 +16,7 @@ import axios from "axios";
 import { capitalize, ccapitalizer_3000 } from "../../utils/capitalize";
 import toast from "react-hot-toast";
 import { useCatalogMaker } from "@context/SWR";
-import { useCatalogContext } from "@context/CatalogContext";
-import { useSocketContext } from "@context/SocketContext";
+
 
 
 
@@ -41,9 +40,10 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   // Estado para controlar la cantidad en el carrito
   const {carrito,cartHandler,loading, buyBTN} = useShoppingContext()
   
-  const {userInfo,renderORLocalURL} = useLoginContext()
+  const {userInfo,renderORLocalURL,bistroInfo} = useLoginContext()
 
-  const {refresh} = useCatalogContext()
+  const {refresh} = useCatalogMaker(renderORLocalURL, bistroInfo?._id || userInfo?._id)
+  
 
   const capitalizedNombre = useMemo(() => ccapitalizer_3000(nombre), [nombre])
   const editImgModalRef = useRef(null)
@@ -75,22 +75,37 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   }
 
   
+
+
   function handleChangesDataCard(e,flagTemporal){
    
 
+    let infoGuardada 
+
     const nombreCampo = e.target.name
-    const infoGuardada = nombreCampo !== 'imagen' ? e.target.value : e.target.files[0]
+    
+    if(nombreCampo !== 'imagen'){
+      infoGuardada = e.target.value
+    }else if(e.target.files){
+      infoGuardada = e.target.files[0]
+    }else{
+      infoGuardada = img
+    }
+
 
     setEditableData({...editableData,[nombreCampo]: infoGuardada})
 
     if(flagTemporal){
-      const pathLogo = 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1746541592/productos/sxc84fxav3vdaoz1jouf.png'
+      const pathLogo = 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1750683627/productos/k786vsil39y78yx3cvm5.png'
 
       setMiniPreview(pathLogo)
 
      setEditableData({...editableData,[nombreCampo]: flagTemporal})
 
     }
+
+    console.log(editableData)
+    
   }
 
   async function handleChangeStatus(){
@@ -145,11 +160,11 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
   }
 
   async function borrarProducto(){
-    const axiosPromise = axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true})
+   
     try {
       //aca si ejecuto por detras la eliminacion definitiva en la DB
-      toast.promise(
-        axiosPromise,
+      await toast.promise(
+        axios.delete(`${renderORLocalURL}/eliminarProducto/${id}`, {withCredentials:true}),
         {
           loading: 'Eliminando...',
           success:(res) => {
@@ -260,7 +275,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               
                   <div className="flex flex-col items-center">
                     <p>Anterior</p>
-                    <img src={img} className=" w-58 h-60 rounded-2xl " loading="lazy" />
+                    <img src={img || '/logoApp.png'} className=" w-58 h-60 rounded-2xl " loading="lazy" />
                   </div>
 
                   <div className="flex flex-col items-center">

@@ -1,4 +1,3 @@
-import productSchema from "../models/product.schema.js"
 import preOrderSchema from "../models/preOrder.schema.js"
 
 
@@ -12,7 +11,7 @@ import bistroSchema from "../models/bistro.schema.js"
 
 
 //lo hago aca a mano pero en la preorder deberia viajar al local que se le hizo, cambiar tambien para websocket para ver los conectados
-const bistroID = '6806b8fe2b72a9697aa59e5f' //serian los bistros
+// const bistroID = '6806b8fe2b72a9697aa59e5f' //serian los bistros
 
 
 
@@ -100,17 +99,17 @@ export const getAllPedidos = async (req,res)=>{
 export const pivoteDePreOrdenes = async (req,res)=>{
 
     
-    const {idBistro} = req.params
+    const {bistroID} = req.params
    
     
 
-    if(!idBistro) return res.status(400)
+    if(!bistroID) return res.status(400)
 
     //dejemos cuestiones de preORdenes SOLO para los bistros
-
+        //tengo que agragar al esquema de pre-ordenes y ordenes el id el bistro al que se le hizo para poder gestionarlas
     try {
         
-        const allPreOrders = await preOrderSchema.find({})
+        const allPreOrders = await preOrderSchema.find({bistroID})
 
 
         res.json(allPreOrders)
@@ -126,7 +125,7 @@ export const pivoteDePreOrdenes = async (req,res)=>{
 
 export const sendPreOrder =  async (req,res)=>{
 
-    const {preOrderPayload,userInfo,importeTotal,costoEnvio,deliveryMethod} = req.body
+    const {preOrderPayload,userInfo,importeTotal,costoEnvio,deliveryMethod,bistroID} = req.body
 
 
     try {
@@ -144,6 +143,7 @@ export const sendPreOrder =  async (req,res)=>{
         const nuevaPreOrden = new preOrderSchema({
             userID:userInfo._id,
             userInfo,
+            bistroID,
             preOrder:preOrderPayload,
             importeTotal:importeTotal,
             costoEnvio,
@@ -179,7 +179,7 @@ export const sendPreOrder =  async (req,res)=>{
 export const PreOrderManager = async (req,res)=>{
 
 
-    const {orderInfo,status,notification} = req.body
+    const {orderInfo,status,notification,bistroID} = req.body
     const {idOrden} = req.params
 
 

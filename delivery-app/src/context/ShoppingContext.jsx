@@ -105,10 +105,11 @@ export function ShoppingProvider({ children }) {
 
 
 
-  async function orderStatusHandler(url,orderInfo,status,notification){
+  async function orderStatusHandler(bistroID,url,orderInfo,status,notification){
 
 
     const payload = {
+      bistroID,
       orderInfo,
       status,
       notification

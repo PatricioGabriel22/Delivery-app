@@ -63,7 +63,7 @@ export default function Bistros(){
                                     <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
                                 </div>
                                 <div className="flex flex-col items-center  ">
-                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={200} className="rounded  self-end "  />
+                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={200} className="rounded mt-5 h-40 object-fill self-end "  />
                                 </div>
                             </div>
                         

@@ -12,10 +12,10 @@ import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 export async function catalogMaker(req,res){
     const {idBistro} = req.params
 
-
+    if(!idBistro) return 
     try {
         const catalogoDelBistro = await productSchema.find({bistroOwner:idBistro})
-
+        console.log(catalogoDelBistro)
         
 
         res.json({catalogoDelBistro})
@@ -110,11 +110,11 @@ export const editProductInfo = async (req,res)=>{
     
     
 
-    console.log(temporalIMG)
+    console.log(req.file)
 
     const logoApp = {
-        path: 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1746541592/productos/sxc84fxav3vdaoz1jouf.png',
-        filename: 'productos/sxc84fxav3vdaoz1jouf'
+        path: 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1750683627/productos/k786vsil39y78yx3cvm5.png',
+        filename: 'productos/k786vsil39y78yx3cvm5'
     }
 
     try {
@@ -122,14 +122,14 @@ export const editProductInfo = async (req,res)=>{
 
 
         const updatedFields = {
-            nombre,
-            descripcion,
+            nombre: typeof nombre === 'string' ? nombre.trim() : nombre,
+            descripcion: typeof descripcion === 'string' ? descripcion.trim() : descripcion,
             precio,
-            img: temporalIMG ? logoApp.path : "",
-            public_IMG_ID: temporalIMG ? logoApp.filename : "",
+            img: temporalIMG ? logoApp.path : undefined,
+            public_IMG_ID: temporalIMG ? logoApp.filename : undefined,
         }
 
-        modifyData(id,productSchema,updatedFields,req.file,io,"cardProductoActualizada")
+        modifyData(id,productSchema,updatedFields,req.file,"cardProductoActualizada")
 
 
 

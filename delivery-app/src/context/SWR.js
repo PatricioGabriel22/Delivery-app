@@ -14,10 +14,10 @@ async function getAllCatalogFromBistro(url){
 }
 
 
-export function useCatalogMaker(urlAPI){
+export function useCatalogMaker(urlAPI, bistroID){
 
     
-    let targetURL = `${urlAPI}/bringAllCatalog/6806b8fe2b72a9697aa59e5f`
+    let targetURL = `${urlAPI}/bringAllCatalog/${bistroID}`
 
 
     const SWRoptions =   {

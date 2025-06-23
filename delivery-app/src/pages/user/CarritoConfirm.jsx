@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import { useShoppingContext } from "@context/ShoppingContext"
 import { useLoginContext } from "@context/LoginContext";
-import { useCatalogContext } from "@context/CatalogContext";
+
 
 
 import { RiDeleteBin6Line } from "react-icons/ri"
@@ -27,6 +27,7 @@ import ProfileCard from "@components/common/ProfileCard"
 import BannerCloseLogo from "@components/common/BannerCloseLogo"
 import CancelarCompraBTN from "../../components/user/CancelarCompraBTN";
 import { useBistroContext } from "../../context/BistrosContext";
+import { useCatalogMaker } from "../../context/SWR";
 
 
 
@@ -40,7 +41,8 @@ export default function CarritoConfirm(){
         loading,setLoading,responseFromServer,setResponseFromServer
     } = useShoppingContext()
 
-    const {catalogoDelBistro} = useCatalogContext()
+    const {catalogoDelBistro} = useCatalogMaker(renderORLocalURL, bistroInfo._id || userInfo._id)
+   
 
     const [edit,setEdit] = useState(false)
 
@@ -80,6 +82,7 @@ export default function CarritoConfirm(){
 
         const payload = {
             userInfo,
+            bistroID:bistroInfo._id,
             preOrderPayload: listaDeCompras,
             costoEnvio:costoEnvio,
             deliveryMethod,
