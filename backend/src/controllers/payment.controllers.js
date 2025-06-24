@@ -50,7 +50,7 @@ export const calcularPagosEnRango = async (req,res)=>{
 
 
 export const pagarConEfectivo = async (req,res)=>{
-    const {pedidoID,preOrdenID, userID,importe} = req.body
+    const {pedidoID,preOrdenID, userID,importe,bistroID} = req.body
 
     
     try {
@@ -69,7 +69,7 @@ export const pagarConEfectivo = async (req,res)=>{
     
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Efectivo'}},{new:true})
 
-            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
 
 
         }
@@ -99,7 +99,7 @@ export const pagarConEfectivo = async (req,res)=>{
 
 
 export const pagarConMP = async (req, res) => {
-    const { pedidoID,preOrdenID, items, payer,flagVerify } = req.body;
+    const { pedidoID,preOrdenID, items, payer,flagVerify, bistroID } = req.body;
 
 
     // Configuración del token de acceso
@@ -139,7 +139,7 @@ export const pagarConMP = async (req, res) => {
             
             const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
             
-            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('preOrdenPagoVerificado', preOrderPaga)
+            io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
             
             if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
 

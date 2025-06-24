@@ -44,6 +44,7 @@ export function BistroProvider({children}){
     }
 
     function createSlug(target){
+        if(!target) return
         return target.replace(/\s+/g, '-').toLowerCase()
     }       
 

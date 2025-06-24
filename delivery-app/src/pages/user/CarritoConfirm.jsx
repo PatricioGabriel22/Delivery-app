@@ -154,7 +154,9 @@ export default function CarritoConfirm(){
 
 
     return(
-        <div className={`flex flex-col justify-center items-center  text-black p-4 md:w-xl m-auto  ${loading ? "opacity-50 pointer-events-none" : "opacity-100"}`}>
+        <div className={`flex flex-col justify-center items-center  text-black p-4 md:w-xl m-auto  `}>
+
+
 
             <button 
                 className={`bg-red-600 text-white p-4 mb-9 rounded-full  cursor-pointer hover:border-1 hover:border-white ${chekcInfoBTN? "hidden" :"text-lg" } ${loading || buyBTN? "hidden" :"" }`}
@@ -176,6 +178,10 @@ export default function CarritoConfirm(){
 
 
             <div className={`flex flex-col ${listaDeCompras.length>0? "h-[250px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
+                {listaDeCompras.length > 0 && (
+
+                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}/>
+                )}
 
                 {listaDeCompras?.map((item,index)=>(
                     <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-2 mb-2">
@@ -256,22 +262,25 @@ export default function CarritoConfirm(){
                         </div>
 
                         {/* Botones de acción */}
-                        <div className="flex flex-row justify-center gap-3 mt-3">
-                            <button
-                                className="cursor-pointer text-white w-fit p-3 rounded-full bg-red-500"
-                                onClick={() => setEdit(!edit)}>
-                                    Editar orden
-                            </button>
+                        {!buyBTN && (
 
-                            <button
-                                className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
-                                onClick={() => {
-                                    confirmarOrdenConElLocal()
-                                    setResponseFromServer(null)
-                                    }}>
-                                    Pre-ordenar
-                            </button>
-                        </div>
+                            <div className="flex flex-row justify-center gap-3 mt-3">
+                                <button
+                                    className="cursor-pointer text-white w-fit p-3 rounded-full bg-red-500"
+                                    onClick={() => setEdit(!edit)}>
+                                        Editar orden
+                                </button>
+
+                                <button
+                                    className={`cursor-pointer text-white w-fit p-3 rounded-full bg-green-700 ${carrito.length >0 ? "": "pointer-events-none"} `}
+                                    onClick={() => {
+                                        confirmarOrdenConElLocal()
+                                        setResponseFromServer(null)
+                                        }}>
+                                        Pre-ordenar
+                                </button>
+                            </div>
+                        ) }
 
                         {/* Separador */}
                         <span className="bg-gray-400 h-[1px] m-2"></span>
@@ -294,7 +303,6 @@ export default function CarritoConfirm(){
                         Ir a pagar
                     </Link>
 
-                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}/>
                 </Fragment>
 
                 ):("")}

@@ -7,17 +7,25 @@ import axios from 'axios'
 //--- CREO EL CATALOGO CON BASE EN LAS CATEGORIAS QUE TIENE REGISTRADAS EL ADMIN---
 async function getAllCatalogFromBistro(url){
 
-    const res = await axios.get(url, { withCredentials: true })
-    return res.data
+    try {
+        
+        const res = await axios.get(url, { withCredentials: true })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
 
     
 }
 
 
-export function useCatalogMaker(urlAPI, bistroID){
+export function useCatalogMaker(urlAPI, infoID){
 
     
-    let targetURL = `${urlAPI}/bringAllCatalog/${bistroID}`
+    const fetchFlag = infoID ? true : false
+
+    
+    let targetURL =  fetchFlag ? `${urlAPI}/bringAllCatalog/${infoID}` : null
 
 
     const SWRoptions =   {
@@ -26,13 +34,14 @@ export function useCatalogMaker(urlAPI, bistroID){
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromBistro,SWRoptions)
 
+    console.log(data)
 
     return {
         catalogoDelBistro: data?.catalogoDelBistro || [],
         isLoading,
         isError: error,
         refresh: mutate
-      };
+    };
 
 
 }

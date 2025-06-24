@@ -15,6 +15,8 @@ import Register from '@pages/common/Register.jsx'
 import Profile from '@pages/common/Profile.jsx'
 import LoginProtected from '@components/common/LoginProtected.jsx'
 import BackArrow from '@components/common/BackArrow.jsx'
+import Nav from '@components/common/Nav.jsx'
+
 import { updateSW } from '@components/common/UpdateApp.jsx'
 
 
@@ -48,6 +50,7 @@ function App() {
     }
   }, []);
   
+
 
 
 
@@ -98,7 +101,8 @@ function App() {
           
         </Routes>
       
-
+        <div className="mt-20 w-full h-3"/>
+        <Nav />
       </div>
     </Fragment>
   )

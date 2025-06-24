@@ -40,7 +40,7 @@ export const getAllPedidos = async (req,res)=>{
             case 'bistro':
                 
 
-                const query = pedidosSchema.find({}).sort({ createdAt: -1 })
+                const query = pedidosSchema.find({}).sort({ createdAt: -1 }).populate('payment')
                 
                 if(hasPagination){
 
@@ -67,8 +67,13 @@ export const getAllPedidos = async (req,res)=>{
                         sort:{ createdAt: -1 },
                         skip:skippedData,
                         limit:parseLimit
-                    }
+                    },
+                    populate:[
+                        {path:'pedidoEn'},
+                        {path:'payment'}
+                    ]
                 })
+                
 
                 allOrders = userConPedidos.pedidos
                 
@@ -210,6 +215,8 @@ export const PreOrderManager = async (req,res)=>{
                 const nuevoPedido = await  new pedidosSchema({
                     
                     userID:orderInfo.userInfo._id,
+                    pedidoEn:bistroID,
+                    preOrdenDeOrigen:orderInfo._id,
                     productos:orderInfo.preOrder,
                     costoEnvio:orderInfo.costoEnvio,
                     importeTotal:orderInfo.importeTotal,

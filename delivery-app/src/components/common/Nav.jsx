@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useShoppingContext } from "@context/ShoppingContext";
 import LogoutBTN from "./LogoutBTN";
 import { CiShoppingCart } from "react-icons/ci";
@@ -8,15 +8,21 @@ import { useLoginContext } from "../../context/LoginContext";
 
 
 import { IoSettingsOutline } from "react-icons/io5"
+import { useBistroContext } from "../../context/BistrosContext";
 
 export default function Nav() {
   const {userInfo} = useLoginContext()
+  const {bistroInfo,createSlug} = useBistroContext()
   const { carrito,total,setTotal } = useShoppingContext();
   const [showCarritoBTN, setShowCarritoBTN] = useState(false);
-  const {bistroName} = useParams()
-
+  
+  
   const location = useLocation();
   const navigate = useNavigate();
+  
+  const [locationFlag,setLocationFlag] = useState(location.pathname.includes(`/bistros/${createSlug(bistroInfo.username)}`) || "")
+
+  
 
   useEffect(() => {
     const carritoLleno = carrito.length > 0;
@@ -31,7 +37,10 @@ export default function Nav() {
         navigate("/carrito");
       });
     }
-  }, [location.pathname, carrito,navigate])
+
+    setLocationFlag(location.pathname.includes(`/bistros/${createSlug(bistroInfo.username)}`))
+
+  }, [location.pathname, carrito,navigate,createSlug,bistroInfo.username])
 
 
 
@@ -49,11 +58,15 @@ export default function Nav() {
   },[carrito,setTotal,total])
   
 
+  const hideOnRoutes = [ "/login","/register"]
+
+  if (hideOnRoutes.includes(location.pathname)) return null
+
 
   return (
     <div className="fixed bottom-0 left-0 w-full z-10 ">
       {/* Contenedor del carrito sobre la barra roja */}
-      {showCarritoBTN && carrito.length !== 0 && (
+      {showCarritoBTN && carrito.length !== 0 && locationFlag && (
 
         <Link to="/carrito" className="flex justify-center items-center w-full">
           <p className="text-center absolute bottom-26 bg-red-600 p-3 rounded-full transform">
@@ -66,13 +79,13 @@ export default function Nav() {
 
       
 
-      {!userInfo.rol && bistroName && (
+      {!userInfo.rol && locationFlag && (
+
 
         <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white text-black rounded-full w-20 h-20 flex flex-col items-center justify-center shadow-lg border-4 border-red-600">
           <CiShoppingCart size={90} onClick={() => setShowCarritoBTN(!showCarritoBTN)} />
           <p className="text-sm font-bold">{total}</p>
         </div>
-
       )}
 
       {/* Barra de navegación */}

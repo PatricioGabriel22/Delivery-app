@@ -12,13 +12,14 @@ import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 export async function catalogMaker(req,res){
     const {idBistro} = req.params
 
-    if(!idBistro) return 
+    if(!idBistro) return res.status(400)    
+
     try {
         const catalogoDelBistro = await productSchema.find({bistroOwner:idBistro})
         console.log(catalogoDelBistro)
         
 
-        res.json({catalogoDelBistro})
+        res.status(200).json({catalogoDelBistro})
     } catch (error) {
         console.log(error)
     }

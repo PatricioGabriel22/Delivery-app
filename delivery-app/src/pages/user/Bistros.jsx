@@ -82,8 +82,6 @@ export default function Bistros(){
                     </div>
                 ))}
 
-                <div className="mt-20 w-full h-3"/>
-                <Nav/> 
             </div>
         </Fragment>
     )

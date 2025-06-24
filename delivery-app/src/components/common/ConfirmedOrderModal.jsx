@@ -1,6 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Fragment } from "react";
 import BannerCloseLogo from "@components/common/BannerCloseLogo";
 import { verFecha, verHoraYMinutos } from "../../utils/dateFunctions";
+import { useLoginContext } from "../../context/LoginContext";
+import { Link } from "react-router-dom";
+import { useShoppingContext } from "../../context/ShoppingContext";
 
 
 
@@ -12,10 +16,18 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
 
     if (!confirmedOrder) return;
 
-    const {productos,costoEnvio,importeTotal,formaDeEntrega,createdAt,isPayed} = confirmedOrder
-    const {username,telefono,direccion,entreCalles} = confirmedOrder.userID
- 
 
+    const {userInfo} = useLoginContext()
+    const {setImporteTotal} = useShoppingContext()
+    const {productos,costoEnvio,importeTotal,formaDeEntrega,createdAt,isPayed,_id} = confirmedOrder
+    const {username,telefono,direccion,entreCalles} = confirmedOrder.userID
+
+ 
+    function retomarPago(){
+        localStorage.setItem('pedidoID',confirmedOrder._id)
+        localStorage.setItem('preOrdenID',confirmedOrder.preOrdenDeOrigen)
+        setImporteTotal(confirmedOrder.importeTotal)
+    }
 
     return(
         <Fragment>
@@ -29,14 +41,24 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                
                 <p className="text-center">{verFecha(createdAt)} | {verHoraYMinutos(createdAt)}</p>
 
-                <p>{username}</p>
-                <p>{telefono}</p>
-                <p>{direccion}</p>
-                <p>{entreCalles}</p>
+                {userInfo.rol && (
+                    <Fragment>
 
+                        <p>Nombre: {username}</p>
+                        <p>Telefono: {telefono}</p>
+                        <p>Direccion: {direccion}</p>
+                        <p>Entre calles: {entreCalles}</p>
+                    </Fragment>
+                )}
 
+                {!userInfo.rol && (
+                    <div className="flex flex-col justify-center items-center">
+                        <p className="text-center">Compraste en {confirmedOrder.pedidoEn.username}</p>
+                        <img src={confirmedOrder.pedidoEn.img || '/logoApp.png'} width={80} className="rounded-full object-cover w-20 h-20"/>
 
-                <div className="w-full h-[1px] my-8 bg-black"/>
+                    </div>
+                )}
+                <div className="w-full h-[1px] my-3 bg-red-600"/>
                     
 
 
@@ -45,9 +67,9 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
 
                     {productos.map((producto)=>( 
                         
-                        <div className="flex flex-row w-full justify-between p-1" key={producto._id}>
-                            <p className=" text-end">{producto.cantidad}X {producto.nombre}</p>
-                            <p className=" text-end">${producto.precio * producto.cantidad}</p>
+                        <div className="flex flex-row w-full justify-between p-1 my-3 border-1 border-black" key={producto._id}>
+                            <p >{producto.cantidad}x {producto.nombre}</p>
+                            <p >${producto.precio * producto.cantidad}</p>
 
                         </div>
                         
@@ -55,17 +77,27 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                     ))}
 
                     
-                        
+                    <div className="w-full h-[1px] my-3 bg-red-600"/>
+                    
                     {formaDeEntrega === "Envio" ? (
-                        <p className="text-end">Envio: ${costoEnvio}</p>
+                        <p className="text-center mt-2">Envio: ${costoEnvio}</p>
 
                     ):(
-                        <p className="text-end">{formaDeEntrega}</p>
+                        <p className="text-center mt-2">{formaDeEntrega}</p>
                     )}
 
-                
-                    <p>{isPayed ? "Está pago" : "Falta pagar"}</p>
-                    <p className="text-end py-8 m-auto">Total: ${importeTotal}</p>
+                    
+                    <p className="text-center">{isPayed ? "Está pago" : "Falta pagar"}</p>
+                    {!isPayed && (
+                        <Fragment>
+
+                            <Link to={'/comprar'} onClick={retomarPago}>
+                                <p className="text-center underline ">Ir a pagar</p>
+                            </Link>
+
+                        </Fragment>
+                    )}
+                    <p className="text-center py-1 p-1 my-8  rounded-full border-2 bg-red-600 text-white">Total: ${importeTotal}</p>
                 </div>
 
             </dialog>

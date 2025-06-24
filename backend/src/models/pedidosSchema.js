@@ -10,6 +10,14 @@ const pedidosSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users', 
     },
+    pedidoEn:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'bistros', 
+    },
+    preOrdenDeOrigen:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'preorders', 
+    },
     productos:Array,
     costoEnvio:Number,
     importeTotal:Number,

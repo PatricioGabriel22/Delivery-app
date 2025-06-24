@@ -5,6 +5,7 @@ import axios from "axios";
 
 
 import toast from 'react-hot-toast'
+import { useBistroContext } from "../../context/BistrosContext";
 
 
 
@@ -12,7 +13,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     const navigate = useNavigate()
     const {renderORLocalURL,userInfo} = useLoginContext()
-
+    const {bistroInfo} = useBistroContext()
 
     const pedidoID = localStorage.getItem("pedidoID")
     const preOrdenID = localStorage.getItem("preOrdenID")
@@ -25,6 +26,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             // Datos de la compra que querés cobrar
             pedidoID,
             preOrdenID,
+            bistroID: bistroInfo._id,
             items: [
               {
                 title: "Pedido Victorina",
@@ -86,6 +88,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         const efectivo_payload= {
             pedidoID,
             preOrdenID,
+            bistroID: bistroInfo._id,
             userID:userInfo._id,
             importe:importeTotal,
             

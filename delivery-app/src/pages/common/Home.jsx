@@ -78,8 +78,6 @@ export default function Home() {
 
 
 
-  //probando nueva version con sensor de cambios en el worker
-
   return (
     <div className="flex flex-col min-h-screen items-center">
       
@@ -182,11 +180,6 @@ export default function Home() {
 
       })}
 
-
-
-
-      <div className="mt-20 w-full h-3"/>
-      <Nav />
 
     </div>
   );

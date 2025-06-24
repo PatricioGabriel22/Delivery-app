@@ -61,8 +61,8 @@ export default function SelectPayment(){
         <Fragment>
 
 
-            <div className=" flex flex-col justify-center min-h-screen ">
-                <p className="font-bold text-4xl text-center p-10">Seleccionar metodo de pago</p>
+            <div className=" flex flex-col justify-center mt-15 ">
+                <p className="font-bold text-4xl text-center ">Seleccionar metodo de pago</p>
                 <span className="w-[85%] md:w-[50%] h-[1px] bg-red-600 m-2 self-center"/>
                 <div className="flex flex-col items-center justify-center ">
 
@@ -78,7 +78,7 @@ export default function SelectPayment(){
                         </span>
                     ))}
 
-
+                    {<span className="text-3xl m-1">${importeTotal}</span>}
 
                 </div>
 
