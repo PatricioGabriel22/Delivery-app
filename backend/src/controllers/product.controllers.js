@@ -16,7 +16,7 @@ export async function catalogMaker(req,res){
 
     try {
         const catalogoDelBistro = await productSchema.find({bistroOwner:idBistro})
-        console.log(catalogoDelBistro)
+
         
 
         res.status(200).json({catalogoDelBistro})

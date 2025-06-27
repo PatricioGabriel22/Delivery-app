@@ -94,9 +94,9 @@ export default function Home() {
         )}
       </div>
 
-      <div className="w-full flex flex-row justify-center items-center">
+      <div className="w-full flex flex-row justify-center items-center gap-x-10">
         <DeliveryStatus rol={userInfo.rol}/>
-        {/*Local abierto o cerrado*/}
+        <a href={"https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=https://xsfkk6s9-4000.brs.devtunnels.ms/oauth/callback"}>Conectar a mp</a>
       </div>
      
 

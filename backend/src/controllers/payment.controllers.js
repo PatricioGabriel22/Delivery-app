@@ -98,6 +98,13 @@ export const pagarConEfectivo = async (req,res)=>{
 }
 
 
+export const conectarConMP = async(req,res)=>{
+    const { code } = req.query
+    console.log(code)
+    console.log("llegamos al endpoint")
+}
+
+
 export const pagarConMP = async (req, res) => {
     const { pedidoID,preOrdenID, items, payer,flagVerify, bistroID } = req.body;
 

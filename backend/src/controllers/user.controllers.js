@@ -57,8 +57,6 @@ export const loginUser = async(req,res)=>{
             }
         )
 
-        console.log("paso el token")
-
 
         res.status(200)
         .cookie('access_token',token,{

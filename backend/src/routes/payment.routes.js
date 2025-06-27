@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { pagarConMP, queryWH,pagarConEfectivo,calcularPagosEnRango } from "../controllers/payment.controllers.js"
+import { pagarConMP, queryWH,pagarConEfectivo,calcularPagosEnRango,conectarConMP } from "../controllers/payment.controllers.js"
 
 
 
@@ -9,7 +9,11 @@ export const paymentRoutes = Router()
 paymentRoutes.get('/obtenerTodosLosPagos',calcularPagosEnRango)
 
 
+paymentRoutes.get('/oauth/callback',conectarConMP)
+
 paymentRoutes.post('/pagar_en_efectivo',pagarConEfectivo)
+
+
 
 paymentRoutes.post('/create_preference_MP',pagarConMP)
 
