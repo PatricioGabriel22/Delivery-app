@@ -23,7 +23,21 @@ const bistroSchema = new mongoose.Schema({
     zonas_delivery:{type:[{
         zona:String,
         precio:Number
-    }],default:[]}
+    }],default:[]},
+    tokenMercadoPago:{
+        type:{
+
+            user_id: Number,
+            access_token: String,
+            refresh_token: String,
+            token_expires_at:Date,
+            conectado_en:Date
+
+
+        },
+        default:{}
+
+    }
     
 },{
     timestamps:true

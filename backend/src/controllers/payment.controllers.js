@@ -9,6 +9,7 @@ import axios from 'axios'
 
 import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
+import bistroSchema from '../models/bistro.schema.js';
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -101,9 +102,20 @@ export const pagarConEfectivo = async (req,res)=>{
 }
 
 
+
+
+
+
+
+
 export const conectarConMP = async (req, res) => {
+
     const code = req.query.code
-    if (!code) return res.status(400).send('Falta el código')
+    const decodedState = decodeURIComponent(req.query.state || "")
+    const [state, bistroName] = decodedState.split('|')
+    
+    if (!code || !state) return res.redirect(`http://localhost:5173/bistros/${bistroName}?status=error&bistro=${state}`)
+
 
     console.log(code)  
     try {
@@ -125,11 +137,27 @@ export const conectarConMP = async (req, res) => {
         // Guardás el token
         console.log('Token obtenido:', response.data.access_token)
 
-        res.send('✅ Cuenta conectada con éxito')
+
+        await bistroSchema.findByIdAndUpdate(state, {
+            tokenMercadoPago: {
+                user_id: response.data.user_id,
+                access_token: response.data.access_token,
+                refresh_token: response.data.refresh_token,
+                token_expires_at: new Date(Date.now() + response.data.expires_in * 1000),
+                conectado_en: new Date()
+            }
+        })
+
+
+
+
+
+        res.redirect(`http://localhost:5173/bistros/${bistroName}?status=success&bistro=${state}`)
 
     } catch (err) {
         console.error(err.response?.data || err.message)
-        res.status(500).send('❌ Error obteniendo el token')
+
+        res.redirect(`http://localhost:5173/bistros/${bistroName}?status=error&bistro=${state}`)
     }
 }
 

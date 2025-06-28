@@ -52,7 +52,7 @@ export default function Home() {
 
 
   useEffect(()=>{
-
+    console.log(bistroName)
     if(userInfo.rol){
 
       checkOwnershipAndContinue({userData:userInfo,param:bistroName})
@@ -77,7 +77,7 @@ export default function Home() {
   }, [])
 
 
-
+  const stateEncoded = encodeURIComponent(`${userInfo.id}|${bistroName}`)
   function handleConectarConMercadoPago() {
   const clientId = 'TU_CLIENT_ID';
   const redirectUri = 'https://delivery-app-stagingapi.onrender.com/oauth/callback';
@@ -106,7 +106,12 @@ export default function Home() {
 
       <div className="w-full flex flex-row justify-center items-center gap-x-10">
         <DeliveryStatus rol={userInfo.rol}/>
-        <a href={"https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=https://delivery-app-stagingapi.onrender.com/oauth/callback"}>Conectar a mp</a>
+        {userInfo.rol && (
+            
+  
+          <a href={`https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=https://delivery-app-stagingapi.onrender.com/oauth/callback&state=${stateEncoded}`}>Conectar a mp</a>
+
+        )}
       </div>
      
 
