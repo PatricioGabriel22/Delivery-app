@@ -4,6 +4,9 @@ import pedidosSchema from '../models/pedidosSchema.js';
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
 import {connectedUsers, io, frontURL, connectedBistros} from '../webSocket.js'
 
+
+import axios from 'axios'
+
 import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
 
