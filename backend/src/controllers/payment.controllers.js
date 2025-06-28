@@ -113,8 +113,8 @@ export const conectarConMP = async (req, res) => {
     const code = req.query.code
     const decodedState = decodeURIComponent(req.query.state || "")
     const [state, bistroName] = decodedState.split('|')
-    
-    if (!code || !state) return res.redirect(`http://localhost:5173/bistros/${bistroName}?status=error&bistro=${state}`)
+
+    if (!code || !state) return res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=error&bistro=${state}`)
 
 
     console.log(code)  
@@ -128,7 +128,7 @@ export const conectarConMP = async (req, res) => {
             client_id: '7826358251393259',
             client_secret: 'eC2vK5lritvP6WaYUNv0m4sGfNMsXkU4',
             code,
-            redirect_uri: 'https://delivery-app-stagingapi.onrender.com/oauth/callback',
+            redirect_uri: `${process.env.BACK_URL}/oauth/callback`,
         },
         })
 
@@ -152,12 +152,12 @@ export const conectarConMP = async (req, res) => {
 
 
 
-        res.redirect(`http://localhost:5173/bistros/${bistroName}?status=success&bistro=${state}`)
+        res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=succes&bistro=${state}`)
 
     } catch (err) {
         console.error(err.response?.data || err.message)
 
-        res.redirect(`http://localhost:5173/bistros/${bistroName}?status=error&bistro=${state}`)
+        res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=error&bistro=${state}`)
     }
 }
 

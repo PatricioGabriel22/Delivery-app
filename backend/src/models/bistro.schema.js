@@ -27,7 +27,7 @@ const bistroSchema = new mongoose.Schema({
     tokenMercadoPago:{
         type:{
 
-            user_id: Number,
+            user_id: String,
             access_token: String,
             refresh_token: String,
             token_expires_at:Date,
