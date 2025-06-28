@@ -98,12 +98,37 @@ export const pagarConEfectivo = async (req,res)=>{
 }
 
 
-export const conectarConMP = async(req,res)=>{
-    const { code } = req.query
-    console.log(code)
-    console.log("llegamos al endpoint")
-}
+export const conectarConMP = async (req, res) => {
+    const code = req.query.code
+    if (!code) return res.status(400).send('Falta el código')
 
+    console.log(code)  
+    try {
+        const response = await axios.post('https://api.mercadopago.com/oauth/token', null, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        params: {
+            grant_type: 'authorization_code',
+            client_id: '7826358251393259',
+            client_secret: 'eC2vK5lritvP6WaYUNv0m4sGfNMsXkU4',
+            code,
+            redirect_uri: 'https://delivery-app-stagingapi.onrender.com/oauth/callback',
+        },
+        })
+
+        console.log(response)
+
+        // Guardás el token
+        console.log('Token obtenido:', response.data.access_token)
+
+        res.send('✅ Cuenta conectada con éxito')
+
+    } catch (err) {
+        console.error(err.response?.data || err.message)
+        res.status(500).send('❌ Error obteniendo el token')
+    }
+}
 
 export const pagarConMP = async (req, res) => {
     const { pedidoID,preOrdenID, items, payer,flagVerify, bistroID } = req.body;

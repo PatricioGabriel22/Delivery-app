@@ -78,6 +78,16 @@ export default function Home() {
 
 
 
+  function handleConectarConMercadoPago() {
+  const clientId = 'TU_CLIENT_ID';
+  const redirectUri = 'https://delivery-app-stagingapi.onrender.com/oauth/callback';
+
+  const url = `https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}`;
+
+  window.location.href = url;
+  } 
+
+
   return (
     <div className="flex flex-col min-h-screen items-center">
       
@@ -96,7 +106,7 @@ export default function Home() {
 
       <div className="w-full flex flex-row justify-center items-center gap-x-10">
         <DeliveryStatus rol={userInfo.rol}/>
-        <a href={"https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=https://xsfkk6s9-4000.brs.devtunnels.ms/oauth/callback"}>Conectar a mp</a>
+        <a href={"https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=https://delivery-app-stagingapi.onrender.com/oauth/callback"}>Conectar a mp</a>
       </div>
      
 
