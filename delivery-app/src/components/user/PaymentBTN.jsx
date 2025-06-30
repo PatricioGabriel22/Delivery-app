@@ -46,9 +46,10 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
         
         try {
             const res = await axios.post(`${renderORLocalURL}/create_preference_MP`, mp_payload, {withCredentials: true});
-        
+            
+            const {init_point,verificado} = res.data
             // Esta es la URL donde MercadoPago hace el pago
-            const init_point = res.data.init_point;
+
         
             if(init_point){
 
@@ -66,19 +67,21 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
                 
             }
             
-            if(res.data.verificado){
+            if(verificado){
                 
-                toast.success(res.data.verificado)
+                toast.success(verificado)
                 navigate('/pago-confirmado')
-
+                return
             }
+
+ 
 
 
 
         
         } catch (e) {
             console.error(e);
-            toast.error(e.response.data?.message)
+            toast.error(e.response.data?.messageError)
         }
         
     }

@@ -10,6 +10,7 @@ import axios from 'axios'
 import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
 import bistroSchema from '../models/bistro.schema.js';
+import userSchema from '../models/user.schema.js';
 
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
@@ -17,8 +18,6 @@ dotenv.config({
 
 
 
-const access_token_MP = process.env.ACCESS_TOKEN //ojo cuando cambie a staging
-const client = new MercadoPagoConfig({ accessToken: access_token_MP });
 
 
 
@@ -161,12 +160,11 @@ export const conectarConMP = async (req, res) => {
     }
 }
 
+
+
+
 export const pagarConMP = async (req, res) => {
     const { pedidoID,preOrdenID, items, payer,flagVerify, bistroID } = req.body;
-
-
-    // Configuración del token de acceso
-    const preference = new Preference(client);
 
     const urlsDeRetornoFront = {
         success: `${process.env.FRONT_URL}/comprar`,
@@ -192,30 +190,55 @@ export const pagarConMP = async (req, res) => {
 
     try {
 
+        if(!flagVerify){
+            // Configuración del token de acceso
 
-        const targetPedidoYaPagado = await pedidosSchema.findById(pedidoID)
+            const bistroToPay = await bistroSchema.findById(bistroID)
 
+            if (!bistroToPay?.tokenMercadoPago?.access_token) {
+                return res.status(400).json({ error: "El bistró no tiene una cuenta de Mercado Pago conectada." })
+            }
 
+            const access_token_MP = bistroToPay.tokenMercadoPago.access_token
 
-        if(targetPedidoYaPagado.isPayed){
+            const client = new MercadoPagoConfig({ accessToken: access_token_MP })
+
+            const preference = new Preference(client)
+            // Crear la preferencia de pago con toda la configuración correcta
+            const response = await preference.create({ body: mp_bodyData });
+
+            console.log(response)
+
+            // Enviar la URL de inicio de pago a la respuesta del cliente
+            res.status(200).json({ init_point: response.init_point });
 
             
-            const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
-            
-            io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
-            
-            if(flagVerify) return res.status(200).json({verificado:"El pago fue registrado correctamente"})
+        }
+        
 
-            return res.status(409).json({message:"El producto ya fue abonado"})
+        if(flagVerify){
+
+            const targetPedidoYaPagado = await pedidosSchema.findById(pedidoID)
+    
+            if (!targetPedidoYaPagado) {
+                return res.status(404).json({ messageError: "Pedido no encontrado" })
+            }
+
+    
+            if(targetPedidoYaPagado.isPayed){
+                const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Mercado Pago'}},{new:true})
+    
+                io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
+    
+                return res.status(200).json({verificado:"El pago fue registrado correctamente"})
+            }else{
+                return res.status(400).json({messageError:"El producto todavia no fue abonado"})
+
+            }
         }
 
-        // Crear la preferencia de pago con toda la configuración correcta
-        const response = await preference.create({ body: mp_bodyData });
 
-        console.log(response);
 
-        // Enviar la URL de inicio de pago a la respuesta del cliente
-        res.status(200).json({ init_point: response.init_point });
     } catch (error) {
         console.error(error);
         res.status(500).send(error);
