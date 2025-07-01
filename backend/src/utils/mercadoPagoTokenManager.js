@@ -1,4 +1,4 @@
-import bistroSchema from '../models/bistroSchema.js'
+import bistroSchema from '../models/bistro.schema.js'
 import axios from 'axios'
 
 

@@ -35,7 +35,7 @@ const bistroSchema = new mongoose.Schema({
 
 
         },
-        default:{}
+        default:false
 
     }
     
