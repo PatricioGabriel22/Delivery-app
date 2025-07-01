@@ -152,7 +152,7 @@ export const conectarConMP = async (req, res) => {
 
 
 
-        res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=succes&bistro=${state}`)
+        res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=approved&bistro=${state}`)
 
     } catch (err) {
         console.error(err.response?.data || err.message)

@@ -27,6 +27,7 @@ import Help from "../user/Help.jsx";
 import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
 import { useParams } from "react-router-dom";
 import { useCatalogMaker } from "../../context/SWR.js";
+import ConnectMP from "../../components/bistro/ConnectMP.jsx";
 
 
 
@@ -77,7 +78,6 @@ export default function Home() {
   }, [])
 
 
-  const stateEncoded = encodeURIComponent(`${userInfo._id}|${bistroName}`)
 
 
   return (
@@ -96,14 +96,9 @@ export default function Home() {
         )}
       </div>
 
-      <div className="w-full flex flex-row justify-center items-center gap-x-10">
+      <div className="w-full flex flex-col gap-y-10 md:flex-row justify-center items-center gap-x-10">
         <DeliveryStatus rol={userInfo.rol}/>
-        {!userInfo.tokenMercadoPago && (
-            
-  
-          <a href={`https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=${renderORLocalURL}/oauth/callback&state=${stateEncoded}`}>Conectar a mp</a>
-
-        )}
+        <ConnectMP  />
       </div>
      
 
