@@ -4,6 +4,7 @@ import { useState,useEffect, Fragment } from "react"
 import toast from "react-hot-toast"
 
 import { SiMercadopago } from "react-icons/si";
+import { FaSpinner } from "react-icons/fa6";
 
 
 
@@ -14,6 +15,7 @@ export default function ConnectMP(){
     const {userInfo,renderORLocalURL} = useLoginContext()
 
     const [flagConnected, setFlagConnected] = useState(false)
+    const [loading, setLoading] = useState(false)
 
 
     const stateEncoded = encodeURIComponent(`${userInfo._id}|${bistroName}`)
@@ -28,12 +30,14 @@ export default function ConnectMP(){
 
         if(params.get('status') === "approved") {
             setFlagConnected(true)
-
+            setLoading(false)
             toast.success('Ya estas listo para cobrar con MercadoPago')
             return
         }
 
         if(params.get('status') === "error"){
+            setLoading(false)
+
             toast.error('Algo salió mal con tu conexion a Mercado Pago')
 
         }
@@ -48,10 +52,20 @@ export default function ConnectMP(){
         <Fragment>
 
         {!userInfo.tokenMercadoPago && !flagConnected && (
-            <div className="flex flex-row rounded items-center bg-sky-600 p-2 border-2 ">
+            <div className="flex flex-row rounded items-center bg-sky-600 p-2 border-2  ">
+                {loading ? (
+                    <div className="flex flex-row items-center gap-x-2">
 
-                <SiMercadopago size={32} className="text-white"/>
-                <a href={mpAuthURL}>Conectar a mp</a>
+                        <FaSpinner className="animate-spin" />
+                        <p>Conectando a Mercado Pago</p>
+                    </div>
+                    
+                ):(
+                   <div className="flex flex-row items-center gap-x-2" onClick={()=>setLoading(false)}>
+                        <SiMercadopago size={32} className="text-white"/>
+                        <a href={mpAuthURL}>Conectar a Mercado Pago</a>
+                   </div> 
+                )}
     
             </div>
             
