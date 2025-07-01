@@ -63,7 +63,7 @@ export default function ConnectMP(){
                     </div>
                     
                 ):(
-                   <div className="flex flex-row items-center gap-x-2" onClick={()=>setLoading(false)}>
+                   <div className="flex flex-row items-center gap-x-2" onClick={()=>setLoading(true)}>
                         <SiMercadopago size={32} className="text-white"/>
                         <a href={mpAuthURL}>Conectar a Mercado Pago</a>
                    </div> 
