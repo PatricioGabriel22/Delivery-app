@@ -98,7 +98,7 @@ export default function Home() {
 
       <div className="w-full flex flex-row justify-center items-center gap-x-10">
         <DeliveryStatus rol={userInfo.rol}/>
-        {userInfo.rol && (
+        {!userInfo.tokenMercadoPago && (
             
   
           <a href={`https://auth.mercadopago.com.ar/authorization?response_type=code&client_id=7826358251393259&redirect_uri=${renderORLocalURL}/oauth/callback&state=${stateEncoded}`}>Conectar a mp</a>
