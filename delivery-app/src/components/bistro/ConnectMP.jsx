@@ -15,6 +15,7 @@ export default function ConnectMP(){
     const {userInfo,renderORLocalURL} = useLoginContext()
 
     const [flagConnected, setFlagConnected] = useState(false)
+    
     const [loading, setLoading] = useState(false)
 
 
@@ -58,7 +59,7 @@ export default function ConnectMP(){
                 {loading ? (
                     <div className="flex flex-row items-center gap-x-2">
 
-                        <FaSpinner className="animate-spin" />
+                        <FaSpinner size={32} className="animate-spin" />
                         <p>Conectando a Mercado Pago</p>
                     </div>
                     
