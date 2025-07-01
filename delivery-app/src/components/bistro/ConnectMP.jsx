@@ -39,8 +39,10 @@ export default function ConnectMP(){
             setLoading(false)
 
             toast.error('Algo salió mal con tu conexion a Mercado Pago')
-
+            return
         }
+
+        setLoading(false)
 
         
     },[])
