@@ -7,11 +7,12 @@ import {connectedUsers, io, frontURL, connectedBistros} from '../webSocket.js'
 
 import axios from 'axios'
 
-import dotenv from 'dotenv'
 import preOrderSchema from '../models/preOrder.schema.js';
 import bistroSchema from '../models/bistro.schema.js';
 import userSchema from '../models/user.schema.js';
 
+import dotenv from 'dotenv'
+import { getValidAccessToken } from '../utils/mercadoPagoTokenManager.js';
 dotenv.config({
     path:`src/envs/.env.${process.env.NODE_ENV}`
 })
@@ -119,16 +120,16 @@ export const conectarConMP = async (req, res) => {
     console.log(code)  
     try {
         const response = await axios.post('https://api.mercadopago.com/oauth/token', null, {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        params: {
-            grant_type: 'authorization_code',
-            client_id: '7826358251393259',
-            client_secret: 'eC2vK5lritvP6WaYUNv0m4sGfNMsXkU4',
-            code,
-            redirect_uri: `${process.env.BACK_URL}/oauth/callback`,
-        },
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            params: {
+                grant_type: 'authorization_code',
+                client_id: `${process.env.CLIENT_ID}`,
+                client_secret: `${process.env.CLIENT_SECRET}`,
+                code,
+                redirect_uri: `${process.env.BACK_URL}/oauth/callback`,
+            },
         })
 
         console.log(response)
@@ -168,8 +169,8 @@ export const pagarConMP = async (req, res) => {
 
     const urlsDeRetornoFront = {
         success: `${process.env.FRONT_URL}/comprar`,
-        // failure: `https://qtf8ztjh-3000.brs.devtunnels.ms/`,
-        // pending: `${process.env.FRONT_URL}/pago-pendiente`,
+        failure: `${process.env.FRONT_URL}/comprar-error`,
+        pending: `${process.env.FRONT_URL}/comprar-pendiente`,
     }
 
    
@@ -193,13 +194,7 @@ export const pagarConMP = async (req, res) => {
         if(!flagVerify){
             // Configuración del token de acceso
 
-            const bistroToPay = await bistroSchema.findById(bistroID)
-
-            if (!bistroToPay?.tokenMercadoPago?.access_token) {
-                return res.status(400).json({ error: "El bistró no tiene una cuenta de Mercado Pago conectada." })
-            }
-
-            const access_token_MP = bistroToPay.tokenMercadoPago.access_token
+            const access_token_MP = await getValidAccessToken(bistroID)
 
             const client = new MercadoPagoConfig({ accessToken: access_token_MP })
 
@@ -247,6 +242,7 @@ export const pagarConMP = async (req, res) => {
 
 
 export const queryWH = async (req,res)=>{
+    //aca envia informacion el hook de mp del pago efectuado 
     console.log("respuesta del WH de mercadopago: ", req.query)
     const paymentQueryMP = req.query
 
@@ -256,8 +252,6 @@ export const queryWH = async (req,res)=>{
         const userID = payment.additional_info.payer.last_name
         const mp_payment_method = payment.payment_method_id
         const importe = payment.additional_info.items[0].unit_price
-
-        console.log(payment)
 
         try {
             
