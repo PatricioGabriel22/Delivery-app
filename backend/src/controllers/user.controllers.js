@@ -144,6 +144,7 @@ export const registerUser = async (req,res)=>{
                 entreCalles,
                 telefono,
                 hintPassword:password,
+                tokenMercadoPago:false
     
             }).save()
 
