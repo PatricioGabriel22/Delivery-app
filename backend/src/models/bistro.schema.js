@@ -17,7 +17,8 @@ const bistroSchema = new mongoose.Schema({
     hintPassword:String,
     rol:{type: String, default:'bistro'},
     categorias:{type: [String],default:[]},
-    menu:{type: [String], default: []},    
+    menu:{type: [String], default: []}, 
+    isOpen:{type:Boolean, default:true},   
     doDelivery:{type:Boolean,default:true},
     isOpen:{type:Boolean,default:true},
     zonas_delivery:{type:[{

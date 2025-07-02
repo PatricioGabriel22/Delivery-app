@@ -28,6 +28,8 @@ import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
 import { useParams } from "react-router-dom";
 import { useCatalogMaker } from "../../context/SWR.js";
 import ConnectMP from "../../components/bistro/ConnectMP.jsx";
+import { IoStorefrontSharp } from "react-icons/io5";
+import TiendaStatus from "../../components/bistro/TiendaStatus.jsx";
 
 
 
@@ -96,9 +98,10 @@ export default function Home() {
         )}
       </div>
 
-      <div className="w-full flex flex-col gap-y-10 md:flex-row justify-center items-center gap-x-10">
+      <div className="w-full flex flex-col gap-y-5 md:flex-row justify-center items-center gap-x-10">
+        <ConnectMP/>
+        <TiendaStatus/>
         <DeliveryStatus rol={userInfo.rol}/>
-        <ConnectMP  />
       </div>
      
 

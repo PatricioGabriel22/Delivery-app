@@ -14,7 +14,7 @@ export async function getValidAccessToken(bistroId) {
   const bistro = await bistroSchema.findById(bistroId)
 
   if (!bistro || !bistro.tokenMercadoPago) {
-    throw new Error('El bistro no tiene credenciales de MercadoPago')
+    throw new Error('El bistro no tiene habilitado Mercado Pago para cobrar')
   }
 
   const { access_token, refresh_token, token_expires_at } = bistro.tokenMercadoPago
@@ -40,7 +40,7 @@ export async function getValidAccessToken(bistroId) {
 
     const newData = {
         //notacion especial para modificar partes especificas de un objeto (util para eveitar sobreescribir todo)
-        //no reemplaza tokenMP sino que aputna a los key.value especificos
+        //no reemplaza tokenMP sino que apunta a los key.value especificos
       'tokenMercadoPago.access_token': res.data.access_token,
       'tokenMercadoPago.refresh_token': res.data.refresh_token,
       'tokenMercadoPago.token_expires_at': new Date(Date.now() + res.data.expires_in * 1000),

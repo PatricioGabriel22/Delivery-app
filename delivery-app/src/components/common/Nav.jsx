@@ -93,6 +93,10 @@ export default function Nav() {
         <Link to={"/profile"} >
           <h1>Perfil</h1>
         </Link>
+
+        <Link to={'/PreOrderManagement'}>
+          <span>Pre-ordenes</span>
+        </Link>
         {userInfo.rol && (
           <Link to={'/configuraciones'}>
             <IoSettingsOutline  size={30}/>

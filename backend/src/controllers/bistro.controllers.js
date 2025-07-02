@@ -35,7 +35,7 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 
 
-export const findRestaurant = async (req,res) =>{
+export const getDeliveryStatus = async (req,res) =>{
     const {idRestaurant} = req.params
     console.log(idRestaurant)
     const targetRestaurant = await bistroSchema.findById(idRestaurant)
@@ -57,6 +57,30 @@ export const estadoDelDelivery = async (req,res)=>{
     }
 
 }
+
+
+export const getTiendaStatus = async (req,res) =>{
+    const {idRestaurant} = req.params
+    console.log(idRestaurant)
+    const targetRestaurant = await bistroSchema.findById(idRestaurant)
+
+    res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+}
+
+
+
+
+export const changeTiendaStatus = async (req,res) =>{
+    const {idRestaurant} = req.params
+    const {isOpen} = req.body
+    
+    console.log(idRestaurant)
+    const targetRestaurant = await bistroSchema.findByIdAndUpdate(idRestaurant,{$set:{isOpen:!isOpen}},{new:true})
+
+    res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+}
+
+
 
 export const guardarNuevaConfiguracion = async (req,res)=>{
     const {idBistro} = req.params
