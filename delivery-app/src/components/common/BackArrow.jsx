@@ -5,8 +5,8 @@ import { IoArrowBack } from "react-icons/io5"
 
 export default function BackArrow(){
 
-    const location = useLocation();
-    const navigate = useNavigate();
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const hideOnRoutes = ["/", "/login","/bistros"]
 

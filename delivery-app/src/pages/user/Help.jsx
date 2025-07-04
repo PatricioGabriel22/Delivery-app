@@ -40,7 +40,7 @@ export default function Help(){
         <Fragment>
                 {help ? (
                 <div className="flex flex-col justify-center items-center md:justify-around  md:flex-row w-full relative ">
-                    <p className="absolute top-0 right-2 font-bold  text-lg cursor-pointer" onClick={()=>setHelp(!help)}>X</p>
+                    <p className="absolute self-end top-0 right-2 font-bold  text-lg cursor-pointer" onClick={()=>setHelp(!help)}>X</p>
         
                     {numeros.map((numero,index)=>{
                     return(
@@ -61,7 +61,7 @@ export default function Help(){
                     })}
         
                 </div>
-                ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute cursor-pointer m-2"/>)}
+                ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute top-0 cursor-pointer m-2"/>)}
         </Fragment>
     )
 }
