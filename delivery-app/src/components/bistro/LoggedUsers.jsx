@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useSocketContext } from "@context/SocketContext";
 import { ccapitalizer_3000 } from "../../utils/capitalize";
 
@@ -12,11 +12,9 @@ export default function LoggedUsers(){
 
 
 
-    useEffect(()=>{
-        if(loggedUsers.length === 0){
-            console.log("Todavia no hay usuarios en la tienda")
-        }
-    },[loggedUsers])
+    // useEffect(()=>{
+    //     console.log(loggedUsers)
+    // },[loggedUsers])
 
 
     return(

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Fragment, useEffect, useState } from "react";
 
 import { useLoginContext } from "@context/LoginContext";
@@ -8,14 +9,16 @@ import Nav from '@components/common/Nav.jsx'
 
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
 import { useBistroContext } from "../../context/BistrosContext.jsx";
+import { useSocketContext } from "../../context/SocketContext.jsx";
 
 
 
 export default function Bistros(){
 
     const {userInfo} = useLoginContext()
+    const {socket} = useSocketContext()
    
-    const {checkDeliveryZone,checkOwnershipAndContinue,openBistros,isLoading} = useBistroContext()
+    const {checkDeliveryZone,checkOwnershipAndContinue,openBistros,isLoading,refreshopenBistros} = useBistroContext()
 
     const [showDelivery,setShowDelivery] = useState(false)
     const [indexDelivery,setIndexDelivery] = useState(null)
@@ -26,8 +29,26 @@ export default function Bistros(){
         setShowDelivery(!flag)
         setIndexDelivery(index)
     }
-    
-    useEffect(()=>{console.log(openBistros)},[openBistros])
+
+
+    useEffect(() => {
+
+
+        socket.on('abrir/cerrar-tienda', (data) => {
+            refreshopenBistros(prevData => {
+                const newDataBistros = [...prevData.openBistros,data]
+
+                return {
+                    ...prevData,
+                    openBistros:newDataBistros
+                }
+            })
+        })
+
+        return () => {
+            socket.off('abrir/cerrar-tienda');
+        }
+    }, [])
 
     return(
         <Fragment>
@@ -57,19 +78,19 @@ export default function Bistros(){
 
                             <div className="flex flex-row justify-between ">
                                 <div className="flex flex-col">
-                                    <p className="font-bold mb-2 text-2xl text-center">{ccapitalizer_3000(bistro.username)}</p>
+                                    <p className="font-bold  text-2xl text-center">{ccapitalizer_3000(bistro.username)}</p>
                                     <p className="font-semibold">📞{bistro.telefono}</p>
                                     <p className="font-semibold">📍{ccapitalizer_3000(bistro.direccion)}</p>
                                     <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
                                 </div>
                                 <div className="flex flex-col items-center  ">
-                                    <img loading="lazy" src={bistro.img || `./logoApp.png`} width={200} className="rounded mt-5 h-40 object-fill self-end "  />
+                                    <img loading="lazy" src={bistro.img || `/logoApp.png`} width={150} className="rounded object-fill self-end w-[150px] "  />
                                 </div>
                             </div>
                         
 
                         </div>
-                        <p className="mt-5 text-black" onClick={()=>verDeliveryZonas(showDelivery,index)}>🧭Ver zonas de delivery</p>
+                        <p className=" text-black" onClick={()=>verDeliveryZonas(showDelivery,index)}>🧭Ver zonas de delivery</p>
                     
                         <div className={`h-20 ${showDelivery && indexDelivery === index ? "block":"hidden"} overflow-x-hidden `}>
 

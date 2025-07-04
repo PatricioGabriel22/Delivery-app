@@ -57,8 +57,8 @@ io.on('connection', (socket) => {
         }else if(!socket.rol){
 
 
-
             const dataUserOnSession = {
+                userID:socket.userId,
                 username:socket.username,
                 localidad:socket.localidad,
                 socketId:socket.id,
@@ -68,23 +68,31 @@ io.on('connection', (socket) => {
 
             connectedUsers[socket.userId] = dataUserOnSession
       
-            console.log("Usuarios conectados",connectedUsers)
-
-
-        }
-
-        //cambiar a futuro con los distintos bistroID
-        if(connectedBistros['6806b8fe2b72a9697aa59e5f']){
-
-            io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados',Object.values(connectedUsers))
-
-            // connectedBistros['6806b8fe2b72a9697aa59e5f'].forEach((connection)=>{
-            //     io.to(connection).emit('usuariosConectados',Object.values(connectedUsers))
-            // })
         }
 
 
     })
+
+    socket.on('mirandoTienda',async (dataMirandoTienda)=>{
+        const {userID,bistroID,mirando} = dataMirandoTienda
+
+        if(!connectedUsers[userID]) return
+
+        if(mirando && connectedBistros[bistroID]){
+            const usuarioMirandoElBistro = connectedUsers[userID]
+            io.to(connectedBistros[bistroID]).emit('usuarioMirandoTienda',usuarioMirandoElBistro)
+            return
+        }
+
+        if(!mirando && connectedBistros[bistroID]){
+
+            const usuarioSalioDelBistro = connectedUsers[userID]
+            io.to(connectedBistros[bistroID]).emit('usuarioSalioDelBistro',usuarioSalioDelBistro)
+            return
+        }
+
+    })
+
 
     socket.on('disconnect', () => {
         if(socket.rol === 'bistro' &&  connectedBistros[socket.userId]){
@@ -98,10 +106,6 @@ io.on('connection', (socket) => {
             delete connectedUsers[socket.userId]
         }
 
-        // Emitir la nueva lista de usuarios conectados en el bistroe
-        io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('usuariosConectados', Object.values(connectedUsers))
-
-        console.log("usuario desconectado")
     })
 })
 

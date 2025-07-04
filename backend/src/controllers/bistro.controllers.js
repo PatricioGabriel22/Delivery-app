@@ -37,10 +37,14 @@ export const agregarCategoriaDeProductoAlLocal = async(req,res)=>{
 
 export const getDeliveryStatus = async (req,res) =>{
     const {idRestaurant} = req.params
-    console.log(idRestaurant)
-    const targetRestaurant = await bistroSchema.findById(idRestaurant)
-
-    res.status(200).json({deliveryStatus:targetRestaurant.doDelivery})
+    try {
+        
+        const targetRestaurant = await bistroSchema.findById(idRestaurant)
+    
+        res.status(200).json({deliveryStatus:targetRestaurant.doDelivery})
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const estadoDelDelivery = async (req,res)=>{
@@ -61,10 +65,17 @@ export const estadoDelDelivery = async (req,res)=>{
 
 export const getTiendaStatus = async (req,res) =>{
     const {idRestaurant} = req.params
-    console.log(idRestaurant)
-    const targetRestaurant = await bistroSchema.findById(idRestaurant)
 
-    res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+    try {
+        
+        const targetRestaurant = await bistroSchema.findById(idRestaurant)
+
+        res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 
@@ -74,10 +85,17 @@ export const changeTiendaStatus = async (req,res) =>{
     const {idRestaurant} = req.params
     const {isOpen} = req.body
     
-    console.log(idRestaurant)
-    const targetRestaurant = await bistroSchema.findByIdAndUpdate(idRestaurant,{$set:{isOpen:!isOpen}},{new:true})
+    try {
+       
+        const targetRestaurant = await bistroSchema.findByIdAndUpdate(idRestaurant,{$set:{isOpen:!isOpen}},{new:true})
+        
+        io.emit('abrir/cerrar-tienda',targetRestaurant)
 
-    res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+
+        res.status(200).json({tiendaStatus:targetRestaurant.isOpen})
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 

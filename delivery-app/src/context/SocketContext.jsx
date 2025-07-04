@@ -117,10 +117,31 @@ export function SocketProvider({children}){
 
     //evento del socket con usuarios conectaodos (usuariosConectados) loggedUsers
     useEffect(()=>{
-        socket.on('usuariosConectados',(data)=>{
-            
-            setLoggedUsers(data) //no hace falta "mergear" estados previos
+        socket.on('usuarioMirandoTienda', (data) => {
+            setLoggedUsers(prev => {
+                const exists = prev.find(user => user.userId === data.userId)
+
+                if (exists) {
+                    return prev.map(user =>
+                        user.userId === data.userId ? { ...user, ...data } : user
+                    )
+                } else {
+                    return [...prev, data]
+                }
+            })
         })
+
+        socket.on('usuarioSalioDelBistro',(data)=>{
+
+            setLoggedUsers(prev=>{
+                return prev.filter(user => user.userId !== data.userId)
+            })
+        })
+
+        return () => {
+            socket.off('usuarioMirandoTienda')
+            socket.off('usuarioSalioDelBistro')
+        }
 
     },[])
 

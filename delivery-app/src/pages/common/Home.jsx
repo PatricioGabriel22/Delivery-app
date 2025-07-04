@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 // import {useState } from 'react';
 import Nav from "@components/common/Nav";
@@ -25,11 +26,11 @@ import Error from "@components/common/Error.jsx";
 
 import Help from "../user/Help.jsx";
 import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useCatalogMaker } from "../../context/SWR.js";
 import ConnectMP from "../../components/bistro/ConnectMP.jsx";
-import { IoStorefrontSharp } from "react-icons/io5";
-import TiendaStatus from "../../components/bistro/TiendaStatus.jsx";
+import TiendaStatus from "../../components/common/TiendaStatus.jsx";
+import { useSocketContext } from "../../context/SocketContext.jsx";
 
 
 
@@ -37,6 +38,8 @@ export default function Home() {
   
 
   const {bistroName} = useParams()
+  const {socket} = useSocketContext()
+  
 
   const {userInfo,renderORLocalURL} = useLoginContext()
   const {carrito} = useShoppingContext()
@@ -55,7 +58,7 @@ export default function Home() {
 
 
   useEffect(()=>{
-    console.log(bistroName)
+
     if(userInfo.rol){
 
       checkOwnershipAndContinue({userData:userInfo,param:bistroName})
@@ -80,14 +83,44 @@ export default function Home() {
   }, [])
 
 
+  useEffect(()=>{
+    if (!userInfo.rol){
+
+      socket.emit('mirandoTienda', {
+        userID:userInfo._id,
+        bistroID:bistroInfo._id,
+        mirando:true
+      })
+
+    }
+
+    return () => {
+      if(!userInfo.rol){
+
+        socket.emit("mirandoTienda", {
+            userID: userInfo._id,
+            bistroID: bistroInfo._id,
+            mirando: false
+        })
+      }
+    }
+
+  },[userInfo,bistroInfo])
 
 
   return (
     <div className="flex flex-col min-h-screen items-center">
       
       <Help />
+      <div className="w-full flex flex-col  gap-5 items-center ">
+        {userInfo.rol && <ConnectMP/>}
+        <div className="flex flex-row gap-x-10">
+          <TiendaStatus/>
+          <DeliveryStatus rol={userInfo.rol}/>
+        </div>
+      </div>
 
-      <div className=" flex flex-col items-center text-center mt-10">
+      <div className=" flex flex-col items-center text-center mt-10 ">
         {(!userInfo?.img && !bistroInfo?.img) ? (
           <Fragment>
             <h2 className="font-semibold text-2xl">{userInfo.rol ? userInfo.username : bistroInfo.username }</h2>
@@ -98,11 +131,6 @@ export default function Home() {
         )}
       </div>
 
-      <div className="w-full flex flex-col gap-y-5 md:flex-row justify-center items-center gap-x-10">
-        <ConnectMP/>
-        <TiendaStatus/>
-        <DeliveryStatus rol={userInfo.rol}/>
-      </div>
      
 
 
@@ -115,15 +143,38 @@ export default function Home() {
         
       )}
 
-      {(!isLoading && !isError) && (
+
+
+
+
+      {CategoriasProductos.length === 0 && userInfo.rol && (
+        <div className="w-full  flex flex-col gap-y-3 text-center">
+
+          <p className="text-3xl font-bold text-center">Bienvenido, {userInfo.username}!</p>
+          <span className="h-[1px] w-80 bg-red-600 self-center"/>
+          <p className="text-lg font-semibold"> Visitá tu perfil para comenzar a agregar productos y poner una linda foto de presentacion. <br></br>
+            No te olvides de conectar tu local a Mercado Pago para poder recibir pagos digialtes
+          </p>
+          
+          <Link to={'/profile'}>
+            <button className="rounded p-3 bg-red-600 text-white m-3 cursor-pointer">
+
+              Comenzar!
+            </button>
+          </Link>
+        </div>
+      )}
+
+      {(!isLoading && !isError) &&  CategoriasProductos.length !== 0  && (
         <Fragment>
 
           <SearchingBar searchSetter={setProductoBuscado}/>
           <span >🔵🔵⚪☀️⚪🔵🔵</span>
 
         </Fragment>
-        )}
+      )}
 
+      
 
       {(!isLoading && !isError) && CategoriasProductos.map((categoria,index)=>{
         
@@ -135,7 +186,7 @@ export default function Home() {
               className="bg-white text-black m-4 flex flex-col  w-full md:w-[90%] rounded-xl font-extrabold text-4xl text-center cursor-pointer"
               onClick={()=>setShowItems(prev=>({...prev,[categoria]:!prev[categoria]}))}>
                 {/* //manejo el cambio de categoria de forma dinamica con [categoria]
-                // sino tendria que poner panaderia:!prev.panaderya...y asi para todo */}
+                // sino tendria que poner panaderia:!prev.panaderia...y asi para todo */}
               {ccapitalizer_3000(categoria)}
             </h2>
 

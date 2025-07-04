@@ -117,7 +117,7 @@ export const conectarConMP = async (req, res) => {
     if (!code || !state) return res.redirect(`${process.env.FRONT_URL}/bistros/${bistroName}?status=error&bistro=${state}`)
 
 
-    console.log(code)  
+
     try {
         const response = await axios.post('https://api.mercadopago.com/oauth/token', null, {
             headers: {

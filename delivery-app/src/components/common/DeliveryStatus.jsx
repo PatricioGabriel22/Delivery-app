@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import { useLoginContext } from "@context/LoginContext.jsx";
 import { useSocketContext } from "@context/SocketContext.jsx";
+import { useBistroContext } from "../../context/BistrosContext";
 
 
 
@@ -11,13 +12,14 @@ import { useSocketContext } from "@context/SocketContext.jsx";
 export default function DeliveryStatus({rol}){
 
 
-    const {userInfo,renderORLocalURL} = useLoginContext()
-    const {socket} = useSocketContext()
-    
-    const [auxDelivery,setAuxDelivery] = useState(null)
+  const {userInfo,renderORLocalURL} = useLoginContext()
+  const {bistroInfo} = useBistroContext()
+  const {socket} = useSocketContext()
+  
+  const [auxDelivery,setAuxDelivery] = useState(null)
 
   async function handleDeliveryStatus(flagChange){
-    const payload = {idRestaurant:userInfo._id}
+    const payload = {idRestaurant:bistroInfo._id || userInfo._id}
     
     try {
       
@@ -55,10 +57,10 @@ export default function DeliveryStatus({rol}){
 
             
           <button 
-              className={`rounded bg-gray-100 text-black p-3 flex flex-row gap-x-2 border-2 border-black ${rol? "cursor-pointer":"pointer-events-none"} `}
+              className={`rounded bg-gray-100 text-black p-2 py-3 flex flex-row items-center gap-x-2 border-2 border-black ${rol? "cursor-pointer":"pointer-events-none"} `}
               onClick={()=>{handleDeliveryStatus(false);console.log("click")}}
               >
-              <span className={`rounded-full p-3 ${auxDelivery ? "bg-green-500":"bg-red-500"} `} />
+              <span className={`rounded-full p-3 w-2 h-2 ${auxDelivery ? "bg-green-500":"bg-red-500"} `} />
               <p>{auxDelivery? "Delivery activo":"Sin delivery"}</p>
           </button>   
 

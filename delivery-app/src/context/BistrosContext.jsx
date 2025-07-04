@@ -127,8 +127,8 @@ export function BistroProvider({children}){
                 confirmButtonText:"Comprar y pasar a retirar",
                 cancelButtonText:"Cancelar",
                 draggable:true,
-                imageUrl: img || `./victorina-logo.jpg`,
-                imageWidth: 400,
+                imageUrl: img || `./logoApp.png`,
+                imageWidth: 250,
                 imageHeight: 200,
                 imageAlt: "Logo app"
             }).then(result=>{

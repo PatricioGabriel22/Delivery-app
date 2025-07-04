@@ -34,7 +34,7 @@ export function useCatalogMaker(urlAPI, infoID){
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromBistro,SWRoptions)
 
-    console.log(data)
+  
 
     return {
         catalogoDelBistro: data?.catalogoDelBistro || [],
@@ -112,7 +112,7 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 async function getImportesDeVentas(url){
     try {
         const res = await axios.get(url)
-        console.log(res)
+
         return res.data //clave deolver el res.data espeficiamente para que lo capture el data de useSWR
     } catch (error) {
         console.log(error)
@@ -147,7 +147,7 @@ async function getAllBistros(url){
 
     try {
         const res = await axios.get(url, { withCredentials: true })
-        console.log(res)
+
         return res.data
         
     } catch (error) {

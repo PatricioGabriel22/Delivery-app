@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useShoppingContext } from "@context/ShoppingContext";
 import LogoutBTN from "./LogoutBTN";
 import { CiShoppingCart } from "react-icons/ci";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useLoginContext } from "../../context/LoginContext";
 
@@ -94,13 +94,17 @@ export default function Nav() {
           <h1>Perfil</h1>
         </Link>
 
-        <Link to={'/PreOrderManagement'}>
-          <span>Pre-ordenes</span>
-        </Link>
         {userInfo.rol && (
-          <Link to={'/configuraciones'}>
-            <IoSettingsOutline  size={30}/>
-          </Link>
+          <Fragment>
+
+            <Link to={'/PreOrderManagement'}>
+              <span>Pre-ordenes</span>
+            </Link>
+
+            <Link to={'/configuraciones'}>
+              <IoSettingsOutline  size={30}/>
+            </Link>
+          </Fragment>
         )}
         <LogoutBTN />
       </div>
