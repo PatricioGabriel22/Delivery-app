@@ -113,7 +113,7 @@ export default function Home() {
       
       <Help />
       <div className="w-full flex flex-col  gap-5 items-center mt-10">
-        {/* {userInfo.rol && <ConnectMP/>} */}
+        {userInfo.rol && <ConnectMP/>}
         <div className="flex flex-row gap-x-10">
           <TiendaStatus/>
           <DeliveryStatus rol={userInfo.rol}/>
