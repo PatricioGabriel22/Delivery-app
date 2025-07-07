@@ -29,7 +29,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             bistroID: bistroInfo._id,
             items: [
               {
-                title: "Pedido Victorina",
+                title: `Pedido ${bistroInfo.username}`,
                 quantity: 1,
                 unit_price: Number(importeTotal),
                 currency_id: 'ARS'
