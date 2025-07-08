@@ -78,7 +78,6 @@ export default function SelectPayment(){
                         </span>
                     ))}
 
-                    {<span className="text-3xl m-1">${importeTotal}</span>}
 
                 </div>
 

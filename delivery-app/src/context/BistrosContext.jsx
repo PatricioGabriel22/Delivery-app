@@ -126,7 +126,7 @@ export function BistroProvider({children}){
                 showCancelButton: true,
                 confirmButtonText:"Comprar y pasar a retirar",
                 cancelButtonText:"Cancelar",
-                draggable:true,
+                draggable:false,
                 imageUrl: img || `./logoApp.png`,
                 imageWidth: 250,
                 imageHeight: 200,

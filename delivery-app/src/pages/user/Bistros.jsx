@@ -67,7 +67,7 @@ export default function Bistros(){
 
 
                 {openBistros?.map((bistro,index)=>(
-                    <div className="p-2 m-5 w-[98%] md:w-120  bg-white text-b rounded cursor-pointer border-3 border-red-600" key={index}>
+                    <div className="p-2 m-5 w-full md:w-120 bg-white text-b rounded cursor-pointer border-3 border-red-600" key={index}>
 
                         <div className="flex flex-col justify-between text-black "
                             onClick={()=>{
@@ -84,7 +84,7 @@ export default function Bistros(){
                                     <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
                                 </div>
                                 <div className="flex flex-col items-center  ">
-                                    <img loading="lazy" src={bistro.img || `/logoApp.png`} width={150} className="rounded object-fill self-end w-[150px] "  />
+                                    <img loading="lazy" src={bistro.img || `/logoApp.png`} width={150} className="rounded  self-end h-[110px] w-[150px] "  />
                                 </div>
                             </div>
                         
