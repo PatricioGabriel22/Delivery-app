@@ -184,7 +184,11 @@ export const pagarConMP = async (req, res) => {
         back_urls: urlsDeRetornoFront,
         auto_return: 'approved',
         notification_url : `${process.env.BACK_URL}/paymentSatusWH`,
-        external_reference: pedidoID  
+        external_reference: pedidoID,
+        metadata:{
+            bistroID,
+            userID: payer.last_name
+        }  
     };
 
     // `${process.env.BACK_URL}/paymentSatusWH
@@ -246,16 +250,38 @@ export const queryWH = async (req,res)=>{
     //aca envia informacion el hook de mp del pago efectuado 
     console.log("entramos al hook de mp")
     console.log("respuesta del WH de mercadopago: ", req.query)
+    console.log("body del la req", req.body)
     const paymentQueryMP = req.query
 
 
 
     if(paymentQueryMP.topic === 'payment'){
 
-        const payment = await new Payment(client).get({id:paymentQueryMP.id})
-        const userID = payment.additional_info.payer.last_name
-        const mp_payment_method = payment.payment_method_id
-        const importe = payment.additional_info.items[0].unit_price
+
+        const paymentID = paymentQueryMP.id
+
+
+        // 1. Primero obtenés un "cliente temporal" con cualquier token válido (uso el de mi integracion)
+        const tempClient = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN })
+        const paymentResponse = await new Payment(tempClient).get({ id: paymentID })
+
+        const bistroID = paymentResponse.metadata?.bistroID
+
+        if (!bistroID) {
+            console.warn("⚠️ No se encontró bistroID en metadata del pago")
+            return res.sendStatus(400)
+        }
+
+        // 2. Ahora que tenés el bistroID, obtenés el token correcto
+        const accessToken = await getValidAccessToken(bistroID)
+        const client = new MercadoPagoConfig({ accessToken })
+        const payment = await new Payment(client).get({ id: paymentID }) // con token correcto
+
+        console.log("payment verdadero", payment)
+
+        const userID = payment.metadata?.userID || payment?.additional_info.payer.last_name
+        const mp_payment_method = payment?.payment_method_id
+        const importe = payment?.additional_info.items[0].unit_price
 
         try {
             
