@@ -169,8 +169,8 @@ export const pagarConMP = async (req, res) => {
 
     const urlsDeRetornoFront = {
         success: `${process.env.FRONT_URL}/comprar`,
-        failure: `${process.env.FRONT_URL}/comprar-error`,
-        pending: `${process.env.FRONT_URL}/comprar-pendiente`,
+        // failure: `${process.env.FRONT_URL}/comprar-error`,
+        // pending: `${process.env.FRONT_URL}/comprar-pendiente`,
     }
 
    
@@ -202,7 +202,7 @@ export const pagarConMP = async (req, res) => {
             // Crear la preferencia de pago con toda la configuración correcta
             const response = await preference.create({ body: mp_bodyData });
 
-            console.log(response)
+            console.log("Response de la preference",response)
 
             // Enviar la URL de inicio de pago a la respuesta del cliente
             res.status(200).json({ init_point: response.init_point });
@@ -245,6 +245,8 @@ export const queryWH = async (req,res)=>{
     //aca envia informacion el hook de mp del pago efectuado 
     console.log("respuesta del WH de mercadopago: ", req.query)
     const paymentQueryMP = req.query
+
+
 
     if(paymentQueryMP.topic === 'payment'){
 
