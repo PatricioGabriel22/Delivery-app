@@ -202,7 +202,6 @@ export const pagarConMP = async (req, res) => {
             // Crear la preferencia de pago con toda la configuración correcta
             const response = await preference.create({ body: mp_bodyData });
 
-            console.log("Response de la preference",response)
 
             // Enviar la URL de inicio de pago a la respuesta del cliente
             res.status(200).json({ init_point: response.init_point });
@@ -243,6 +242,7 @@ export const pagarConMP = async (req, res) => {
 
 export const queryWH = async (req,res)=>{
     //aca envia informacion el hook de mp del pago efectuado 
+    console.log("entramos al hook de mp")
     console.log("respuesta del WH de mercadopago: ", req.query)
     const paymentQueryMP = req.query
 

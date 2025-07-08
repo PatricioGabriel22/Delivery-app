@@ -32,7 +32,7 @@ export default function PagoConfirmadoPage(){
                     <p>Codigo de pedido: {codigoOrden}</p>
 
                     <buton className="p-3 bg-red-600 rounded-full cursor-pointer"
-                    onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/bistros`)}}
+                    onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/profile`)}}
                     >Regresar al inicio</buton>
                 </div>
         </Fragment>
