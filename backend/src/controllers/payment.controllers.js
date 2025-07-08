@@ -195,6 +195,8 @@ export const pagarConMP = async (req, res) => {
             // Configuración del token de acceso
 
             const access_token_MP = await getValidAccessToken(bistroID)
+            
+            console.log("acces token en db", access_token_MP)
 
             const client = new MercadoPagoConfig({ accessToken: access_token_MP })
 
