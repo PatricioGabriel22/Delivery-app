@@ -34,6 +34,7 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
     const targetUpdated = await schema.findByIdAndUpdate(idTarget,updateParams,{new:true})
 
     const {
+        _id,
         username,
         email,
         direccion,
@@ -51,6 +52,7 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
 
 
     const dataReducida = {
+        _id,
         username,
         email,
         direccion,

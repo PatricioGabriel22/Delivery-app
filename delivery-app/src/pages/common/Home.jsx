@@ -152,7 +152,7 @@ export default function Home() {
           <p className="text-3xl font-bold text-center">Bienvenido, {userInfo.username}!</p>
           <span className="h-[1px] w-80 bg-red-600 self-center"/>
           <p className="text-lg font-semibold"> Visitá tu perfil para comenzar a agregar productos y poner una linda foto de presentacion. <br></br>
-            No te olvides de conectar tu local a Mercado Pago para poder recibir pagos digialtes
+            No te olvides tus alias de billeteras virtuales poder recibir pagos digialtes
           </p>
           
           <Link to={'/profile'}>

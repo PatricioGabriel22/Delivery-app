@@ -236,21 +236,21 @@ export default function Configuraciones(){
                         {infoMetodosPago.map((metodoPago,index)=>(
                             
                             <div key={index} className="flex flex-row items-center text-center justify-between border-1 m-2 ">
-                                <RiDeleteBin6Line size={35} className="text-red-600 ml-2" onClick={()=>deleteField(metodoPago,"metodoPago")}/>
+                                <RiDeleteBin6Line size={35} className="text-red-600 ml-2 shrink-0" onClick={()=>deleteField(metodoPago,"metodoPago")}/>
                                 {editIndex === index? (
                                     <Fragment key={index}>
                                         <div className="flex flex-col justify-center items-center text-center">
                                             <input required={true} onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.medio} name="medio" className="text-center"/>
-                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className="text-center"/>
+                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className=" text-center"/>
                                         </div>
                                         <GiConfirmed size={30} onClick={()=>{setEditIndex(null)}} />
                                     </Fragment>
                                 ):(
                                     <Fragment>
 
-                                        <div className="flex flex-col">
-                                            <p>{metodoPago.medio}</p>
-                                            <p>{metodoPago.alias}</p>
+                                        <div className="flex flex-col text-wrap truncate">
+                                            <p className="truncate">{metodoPago.medio}</p>
+                                            <p className="truncate">{metodoPago.alias}</p>
                                         </div>
                                         <MdModeEdit size={40} onClick={()=>setEditIndex(index)} />
                                     </Fragment>
