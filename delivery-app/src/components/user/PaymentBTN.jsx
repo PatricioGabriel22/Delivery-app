@@ -88,7 +88,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
 
     async function efectivo_payment_management(){
-        const efectivo_payload= {
+        const pago_payload= {
             pedidoID,
             preOrdenID,
             bistroID: bistroInfo._id,
@@ -99,7 +99,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
         try {
             
-            const res = await axios.post(`${renderORLocalURL}/pagar_en_efectivo`,efectivo_payload,{withCredentials:true})
+            const res = await axios.post(`${renderORLocalURL}/pagar`,pago_payload,{withCredentials:true})
 
             toast.success(res.data?.message)
             navigate('/pago-confirmado')

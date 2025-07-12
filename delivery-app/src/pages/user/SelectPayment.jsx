@@ -7,7 +7,7 @@ import {useNavigate} from 'react-router-dom'
 
 
 import { RiCashLine } from "react-icons/ri";
-import { SiMercadopago } from "react-icons/si";
+import { FaAddressCard } from "react-icons/fa";
 import PaymentBTN from "@components/user/PaymentBTN"
 
 export default function SelectPayment(){
@@ -15,8 +15,6 @@ export default function SelectPayment(){
 
     const navigate = useNavigate()
 
-
-    // const {userInfo} = useLoginContext()
     const {importeTotal} = useShoppingContext()
 
     const [selectMethod,setSelectMethod] = useState('')
@@ -29,8 +27,8 @@ export default function SelectPayment(){
         background:'bg-green-800',
         
     },{
-        method:"Mercado Pago (incluye tarjetas)",
-        logo: <SiMercadopago size={40} className="text-sky-400"/>,
+        method:"Transferencia",
+        logo: <FaAddressCard size={40} className="text-sky-400"/>,
         color:"",
         hoverBG:"hover:bg-sky-800 ",
         background:'bg-sky-800',
@@ -39,13 +37,6 @@ export default function SelectPayment(){
 
     useEffect(()=>{
 
-        const params = new URLSearchParams(window.location.search);
-        console.log(params.get('status')); // "approved"
-
-        if(params.get('status') === "approved") {
-            navigate('/comprar')
-            return
-        }
 
         if(importeTotal === 0) {
             navigate('/carrito')
@@ -81,8 +72,7 @@ export default function SelectPayment(){
 
                 </div>
 
-                
-
+            
                 <PaymentBTN paymentMethod={selectMethod} importeTotal={importeTotal} />
 
             </div>

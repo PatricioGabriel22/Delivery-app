@@ -28,7 +28,7 @@ import Help from "../user/Help.jsx";
 import DeliveryStatus from "../../components/common/DeliveryStatus.jsx";
 import { Link, useParams } from "react-router-dom";
 import { useCatalogMaker } from "../../context/SWR.js";
-import ConnectMP from "../../components/bistro/ConnectMP.jsx";
+
 import TiendaStatus from "../../components/common/TiendaStatus.jsx";
 import { useSocketContext } from "../../context/SocketContext.jsx";
 
@@ -113,7 +113,6 @@ export default function Home() {
       
       <Help />
       <div className="w-full flex flex-col  gap-5 items-center mt-10">
-        {userInfo.rol && <ConnectMP/>}
         <div className="flex flex-row gap-x-10">
           <TiendaStatus/>
           <DeliveryStatus rol={userInfo.rol}/>

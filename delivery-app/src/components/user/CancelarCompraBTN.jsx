@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 
 
 
-export default function CancelarCompraBTN({pedidoID,preOrdenID}){
+export default function CancelarCompraBTN({pedidoID,preOrdenID,bistroID}){
 
     const {renderORLocalURL,userInfo} = useLoginContext()
     const {limpiarSecuenciaDeCompras} = useShoppingContext()
@@ -20,15 +20,15 @@ export default function CancelarCompraBTN({pedidoID,preOrdenID}){
         const pyaload = {
             preOrdenID,
             pedidoID,
-            username:userInfo.username
+            username:userInfo.username,
+            bistroID
         }
 
-        console.log(pyaload)
 
         try {
             const res = await axios.post(`${renderORLocalURL}/cancelarPedidoUsuario/${userInfo._id}`,pyaload,{withCredentials:true})
             console.log(res)
-            toast(res.data.message,{icon:'⚠️',duration:700 * 10})
+            toast(res.data.message,{icon:'⚠️',duration:350 * 10})
             limpiarSecuenciaDeCompras()
         } catch (error) {
             console.log(error)

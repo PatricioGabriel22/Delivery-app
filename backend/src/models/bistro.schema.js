@@ -20,24 +20,16 @@ const bistroSchema = new mongoose.Schema({
     menu:{type: [String], default: []}, 
     isOpen:{type:Boolean, default:true},   
     doDelivery:{type:Boolean,default:true},
-    isOpen:{type:Boolean,default:true},
     zonas_delivery:{type:[{
         zona:String,
         precio:Number
     }],default:[]},
-    tokenMercadoPago:{
-        type:{
-
-            user_id: String,
-            access_token: String,
-            refresh_token: String,
-            token_expires_at:Date,
-            conectado_en:Date
-
-
-        },
-        default:undefined
-
+    mediosDePago:{
+        type:[{ 
+            medio: String,
+            alias: String,
+        }],
+        default:[]
     }
     
 },{

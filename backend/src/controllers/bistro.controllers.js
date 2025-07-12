@@ -102,7 +102,7 @@ export const changeTiendaStatus = async (req,res) =>{
 
 export const guardarNuevaConfiguracion = async (req,res)=>{
     const {idBistro} = req.params
-    const {nuevas_zonas_precios,nuevas_categorias} = req.body
+    const {nuevas_zonas_precios,nuevas_categorias,nuevos_metodos_pago} = req.body
 
     try {
         
@@ -111,7 +111,8 @@ export const guardarNuevaConfiguracion = async (req,res)=>{
 
         const updateParams = {
             zonas_delivery: JSON.parse(nuevas_zonas_precios),
-            categorias: JSON.parse(nuevas_categorias)
+            categorias: JSON.parse(nuevas_categorias),
+            mediosDePago:JSON.parse(nuevos_metodos_pago)
         }
     
         modifyData(idBistro,bistroSchema,updateParams,req.file,'nuevaConfiguracion')

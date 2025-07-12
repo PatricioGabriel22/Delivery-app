@@ -31,6 +31,8 @@ export default function Configuraciones(){
     
     const [editIndex, setEditIndex] = useState(null)
     const [infoDelivery,setInfoDelivery] = useState([...userInfo.zonas_delivery])
+    const [infoMetodosPago,setInfoMetodosPago] = useState([...userInfo.mediosDePago])
+
     // const [imgPresentacion,setImgPresentacion] = useState(userInfo.img)
     const [categorias,setCategorias] = useState([...userInfo.categorias || []])
 
@@ -41,6 +43,7 @@ export default function Configuraciones(){
 
 
     const [newPayloadCollector,setNewPayloadCollector] = useState({
+        nuevos_metodos_pago:[...userInfo.mediosDePago || []],
         nuevas_zonas_precios:[...userInfo.zonas_delivery || []],
         nueva_foto:null,
         nuevas_categorias:[...userInfo.categorias || []]
@@ -49,6 +52,7 @@ export default function Configuraciones(){
 
 
     const [showConfig,setShowConfig] = useState({
+        mediosDePago:false,
         zonas_precios:false,
         foto:false,
         categorias:false
@@ -57,18 +61,35 @@ export default function Configuraciones(){
 
 
 
-    const handleChange = (e, index) => {
+    const handleChange = (e, index, type) => {
         //cambia la informacion dentro de un array de objetos
-        const aux = [...infoDelivery]
-  
-        aux[index] = {
-            ...aux[index],
-            [e.target.name]:  e.target.name === 'precio' ?  Number(e.target.value) : String(e.target.value)
-        }
+        let aux
+        switch(type){
+            case 'zona':
 
-    
-        setNewPayloadCollector(prev=>({...prev,nuevas_zonas_precios:aux}))
-        setInfoDelivery(aux)
+                aux = [...infoDelivery]
+          
+                aux[index] = {
+                    ...aux[index],
+                    [e.target.name]:  e.target.name === 'precio' ?  Number(e.target.value) : String(e.target.value)
+                }
+        
+            
+                setNewPayloadCollector(prev=>({...prev,nuevas_zonas_precios:aux}))
+                setInfoDelivery(aux)
+            break
+
+            case 'metodoPago':
+                aux = [...infoMetodosPago]
+                aux[index] = {
+                    ...aux[index],
+                    [e.target.name] : e.target.value
+                }
+
+                setNewPayloadCollector(prev=>({...prev,nuevos_metodos_pago:aux}))
+                setInfoMetodosPago(aux)
+            break
+        }
 
     }
 
@@ -86,15 +107,32 @@ export default function Configuraciones(){
         e.target.value = null
     }
 
-    const addNewField = ()=>{
-        setInfoDelivery(prev=>{
-            const aux ={
-                zona:"Nueva zona",
-                precio:0
-            }
+    const addNewField = (field)=>{
+        switch (field){
+            case 'zona_precio':
 
-            return [...prev,aux]
-        })
+                setInfoDelivery(prev=>{
+                    const aux ={
+                        zona:"Nueva zona",
+                        precio:0
+                    }
+        
+                    return [...prev,aux]
+                })
+            break
+            
+            case 'metodo_pago':
+                setInfoMetodosPago(prev=>{
+                    const aux = {
+                        medio: "Nuevo medio de pago",
+                        alias: "Alias"
+                    }
+
+                    return [...prev,aux]
+                })
+
+            break
+        }
     }
 
 
@@ -120,6 +158,12 @@ export default function Configuraciones(){
                 setNewPayloadCollector(prev=>({...prev, nuevas_categorias:nuevo}))
 
                 break
+            case 'metodoPago':
+                nuevo = infoMetodosPago.filter(metodoPago => metodoPago !== target)
+                console.log(nuevo)
+                setInfoMetodosPago(nuevo)
+                setNewPayloadCollector(prev=>({...prev, nuevos_metodos_pago:nuevo}))
+                break
 
               
 
@@ -139,6 +183,8 @@ export default function Configuraciones(){
         formDataNewInfo.append('nuevas_zonas_precios',JSON.stringify(newPayloadCollector.nuevas_zonas_precios))
         formDataNewInfo.append('nueva_foto',newPayloadCollector.nueva_foto)
         formDataNewInfo.append('nuevas_categorias',JSON.stringify(newPayloadCollector.nuevas_categorias))
+        formDataNewInfo.append('nuevos_metodos_pago',JSON.stringify(newPayloadCollector.nuevos_metodos_pago))
+
 
 
         try {
@@ -180,6 +226,51 @@ export default function Configuraciones(){
                         
                 </button>
                
+                <p  
+                    onClick={()=>setShowConfig((prev)=>({...prev,nuevos_metodos_pago:!prev.nuevos_metodos_pago}))}    
+                    className="border-2 border-yellow-300 w-full md:w-[50%] text-center rounded text-xl font-bold py-2 my-2">
+                Modificar medios de pago</p>
+
+                {showConfig.nuevos_metodos_pago && (
+                    <div  className=" text-white w-full md:w-[50%]">
+                        {infoMetodosPago.map((metodoPago,index)=>(
+                            
+                            <div key={index} className="flex flex-row items-center text-center justify-between border-1 m-2 ">
+                                <RiDeleteBin6Line size={35} className="text-red-600 ml-2" onClick={()=>deleteField(metodoPago,"metodoPago")}/>
+                                {editIndex === index? (
+                                    <Fragment key={index}>
+                                        <div className="flex flex-col justify-center items-center text-center">
+                                            <input required={true} onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.medio} name="medio" className="text-center"/>
+                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className="text-center"/>
+                                        </div>
+                                        <GiConfirmed size={30} onClick={()=>{setEditIndex(null)}} />
+                                    </Fragment>
+                                ):(
+                                    <Fragment>
+
+                                        <div className="flex flex-col">
+                                            <p>{metodoPago.medio}</p>
+                                            <p>{metodoPago.alias}</p>
+                                        </div>
+                                        <MdModeEdit size={40} onClick={()=>setEditIndex(index)} />
+                                    </Fragment>
+                                )}
+                            </div>
+
+                        ))}
+
+
+                        <p 
+                            onClick={()=>addNewField('metodo_pago')}
+                            className="flex justify-center items-center font-bold text-3xl  hover:border-2 hover:border-yellow-300 rounded">
+                        +</p> 
+                    </div>
+
+                    
+                )}
+
+
+
                 <p 
                     onClick={()=>setShowConfig((prev)=>({...prev,zonas_precios:!prev.zonas_precios}))}    
                     className="border-2 border-yellow-300 w-full md:w-[50%] text-center rounded text-xl font-bold py-2 my-2">
@@ -193,9 +284,9 @@ export default function Configuraciones(){
                                 <RiDeleteBin6Line size={35} className="text-red-600 ml-2" onClick={()=>deleteField(zona,"zona")}/>
                                 {editIndex === index? (
                                     <Fragment key={index}>
-                                        <input required={true} onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.zona} name="zona" className="w-full text-lg p-2 text-center"/>
-                                        <input required={true} type="number" onChange={(e)=>handleChange(e,index)} value={infoDelivery[index]?.precio} name="precio" className="w-34 text-lg p-2 mr-8 text-center"/>
-                                        <GiConfirmed size={40} onClick={()=>{setEditIndex(null)}} />
+                                        <input required={true} onChange={(e)=>handleChange(e,index,'zona')} value={infoDelivery[index]?.zona} name="zona" className="w-full text-lg p-2 text-center"/>
+                                        <input required={true} type="number" onChange={(e)=>handleChange(e,index,'zona')} value={infoDelivery[index]?.precio} name="precio" className="w-34 text-lg p-2 mr-2 text-center"/>
+                                        <GiConfirmed size={60} onClick={()=>{setEditIndex(null)}} />
 
 
                                     </Fragment>
@@ -214,7 +305,7 @@ export default function Configuraciones(){
                         ))}
 
                         <p 
-                            onClick={()=>addNewField()}
+                            onClick={()=>addNewField('zona_precio')}
                             className="flex justify-center items-center font-bold text-3xl  hover:border-2 hover:border-yellow-300 rounded">
                         +</p> 
 

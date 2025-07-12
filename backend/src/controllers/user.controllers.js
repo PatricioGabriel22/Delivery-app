@@ -170,7 +170,7 @@ export const editProfileInfo = async(req,res)=>{
     try {
 
         const sanitizedInfo = {};
-
+        // reemplaza cualquier grupo de espacios múltiples (o tabs) dentro del string por un solo espacio.
         for (const key in editableInfo) {
             const value = editableInfo[key];
             sanitizedInfo[key] = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : value;
@@ -194,13 +194,13 @@ export const editProfileInfo = async(req,res)=>{
 
 export const cancelarMiCompra = async(req,res)=>{
 
-    const {preOrdenID,pedidoID,username} = req.body
+    const {preOrdenID,pedidoID,username,bistroID} = req.body
 
     try {
         await preOrderSchema.findByIdAndDelete(preOrdenID)
         await pedidosSchema.findByIdAndDelete(pedidoID)
 
-        io.to(connectedBistros['6806b8fe2b72a9697aa59e5f']).emit('canceloMiPedido',{
+        io.to(connectedBistros[bistroID]).emit('canceloMiPedido',{
             message:`${username} decidió cancelar su pedido`,
             pedidoID,
             preOrdenID
