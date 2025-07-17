@@ -26,6 +26,9 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
     function retomarPago(){
         localStorage.setItem('pedidoID',confirmedOrder._id)
         localStorage.setItem('preOrdenID',confirmedOrder.preOrdenDeOrigen)
+        localStorage.setItem('paymentMethods',JSON.stringify(confirmedOrder.pedidoEn.mediosDePago))
+        localStorage.setItem('telefonoBistro', JSON.stringify(confirmedOrder.pedidoEn.telefono))
+
         setImporteTotal(confirmedOrder.importeTotal)
     }
 

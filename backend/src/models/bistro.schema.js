@@ -26,10 +26,13 @@ const bistroSchema = new mongoose.Schema({
     }],default:[]},
     mediosDePago:{
         type:[{ 
-            medio: String,
-            alias: String,
+            medio: { type: String },
+            alias: { type: String },
+            propietario : {type: String}
         }],
-        default:[]
+        default:[{
+            medio:'Efectivo'
+        }]
     }
     
 },{

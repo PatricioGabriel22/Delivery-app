@@ -52,14 +52,15 @@ export function BistroProvider({children}){
 
 
     function bistroHelpDataHandler(bistroData){
-        const {_id,username,telefono,img} = bistroData
+        const {_id,username,telefono,img,mediosDePago} = bistroData
 
 
         const aux = {
             _id:_id,
             username:username,
             telefono:telefono,
-            img:img
+            img:img,
+            mediosDePago:mediosDePago
         }
 
         localStorage.setItem('bistroInfo',JSON.stringify(aux))

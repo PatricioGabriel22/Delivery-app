@@ -125,7 +125,8 @@ export default function Configuraciones(){
                 setInfoMetodosPago(prev=>{
                     const aux = {
                         medio: "Nuevo medio de pago",
-                        alias: "Alias"
+                        alias: "Alias",
+                        propietario:"A nombre de..."
                     }
 
                     return [...prev,aux]
@@ -229,7 +230,7 @@ export default function Configuraciones(){
                 <p  
                     onClick={()=>setShowConfig((prev)=>({...prev,nuevos_metodos_pago:!prev.nuevos_metodos_pago}))}    
                     className="border-2 border-yellow-300 w-full md:w-[50%] text-center rounded text-xl font-bold py-2 my-2">
-                Modificar medios de pago</p>
+                Ajustar medios de pago</p>
 
                 {showConfig.nuevos_metodos_pago && (
                     <div  className=" text-white w-full md:w-[50%]">
@@ -242,6 +243,8 @@ export default function Configuraciones(){
                                         <div className="flex flex-col justify-center items-center text-center">
                                             <input required={true} onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.medio} name="medio" className="text-center"/>
                                             <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className=" text-center"/>
+                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.propietario} name="propietario" className=" text-center"/>
+
                                         </div>
                                         <GiConfirmed size={30} onClick={()=>{setEditIndex(null)}} />
                                     </Fragment>
@@ -251,6 +254,8 @@ export default function Configuraciones(){
                                         <div className="flex flex-col text-wrap truncate">
                                             <p className="truncate">{metodoPago.medio}</p>
                                             <p className="truncate">{metodoPago.alias}</p>
+                                            <p className="truncate">{metodoPago.propietario}</p>
+
                                         </div>
                                         <MdModeEdit size={40} onClick={()=>setEditIndex(index)} />
                                     </Fragment>

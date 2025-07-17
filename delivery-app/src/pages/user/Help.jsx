@@ -26,9 +26,9 @@ export default function Help(){
 
     const copiarAlPortapapeles = async (num,index) => {
         try {
-        await navigator.clipboard.writeText(num);
-        setCopiadoIndex(index);
-        setTimeout(() => setCopiadoIndex(false), 2000); // Mensaje por 2 seg
+            await navigator.clipboard.writeText(num);
+            setCopiadoIndex(index);
+            setTimeout(() => setCopiadoIndex(false), 2000); // Mensaje por 2 seg
         } catch (err) {
         console.error("Error al copiar", err);
         }

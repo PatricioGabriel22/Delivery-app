@@ -6,8 +6,9 @@ import axios from "axios";
 
 import toast from 'react-hot-toast'
 import { useBistroContext } from "../../context/BistrosContext";
+import { Copy } from "lucide-react";
 
-
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 export default function PaymentBTN({paymentMethod,importeTotal}){
 
@@ -17,6 +18,8 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     const pedidoID = localStorage.getItem("pedidoID")
     const preOrdenID = localStorage.getItem("preOrdenID")
+    const auxTelefonoDelBistro = JSON.parse(localStorage.getItem('telefonoBistro')) || ''
+    
 
     async function mp_payment_management(verifyMode){
 
@@ -124,6 +127,16 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
     }
 
 
+    async function copiarTelefono(telefono){
+        try {
+            
+            await navigator.clipboard.writeText(telefono)
+            toast.success(`Copiaste el telefono: ${telefono}. Recorda enviar el comprobante de tu pago online`)
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
 
     return(
@@ -133,15 +146,16 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
             >Pagar</button>
 
             
-            <div className={`flex flex-col w-full md:w-[40%] self-center p-2  mt-20 cursor-pointer`}
+            <div className={`flex flex-col w-full md:w-[40%] self-center p-2  mt-10 cursor-pointer`}
                 onClick={()=> mp_payment_management(true)}
                 >
 
-                <span className="text-center p-2 text-lg">Notificar mi pago de Mercado Pago y continuar</span>
+                <span className="text-center p-2 text-lg">Notificar mi pago online y finalizar</span>
                 <span className="w-full h-[1px] bg-sky-600"/>
 
             </div>
-
+            <p className="text-center p-2 flex items-center cursor-pointer justify-center"> <IoAlertCircleOutline size={46} className="text-yellow-300"/> Aunque hayas notificado recordá enviar el comprobante al local para terminar de confirmar</p>
+            <p className="text-center p-2 text-lg font-bold flex flex-row items-center justify-center gap-x-3 cursor-pointer" onClick={()=>copiarTelefono(auxTelefonoDelBistro)}>📞 {auxTelefonoDelBistro } <Copy size={16}/> </p>
         </Fragment>
     )
 }
