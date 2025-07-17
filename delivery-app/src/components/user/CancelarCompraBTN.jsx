@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useLoginContext } from "../../context/LoginContext";
 import { useShoppingContext } from "../../context/ShoppingContext";
 import toast from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -13,7 +14,7 @@ export default function CancelarCompraBTN({pedidoID,preOrdenID,bistroID}){
     const {renderORLocalURL,userInfo} = useLoginContext()
     const {limpiarSecuenciaDeCompras} = useShoppingContext()
 
-
+    const navigate = useNavigate()
     async function cancelarMiCompraUsuario(){
 
 
@@ -30,6 +31,8 @@ export default function CancelarCompraBTN({pedidoID,preOrdenID,bistroID}){
             console.log(res)
             toast(res.data.message,{icon:'⚠️',duration:350 * 10})
             limpiarSecuenciaDeCompras()
+            navigate('/profile')
+
         } catch (error) {
             console.log(error)
         }

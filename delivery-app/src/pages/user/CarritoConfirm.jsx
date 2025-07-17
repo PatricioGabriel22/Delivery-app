@@ -180,7 +180,7 @@ export default function CarritoConfirm(){
             <div className={`flex flex-col ${listaDeCompras.length>0? "h-[250px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
                 {listaDeCompras.length > 0 && (
 
-                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}  bistrioID={bistroInfo._id}/>
+                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}  bistroID={bistroInfo._id}/>
                 )}
 
                 {listaDeCompras?.map((item,index)=>(

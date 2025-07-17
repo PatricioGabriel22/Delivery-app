@@ -6,8 +6,9 @@ import { Fragment, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useLoginContext } from "../../context/LoginContext";
 
-
+import { GiShop } from "react-icons/gi";
 import { IoSettingsOutline } from "react-icons/io5"
+import { FaUserLarge } from "react-icons/fa6";
 import { useBistroContext } from "../../context/BistrosContext";
 
 export default function Nav() {
@@ -91,8 +92,24 @@ export default function Nav() {
       {/* Barra de navegación */}
       <div className="flex flex-row bg-red-600 justify-between items-center md:justify-evenly rounded-t-4xl w-full p-5">
         <Link to={"/profile"} >
-          <h1>Perfil</h1>
+
+          <div className="flex flex-col justify-center items-center">
+            <FaUserLarge size={20}/>
+            <p>Perfil</p>
+          </div>
+
         </Link>
+
+        {!userInfo.rol  && !locationFlag && (
+          <Link to={'/bistros'}>
+
+            <div className="flex flex-col items-center justify-center">
+              <GiShop size={20} />
+              <p>Bistros</p>
+            </div>
+
+          </Link>
+        )}
 
         {userInfo.rol && (
           <Fragment>

@@ -23,7 +23,7 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
 
 
     const {userInfo} = useLoginContext()
-    const {confirmedOrders, isLoading, isError, refresh, actionVerMasOrdenes, setPages } = useOrdersContext()
+    const {confirmedOrders, isLoading, isError, refreshHistorialOrdenes, actionVerMasOrdenes, setPages } = useOrdersContext()
 
     
     const dialogRef = useRef(null);
@@ -104,7 +104,7 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
                             <SlRefresh 
                                 size={25} 
                                 className="cursor-pointer"
-                                onClick={refresh}
+                                onClick={refreshHistorialOrdenes}
                             
                             />
                         </div>

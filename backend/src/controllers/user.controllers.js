@@ -206,7 +206,7 @@ export const cancelarMiCompra = async(req,res)=>{
             preOrdenID
         })
 
-        res.status(200).json({message:"El pedido fue eliminado y retirado del sistema, aniquilado. Destruido."})
+        res.status(200).json({message:"El pedido fue retirado del sistema. En unos minutos se actualizara su lista de pedidos."})
 
     } catch (error) {
         console.log(error)
