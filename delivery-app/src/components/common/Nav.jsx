@@ -6,10 +6,15 @@ import { Fragment, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useLoginContext } from "../../context/LoginContext";
 
+import { FaListCheck } from "react-icons/fa6";
 import { GiShop } from "react-icons/gi";
 import { IoSettingsOutline } from "react-icons/io5"
 import { FaUserLarge } from "react-icons/fa6";
+
 import { useBistroContext } from "../../context/BistrosContext";
+
+
+
 
 export default function Nav() {
   const {userInfo} = useLoginContext()
@@ -115,11 +120,18 @@ export default function Nav() {
           <Fragment>
 
             <Link to={'/PreOrderManagement'}>
+            <div className="flex flex-col items-center">
+
+              <FaListCheck size={20}/>
               <span>Pre-ordenes</span>
+            </div>
             </Link>
 
             <Link to={'/configuraciones'}>
-              <IoSettingsOutline  size={30}/>
+            <div className="flex flex-col items-center">
+              <IoSettingsOutline  size={20}/>
+              <p>Ajustes</p>
+            </div>
             </Link>
           </Fragment>
         )}
