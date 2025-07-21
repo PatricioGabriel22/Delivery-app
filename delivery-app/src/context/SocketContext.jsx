@@ -258,7 +258,13 @@ export function SocketProvider({children}){
                         localStorage.setItem('buyBTN',JSON.stringify(false))
                         return JSON.parse(localStorage.getItem("buyBTN"))
                     })
+
                     setResponseFromServer(data)
+
+                    refreshHistorialOrdenes()
+                    setAllPreOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
+                    setAcceptedOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
+                    toast(data.toastMsg,{icon:'⚠️',duration:700 * 10})
                 }
             }   
 

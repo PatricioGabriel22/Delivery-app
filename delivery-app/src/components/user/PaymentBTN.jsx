@@ -26,7 +26,7 @@ export default function PaymentBTN({paymentMethod,importeTotal}){
 
     async function payment_management(paymentMethod){
 
-        if(!paymentMethod) toast.error("Debe seleccionar un metodo de pago")
+        if(!paymentMethod) return toast.error("Debe seleccionar un metodo de pago")
 
         const pago_payload= {
             pedidoID,

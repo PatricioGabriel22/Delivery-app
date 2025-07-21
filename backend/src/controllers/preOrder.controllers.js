@@ -253,12 +253,15 @@ export const PreOrderManager = async (req,res)=>{
                 
             case 'cancelada':
                 await preOrderSchema.deleteOne({_id:orderInfo._id},{new:true})
+                await pedidosSchema.deleteOne({preOrdenDeOrigen:orderInfo._id},{new:true})
+
 
             
                 nuevaDataEmitida = {
                     id:orderInfo._id,
                     canceled:true,
-                    msgDeSugerencia:notification
+                    msgDeSugerencia:notification,
+                    toastMsg:"Pedido cancelado por el local"
                 }
     
                 socketsToNotify.forEach((socket)=>{
