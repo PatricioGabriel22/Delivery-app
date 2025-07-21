@@ -10,6 +10,7 @@ import Nav from '@components/common/Nav.jsx'
 import {ccapitalizer_3000} from '../../utils/capitalize.js'
 import { useBistroContext } from "../../context/BistrosContext.jsx";
 import { useSocketContext } from "../../context/SocketContext.jsx";
+import Help from "./Help.jsx";
 
 
 
@@ -53,12 +54,13 @@ export default function Bistros(){
     return(
         <Fragment>
             <div className="flex flex-col w-full items-center ">
+                <Help/>
 
 
                 {isLoading ?  (
                     <Loading msg={"Cargando locales abiertos"} />
                 ):(
-                    <div className="flex flex-col p-3 m-5 w-full text-center">
+                    <div className="flex flex-col p-3 mt-10 m-5 w-full text-center ">
                         <h1 className="text-4xl pb-1 ">Locales disponibles</h1>
                         <span className="h-[1px]  bg-red-600"/>
                         <p className="p-2">Tu compra puede ser con delivery o con retiro en el local!</p>
@@ -84,7 +86,7 @@ export default function Bistros(){
                                     <p className="font-semibold">🏘️{ccapitalizer_3000(bistro.localidad)}</p>
                                 </div>
                                 <div className="flex flex-col items-center  ">
-                                    <img loading="lazy" src={bistro.img || `/logoApp.png`} width={150} className="rounded  self-end h-[110px] w-[150px] "  />
+                                    <img loading="lazy" src={bistro.img || `/logoApp.png`} width={100} className="rounded  self-end h-[109px] w-[150px] "  />
                                 </div>
                             </div>
                         

@@ -1,9 +1,10 @@
 import { BadgeHelp, Copy } from "lucide-react";
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 
 import { useLoginContext } from "@context/LoginContext.jsx";
 import { useBistroContext } from "../../context/BistrosContext";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -11,18 +12,19 @@ import { useBistroContext } from "../../context/BistrosContext";
 
 
 export default function Help(){
-
+    const location = useLocation()
     const {userInfo} = useLoginContext()
     const {bistroInfo} = useBistroContext()
 
     const [help,setHelp] = useState(false)
     const [copiadoIndex, setCopiadoIndex] = useState(null)  
 
-    const numeros = useMemo(()=>[{
+    const [numeros,setNumeros] = useState(()=>[{
         nombre: userInfo.rol ? userInfo.username : bistroInfo.username,
         telefono:userInfo.rol ? userInfo.telefono : bistroInfo.telefono},
-        {nombre:"Soporte",telefono:1151278287}]
-    ,[bistroInfo,userInfo])
+        {nombre:"Soporte Tecnico",telefono:1151278287}
+    ])
+
 
     const copiarAlPortapapeles = async (num,index) => {
         try {
@@ -34,7 +36,11 @@ export default function Help(){
         }
     }
 
-
+    useEffect(()=>{
+        if(location.pathname === '/bistros'){
+            setNumeros([{nombre:"Soporte Tecnico",telefono:1151278287}])
+        }
+    },[location.pathname])
 
     return(
         <Fragment>
@@ -61,7 +67,14 @@ export default function Help(){
                     })}
         
                 </div>
-                ) :(<BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end absolute top-0 cursor-pointer m-2"/>)}
+                ) :(
+                    <div className="flex self-end flex-row items-center absolute">
+
+                        <p>Ayuda</p>
+                        <BadgeHelp size={30}  onClick={()=>setHelp(!help)} className="text-blue-600 self-end  top-0 cursor-pointer m-2"/>
+                    </div>
+                    
+                    )}
         </Fragment>
     )
 }
