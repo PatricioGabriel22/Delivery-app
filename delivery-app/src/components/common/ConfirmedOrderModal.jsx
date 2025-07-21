@@ -39,7 +39,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
             <dialog 
 
                 ref={ref} 
-                className="rounded-xl p-6 shadow-xl w-full md:w-120 justify-self-center self-center backdrop:bg-black/50 text-xl overflow-x-hidden font-semibold">
+                className="rounded-xl p-6 shadow-xl w-[120%] md:w-120 justify-self-center self-center backdrop:bg-black/50 text-xl overflow-x-hidden font-semibold">
 
                 <BannerCloseLogo close={close}/>
                
@@ -72,7 +72,11 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                     {productos.map((producto)=>( 
                         
                         <div className="flex flex-row w-full justify-between p-1 my-3 border-1 border-black" key={producto._id}>
-                            <p >{producto.cantidad}x {producto.nombre}</p>
+                            <div className="flex flex-row gap-x-2">
+                                <p className="text-red-600">{producto.cantidad}x </p> 
+                                <p>{producto.nombre}</p>
+
+                            </div>
                             <p >${producto.precio * producto.cantidad}</p>
 
                         </div>
@@ -102,6 +106,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
                         </Fragment>
                     )}
                     <p className="text-center py-1 p-1 my-8  rounded-full border-2 bg-red-600 text-white">Total: ${importeTotal}</p>
+                    <p>Codigo del pedido: {_id}</p>
                 </div>
 
             </dialog>

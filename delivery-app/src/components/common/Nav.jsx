@@ -10,7 +10,7 @@ import { FaListCheck } from "react-icons/fa6";
 import { GiShop } from "react-icons/gi";
 import { IoSettingsOutline } from "react-icons/io5"
 import { FaUserLarge } from "react-icons/fa6";
-
+import { MdRemoveShoppingCart } from "react-icons/md";
 import { useBistroContext } from "../../context/BistrosContext";
 
 
@@ -19,7 +19,7 @@ import { useBistroContext } from "../../context/BistrosContext";
 export default function Nav() {
   const {userInfo} = useLoginContext()
   const {bistroInfo,createSlug} = useBistroContext()
-  const { carrito,total,setTotal } = useShoppingContext();
+  const { carrito,total,setTotal, limpiarSecuenciaDeCompras } = useShoppingContext();
   const [showCarritoBTN, setShowCarritoBTN] = useState(false);
   
   
@@ -106,14 +106,23 @@ export default function Nav() {
         </Link>
 
         {!userInfo.rol  && !locationFlag && (
-          <Link to={'/bistros'}>
+          <Fragment>
 
-            <div className="flex flex-col items-center justify-center">
-              <GiShop size={20} />
-              <p>Bistros</p>
-            </div>
+            <Link to={'/bistros'}>
 
-          </Link>
+              <div className="flex flex-col items-center justify-center">
+                <GiShop size={20} />
+                <p>Bistros</p>
+              </div>
+
+            </Link>
+
+          <div className="flex flex-col justify-center items-center cursor-pointer" onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/profile`)}}>
+
+            <MdRemoveShoppingCart size={20}/>
+            <p>Vaciar carrito</p>
+          </div>
+          </Fragment>
         )}
 
         {userInfo.rol && (

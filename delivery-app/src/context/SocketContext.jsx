@@ -242,7 +242,8 @@ export function SocketProvider({children}){
                     })
 
                     //refresco la lista de pedidos del usuario/bistro
-                    refresh((oldData) => {
+                    refreshHistorialOrdenes((oldData) => {
+                        
                         return {
                             ...oldData,
                             allOrders: [data.nuevoPedido, ...oldData.allOrders],
@@ -253,6 +254,10 @@ export function SocketProvider({children}){
                 }
         
                 if(data.canceled){
+                    setBuyBTN(()=>{
+                        localStorage.setItem('buyBTN',JSON.stringify(false))
+                        return JSON.parse(localStorage.getItem("buyBTN"))
+                    })
                     setResponseFromServer(data)
                 }
             }   
@@ -268,6 +273,14 @@ export function SocketProvider({children}){
                 return item
             }))
        })
+
+       socket.on('notificarPago',(data)=>{
+        console.log(data)
+            if(data.pagado) return toast.success(data?.message)
+            if(data.duplicado) return toast.error(data.messagePagoDuplicado)
+            
+
+        })
 
         socket.on('finishedOrder',(data)=>{
             
@@ -293,7 +306,7 @@ export function SocketProvider({children}){
 
 
         socket.on('canceloMiPedido',(data)=>{
-            console.log(data)
+            refreshHistorialOrdenes()
             setAllPreOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
             setAcceptedOrders(prev => prev.filter(item=> item._id !== data.preOrdenID))
             toast(data.message,{icon:'⚠️',duration:700 * 10})

@@ -28,7 +28,7 @@ export default function TiendaStatus(){
         try {
             if(flagStatus){
                 const res = await axios.get(`${renderORLocalURL}/getTiendaStatus/${payload.idRestaurant}`,{withCredentials:true})
-                console.log(res)
+           
                 setIsOpen(res.data.tiendaStatus)
                 return
             }

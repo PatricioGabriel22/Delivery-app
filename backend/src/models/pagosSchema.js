@@ -9,8 +9,6 @@ const pagoSchema = new mongoose.Schema({
         unique:true
     },
     pagoEfectivo:{type:Boolean, default: true},
-    mp_payment_id:String,
-    mp_payment_method:String,
     importe: Number,
     createdAt:{
         type:Date,

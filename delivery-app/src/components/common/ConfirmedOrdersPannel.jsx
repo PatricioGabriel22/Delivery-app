@@ -99,12 +99,15 @@ export default function ConfirmedOrdersPannel({targetDate,targetName}){
                     
                         
 
-                        <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer">
+                        <div className="flex flex-row gap-x-2 rounded p-2 hover:bg-green-700 cursor-pointer" 
+                        
+                            onClick={()=>{refreshHistorialOrdenes();console.log("Refrescando historial")}}
+
+                        >
                             <p>Actualizar</p>
                             <SlRefresh 
                                 size={25} 
                                 className="cursor-pointer"
-                                onClick={refreshHistorialOrdenes}
                             
                             />
                         </div>

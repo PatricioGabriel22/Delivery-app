@@ -55,43 +55,38 @@ export const calcularPagosEnRango = async (req,res)=>{
 export const pagoManagement = async (req,res)=>{
     const {pedidoID,preOrdenID, userID,importe,bistroID,metodoDePago} = req.body
 
-    console.log(metodoDePago)
+    console.log("metodo de pago: ",metodoDePago)
     
+    console.log(req.body)
+    console.log(connectedBistros[bistroID])
+
     try {
 
 
         const nuevoPago = await pagoSchema.create({
             userID,
             pedido: pedidoID,
-            pagoEfectivo: true,
+            pagoEfectivo: metodoDePago === 'Efectivo' ? true : false,
             importe
         })
 
-        const pedidoPagadoEnEfectivo = await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}},{new:true})
 
-        if(pedidoPagadoEnEfectivo.isPayed){
-    
-            const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod:'Efectivo'}},{new:true})
+        await pedidosSchema.findByIdAndUpdate(pedidoID,{$set:{isPayed:true, payment:nuevoPago._id}},{new:true})
 
-            io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
-
-
-        }
-
-        //create crea el documento una vez y lanza error 11000 si esta duplicado
+        const preOrderPaga = await preOrderSchema.findByIdAndUpdate(preOrdenID,{$set:{paymentMethod: metodoDePago}},{new:true})
         
-        res.status(200).json({message:"Se abonará en efectivo"})
+        io.to(connectedBistros[bistroID]).emit('preOrdenPagoVerificado', preOrderPaga)
+        io.to(connectedUsers[userID].socketId).emit('notificarPago',{pagado:true,message:`Se abonará en ${metodoDePago}`})
+
+ 
+        
+        res.status(200).json({ message: 'Pago registrado correctamente' })
 
     } catch (error) {
-        const ERROR_DUPLICADO_CODE = 11000
-        if(error.code === ERROR_DUPLICADO_CODE){
 
-            const pagoExistente = await pagoSchema.findOne({pedido:pedidoID})
+        if(error){
+            io.to(connectedUsers[userID].socketId).emit('notificarPago',{duplicado:true,messagePagoDuplicado:`El pago ya fue registrado.`})
 
-            const msgPagoEfectivo = "El pedido ya fue seleccionado para pago en efectivo"
-            const msgPagadoConMp = "El pedido fue abonado con Mercado Pago"
-
-            return res.status(409).json({message: pagoExistente.pagoEfectivo ? msgPagoEfectivo : msgPagadoConMp})
         }
       
     }

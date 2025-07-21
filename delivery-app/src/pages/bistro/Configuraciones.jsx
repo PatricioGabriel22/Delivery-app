@@ -230,7 +230,7 @@ export default function Configuraciones(){
                 <p  
                     onClick={()=>setShowConfig((prev)=>({...prev,nuevos_metodos_pago:!prev.nuevos_metodos_pago}))}    
                     className="border-2 border-yellow-300 w-full md:w-[50%] text-center rounded text-xl font-bold py-2 my-2">
-                Ajustar medios de pago</p>
+                Agregar medios de pago</p>
 
                 {showConfig.nuevos_metodos_pago && (
                     <div  className=" text-white w-full md:w-[50%]">

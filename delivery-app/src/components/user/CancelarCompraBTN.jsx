@@ -22,6 +22,7 @@ export default function CancelarCompraBTN({pedidoID,preOrdenID,bistroID}){
             preOrdenID,
             pedidoID,
             username:userInfo.username,
+            userID:userInfo._id,
             bistroID
         }
 

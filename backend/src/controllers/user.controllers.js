@@ -3,7 +3,7 @@ import userSchema from '../models/user.schema.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import { connectedBistros, io } from '../webSocket.js'; 
+import { connectedBistros, connectedUsers, io } from '../webSocket.js'; 
 
 
 import dotenv from 'dotenv'
@@ -194,13 +194,13 @@ export const editProfileInfo = async(req,res)=>{
 
 export const cancelarMiCompra = async(req,res)=>{
 
-    const {preOrdenID,pedidoID,username,bistroID} = req.body
+    const {preOrdenID,pedidoID,username,bistroID,userID} = req.body
 
     try {
         await preOrderSchema.findByIdAndDelete(preOrdenID)
         await pedidosSchema.findByIdAndDelete(pedidoID)
 
-        io.to(connectedBistros[bistroID]).emit('canceloMiPedido',{
+        io.to(connectedBistros[bistroID]).to(connectedUsers[userID]).emit('canceloMiPedido',{
             message:`${username} decidió cancelar su pedido`,
             pedidoID,
             preOrdenID

@@ -27,7 +27,7 @@ export default function DeliveryStatus({rol}){
       if(flagChange){
         //Obtengo el estado actual del delivery
         const getRestaurant = await axios.get(`${renderORLocalURL}/getDeliveryStatus/${payload.idRestaurant}`,{withCredentials:true})
-        console.log(getRestaurant)
+
         setAuxDelivery(getRestaurant.data.deliveryStatus)
       }else{
         //modifico el estao del delivery consistentemente en DB

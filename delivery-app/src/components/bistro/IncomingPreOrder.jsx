@@ -127,8 +127,12 @@ export default function IncomingPreOrder({title,preOrderInfo,activeButtons = tru
                                         key={index}
                                         className={`flex flex-row justify-between w-full p-2 items-center text-xl border-1 my-1 cursor-pointer ${checkDone.has(index) ? "bg-green-300" : ""} `}
                                         onClick={()=>checkItem(index)}
-                                    >
-                                        <p>{item.cantidad}x {ccapitalizer_3000(item.nombre)}</p>
+                                    >   
+                                        <div className="flex flex-row gap-x-2">
+                                            <p className="text-red-600 font-bold">{item.cantidad}x</p> 
+                                            <p>{ccapitalizer_3000(item.nombre)}</p>
+
+                                        </div>
                                         <p>${item.precio * item.cantidad}</p>
 
                                     </div>
