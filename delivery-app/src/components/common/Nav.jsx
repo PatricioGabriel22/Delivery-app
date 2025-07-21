@@ -129,19 +129,20 @@ export default function Nav() {
           <Fragment>
 
             <Link to={'/PreOrderManagement'}>
-            <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center">
 
-              <FaListCheck size={20}/>
-              <span>Pre-ordenes</span>
-            </div>
+                <FaListCheck size={20}/>
+                <span>Pre-ordenes</span>
+              </div>
             </Link>
+
 
             <Link to={'/configuraciones'}>
-            <div className="flex flex-col items-center">
-              <IoSettingsOutline  size={20}/>
-              <p>Ajustes</p>
-            </div>
-            </Link>
+              <div className="flex flex-col items-center">
+                <IoSettingsOutline  size={20}/>
+                <p>Ajustes</p>
+              </div>
+              </Link>
           </Fragment>
         )}
         <LogoutBTN />

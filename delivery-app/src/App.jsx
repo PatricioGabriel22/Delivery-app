@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from 'react'
-import {Route, Routes } from 'react-router-dom'
+import {Link, Route, Routes } from 'react-router-dom'
 
 
 import BistroPrivate from '@components/bistro/BistroPrivate.jsx'
@@ -25,12 +25,16 @@ import SelectPayment from '@pages/user/SelectPayment.jsx'
 import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
 import Bistros from '@pages/user/Bistros'
 import Configuraciones from '@pages/bistro/Configuraciones'
+import { useLoginContext } from './context/LoginContext'
+import { GiShop } from 'react-icons/gi'
 
 
 
 
 
 function App() {
+
+  const {userInfo} = useLoginContext()
 
   useEffect(()=>{updateSW()},[])
 
@@ -57,7 +61,22 @@ function App() {
   return (
     <Fragment>
       <div className='bg-black min-h-screen  text-white  select-none'>
-        <BackArrow/>
+
+        <div className='flex flex-row justify-between'>
+
+          <BackArrow/>
+          {userInfo.rol && (
+              <Link to={`/bistros/${userInfo.username}`}>
+                <div className="flex flex-row items-center justify-center border-b-2 mr-2 gap-x-2">
+
+                  <GiShop size={20}/>
+                  <span>Volver al catalogo</span>
+                </div>
+              </Link>
+          )}
+        </div>
+
+      
         <Routes>
           
           <Route path='/login' element={<Login/>}/>
