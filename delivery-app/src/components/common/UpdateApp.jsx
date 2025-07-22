@@ -2,27 +2,28 @@ import toast from 'react-hot-toast'
 import { registerSW } from 'virtual:pwa-register'
 
 
+export const APP_VERSION = '3.0.0'
 
-    async function handleUpdateApp(t){
-        toast('Actualizando...',{icon:'⏳'})
+async function handleUpdateApp(t){
+    toast('Actualizando...',{icon:'⏳'})
 
-        try {
-            
-            const wasUpdatedRes = await updateSW(true)
-    
-            if(wasUpdatedRes){
-    
-                toast.dismiss(t.id)
-                window.location.reload()
-            }
-
-        } catch  {
-            
-            toast.error('Algo salió mal al instalar la actualizacion')
-        }
+    try {
         
+        const wasUpdatedRes = await updateSW(true)
 
+        if(wasUpdatedRes){
+
+            toast.dismiss(t.id)
+            window.location.reload()
+        }
+
+    } catch  {
+        
+        toast.error('Algo salió mal al instalar la actualizacion')
     }
+    
+
+}
 
 export const updateSW = registerSW({
 

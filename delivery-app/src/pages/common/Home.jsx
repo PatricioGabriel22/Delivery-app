@@ -32,6 +32,8 @@ import { useCatalogMaker } from "../../context/SWR.js";
 import TiendaStatus from "../../components/common/TiendaStatus.jsx";
 import { useSocketContext } from "../../context/SocketContext.jsx";
 
+import { APP_VERSION } from '../../components/common/UpdateApp.jsx'
+
 
 
 export default function Home() {
@@ -68,7 +70,7 @@ export default function Home() {
 
 
   useEffect(() => {
-    const APP_VERSION = "2.0.1";
+
     const storedVersion = localStorage.getItem("appVersion");
 
     if (storedVersion !== APP_VERSION) {

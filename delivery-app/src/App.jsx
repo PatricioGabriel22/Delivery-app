@@ -26,7 +26,7 @@ import PagoConfirmadoPage from '@pages/user/PagoConfirmadoPage.jsx'
 import Bistros from '@pages/user/Bistros'
 import Configuraciones from '@pages/bistro/Configuraciones'
 
-
+import { APP_VERSION } from './components/common/UpdateApp'
 
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
 
 
   useEffect(() => {
-    const APP_VERSION = "3.0.0";
+ 
     const storedVersion = localStorage.getItem("appVersion");
 
     if (storedVersion !== APP_VERSION) {
