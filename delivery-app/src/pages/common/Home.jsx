@@ -200,7 +200,7 @@ export default function Home() {
                 {catalogoDelBistro
                   .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
                   .filter(producto => !userInfo.rol ? producto.disponible : producto)
-                  .map((producto,index)=>{
+                  .map((producto)=>{
       
                     const target = carrito.find(itemCarrito=> itemCarrito.nombre === producto.nombre.trim()) || null
 
@@ -208,20 +208,20 @@ export default function Home() {
                     if(producto.categoria === categoria){
                       
                       return (
-                        <Fragment key={index}>
         
-                          <Card key={index} 
-                          id={producto._id}
-                          nombre={producto.nombre} 
-                          precio={producto.precio} 
-                          cantidadAdquirida={target === null ? 0 : target.cantidad}
-                          descripcion={producto.descripcion}
-                          disponible={producto.disponible}
-                          img={producto.img}
+                        <Card key={producto._id} 
+                        id={producto._id}
+                        nombre={producto.nombre} 
+                        precio={producto.precio} 
+                        cantidadAdquirida={target === null ? 0 : target.cantidad}
+                        descripcion={producto.descripcion}
+                        disponible={producto.disponible}
+                        img={producto.img}
 
-                          />
-        
-                        </Fragment>
+                        />
+      
+                      
+                        
                       )
                     }
         
