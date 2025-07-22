@@ -390,22 +390,23 @@ export function SocketProvider({children}){
         })
 
         socket.on('cardProductoActualizada',(data)=>{
-        refresh(prevData=>{
-            const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
+            console.log(data)
+            refresh(prevData=>{
+                const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
 
-            if(prevItem._id === data._id){
-                return {...data}
-            }else{
-                return{...prevItem}
-            }
+                if(prevItem._id === data._id){
+                    return {...data}
+                }else{
+                    return{...prevItem}
+                }
+                })
+
+                return{
+                ...prevData,
+                catalogoDelBistro:updatedArray
+                }
+
             })
-
-            return{
-            ...prevData,
-            catalogoDelBistro:updatedArray
-            }
-
-        })
         })
 
     

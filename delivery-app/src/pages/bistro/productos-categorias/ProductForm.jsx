@@ -102,7 +102,7 @@ export default function ProductForm() {
           />
 
           <select
-            defaultValue=" "
+            defaultValue="Seleccionar categoria"
             name="categoria"
             placeholder="Categoría"
             className="border border-red-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400"

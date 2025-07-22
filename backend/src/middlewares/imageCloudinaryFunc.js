@@ -30,7 +30,7 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
 
     }   
 
-    console.log(updateParams)
+
     const targetUpdated = await schema.findByIdAndUpdate(idTarget,updateParams,{new:true})
 
     const {
@@ -68,8 +68,5 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
         mediosDePago
     }
 
-    io
-    .to(connectedBistros[idTarget])
-    .to(connectedUsers)
-    .emit(eventName,dataReducida)
+    io.emit(eventName,dataReducida)
 }

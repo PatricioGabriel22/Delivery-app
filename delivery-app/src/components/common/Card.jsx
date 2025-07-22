@@ -37,6 +37,9 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
   const [miniPreview,setMiniPreview] = useState(null)
 
+  const [loadingRes, setLoadingRes] = useState(false);
+
+
   // Estado para controlar la cantidad en el carrito
   const {carrito,cartHandler,loading, buyBTN} = useShoppingContext()
   
@@ -104,7 +107,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
     }
 
-    console.log(editableData)
+  
     
   }
 
@@ -151,8 +154,10 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           withCredentials:true,
           headers:{'Content-Type': 'multipart/form-data'}
         })
-        .then(res=>console.log(res))
-        .catch(e=>console.log(e))
+      .then(res=>toast.success(res.data.message))
+      .catch(e=>console.log(e))
+
+
     }
 
 

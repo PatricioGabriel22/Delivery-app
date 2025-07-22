@@ -32,13 +32,12 @@ export default function CategoryFrom(){
             categoria:e.target[0].value.toLowerCase().trim()
         }
         
-        console.log(payloadNuevaCategoria)
-
+     
         try {
             
             axios.post(`${renderORLocalURL}/addCategoriaAlPerfil`,payloadNuevaCategoria,{withCredentials:true})
                 .then(res=>{
-                    console.log(res)
+                    
                     setStatus(res.status) 
                     setInfoTxt(res.data.message)
                     setLoading(false)
@@ -58,7 +57,7 @@ export default function CategoryFrom(){
     useEffect(()=>{
 
         socket.on('categoriaAgregada',(data)=>{
-            console.log(data)
+            
             userInfo.categorias = [...new Set(data.listaCategorias)]
             localStorage.setItem('userInfo',JSON.stringify(userInfo))
         })
@@ -74,7 +73,7 @@ export default function CategoryFrom(){
         <Fragment>
 
 
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-30 justify-center items-center">
 
                 <form
                     onSubmit={handleUploadCategoria}
@@ -115,6 +114,13 @@ export default function CategoryFrom(){
                         <span className="p-2 text-xl"/>{infoTxt}
                     </div>
                 )}
+
+
+                <Link to={'/addProduct'}>
+                    <button className="w-90 justify-center items-center rounded border-2 border-red-600 p-3 cursor-pointer">
+                        <p className="text-lg font-semibold">Agregar producto</p>
+                    </button>
+                </Link>
 
             </div>
 

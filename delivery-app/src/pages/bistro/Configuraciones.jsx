@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import axios from 'axios'
 
 import BannerCloseLogo from "@components/common/BannerCloseLogo";
@@ -156,14 +156,14 @@ export default function Configuraciones(){
                 break
             case 'categoria':
                 nuevo = categorias.filter(categoria => categoria !== target)
-                console.log(nuevo)
+                
                 setCategorias(nuevo)
                 setNewPayloadCollector(prev=>({...prev, nuevas_categorias:nuevo}))
 
                 break
             case 'metodoPago':
                 nuevo = infoMetodosPago.filter(metodoPago => metodoPago !== target)
-                console.log(nuevo)
+                
                 setInfoMetodosPago(nuevo)
                 setNewPayloadCollector(prev=>({...prev, nuevos_metodos_pago:nuevo}))
                 break
@@ -258,12 +258,12 @@ export default function Configuraciones(){
     }
 
 
-    useEffect(()=>{
+    // useEffect(()=>{
 
 
-        console.log(newPayloadCollector)
+    //     console.log(newPayloadCollector)
 
-    },[newPayloadCollector])
+    // },[newPayloadCollector])
     
     return(
         <Fragment>

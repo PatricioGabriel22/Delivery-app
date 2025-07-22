@@ -111,7 +111,7 @@ export const editProductInfo = async (req,res)=>{
     
     
 
-    console.log(req.file)
+   
 
     const logoApp = {
         path: 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1750683627/productos/k786vsil39y78yx3cvm5.png',
@@ -132,7 +132,7 @@ export const editProductInfo = async (req,res)=>{
 
         modifyData(id,productSchema,updatedFields,req.file,"cardProductoActualizada")
 
-
+        res.status(200).json({message:`Cambios en el producto guardados`})
 
     } catch (error) {
         

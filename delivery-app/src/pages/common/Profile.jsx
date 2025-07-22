@@ -85,17 +85,17 @@ export default function Profile(){
                                 
                                         {open && (
                                         <div className="absolute z-10  bg-white border border-red-500 rounded-lg ">
+                                            <Link to={"/addCategory"} >
+                                                <button className="cursor-pointer  px-4 py-2  text-red-600">
+                                                Categoria
+                                                </button>
+                                            </Link>
                                             <Link to={"/addProduct"} >
                                                 <button className="cursor-pointer  px-4 py-2  text-red-600">
                                                 Producto
                                                 </button>
                                             </Link>
 
-                                            <Link to={"/addCategory"} >
-                                                <button className="cursor-pointer  px-4 py-2  text-red-600">
-                                                Categoria
-                                                </button>
-                                            </Link>
                                         </div>
                                         )}
                                   </div>
