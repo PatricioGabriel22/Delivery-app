@@ -40,11 +40,11 @@ export default function OrdersHistory(){
                     </label>
 
 
-                    <button className="rounded-full p-1 border-1 hover:bg-red-600 cursor-pointer w-40 self-center ">
+                    {/* <button className="rounded-full p-1 border-1 hover:bg-red-600 cursor-pointer w-40 self-center ">
                         <Link to={"/estadisticas"}>
                             Estadisticas de mis ventas
                         </Link>
-                    </button>
+                    </button> */}
 
                 </div>
 

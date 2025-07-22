@@ -12,6 +12,7 @@ import { ccapitalizer_3000 } from "../../utils/capitalize";
 import { GiConfirmed } from "react-icons/gi";
 import toast from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 
 
@@ -137,10 +138,11 @@ export default function Configuraciones(){
     }
 
 
+
     const deleteField = (target,deleteMode)=>{
        
         let nuevo = []
-
+        
         switch(deleteMode){ 
             case 'zona':
                 //En JavaScript, los bloques case deben estar entre llaves si vas a usar declaraciones como const, let o function, o lo declaro afuera para mantener uniformidad
@@ -173,6 +175,58 @@ export default function Configuraciones(){
        
 
     }
+
+
+    
+    const alertDeleteField = (target,deleteMode)=>{
+
+        switch(deleteMode){
+            case 'metodoPago':
+                Swal.fire({
+                    title: `¿Eliminar medio de pago "${target.medio}"?`,
+                    text: "Recorda volver a incluirlo si lo necesitás.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Eliminar medio de pago"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteField(target,deleteMode)
+                        Swal.fire({
+                        title: "Eliminado!",
+                        text: `Medio de pago "${target.medio}" eliminado.`,
+                        icon: "success"
+                        });
+                    }
+                });
+                break
+            case 'categoria':
+                Swal.fire({
+                    title: `¿Eliminar categoria "${target}"?`,
+                    text: "Recorda volver a incluirlo si la necesitás.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Eliminar categoria"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteField(target,deleteMode)
+                        Swal.fire({
+                        title: "Eliminado!",
+                        text: `Categoria"${target}" eliminada.`,
+                        icon: "success"
+                        });
+                    }
+                });
+                break
+        }
+
+
+
+    }
+
 
 
     async function guardarCambios(){
@@ -237,13 +291,13 @@ export default function Configuraciones(){
                         {infoMetodosPago.map((metodoPago,index)=>(
                             
                             <div key={index} className="flex flex-row items-center text-center justify-between border-1 m-2 ">
-                                <RiDeleteBin6Line size={35} className="text-red-600 ml-2 shrink-0" onClick={()=>deleteField(metodoPago,"metodoPago")}/>
+                                <RiDeleteBin6Line size={35} className="text-red-600 ml-2 shrink-0" onClick={()=>alertDeleteField(metodoPago,"metodoPago")}/>
                                 {editIndex === index? (
                                     <Fragment key={index}>
                                         <div className="flex flex-col justify-center items-center text-center">
-                                            <input required={true} onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.medio} name="medio" className="text-center"/>
-                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className=" text-center"/>
-                                            <input required={true}  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.propietario} name="propietario" className=" text-center"/>
+                                            <input onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.medio} name="medio" className="text-center"/>
+                                            <input  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.alias} name="alias" className=" text-center"/>
+                                            <input  onChange={(e)=>handleChange(e,index,'metodoPago')} value={infoMetodosPago[index]?.propietario} name="propietario" className=" text-center"/>
 
                                         </div>
                                         <GiConfirmed size={30} onClick={()=>{setEditIndex(null)}} />
@@ -352,7 +406,7 @@ export default function Configuraciones(){
                         {categorias.length > 0 && categorias.map((categoria,index)=>(
                             <div className="flex flex-row items-center  justify-between border-1 m-2 " key={index}>
                                 <p className=" text-lg p-2 ">{ccapitalizer_3000(categoria)}</p>
-                                <RiDeleteBin6Line size={30} className="text-red-600" onClick={()=>deleteField(categoria,'categoria')}/>
+                                <RiDeleteBin6Line size={30} className="text-red-600" onClick={()=>alertDeleteField(categoria,'categoria')}/>
                             </div>    
 
                             ))}

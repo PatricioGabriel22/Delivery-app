@@ -96,7 +96,7 @@ export default function ConfirmedOrderModal({ref,close,confirmedOrder}){
 
                     
                     <p className="text-center">{isPayed ? "Está pago" : "Falta pagar"}</p>
-                    {!isPayed && (
+                    {!isPayed && !userInfo.rol && (
                         <Fragment>
 
                             <Link to={'/comprar'} onClick={retomarPago}>

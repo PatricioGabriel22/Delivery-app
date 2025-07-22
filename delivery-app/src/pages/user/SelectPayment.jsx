@@ -56,7 +56,7 @@ export default function SelectPayment() {
         <div className="flex flex-col items-center justify-center">
           {/* Mostrar botón para Efectivo */}
           {paymentMethods
-            .filter((method) => method.medio === "Efectivo")
+            .filter((method) => method.medio === 'Efectivo')
             .map((method, index) => (
               <span
                 key={index}
