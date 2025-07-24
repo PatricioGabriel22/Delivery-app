@@ -114,7 +114,7 @@ export const editProductInfo = async (req,res)=>{
    
 
     const logoApp = {
-        path: 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1750683627/productos/k786vsil39y78yx3cvm5.png',
+        path: '/logoApp.png',
         filename: 'productos/k786vsil39y78yx3cvm5'
     }
 
