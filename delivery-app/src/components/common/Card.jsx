@@ -99,7 +99,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
     setEditableData({...editableData,[nombreCampo]: infoGuardada})
 
     if(flagTemporal){
-      const pathLogo = 'https://res.cloudinary.com/db8wo1wrm/image/upload/v1750683627/productos/k786vsil39y78yx3cvm5.png'
+      const pathLogo = '/logoApp.png'
 
       setMiniPreview(pathLogo)
 
