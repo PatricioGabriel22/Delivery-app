@@ -33,6 +33,12 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
 
     const targetUpdated = await schema.findByIdAndUpdate(idTarget,updateParams,{new:true})
 
+    if(eventName === 'cardProductoActualizada'){
+    
+        return io.emit(eventName,targetUpdated)
+    }
+
+
     const {
         _id,
         username,
@@ -68,5 +74,5 @@ export async function modifyData(idTarget,schema,updateParams,file,eventName){
         mediosDePago
     }
 
-    io.emit(eventName,dataReducida)
+    return io.emit(eventName,dataReducida)
 }

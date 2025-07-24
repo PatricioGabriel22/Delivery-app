@@ -390,16 +390,16 @@ export function SocketProvider({children}){
         })
 
         socket.on('cardProductoActualizada',(data)=>{
-            console.log(data)
+           
             refresh(prevData=>{
                 const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
-
-                if(prevItem._id === data._id){
-                    return {...data}
-                }else{
-                    return{...prevItem}
-                }
+                    if(prevItem._id === data._id){
+                        return {...data}
+                    }else{
+                        return{...prevItem}
+                    }
                 })
+                console.log(updatedArray)
 
                 return{
                 ...prevData,

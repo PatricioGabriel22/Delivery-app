@@ -197,7 +197,7 @@ export default function Home() {
 
               <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-center p-4">
 
-                {catalogoDelBistro.length > 0 && catalogoDelBistro
+                {catalogoDelBistro
                   .filter(item=>item.nombre.toLowerCase().includes(productoBuscado))
                   .filter(producto => !userInfo.rol ? producto.disponible : producto)
                   .map((producto)=>{
