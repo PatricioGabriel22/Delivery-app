@@ -2,7 +2,7 @@ import toast from 'react-hot-toast'
 import { registerSW } from 'virtual:pwa-register'
 
 
-export const APP_VERSION = '3.0.1'
+export const APP_VERSION = '3.0.1.1'
 
 async function handleUpdateApp(t){
     toast('Actualizando...',{icon:'⏳'})

@@ -112,7 +112,7 @@ export default function Nav() {
 
               <div className="flex flex-col items-center justify-center">
                 <GiShop size={20} />
-                <p>Bistros</p>
+                <p>Locales</p>
               </div>
 
             </Link>

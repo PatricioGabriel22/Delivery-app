@@ -21,8 +21,8 @@ export default defineConfig({
         enabled: true // 👈 fuerza el uso de PWA en dev 
       },
       manifest: {
-        name: 'Bistro Delivery APP',
-        short_name: 'Bistro Delivery APP',
+        name: 'Delivery APP',
+        short_name: 'Delivery APP',
         start_url: '/',
         display_override: ['window-controls-overlay', 'standalone', 'browser'],
         background_color: '#000000',
