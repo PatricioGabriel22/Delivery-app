@@ -31,7 +31,8 @@ export function LoginProvider({children}){
 
     switch(import.meta.env.VITE_VERCEL_ENV){
         case 'production':
-            renderORLocalURL = 'https://delivery-app-0lcx.onrender.com'
+            renderORLocalURL = 'https://dapp-provisory.onrender.com'  //https://delivery-app-0lcx.onrender.com 
+                                //url del back provisoria
         break
     
         case 'preview':
