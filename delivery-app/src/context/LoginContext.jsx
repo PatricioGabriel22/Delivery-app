@@ -23,7 +23,6 @@ export const useLoginContext = ()=>{
 export function LoginProvider({children}){
 
     //para aceder a las variables de entorno de VITE import.meta.env
-    
 
     const [userInfo,setUserInfo] = useState(JSON.parse(localStorage.getItem('userInfo')) || false)
 
@@ -44,6 +43,7 @@ export function LoginProvider({children}){
     }
     
 
+    console.log(renderORLocalURL)
 
    
 

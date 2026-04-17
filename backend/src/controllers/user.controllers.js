@@ -34,6 +34,8 @@ export const loginUser = async(req,res)=>{
             loginTarget = await bistroSchema.findOne({username})
         }
 
+        
+
         const isValid = loginTarget? bcrypt.compareSync(password,loginTarget.password) : false
     
         if(!loginTarget || !isValid){
