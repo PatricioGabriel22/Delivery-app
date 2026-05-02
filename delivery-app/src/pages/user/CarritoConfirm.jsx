@@ -175,15 +175,6 @@ export default function CarritoConfirm(){
                 </Fragment>
             )}
 
-
-
-            <div className={`flex flex-col ${listaDeCompras.length>0? "h-[250px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
-                {listaDeCompras.length > 0 && (
-
-                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}  bistroID={bistroInfo._id}/>
-                )}
-
-
                 {responseFromServer?.canceled && (
                     <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
                         <FaFaceSadCry  size={90}/>
@@ -202,7 +193,11 @@ export default function CarritoConfirm(){
                     </div>
                 )} 
 
+            <div className={`flex flex-col ${listaDeCompras.length>0? "h-[250px]" : null }  overflow-x-hidden items-center text-black p-4 md:w-fit m-auto`}>
+                {listaDeCompras.length > 0 && (
 
+                    <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}  bistroID={bistroInfo._id}/>
+                )}
 
                 {listaDeCompras?.map((item,index)=>(
                     <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-2 mb-2">
