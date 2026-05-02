@@ -132,7 +132,7 @@ export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
     
     const targetURL = shouldFetch ? `${url}/obtenerTodosLosPagos${query}`:null
 
-    const {data,error,isLoading,mutate} = useSWR(targetURL,getImportesDeVentas,{revalidateOnFocus:true})
+    const {data,error,isLoading,mutate} = useSWR(targetURL,getImportesDeVentas,{revalidateOnFocus:false})
     
     return{
         importeDelRango: data?.importeDelRango,
