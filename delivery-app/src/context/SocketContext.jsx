@@ -23,7 +23,8 @@ let WSSmanager
 
 switch(import.meta.env.VITE_VERCEL_ENV){
     case 'production':
-        WSSmanager = 'wss://delivery-app-0lcx.onrender.com'
+        WSSmanager = 'wss://dapp-provisory.onrender.com'
+        
     break
 
     case 'preview':
