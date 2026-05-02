@@ -35,8 +35,8 @@ switch(import.meta.env.VITE_VERCEL_ENV){
 
 }
 
-const socket = io('wss://dapp-provisory.onrender.com',{
-  transports:['websocket'],
+const socket = io('https://dapp-provisory.onrender.com',{
+  transports:["polling",'websocket'],
   withCredentials: true,
   reconnection: true,
   reconnectionAttempts: 10,
