@@ -467,7 +467,7 @@ export function SocketProvider({children}){
 
     },[])
     
-
+    console.log('KEY SOCKET:', `${renderORLocalURL}/bringAllCatalog/${bistroInfo?._id || userInfo?._id}`)
 
     return(
         <socketContext.Provider value={{

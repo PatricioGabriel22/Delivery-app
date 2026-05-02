@@ -110,6 +110,7 @@ export default function Home() {
 
   },[userInfo,bistroInfo])
 
+  console.log('KEY HOME:', `${renderORLocalURL}/bringAllCatalog/${bistroInfo._id || userInfo._id}`)
 
   return (
     <div className="flex flex-col min-h-screen items-center">
