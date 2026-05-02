@@ -48,7 +48,7 @@ export default function Home() {
   const {carrito} = useShoppingContext()
   const {checkOwnershipAndContinue,bistroInfo} = useBistroContext()
   
-  const {catalogoDelBistro,isLoading,isError,refresh} = useCatalogMaker(renderORLocalURL, bistroInfo._id || userInfo._id)
+  const {catalogoDelBistro,isLoading,isError} = useCatalogMaker(renderORLocalURL, bistroInfo._id || userInfo._id)
   
 
   const [productoBuscado,setProductoBuscado] = useState('')
@@ -110,58 +110,58 @@ export default function Home() {
 
   },[userInfo,bistroInfo])
 
-    useEffect(()=>{
+    // useEffect(()=>{
 
-      socket.on('AlterProductStatus', (data) => {
+    //   socket.on('AlterProductStatus', (data) => {
       
-          console.log('LLEGO', new Date().toISOString(), data)
-          refresh()
-      // refresh(prevData => {
-      //     if (!prevData) return prevData
+    //       console.log('LLEGO', new Date().toISOString(), data)
+    //       refresh()
+    //   // refresh(prevData => {
+    //   //     if (!prevData) return prevData
       
-      //     const updatedStatuses = prevData.catalogoDelBistro.map(item => {
-      //     if (item._id === data.target._id) {
-      //         return { ...item, disponible: data.target.disponible }
-      //     }
-      //     return item
-      //     })
+    //   //     const updatedStatuses = prevData.catalogoDelBistro.map(item => {
+    //   //     if (item._id === data.target._id) {
+    //   //         return { ...item, disponible: data.target.disponible }
+    //   //     }
+    //   //     return item
+    //   //     })
   
-      //     return {
-      //     ...prevData,
-      //     catalogoDelBistro: updatedStatuses
-      //     }
-      // }, false) // false para evitar revalidar desde el servidor
-      })
+    //   //     return {
+    //   //     ...prevData,
+    //   //     catalogoDelBistro: updatedStatuses
+    //   //     }
+    //   // }, false) // false para evitar revalidar desde el servidor
+    //   })
 
-      socket.on('cardProductoActualizada',(data)=>{
+    //   socket.on('cardProductoActualizada',(data)=>{
           
-          refresh(prevData=>{
-              const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
-                  if(prevItem._id === data._id){
-                      return {...data}
-                  }else{
-                      return{...prevItem}
-                  }
-              })
-              console.log(updatedArray)
+    //       refresh(prevData=>{
+    //           const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
+    //               if(prevItem._id === data._id){
+    //                   return {...data}
+    //               }else{
+    //                   return{...prevItem}
+    //               }
+    //           })
+    //           console.log(updatedArray)
 
-              return{
-              ...prevData,
-              catalogoDelBistro:updatedArray
-              }
+    //           return{
+    //           ...prevData,
+    //           catalogoDelBistro:updatedArray
+    //           }
 
-          })
-      })
+    //       })
+    //   })
 
   
 
-      return ()=>{
-      socket.off('AlterProductStatus')
-      socket.off('cardProductoActualizada')
+    //   return ()=>{
+    //   socket.off('AlterProductStatus')
+    //   socket.off('cardProductoActualizada')
       
-      }
+    //   }
 
-    },[refresh])
+    // },[refresh])
 
   return (
     <div className="flex flex-col min-h-screen items-center">
