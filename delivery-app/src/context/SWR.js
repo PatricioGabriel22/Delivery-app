@@ -90,8 +90,8 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 
     const SWRoptions =   {
         // refreshInterval: 1000 * 30, // Actualiza cada 30 segundos
-        revalidateOnFocus: true, // Refresca si volvés a la pestaña
-        // dedupingInterval: 1000000, // mucho tiempo para evitar refetch en requests iguales
+        revalidateOnFocus: false, // Refresca si volvés a la pestaña
+        dedupingInterval: 1000000, // mucho tiempo para evitar refetch en requests iguales
     }
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllConfirmedOrdersData,SWRoptions)

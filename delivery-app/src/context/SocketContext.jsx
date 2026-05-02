@@ -374,7 +374,7 @@ export function SocketProvider({children}){
 
         socket.on('AlterProductStatus', (data) => {
         
-        console.log('LLEGO', new Date().toISOString(), data)
+            console.log('LLEGO', new Date().toISOString(), data)
         refresh(prevData => {
             if (!prevData) return prevData
         
