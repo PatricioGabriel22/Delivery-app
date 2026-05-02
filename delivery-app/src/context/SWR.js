@@ -29,7 +29,7 @@ export function useCatalogMaker(urlAPI, infoID){
 
 
     const SWRoptions =   {
-        revalidateOnFocus: false
+        revalidateOnFocus: true
     }
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromBistro,SWRoptions)
@@ -90,8 +90,8 @@ export function useHistorialOrdenes(userInfo,url,flagPagination,page, limit){
 
     const SWRoptions =   {
         // refreshInterval: 1000 * 30, // Actualiza cada 30 segundos
-        revalidateOnFocus: false, // Refresca si volvés a la pestaña
-        dedupingInterval: 1000000, // mucho tiempo para evitar refetch en requests iguales
+        revalidateOnFocus: true, // Refresca si volvés a la pestaña
+        //dedupingInterval: 1000000, // mucho tiempo para evitar refetch en requests iguales
     }
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllConfirmedOrdersData,SWRoptions)
@@ -132,7 +132,7 @@ export function useCalcularEstadisticasDeVentas(desde,hasta,userInfo,url){
     
     const targetURL = shouldFetch ? `${url}/obtenerTodosLosPagos${query}`:null
 
-    const {data,error,isLoading,mutate} = useSWR(targetURL,getImportesDeVentas,{revalidateOnFocus:false})
+    const {data,error,isLoading,mutate} = useSWR(targetURL,getImportesDeVentas,{revalidateOnFocus:true})
     
     return{
         importeDelRango: data?.importeDelRango,
@@ -161,7 +161,7 @@ export function useBistroList(url){
 
     const targetURL = `${url}/getAllOpenBistros`
 
-    const {data,error,isLoading,mutate} = useSWR(targetURL,getAllBistros,{revalidateOnFocus:false})
+    const {data,error,isLoading,mutate} = useSWR(targetURL,getAllBistros,{revalidateOnFocus:true})
     
     return{
         openBistros: data?.openBistros,
