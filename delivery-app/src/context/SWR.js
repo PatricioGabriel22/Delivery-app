@@ -29,7 +29,7 @@ export function useCatalogMaker(urlAPI, infoID){
 
 
     const SWRoptions =   {
-        revalidateOnFocus: true
+        revalidateOnFocus: false
     }
 
     const { data, error, isLoading, mutate } = useSWR(targetURL,getAllCatalogFromBistro,SWRoptions)
