@@ -375,21 +375,22 @@ export function SocketProvider({children}){
         socket.on('AlterProductStatus', (data) => {
         
             console.log('LLEGO', new Date().toISOString(), data)
-        refresh(prevData => {
-            if (!prevData) return prevData
+            refresh()
+        // refresh(prevData => {
+        //     if (!prevData) return prevData
         
-            const updatedStatuses = prevData.catalogoDelBistro.map(item => {
-            if (item._id === data.target._id) {
-                return { ...item, disponible: data.target.disponible }
-            }
-            return item
-            })
+        //     const updatedStatuses = prevData.catalogoDelBistro.map(item => {
+        //     if (item._id === data.target._id) {
+        //         return { ...item, disponible: data.target.disponible }
+        //     }
+        //     return item
+        //     })
     
-            return {
-            ...prevData,
-            catalogoDelBistro: updatedStatuses
-            }
-        }, false) // false para evitar revalidar desde el servidor
+        //     return {
+        //     ...prevData,
+        //     catalogoDelBistro: updatedStatuses
+        //     }
+        // }, false) // false para evitar revalidar desde el servidor
         })
 
         socket.on('cardProductoActualizada',(data)=>{
