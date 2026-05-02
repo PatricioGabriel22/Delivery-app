@@ -101,9 +101,9 @@ export function SocketProvider({children}){
         }
 
         return ()=>{
-            socket.off('connect')
+            socket.off('connect',infoDeConexion)
         }
-    },[userInfo,socket.connected])
+    },[userInfo])
 
 
     //me traigo las pre-ordenes y las gestiono. Si se actualiza la pagina se vuelve a llamar a la db
@@ -388,7 +388,7 @@ export function SocketProvider({children}){
             catalogoDelBistro: updatedStatuses
             }
         }, false) // false para evitar revalidar desde el servidor
-        },[refresh])
+        })
 
         socket.on('cardProductoActualizada',(data)=>{
            
@@ -418,7 +418,7 @@ export function SocketProvider({children}){
         
         }
 
-    },[])
+    },[refresh])
 
     //eventos sockets de cambio de configuraciones
     useEffect(()=>{
