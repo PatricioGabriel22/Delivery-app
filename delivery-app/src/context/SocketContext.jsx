@@ -16,7 +16,7 @@ import {generateNotificationSound, preventStopNotification } from "../utils/soun
 import { useBistroContext } from "./BistrosContext"
 import { esDeHoy } from "../utils/dateFunctions"
 import { useCatalogMaker } from "./SWR"
-import { mutate } from 'swr'
+
 
 
 let WSSmanager 
@@ -370,42 +370,42 @@ export function SocketProvider({children}){
 
 
     //eventos sockets de cambio de estado, edicion de producto, delivery
-    useEffect(()=>{
+    // useEffect(()=>{
 
-        socket.on('AlterProductStatus', () => {
+    //     socket.on('AlterProductStatus', () => {
         
-            mutate(`${renderORLocalURL}/bringAllCatalog/${bistroInfo?._id || userInfo?._id}`)
-        })
+    //         mutate(`${renderORLocalURL}/bringAllCatalog/${bistroInfo?._id || userInfo?._id}`)
+    //     })
 
-        socket.on('cardProductoActualizada',()=>{
-            mutate(`${renderORLocalURL}/bringAllCatalog/${bistroInfo?._id || userInfo?._id}`)
-            // refresh(prevData=>{
-            //     const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
-            //         if(prevItem._id === data._id){
-            //             return {...data}
-            //         }else{
-            //             return{...prevItem}
-            //         }
-            //     })
-            //     console.log(updatedArray)
+    //     socket.on('cardProductoActualizada',()=>{
+    //         mutate(`${renderORLocalURL}/bringAllCatalog/${bistroInfo?._id || userInfo?._id}`)
+    //         // refresh(prevData=>{
+    //         //     const updatedArray = prevData.catalogoDelBistro.map(prevItem=>{
+    //         //         if(prevItem._id === data._id){
+    //         //             return {...data}
+    //         //         }else{
+    //         //             return{...prevItem}
+    //         //         }
+    //         //     })
+    //         //     console.log(updatedArray)
 
-            //     return{
-            //     ...prevData,
-            //     catalogoDelBistro:updatedArray
-            //     }
+    //         //     return{
+    //         //     ...prevData,
+    //         //     catalogoDelBistro:updatedArray
+    //         //     }
 
-            // })
-        })
+    //         // })
+    //     })
 
     
 
-        return ()=>{
-        socket.off('AlterProductStatus')
-        socket.off('cardProductoActualizada')
+    //     return ()=>{
+    //     socket.off('AlterProductStatus')
+    //     socket.off('cardProductoActualizada')
         
-        }
+    //     }
 
-    },[])
+    // },[])
 
     //eventos sockets de cambio de configuraciones
     useEffect(()=>{
