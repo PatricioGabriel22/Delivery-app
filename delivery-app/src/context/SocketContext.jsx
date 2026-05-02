@@ -388,7 +388,7 @@ export function SocketProvider({children}){
             catalogoDelBistro: updatedStatuses
             }
         }, false) // false para evitar revalidar desde el servidor
-        })
+        },[refresh])
 
         socket.on('cardProductoActualizada',(data)=>{
            

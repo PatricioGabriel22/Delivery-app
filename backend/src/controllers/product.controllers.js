@@ -106,12 +106,8 @@ export const changeStatus = async (req,res)=>{
 
 
 
-export const editProductInfo = async (req,res)=>{
-    const {nombre,descripcion,precio,id,temporalIMG} = req.body
-    
-    
-
-   
+export const editProductInfo = async (req, res) => {
+    const { nombre, descripcion, precio, id, temporalIMG } = req.body
 
     const logoApp = {
         path: '/logoApp.png',
@@ -119,23 +115,23 @@ export const editProductInfo = async (req,res)=>{
     }
 
     try {
+        const updatedFields = {}
 
-
-
-        const updatedFields = {
-            nombre: typeof nombre === 'string' ? nombre.trim() : nombre,
-            descripcion: typeof descripcion === 'string' ? descripcion.trim() : descripcion,
-            precio,
-            img: temporalIMG ? logoApp.path : undefined,
-            public_IMG_ID: temporalIMG ? logoApp.filename : undefined,
+        if (nombre !== undefined) updatedFields.nombre = typeof nombre === 'string' ? nombre.trim() : nombre
+        if (descripcion !== undefined) updatedFields.descripcion = typeof descripcion === 'string' ? descripcion.trim() : descripcion
+        if (precio !== undefined) updatedFields.precio = precio
+        if (temporalIMG) {
+            updatedFields.img = logoApp.path
+            updatedFields.public_IMG_ID = logoApp.filename
         }
 
-        modifyData(id,productSchema,updatedFields,req.file,"cardProductoActualizada")
+        await modifyData(id, productSchema, updatedFields, req.file, "cardProductoActualizada")
 
-        res.status(200).json({message:`Cambios en el producto guardados`})
+        res.status(200).json({ message: `Cambios en el producto guardados` })
 
     } catch (error) {
-        
+        console.log(error)
+        res.status(500).json({ error: "Error al editar el producto" })
     }
 }
 
