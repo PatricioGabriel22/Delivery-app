@@ -183,6 +183,27 @@ export default function CarritoConfirm(){
                     <CancelarCompraBTN pedidoID={localStorage.getItem('pedidoID')} preOrdenID={localStorage.getItem('preOrdenID')}  bistroID={bistroInfo._id}/>
                 )}
 
+
+                {responseFromServer?.canceled && (
+                    <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
+                        <FaFaceSadCry  size={90}/>
+                        Lo sentimos, hubo un problema con su pedido. Es posible que no tengamos stock de algun producto. <br/>Sin embargo, puede editarla y probar otras alternativas
+
+                        {responseFromServer?.msgDeSugerencia && (
+                            <div className="w-full text-justify bg-white text-black  rounded p-2">
+                                <span className="flex justify-between items-center gap-2 text-lg font-semibold"> 
+                                    El local sugiere: <GiCook  size={35}/> </span>
+                                <p className="mt-3">{responseFromServer.msgDeSugerencia}</p>
+                            </div>
+                        )}
+
+                        <span className="text-center ">Esta pre-orden se cancela automaticamente por falta de producto sin costo alguno</span>
+
+                    </div>
+                )} 
+
+
+
                 {listaDeCompras?.map((item,index)=>(
                     <div key={index} className="flex flex-row items-center text-center  justify-around w-full bg-white shadow-md rounded-lg p-2 mb-2">
 
