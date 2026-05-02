@@ -79,7 +79,7 @@ export const dataFormNewProduct = async(req,res)=>{
 export const changeStatus = async (req,res)=>{
 
     const {id,disponible} = req.body
-
+    
     
 
     try {

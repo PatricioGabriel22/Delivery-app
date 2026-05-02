@@ -40,7 +40,8 @@ const socket = io('wss://dapp-provisory.onrender.com',{
   withCredentials: true,
   reconnection: true,
   reconnectionAttempts: 10,
-  reconnectionDelay: 2000
+  reconnectionDelay: 2000,
+  upgrade:false
 })
 
 
@@ -373,6 +374,7 @@ export function SocketProvider({children}){
 
         socket.on('AlterProductStatus', (data) => {
         
+        console.log('LLEGO', new Date().toISOString(), data)
         refresh(prevData => {
             if (!prevData) return prevData
         
