@@ -170,10 +170,10 @@ export default function Home() {
       {(!isLoading && !isError) &&  CategoriasProductos.length !== 0  && (
         <Fragment>
 
-          <div className="flex flex-row  items-center p-5 bg-yellow-300 text-2xl font-bold text-black rounded text-center">
+          {/* <div className="flex flex-row  items-center p-5 bg-yellow-300 text-2xl font-bold text-black rounded text-center">
             <GoAlertFill size={50} color="red" className="pr-1"/>
             <span> Carrito de compras temporalmente deshabilitado</span>
-          </div>
+          </div> */}
 
           <SearchingBar searchSetter={setProductoBuscado}/>
           <span >🔵🔵⚪☀️⚪🔵🔵</span>

@@ -277,7 +277,7 @@ export default function CarritoConfirm(){
                                         confirmarOrdenConElLocal()
                                         setResponseFromServer(null)
                                         }}>
-                                        Pre-ordenar
+                                        ¡Hacer mi pedidio!
                                 </button>
                             </div>
                         ) }
@@ -312,7 +312,7 @@ export default function CarritoConfirm(){
                 {responseFromServer?.canceled && (
                     <div className="w-[90%] text-lg text-white p-3 gap-y-10 mt-10 gap-3 rounded flex flex-col items-center self-center ">
                         <FaFaceSadCry  size={90}/>
-                        Lo sentimos, hubo un problema con su pre-orden. <br/>Sin embargo, puede editarla y probar otras alternativas
+                        Lo sentimos, hubo un problema con su pedido. Es posible que no tengamos stock de algun producto. <br/>Sin embargo, puede editarla y probar otras alternativas
 
                         {responseFromServer?.msgDeSugerencia && (
                             <div className="w-full text-justify bg-white text-black  rounded p-2">

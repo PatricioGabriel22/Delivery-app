@@ -390,8 +390,8 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
           
         ):(
           <Fragment>
-            {/* Deshabilitado hasta poder pagar render */}
-            {/* <MdDelete 
+            
+            <MdDelete 
               size={40} 
               className={`text-red-600 cursor-pointer ${loading || buyBTN? "hidden" :"" } `} 
               onClick={()=>cartHandler(carrito,"delete",nombre)}
@@ -410,7 +410,7 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
               }
             />
               
-            <span className={`text-3xl self-end ${cantidadAdquirida === 0? "invisible":"block"}`}>x{cantidadAdquirida}</span>  */}
+            <span className={`text-3xl self-end ${cantidadAdquirida === 0? "invisible":"block"}`}>x{cantidadAdquirida}</span> 
           </Fragment>
           
 
