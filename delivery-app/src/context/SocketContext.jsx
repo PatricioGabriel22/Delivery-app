@@ -35,7 +35,7 @@ switch(import.meta.env.VITE_VERCEL_ENV){
 
 }
 
-const socket = io(WSSmanager,{
+const socket = io('wss://dapp-provisory.onrender.com',{
   transports:['websocket'],
   withCredentials: true,
   reconnection: true,
