@@ -95,9 +95,9 @@ export default function Nav() {
       )}
 
       {/* Barra de navegación */}
-      <div className="flex flex-row bg-red-600  items-center justify-evenly rounded-t-4xl w-full p-5">
+      <div className="flex flex-row bg-red-600  items-center justify-around rounded-t-4xl w-full p-5 gap-x-30">
 
-          <div className="flex flex-row justify-center  items-center">
+          <div className="flex flex-row gap-x-7 items-center">
             <Link to={"/profile"} >
                 <div className="flex flex-col items-center self-start">
                   <FaUserLarge size={20}/>
