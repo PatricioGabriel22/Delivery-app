@@ -13,7 +13,7 @@ export default function LogoutBTN(){
 
 
             <button 
-                className="cursor-pointer rounded bg-black flex flex-col justify-center items-center "
+                className="cursor-pointer rounded bg-black flex flex-col justify-center items-center  "
                 onClick={()=>{
                     localStorage.clear()
                     localStorage.clear()

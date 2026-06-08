@@ -13,7 +13,7 @@ import { FaUserLarge } from "react-icons/fa6";
 import { MdRemoveShoppingCart } from "react-icons/md";
 import { useBistroContext } from "../../context/BistrosContext";
 
-
+import { GiQueenCrown } from "react-icons/gi";
 
 
 export default function Nav() {
@@ -95,27 +95,26 @@ export default function Nav() {
       )}
 
       {/* Barra de navegación */}
-      <div className="flex flex-row bg-red-600 justify-between items-center md:justify-evenly rounded-t-4xl w-full p-5">
-        <Link to={"/profile"} >
+      <div className="flex flex-row bg-red-600  items-center justify-evenly rounded-t-4xl w-full p-5">
 
-          <div className="flex flex-col justify-center items-center">
-            <FaUserLarge size={20}/>
-            <p>Perfil</p>
+          <div className="flex flex-row justify-center  items-center">
+            <Link to={"/profile"} >
+                <div className="flex flex-col items-center self-start">
+                  <FaUserLarge size={20}/>
+                  <p>Perfil</p>
+                </div>
+            </Link>
+
+            <div className="flex flex-col items-center self-start">
+              <GiQueenCrown color="gold" size={30}/> 
+              <p className="self-center font-medium text-xl">{userInfo?.coronitas_disponibles}</p>
+            </div>
           </div>
 
-        </Link>
+
 
         {!userInfo.rol  && !locationFlag && (
           <Fragment>
-
-            <Link to={'/bistros'}>
-
-              <div className="flex flex-col items-center justify-center">
-                <GiShop size={20} />
-                <p>Locales</p>
-              </div>
-
-            </Link>
 
           <div className="flex flex-col justify-center items-center cursor-pointer" onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/profile`)}}>
 
@@ -145,7 +144,10 @@ export default function Nav() {
               </Link>
           </Fragment>
         )}
-        <LogoutBTN />
+        <div className="flex justify-end">
+          <LogoutBTN />
+
+        </div>
       </div>
     </div>
   );
