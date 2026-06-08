@@ -86,6 +86,9 @@ export default function Login(){
   return (
       <Fragment>
         <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
+          <img src='/victorina-logo.jpg' className="w-70 md:w-120"/>
+
+          <p className="text- text-2xl text-center font-light">Sumá puntos con cada compra y canjealos por tus productos favoritos!</p>
           <img src='/logoApp.png' className={`w-20 ${logginIn?  'animate-bounce' : ""}`} loading="lazy"/>
           <form className=" w-80 h-80 border-4 rounded-2xl border-red-600 p-5 flex flex-col items-center justify-around " 
             onSubmit={(e)=>handleLogin(e)}>

@@ -24,12 +24,12 @@ import { useCatalogMaker } from "@context/SWR";
 import { MdOutlineImageSearch } from "react-icons/md";
 import BannerCloseLogo from "@components/common/BannerCloseLogo";
 
+import { GiQueenCrown } from "react-icons/gi";
 
 
 
 
-
-export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,disponible,img}) {
+export default function Card({id,nombre, precio, precio_en_coronitas,cantidadAdquirida,descripcion,disponible,img}) {
   // Estado para controlar el modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toEdit,setTodit] = useState(false)
@@ -322,7 +322,17 @@ export default function Card({id,nombre, precio, cantidadAdquirida,descripcion,d
 
             <div className="flex flex-col justify-between p-2 ">
               <span className="overflow-x-hidden h-30">{descripcion}</span>
-              <p className="self-center font-medium text-xl">${precio}</p>
+              <div className="flex flex-row items-center justify-between">
+                <p className="self-center font-medium text-xl">${precio}</p>
+                <div className="flex items-center bg-black text-white rounded p-2">
+              
+                  <GiQueenCrown color="gold" size={30}/> 
+                 
+                  <p className="self-center font-medium text-xl">{precio_en_coronitas}</p>
+                </div>
+
+              </div>
+
             </div>
 
             {/* Imagen que abre el modal */}

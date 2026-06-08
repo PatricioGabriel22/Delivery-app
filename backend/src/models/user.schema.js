@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'pedidos'
     }],
+    coronitas_disponibles: Number
 
     
 },{

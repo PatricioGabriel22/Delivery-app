@@ -85,7 +85,7 @@ export default function Register(){
 
     return(    
     <div className=" flex flex-col items-center justify-center">
-
+        <img src='/victorina-logo.jpg' className="w-70 md:w-120"/>
         <img src={succesAnimation? succesLogo : '/logoApp.png'} 
         className={`w-20 ${succesAnimation ? 'animate-bounce': ""} ${errorAnimation ? "animate-[shake_0.4s_ease-in-out]": ""}`}/> 
 

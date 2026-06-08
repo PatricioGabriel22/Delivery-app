@@ -118,6 +118,7 @@ export const registerUser = async (req,res)=>{
                 entreCalles,
                 telefono,
                 hintPassword:password,
+                coronitas_disponibles: 0
     
             }).save()
         

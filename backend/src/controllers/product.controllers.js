@@ -6,7 +6,10 @@ import { io } from "../webSocket.js"
 import { connectedBistros } from "../webSocket.js"
 import { modifyData } from "../middlewares/imageCloudinaryFunc.js"
 
+import {precio_producto_en_coronitas} from '../utils/coronitas.js'
+
 // const restauranteBistro = '6806b8fe2b72a9697aa59e5f' //serian los bistros
+
 
 
 export async function catalogMaker(req,res){
@@ -45,6 +48,7 @@ export const dataFormNewProduct = async(req,res)=>{
             descripcion,
             categoria,
             precio,
+            precio_coronita: precio_producto_en_coronitas(precio),
             disponible,
         })
     

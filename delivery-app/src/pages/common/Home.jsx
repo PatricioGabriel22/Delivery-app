@@ -270,7 +270,8 @@ export default function Home() {
                         <Card key={producto._id} 
                         id={producto._id}
                         nombre={producto.nombre} 
-                        precio={producto.precio} 
+                        precio={producto.precio}
+                        precio_en_coronitas={producto.precio_en_coronitas}
                         cantidadAdquirida={target === null ? 0 : target.cantidad}
                         descripcion={producto.descripcion}
                         disponible={producto.disponible}

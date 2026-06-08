@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema({
     descripcion: String,
     categoria: String,
     precio: Number,
+    precio_coronita: Number,
     disponible:{type:Boolean,default:true},
     img: String,
     public_IMG_ID:String
