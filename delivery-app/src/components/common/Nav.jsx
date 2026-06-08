@@ -143,7 +143,7 @@ export default function Nav() {
 
             <Link to={'/configuraciones'}>
               <div className="flex flex-col items-center">
-                <IoSettingsOutline  size={20}/>
+                <IoSettingsOutline  size={22}/>
                 <p>Ajustes</p>
               </div>
               </Link>
