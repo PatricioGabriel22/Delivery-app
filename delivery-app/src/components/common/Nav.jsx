@@ -95,7 +95,7 @@ export default function Nav() {
       )}
 
       {/* Barra de navegación */}
-      <div className="flex flex-row bg-red-600  items-center justify-around rounded-t-4xl w-full p-5 gap-x-30">
+      <div className="flex flex-row bg-red-600  items-center justify-between rounded-t-4xl w-full p-5 ">
 
           <div className="flex flex-row gap-x-7 items-center">
             <Link to={"/profile"} >
@@ -104,17 +104,22 @@ export default function Nav() {
                   <p>Perfil</p>
                 </div>
             </Link>
+            {!userInfo.rol && (
 
-            <div className="flex flex-col items-center self-start">
+              <div className="flex flex-col items-center self-start">
               <GiQueenCrown color="gold" size={30}/> 
               <p className="self-center font-medium text-xl">{userInfo?.coronitas_disponibles}</p>
             </div>
+            )}
           </div>
+
 
 
 
         {!userInfo.rol  && !locationFlag && (
           <Fragment>
+
+          
 
           <div className="flex flex-col justify-center items-center cursor-pointer" onClick={()=>{limpiarSecuenciaDeCompras(); navigate(`/profile`)}}>
 
@@ -144,10 +149,10 @@ export default function Nav() {
               </Link>
           </Fragment>
         )}
-        <div className="flex justify-end">
+        
           <LogoutBTN />
 
-        </div>
+        
       </div>
     </div>
   );
